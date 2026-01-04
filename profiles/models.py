@@ -10,13 +10,11 @@ class OwnerProfile(models.Model):
     )
 
     display_name = models.CharField(max_length=50)
-    
-    profil_picture = models.CloudinaryField('profile picture',
-        blank=True,
-        null=True)
 
-    age = models.PositiveIntegerField()
-    location = models.CharField(max_length=100)
+    profile_picture = CloudinaryField('profile picture', blank=True, null=True)
+
+    age = models.PositiveIntegerField(null=True, blank=True)
+    location = models.CharField(max_length=100, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
