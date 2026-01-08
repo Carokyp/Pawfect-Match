@@ -34,12 +34,19 @@
 
 #### User stories
 
-- As a 
-- As a
-- As a 
-- As a 
-- As a 
-- As a 
+- As a visitor, I want to see a homepage explaining what Pawfect Match is, so that I understand the purpose of the platform before signing up.
+- As a visitor, I want to see who the platform is for so that I know if the app is relevant to me.
+- As a visitor, I want to create an account so that I can start using the platform.
+- As a logged-in user, I want to create and edit my owner profile, so that other users can see who I am.
+- As a logged-in user, I want to upload a profile picture, so that my profile feels personal and trustworthy.
+- As a logged-in user, I want to create a profile for my dog, so that my dog can appear in matches.
+- As a logged-in user, I want to upload a picture of my dog, so that other users can see my dog before matching.
+- As a logged-in user, I want to describe my dog’s personality (size, energy level, etc.), so that matches are more relevant.
+- As a logged-in user, I want to like or skip a dog, so that I can choose which dogs I am interested in.
+- As a logged-in user, I want to see my matches, so that I can review the dogs I have matched with.
+- As a logged-in user, I want to remove a match so that I can undo a decision if I change my mind.
+- As a user, I want to edit or delete only my own data, so that I remain in control of my profile.
+  
 ### Scope
 
 #### In scope Features:
