@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block layout %}
+<div class="auth-wrapper">
+
+  <!-- Background plein écran -->
+  <div class="auth-background"></div>
+
+  <!-- Contenu au-dessus -->
+  <div class="auth-content">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+</div>
+{% endblock %}
