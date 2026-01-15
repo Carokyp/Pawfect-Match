@@ -1,34 +1,24 @@
 {% extends "base_auth.html" %}
 
-{% block title %}Pawfect Match{% endblock %}
+{% block title %}Pawfect Match - Home{% endblock %}
 
 {% block content %}
+<h1>Pawfect Match</h1>
 
-<div class="text-center px-4">
+<h1 class="home-title">Pawfect Match</h1>
 
-  <h1 class="mb-3">Find the pawfect match 🐾</h1>
+<p class="home-description">
+  Meet other dog lovers, help your dog make friends,
+  and maybe find love along the way.
+</p>
 
-  <p class="mb-4">
-    Meet other dog lovers, help your dog make friends,
-    and maybe find love along the way.
-  </p>
+<div class="home-actions">
+  <a href="{% url 'register' %}" class="btn-outline">
+    Create account
+  </a>
 
-  <div class="my-5">
-    <div class="bg-light rounded" style="height: 200px;">
-      <p class="pt-5">BIG BACKGROUND IMAGE</p>
-    </div>
-  </div>
-
-  <div class="d-grid gap-3">
-    <a href="{% url 'register' %}" class="btn btn-dark btn-lg rounded-pill">
-      Create account
-    </a>
-
-    <a href="#" class="btn btn-outline-dark btn-lg rounded-pill">
-      Sign in
-    </a>
-  </div>
-
+  <a href="#" class="btn-outline">
+    Sign in
+  </a>
 </div>
-
 {% endblock %}
