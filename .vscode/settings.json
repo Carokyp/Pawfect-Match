@@ -9,7 +9,7 @@
   "editor.suggestOnTriggerCharacters": true,
   "html.suggest.html5": true,
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "vscode.html-language-features",
     "editor.formatOnSave": false,
     "editor.quickSuggestions": {
       "other": true,

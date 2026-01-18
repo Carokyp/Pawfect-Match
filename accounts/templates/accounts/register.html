@@ -1,0 +1,55 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}Create account - Pawfect Match{% endblock %}
+
+{% block content_class %}form-page{% endblock %}
+
+{% block back_button %}
+<a href="javascript:history.back()" class="back-button">
+  <img src="{% static 'images/back_arrow.svg' %}" alt="Back" />
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="form-page-container">
+
+  <h1>Create account</h1>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    Dolor reprehenderit minus magnam nulla
+  </p>
+
+  <form method="post" class="auth-form">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    <div class="form-field">
+      {{ form.email.label_tag }}
+      {{ form.email }}
+    </div>
+
+    <div class="form-field password-field">
+      {{ form.password.label_tag }}
+
+      <div class="input-wrapper">
+        {{ form.password }}
+
+        <button type="button" class="toggle-password" aria-label="Show password">
+          <img src="{% static 'images/visibility.svg' %}" alt="Toggle password" class="eye-icon" />
+        </button>
+      </div>
+    </div>
+
+    <div class="form-field">
+      {{ form.password_confirm.label_tag }}
+      {{ form.password_confirm }}
+    </div>
+
+    <button type="submit" class="btn-outline form-create-btn">
+      Create account
+    </button>
+  </form>
+
+</div>
+{% endblock %}

@@ -1,20 +1,48 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 
 
-class RegisterForm(forms.ModelForm):
+class LoginForm(AuthenticationForm):
+    username = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={
+            "autocomplete": "username"
+        })
+    )
+
     password = forms.CharField(
-        widget=forms.PasswordInput,
-        label="Password"
-    )
-    password_confirm = forms.CharField(
-        widget=forms.PasswordInput,
-        label="Confirm password"
+        widget=forms.PasswordInput(attrs={
+            "autocomplete": "current-password"
+        })
     )
 
-    class Meta:
-        model = User
-        fields = ["username", "email", "password"]
+class RegisterForm(forms.Form):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            "autocomplete": "off"
+        })
+    )
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            "autocomplete": "new-password"
+        })
+    )
+
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            "autocomplete": "new-password"
+        })
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if User.objects.filter(username=email).exists():
+            raise forms.ValidationError(
+                "An account with this email already exists."
+            )
+        return email
 
     def clean(self):
         cleaned_data = super().clean()
@@ -22,6 +50,6 @@ class RegisterForm(forms.ModelForm):
         password_confirm = cleaned_data.get("password_confirm")
 
         if password and password_confirm and password != password_confirm:
-            raise forms.ValidationError("Passwords do not match")
+            raise forms.ValidationError("Passwords do not match.")
 
         return cleaned_data

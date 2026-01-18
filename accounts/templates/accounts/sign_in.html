@@ -1,0 +1,44 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}Login - Pawfect Match{% endblock %}
+
+{% block content_class %}form-page{% endblock %}
+
+{% block back_button %}
+<a href="javascript:history.back()" class="back-button">
+  <img src="{% static 'images/back_arrow.svg' %}" alt="Back" />
+</a>
+{% endblock %}
+
+{% block content %}
+
+<h1>Sign in</h1>
+<p>Welcome back! Log in to continue.</p>
+
+<form method="post" action="{% url 'sign_in' %}" class="auth-form">
+  {% csrf_token %}
+
+  {{ form.non_field_errors }}
+
+  <div class="form-field">
+    {{ form.username.label_tag }}
+    {{ form.username }}
+  </div>
+
+  <div class="form-field">
+    {{ form.password.label_tag }}
+    <div class="input-wrapper">
+      {{ form.password }}
+      <button type="button" class="toggle-password" aria-label="Show password">
+        <img src="{% static 'images/visibility.svg' %}" alt="Toggle password" class="eye-icon" />
+      </button>
+    </div>
+  </div>
+
+  <button type="submit" class="btn-outline form-sign-in-btn">
+    Sign in
+  </button>
+</form>
+
+{% endblock %}
