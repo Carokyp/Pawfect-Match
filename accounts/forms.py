@@ -69,7 +69,8 @@ class RegisterForm(forms.Form):
                     "Password must contain at least one digit (0–9)."
                 )
             
-            if not re.search(r'[!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]', password):
+            special_chars = r'[!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]'
+            if not re.search(special_chars, password):
                 raise forms.ValidationError(
                     "Password must contain at least one special "
                     "character (!@#$%^&*)."
