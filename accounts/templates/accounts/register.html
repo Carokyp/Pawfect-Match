@@ -6,7 +6,7 @@
 {% block content_class %}form-page{% endblock %}
 
 {% block back_button %}
-<a href="javascript:history.back()" class="back-button">
+<a href="{% url 'home' %}" class="back-button">
   <img src="{% static 'images/back_arrow.svg' %}" alt="Back" />
 </a>
 {% endblock %}
@@ -23,6 +23,9 @@
     {% csrf_token %}
 
     {{ form.non_field_errors }}
+    {{ form.email.errors }}
+    {{ form.password.errors }}
+    {{ form.password_confirm.errors }}
 
     <div class="form-field">
       {{ form.email.label_tag }}
@@ -39,6 +42,12 @@
           <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon"/>
         </button>
       </div>
+      <ul style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem; margin-left: 1.2rem;">
+        <li>Minimum 8 characters</li>
+        <li>At least one uppercase letter (A–Z)</li>
+        <li>At least one digit (0–9)</li>
+        <li>At least one special character (!@#$%^&*...)</li>
+      </ul>
     </div>
 
     <div class="form-field">

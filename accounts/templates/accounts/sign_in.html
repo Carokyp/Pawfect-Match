@@ -6,7 +6,7 @@
 {% block content_class %}form-page{% endblock %}
 
 {% block back_button %}
-<a href="javascript:history.back()" class="back-button">
+<a href="{% url 'home' %}" class="back-button">
   <img src="{% static 'images/back_arrow.svg' %}" alt="Back" />
 </a>
 {% endblock %}
