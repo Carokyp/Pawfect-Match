@@ -17,6 +17,7 @@ class LoginForm(AuthenticationForm):
         })
     )
 
+
 class RegisterForm(forms.Form):
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={
