@@ -1,0 +1,79 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}Create Owner Profile{% endblock %}
+{% block content_class %}form-page{% endblock %}
+
+{% block back_button %}
+<a href="" class="back-button">
+  <img src="{% static 'images/back_arrow.svg' %}" alt="Back">
+</a>
+{% endblock %}
+
+{% block content %}
+
+<h1 class="form-title">CREATE YOUR OWNER PROFILE</h1>
+<p class="form-subtitle">
+  <span class="required">*</span> Required fields
+</p>
+
+<form method="post" enctype="multipart/form-data" class="auth-form">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+
+  <!-- Profile photo -->
+  <div class="form-field">
+    <label>Profile Photo <span class="required">*</span></label>
+
+    <div class="upload-box">
+      {{ form.profile_picture }}
+      <span class="upload-placeholder">
+        Drop image or click to upload<br>
+      </span>
+    </div>
+  </div>
+
+  <!-- Name -->
+  <div class="form-field">
+    {{ form.name.label_tag }}
+    {{ form.name }}
+  </div>
+
+  <!-- Age -->
+  <div class="form-field">
+    {{ form.age.label_tag }}
+    {{ form.age }}
+  </div>
+
+  <!-- City -->
+  <div class="form-field">
+    {{ form.city.label_tag }}
+    {{ form.city }}
+  </div>
+
+  <!-- Occupation -->
+  <div class="form-field">
+    {{ form.occupation.label_tag }}
+    {{ form.occupation }}
+  </div>
+
+  <!-- Interests -->
+  <div class="form-field">
+    {{ form.interests.label_tag }}
+    {{ form.interests }}
+  </div>
+
+  <!-- About me -->
+  <div class="form-field">
+    {{ form.bio.label_tag }}
+    {{ form.bio }}
+    <div class="char-counter">0 / 500</div>
+  </div>
+
+  <button type="submit" class="btn-primary">
+    Complete Profile
+  </button>
+
+</form>
+
+{% endblock %}
