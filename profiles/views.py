@@ -7,7 +7,7 @@ from .models import OwnerProfile
 @login_required
 def create_owner_profile(request):
     # Empêcher la création de plusieurs profils
-    if hasattr(request.user, "owner_profile"):
+    if OwnerProfile.objects.filter(user=request.user).exists():
         return redirect("create_dog")
 
     if request.method == "POST":

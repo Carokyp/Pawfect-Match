@@ -2,14 +2,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import DogForm
 from .models import Dog
+from profiles.models import OwnerProfile
 
 
 @login_required
 def create_dog(request):
-    owner_profile = request.user.owner_profile
+    # Vérifier qu'un profil propriétaire existe
+    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    if owner_profile is None:
+        return redirect("create_owner_profile")
 
-    # Empêcher plusieurs chiens
-    if hasattr(owner_profile, "dog"):
+    # Empêcher la création de plusieurs chiens (OneToOne)
+    if Dog.objects.filter(owner=owner_profile).exists():
         return redirect("home")
 
     if request.method == "POST":
