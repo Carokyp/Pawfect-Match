@@ -16,9 +16,9 @@ class OwnerProfile(models.Model):
         null=True
     )
 
-    name = models.CharField(max_length=100)
-    age = models.PositiveIntegerField()
-    city = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, default="")
+    age = models.PositiveIntegerField(default=0)
+    city = models.CharField(max_length=100, default="")
 
     occupation = models.CharField(
         max_length=100,

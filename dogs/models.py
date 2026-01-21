@@ -1,14 +1,6 @@
 from django.db import models
-from profiles.models import OwnerProfile
 from cloudinary.models import CloudinaryField
-
-ENERGY_LEVEL_CHOICES = [
-    ('couch_potato', '🛋️ Couch potato'),
-    ('chill', '😌 Chill vibes'),
-    ('playful', '🎾 Playful'),
-    ('energetic', '⚡ Energetic'),
-    ('zoomies', '🚀 Full zoomies'),
-]
+from profiles.models import OwnerProfile
 
 
 class Dog(models.Model):
@@ -18,29 +10,48 @@ class Dog(models.Model):
         related_name="dog"
     )
 
-    name = models.CharField(max_length=50)
-    age = models.PositiveIntegerField()
-    breed = models.CharField(max_length=100)
+    profile_photo = CloudinaryField(
+        "dog profile photo",
+        blank=True,
+        null=True
+    )
+
+    name = models.CharField(max_length=100, default="")
+    age = models.PositiveIntegerField(default=0)
+    breed = models.CharField(max_length=100, default="")
+
+    SIZE_CHOICES = [
+        ("small", "Small"),
+        ("medium", "Medium"),
+        ("large", "Large"),
+    ]
 
     size = models.CharField(
         max_length=10,
-        choices=[
-            ('small', 'Small'),
-            ('medium', 'Medium'),
-            ('large', 'Large'),
-        ]
+        choices=SIZE_CHOICES,
+        blank=True
     )
+
+    ENERGY_LEVEL_CHOICES = [
+        ('couch_potato', '🥔 Couch potato'),
+        ('chill', '😌 Chill vibes'),
+        ('playful', '🎾 Playful'),
+        ('energetic', '⚡️ Energetic'),
+        ('zoomies', '🚀 Full zoomies'),
+    ]
 
     energy_level = models.CharField(
-        max_length=12,
-        choices=ENERGY_LEVEL_CHOICES
+        max_length=20,
+        choices=ENERGY_LEVEL_CHOICES,
+        blank=True
     )
 
-    description = models.TextField(blank=True)
-
-    profile_picture = CloudinaryField('dog picture', blank=True, null=True)
+    about_me = models.TextField(
+        max_length=500,
+        blank=True
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.owner.name})"
