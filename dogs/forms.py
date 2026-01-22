@@ -20,7 +20,7 @@ class DogForm(forms.ModelForm):
                 "rows": 4,
                 "placeholder": (
                     "Tell us about your dog's personality, "
-                    "favorite activities, and what makes them special..."
+                    "favorite activities etc..."
                 )
             }),
             "name": forms.TextInput(attrs={

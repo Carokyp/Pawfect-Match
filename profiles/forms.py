@@ -19,12 +19,14 @@ class OwnerProfileForm(forms.ModelForm):
             "about_me": forms.Textarea(attrs={
                 "rows": 4,
                 "placeholder": (
-                    "Tell us about yourself, your lifestyle, and "
-                    "what you're looking for in a dog playdate..."
+                    "Tell us about yourself, your lifestyle ect..."
                 )
             }),
             "interests": forms.TextInput(attrs={
                 "placeholder": "e.g., Hiking, Coffee, Photography"
+            }),
+            "occupation": forms.TextInput(attrs={
+                "placeholder": "e.g., Software Engineer"
             }),
             "name": forms.TextInput(attrs={
                 "placeholder": "e.g., Sarah"

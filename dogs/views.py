@@ -7,14 +7,9 @@ from profiles.models import OwnerProfile
 
 @login_required
 def create_dog(request):
-    # Vérifier qu'un profil propriétaire existe
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
     if owner_profile is None:
-        return redirect("create_owner_profile")
-
-    # Empêcher la création de plusieurs chiens (OneToOne)
-    if Dog.objects.filter(owner=owner_profile).exists():
-        return redirect("home")
+        owner_profile = OwnerProfile(user=request.user)
 
     if request.method == "POST":
         form = DogForm(request.POST, request.FILES)

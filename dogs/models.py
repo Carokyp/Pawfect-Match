@@ -48,7 +48,8 @@ class Dog(models.Model):
 
     about_me = models.TextField(
         max_length=500,
-        blank=True
+        blank=True,
+        help_text="Tell us about your dog's personality"
     )
 
     created_at = models.DateTimeField(auto_now_add=True)

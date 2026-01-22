@@ -1,6 +1,4 @@
-/* ========================================
-   CSS VARIABLES & ROOT
-   ======================================== */
+/* #region CSS VARIABLES & ROOT */
 
 :root {
   --primary-color: #000000;
@@ -11,11 +9,10 @@
   --transition: all 0.3s ease;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+/* #endregion */
 
 
-/* ========================================
-   RESET & BASE STYLES
-   ======================================== */
+/* #region RESET & BASE STYLES */
 
 * {
   margin: 0;
@@ -43,11 +40,10 @@ a {
 a:visited {
   color: inherit;
 }
+/* #endregion */
 
 
-/* ========================================
-   LAYOUT STRUCTURE
-   ======================================== */
+/* #region LAYOUT STRUCTURE */
 
 /* --- Auth Wrapper --- */
 .auth-wrapper {
@@ -68,7 +64,7 @@ a:visited {
 .auth-content {
   position: relative;
   z-index: 2;
-  height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -79,6 +75,9 @@ a:visited {
 
 .auth-content.form-page {
   text-align: left;
+  padding-top: 65px; /* Leave room for back button */
+  justify-content: flex-start;
+  min-height: auto;
 }
 
 .auth-content.form-page > *:not(.back-button) {
@@ -95,11 +94,10 @@ a:visited {
 .auth-content p {
   font-size: 0.8rem;
 }
+/* #endregion */
 
 
-/* ========================================
-   HOME PAGE
-   ======================================== */
+/* #region HOME PAGE */
 
 .home-title {
   font-size: 2rem;
@@ -122,11 +120,10 @@ a:visited {
   gap: 1rem;
   align-items: center;
 }
+/* #endregion */
 
 
-/* ========================================
-   BUTTONS & INTERACTIVE ELEMENTS
-   ======================================== */
+/* #region BUTTONS & INTERACTIVE ELEMENTS */
 
 /* --- Primary Button --- */
 .btn-outline {
@@ -177,16 +174,22 @@ a:visited {
   height: 20px;
   filter: grayscale(100%);
 }
+/* #endregion */
 
 
-/* ========================================
-   FORMS & INPUTS
-   ======================================== */
+/* #region FORMS & INPUTS */
 
 /* --- Form Container --- */
 .auth-form {
   width: 100%;
   max-width: 320px;
+}
+
+.form-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 
 /* --- Form Fields --- */
@@ -221,7 +224,7 @@ a:visited {
 
 .input-wrapper input {
   width: 100%;
-  padding-right: 2.75rem;
+  padding-right: 2.75rem; /* Space reserved for eye icon */
 }
 
 .toggle-password {
@@ -239,9 +242,124 @@ a:visited {
   filter: grayscale(100%);
 }
 
+/* --- From Image -- */
 
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
+.upload-box {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border: 2px dashed #ccc;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+  .upload-box:hover {
+    background: rgba(255, 182, 193, 0.3); /* Pastel pink hover */
+    border-color: #ffb6c1;
+  }
+
+.upload-box input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-placeholder {
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.upload-placeholder::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 40px;
+  color: #999;
+  margin: 0 auto 0.35rem auto;
+  background: center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E"); /* Plus icon */
+}
+
+/* --- Create profils -- */
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  border: none;
+  background: #f3f3f3;
+  font-size: 1rem;
+}
+
+.form-field select {
+  appearance: none; /* Hide native arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.25rem center; /* Space after arrow */
+  padding-right: 3rem; /* Room for the arrow */
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  outline: none;
+  background: #ededed;
+}
+
+.form-field select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.25rem center;
+}
+
+textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+.char-counter {
+  font-size: 0.75rem;
+  color: #999;
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+/* -- Button form create profiles -- */
+
+.btn-primary {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.9rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(
+    90deg,
+    #ff4da6,
+    #b44cff
+  );
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+}
+/* #endregion */
+
+
+/* #region RESPONSIVE DESIGN */
+/* Add breakpoints here if needed */
+/* #endregion */
+
+
 
 

@@ -1,7 +1,7 @@
 {% extends "base_auth.html" %}
 {% load static %}
 
-{% block title %}Create Owner Profile{% endblock %}
+{% block title %}Create Dog Profile{% endblock %}
 {% block content_class %}form-page{% endblock %}
 
 {% block back_button %}
@@ -13,7 +13,7 @@
 {% block content %}
 
 <div class="form-card">
-  <h1 class="form-title">CREATE YOUR OWNER PROFILE</h1>
+  <h1 class="form-title">CREATE YOUR DOG PROFILE</h1>
   <p class="form-subtitle">
     <span class="required">*</span> Required fields
   </p>
@@ -46,25 +46,25 @@
       {{ form.age }}
     </div>
 
-    <!-- City -->
+    <!-- Breed -->
     <div class="form-field">
-      {{ form.city.label_tag }}
-      {{ form.city }}
+      {{ form.breed.label_tag }}
+      {{ form.breed }}
     </div>
 
-    <!-- Occupation -->
+    <!-- Size -->
     <div class="form-field">
-      {{ form.occupation.label_tag }}
-      {{ form.occupation }}
+      {{ form.size.label_tag }}
+      {{ form.size }}
     </div>
 
-    <!-- Interests -->
+    <!-- Energy level -->
     <div class="form-field">
-      {{ form.interests.label_tag }}
-      {{ form.interests }}
+      {{ form.energy_level.label_tag }}
+      {{ form.energy_level }}
     </div>
 
-    <!-- About me -->
+    <!-- About dog -->
     <div class="form-field">
       {{ form.about_me.label_tag }}
       {{ form.about_me }}
