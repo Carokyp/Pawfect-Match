@@ -378,6 +378,17 @@ textarea {
   margin-top: 0.35rem;
 }
 
+/* Hide number input spinner arrows */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 /* -- Button form create profiles -- */
 
 .btn-primary {
