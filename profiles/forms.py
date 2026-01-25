@@ -37,8 +37,8 @@ class OwnerProfileForm(forms.ModelForm):
             "city": forms.TextInput(attrs={
                 "placeholder": "e.g., San Francisco"
             }),
-            "age": forms.NumberInput(attrs={
+            "age": forms.TextInput(attrs={
                 "placeholder": "e.g., 28",
-                "min": 18
+                "type": "number"
             }),
         }

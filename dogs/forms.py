@@ -32,8 +32,8 @@ class DogForm(forms.ModelForm):
             "breed": forms.TextInput(attrs={
                 "placeholder": "e.g., Golden Retriever"
             }),
-            "age": forms.NumberInput(attrs={
+            "age": forms.TextInput(attrs={
                 "placeholder": "e.g., 3",
-                "min": 0
+                "type": "number"
             }),
         }

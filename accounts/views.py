@@ -3,6 +3,8 @@ from django.contrib.auth import login
 from .forms import RegisterForm
 from .forms import LoginForm
 from django.contrib.auth.models import User
+from profiles.models import OwnerProfile
+from dogs.models import Dog
 
 
 def register(request):
@@ -19,7 +21,7 @@ def register(request):
             )
 
             login(request, user)
-            return redirect("home")
+            return redirect("create_owner_profile")
     else:
         form = RegisterForm()
 
@@ -32,7 +34,22 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect("home")
+            # Respect ?next= from @login_required
+            next_url = request.GET.get("next")
+            if next_url:
+                return redirect(next_url)
+
+            # Otherwise, guide user through onboarding
+            owner = OwnerProfile.objects.filter(user=user).first()
+            if not owner:
+                return redirect("create_owner_profile")
+
+            try:
+                _ = owner.dog
+                # Dog exists; send to home for now
+                return redirect("home")
+            except Dog.DoesNotExist:
+                return redirect("create_dog")
     else:
         form = LoginForm()
 

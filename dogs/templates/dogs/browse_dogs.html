@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Browse Dogs{% endblock %}
+
+{% block layout %}
+<div class="browse-container">
+  <h1>Browse Available Dogs</h1>
+  <p>Find your dog's perfect match!</p>
+
+  {% if dogs %}
+    <div class="dogs-grid">
+      {% for dog in dogs %}
+        <div class="dog-card">
+          {% if dog.profile_photo %}
+            <img src="{{ dog.profile_photo.url }}" alt="{{ dog.name }}" class="dog-image" />
+          {% else %}
+            <div class="dog-image-placeholder">No photo</div>
+          {% endif %}
+
+          <div class="dog-info">
+            <h2>{{ dog.name }}</h2>
+            <p><strong>Age:</strong> {{ dog.age }} years</p>
+            <p><strong>Breed:</strong> {{ dog.breed }}</p>
+            <p><strong>Size:</strong> {{ dog.get_size_display }}</p>
+            <p><strong>Energy:</strong> {{ dog.get_energy_level_display }}</p>
+            {% if dog.about_me %}
+              <p><strong>About:</strong> {{ dog.about_me|truncatewords:20 }}</p>
+            {% endif %}
+
+            <button class="btn-primary">
+              Like {{ dog.name }}
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No dogs available yet. Check back soon!</p>
+  {% endif %}
+</div>
+
+<style>
+  .browse-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .browse-container h1 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .browse-container > p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .dogs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .dog-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .dog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .dog-image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+  }
+
+  .dog-image-placeholder {
+    width: 100%;
+    height: 240px;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 1rem;
+  }
+
+  .dog-info {
+    padding: 1rem;
+  }
+
+  .dog-info h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  .dog-info p {
+    margin: 0.35rem 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .dog-card .btn-primary {
+    margin-top: 1rem;
+    width: 100%;
+  }
+</style>
+{% endblock %}

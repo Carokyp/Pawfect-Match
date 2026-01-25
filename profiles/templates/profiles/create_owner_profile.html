@@ -36,36 +36,54 @@
         </span>
         <button type="button" class="upload-remove" aria-label="Remove image">×</button>
       </label>
+      {% if form.profile_photo.errors %}
+        <div class="form-error">{{ form.profile_photo.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- Name -->
     <div class="form-field">
       {{ form.name.label_tag }}
       {{ form.name }}
+      {% if form.name.errors %}
+        <div class="form-error">{{ form.name.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- Age -->
     <div class="form-field">
       {{ form.age.label_tag }}
       {{ form.age }}
+      {% if form.age.errors %}
+        <div class="form-error">{{ form.age.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- City -->
     <div class="form-field">
       {{ form.city.label_tag }}
       {{ form.city }}
+      {% if form.city.errors %}
+        <div class="form-error">{{ form.city.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- Occupation -->
     <div class="form-field">
       {{ form.occupation.label_tag }}
       {{ form.occupation }}
+      {% if form.occupation.errors %}
+        <div class="form-error">{{ form.occupation.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- Interests -->
     <div class="form-field">
       {{ form.interests.label_tag }}
       {{ form.interests }}
+      {% if form.interests.errors %}
+        <div class="form-error">{{ form.interests.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- About me -->
@@ -73,6 +91,9 @@
       {{ form.about_me.label_tag }}
       {{ form.about_me }}
       <div class="char-counter">0 / 500</div>
+      {% if form.about_me.errors %}
+        <div class="form-error">{{ form.about_me.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <button type="submit" class="btn-primary">

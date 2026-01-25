@@ -17,7 +17,7 @@ class Dog(models.Model):
     )
 
     name = models.CharField(max_length=100, default="")
-    age = models.PositiveIntegerField(default=0)
+    age = models.PositiveIntegerField(null=True, blank=True)
     breed = models.CharField(max_length=100, default="")
 
     SIZE_CHOICES = [

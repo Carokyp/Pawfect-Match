@@ -372,6 +372,12 @@ textarea {
   margin-top: 0.25rem;
 }
 
+.form-error {
+  color: #c73636;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
 /* -- Button form create profiles -- */
 
 .btn-primary {
