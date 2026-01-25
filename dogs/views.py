@@ -11,7 +11,8 @@ def create_dog(request):
     if owner_profile is None:
         owner_profile = OwnerProfile(user=request.user)
 
-    # Check if a dog already exists for this owner; allow update instead of duplicate
+    # Check if a dog already exists for this owner;
+    # allow update instead of duplicate
     try:
         dog = owner_profile.dog
     except Dog.DoesNotExist:
@@ -39,12 +40,12 @@ def create_dog(request):
 def browse_dogs(request):
     """Display dogs available for matching (all dogs except the user's own dog)."""
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
-    
+
     # Get all dogs except the user's own dog
     all_dogs = Dog.objects.all()
     if owner_profile and hasattr(owner_profile, 'dog'):
         all_dogs = all_dogs.exclude(owner=owner_profile)
-    
+
     return render(
         request,
         "dogs/browse_dogs.html",
