@@ -21,17 +21,21 @@
   <form method="post" enctype="multipart/form-data" class="auth-form">
     {% csrf_token %}
     {{ form.non_field_errors }}
-
+    
     <!-- Profile photo -->
     <div class="form-field">
       <label>Profile Photo <span class="required">*</span></label>
 
-      <div class="upload-box">
-        {{ form.profile_picture }}
+      <label class="upload-box">
+        {{ form.profile_photo }}
+
+        <img class="image-preview" alt="" />
+
         <span class="upload-placeholder">
-          Drop image or click to upload<br>
+          Drop image or click to upload
         </span>
-      </div>
+        <button type="button" class="upload-remove" aria-label="Remove image">×</button>
+      </label>
     </div>
 
     <!-- Name -->

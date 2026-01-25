@@ -27,53 +27,56 @@
       <label>Profile Photo <span class="required">*</span></label>
 
       <div class="upload-box">
-        {{ form.profile_picture }}
+        {{ form.profile_photo }}
+
+        <img class="image-preview" alt="" />
+
         <span class="upload-placeholder">
           Drop image or click to upload<br>
         </span>
+        <button type="button" class="upload-remove" aria-label="Remove image">×</button>
       </div>
-    </div>
 
-    <!-- Name -->
-    <div class="form-field">
-      {{ form.name.label_tag }}
-      {{ form.name }}
-    </div>
+      <!-- Name -->
+      <div class="form-field">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+      </div>
 
-    <!-- Age -->
-    <div class="form-field">
-      {{ form.age.label_tag }}
-      {{ form.age }}
-    </div>
+      <!-- Age -->
+      <div class="form-field">
+        {{ form.age.label_tag }}
+        {{ form.age }}
+      </div>
 
-    <!-- Breed -->
-    <div class="form-field">
-      {{ form.breed.label_tag }}
-      {{ form.breed }}
-    </div>
+      <!-- Breed -->
+      <div class="form-field">
+        {{ form.breed.label_tag }}
+        {{ form.breed }}
+      </div>
 
-    <!-- Size -->
-    <div class="form-field">
-      {{ form.size.label_tag }}
-      {{ form.size }}
-    </div>
+      <!-- Size -->
+      <div class="form-field">
+        {{ form.size.label_tag }}
+        {{ form.size }}
+      </div>
 
-    <!-- Energy level -->
-    <div class="form-field">
-      {{ form.energy_level.label_tag }}
-      {{ form.energy_level }}
-    </div>
+      <!-- Energy level -->
+      <div class="form-field">
+        {{ form.energy_level.label_tag }}
+        {{ form.energy_level }}
+      </div>
 
-    <!-- About dog -->
-    <div class="form-field">
-      {{ form.about_me.label_tag }}
-      {{ form.about_me }}
-      <div class="char-counter">0 / 500</div>
-    </div>
+      <!-- About dog -->
+      <div class="form-field">
+        {{ form.about_me.label_tag }}
+        {{ form.about_me }}
+        <div class="char-counter">0 / 500</div>
+      </div>
 
-    <button type="submit" class="btn-primary">
-      Complete Profile
-    </button>
+      <button type="submit" class="btn-primary">
+        Complete Profile
+      </button>
 
   </form>
 </div>

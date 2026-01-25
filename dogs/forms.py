@@ -16,6 +16,9 @@ class DogForm(forms.ModelForm):
         ]
 
         widgets = {
+            "profile_photo": forms.ClearableFileInput(attrs={
+                "accept": "image/*"
+            }),
             "about_me": forms.Textarea(attrs={
                 "rows": 4,
                 "placeholder": (
