@@ -1,117 +1,100 @@
-{% extends "base.html" %}
+{% extends "base_auth.html" %}
 {% load static %}
 
-{% block title %}Browse Dogs{% endblock %}
+{% block title %}Discover{% endblock %}
+{% block content_class %}form-page{% endblock %}
 
-{% block layout %}
-<div class="browse-container">
-  <h1>Browse Available Dogs</h1>
-  <p>Find your dog's perfect match!</p>
+{% block content %}
 
-  {% if dogs %}
-    <div class="dogs-grid">
-      {% for dog in dogs %}
-        <div class="dog-card">
-          {% if dog.profile_photo %}
-            <img src="{{ dog.profile_photo.url }}" alt="{{ dog.name }}" class="dog-image" />
-          {% else %}
-            <div class="dog-image-placeholder">No photo</div>
-          {% endif %}
+<div class="discover-page">
 
-          <div class="dog-info">
-            <h2>{{ dog.name }}</h2>
-            <p><strong>Age:</strong> {{ dog.age }} years</p>
-            <p><strong>Breed:</strong> {{ dog.breed }}</p>
-            <p><strong>Size:</strong> {{ dog.get_size_display }}</p>
-            <p><strong>Energy:</strong> {{ dog.get_energy_level_display }}</p>
-            {% if dog.about_me %}
-              <p><strong>About:</strong> {{ dog.about_me|truncatewords:20 }}</p>
-            {% endif %}
+  <!-- APP HEADER -->
+  <header class="discover-header">
+    <h1 class="app-logo">Pawfect Match</h1>
+  </header>
 
-            <button class="btn-primary">
-              Like {{ dog.name }}
-            </button>
-          </div>
-        </div>
-      {% endfor %}
+  <!-- PROFILE CARD -->
+  <div class="profile-card">
+
+    <!-- TOGGLE -->
+    <div class="profile-toggle">
+      <button class="toggle-btn active">Dog</button>
+      <button class="toggle-btn">Owner</button>
     </div>
-  {% else %}
-    <p>No dogs available yet. Check back soon!</p>
-  {% endif %}
+
+    <!-- DOG VIEW -->
+    <div class="profile-view dog-view">
+
+      <div class="profile-image">
+        {% if dog.profile_photo %}
+        <img src="{{ dog.profile_photo.url }}" alt="Dog photo">
+        {% else %}
+        <img src="{% static 'images/dog_placeholder.jpg' %}" alt="Dog placeholder">
+        {% endif %}
+      </div>
+
+      <div class="profile-main-info">
+        <h2>{{ dog.name }}, {{ dog.age }}</h2>
+        <p>{{ dog.breed }}</p>
+        <p>{{ dog.owner.city }}</p>
+      </div>
+
+      <div class="profile-about">
+        <h3>About me</h3>
+        <p>{{ dog.about_me }}</p>
+      </div>
+
+      <div class="profile-tags">
+        <span class="tag">{{ dog.energy_level }}</span>
+        <span class="tag">{{ dog.size }}</span>
+      </div>
+
+    </div>
+
+    <!-- OWNER VIEW (cachée pour l’instant) -->
+    <div class="profile-view owner-view hidden">
+
+      <div class="profile-image">
+        {% if dog.owner.profile_photo %}
+        <img src="{{ dog.owner.profile_photo.url }}" alt="Owner photo">
+        {% else %}
+        <img src="{% static 'images/owner_placeholder.jpg' %}" alt="Owner placeholder">
+        {% endif %}
+      </div>
+
+      <div class="profile-main-info">
+        <h2>{{ dog.owner.name }}, {{ dog.owner.age }}</h2>
+        <p>{{ dog.owner.city }}</p>
+      </div>
+
+      <div class="profile-about">
+        <h3>About me</h3>
+        <p>{{ dog.owner.about_me }}</p>
+      </div>
+
+      <div class="profile-tags">
+        {% for interest in dog.owner.interests_list %}
+        <span class="tag">{{ interest }}</span>
+        {% endfor %}
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="action-buttons">
+    <button class="action-btn dislike">✕</button>
+    <button class="action-btn like">❤</button>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a class="active">Discover</a>
+    <a>Matches</a>
+    <a>Profile</a>
+  </nav>
+
 </div>
 
-<style>
-  .browse-container {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .browse-container h1 {
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
-
-  .browse-container > p {
-    text-align: center;
-    color: #666;
-    margin-bottom: 2rem;
-  }
-
-  .dogs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .dog-card {
-    background: #fff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .dog-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .dog-image {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-  }
-
-  .dog-image-placeholder {
-    width: 100%;
-    height: 240px;
-    background: #e0e0e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-    font-size: 1rem;
-  }
-
-  .dog-info {
-    padding: 1rem;
-  }
-
-  .dog-info h2 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.25rem;
-  }
-
-  .dog-info p {
-    margin: 0.35rem 0;
-    font-size: 0.9rem;
-    color: #666;
-  }
-
-  .dog-card .btn-primary {
-    margin-top: 1rem;
-    width: 100%;
-  }
-</style>
 {% endblock %}

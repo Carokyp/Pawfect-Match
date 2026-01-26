@@ -46,8 +46,8 @@ def login_view(request):
 
             try:
                 _ = owner.dog
-                # Dog exists; send to home for now
-                return redirect("home")
+                # Dog exists; send to browse_dogs
+                return redirect("browse_dogs")
             except Dog.DoesNotExist:
                 return redirect("create_dog")
     else:
