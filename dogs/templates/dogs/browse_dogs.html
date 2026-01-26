@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}Discover{% endblock %}
-{% block content_class %}form-page{% endblock %}
+{% block content_class %}discover-page-wrapper{% endblock %}
 
 {% block content %}
 
@@ -18,8 +18,8 @@
 
     <!-- TOGGLE -->
     <div class="profile-toggle">
-      <button class="toggle-btn active">Dog</button>
-      <button class="toggle-btn">Owner</button>
+      <button class="toggle-btn active" data-view="dog">Dog</button>
+      <button class="toggle-btn" data-view="owner">Owner</button>
     </div>
 
     <!-- DOG VIEW -->
@@ -29,72 +29,103 @@
         {% if dog.profile_photo %}
         <img src="{{ dog.profile_photo.url }}" alt="Dog photo">
         {% else %}
-        <img src="{% static 'images/dog_placeholder.jpg' %}" alt="Dog placeholder">
+        <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Dog placeholder">
         {% endif %}
+
+        <div class="image-overlay left">
+          <h2>
+            {{ dog.name|default:"Milo" }},
+            {{ dog.age|default:"2" }}
+          </h2>
+          <p>{{ dog.breed|default:"Chow Chow" }}</p>
+          <p>{{ dog.owner.city|default:"Los Angeles, CA" }}</p>
+        </div>
       </div>
 
-      <div class="profile-main-info">
-        <h2>{{ dog.name }}, {{ dog.age }}</h2>
-        <p>{{ dog.breed }}</p>
-        <p>{{ dog.owner.city }}</p>
-      </div>
+      <hr class="profile-divider">
 
-      <div class="profile-about">
+      <div class="profile-about center">
         <h3>About me</h3>
-        <p>{{ dog.about_me }}</p>
+        <p>
+          {{ dog.about_me|default:"Playful, cuddly, and always down for a walk. Loves naps, treats, and making new dog friends." }}
+        </p>
       </div>
 
-      <div class="profile-tags">
-        <span class="tag">{{ dog.energy_level }}</span>
-        <span class="tag">{{ dog.size }}</span>
+      <hr class="profile-divider">
+
+      <div class="profile-meta">
+        <div class="meta-block">
+          <h4>Energy level</h4>
+          <span class="tag">
+            {{ dog.get_energy_level_display|default:"⚡️ Energetic" }}
+          </span>
+        </div>
+
+        <div class="meta-block">
+          <h4>Size</h4>
+          <span class="tag">
+            {{ dog.get_size_display|default:"Medium" }}
+          </span>
+        </div>
       </div>
 
     </div>
 
-    <!-- OWNER VIEW (cachée pour l’instant) -->
+    <!-- OWNER VIEW -->
     <div class="profile-view owner-view hidden">
 
       <div class="profile-image">
         {% if dog.owner.profile_photo %}
         <img src="{{ dog.owner.profile_photo.url }}" alt="Owner photo">
         {% else %}
-        <img src="{% static 'images/owner_placeholder.jpg' %}" alt="Owner placeholder">
+        <img src="{% static 'images/man-placeholder.jpg' %}" alt="Owner placeholder">
         {% endif %}
+
+        <div class="image-overlay left">
+          <h2>
+            {{ dog.owner.name|default:"Greg" }},
+            {{ dog.owner.age|default:"27" }}
+          </h2>
+          <p>{{ dog.owner.city|default:"Los Angeles, CA" }}</p>
+        </div>
       </div>
 
-      <div class="profile-main-info">
-        <h2>{{ dog.owner.name }}, {{ dog.owner.age }}</h2>
-        <p>{{ dog.owner.city }}</p>
-      </div>
+      <hr class="profile-divider">
 
-      <div class="profile-about">
+      <div class="profile-about center">
         <h3>About me</h3>
-        <p>{{ dog.owner.about_me }}</p>
+        <p>
+          {{ dog.owner.about_me|default:"Dog dad, coffee lover, and always up for a park playdate. Looking to meet friendly pups (and humans)." }}
+        </p>
       </div>
 
-      <div class="profile-tags">
+      <hr class="profile-divider">
+
+      <div class="profile-tags center">
+        {% if dog.owner.interests_list %}
         {% for interest in dog.owner.interests_list %}
         <span class="tag">{{ interest }}</span>
         {% endfor %}
+        {% else %}
+        <span class="tag">Hiking</span>
+        <span class="tag">Coffee</span>
+        <span class="tag">Photography</span>
+        {% endif %}
       </div>
 
     </div>
 
-  </div>
+    <!-- ACTION BUTTONS -->
+    <div class="action-buttons">
+      <button class="action-btn dislike">✕</button>
+      <button class="action-btn like">❤</button>
+    </div>
 
-  <!-- ACTION BUTTONS -->
-  <div class="action-buttons">
-    <button class="action-btn dislike">✕</button>
-    <button class="action-btn like">❤</button>
-  </div>
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <a class="active">Discover</a>
+      <a>Matches</a>
+      <a>Profile</a>
+    </nav>
 
-  <!-- BOTTOM NAV -->
-  <nav class="bottom-nav">
-    <a class="active">Discover</a>
-    <a>Matches</a>
-    <a>Profile</a>
-  </nav>
-
-</div>
-
-{% endblock %}
+    {% endblock %}

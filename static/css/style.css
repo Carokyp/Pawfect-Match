@@ -85,6 +85,13 @@ a:visited {
   max-width: 320px;
 }
 
+.auth-content.discover-page-wrapper {
+  text-align: left;
+  padding: 0;
+  justify-content: flex-start;
+  min-height: auto;
+}
+
 .auth-content h1 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
@@ -416,11 +423,46 @@ input[type="number"] {
 
 /* #region BROWSE DOG / OWNER PROFIL */
 
-/* Discover layout */
+/* IMAGE OVERLAY */
+.profile-image {
+  position: relative;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 1rem;
+  color: white;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.65),
+    rgba(0,0,0,0)
+  );
+}
+
+.image-overlay h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.image-overlay p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+/* DIVIDERS */
+.profile-divider {
+  border: none;
+  border-top: 1px solid #b2b0b0;
+  margin: 1rem;
+}
+
 .discover-page {
   width: 100%;
   max-width: 380px;
   margin: 0 auto;
+  padding: 0 0.75rem;
 }
 
 /* Header */
@@ -456,6 +498,7 @@ input[type="number"] {
   padding: 0.4rem 1rem;
   background: #eee;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .toggle-btn.active {
@@ -471,12 +514,12 @@ input[type="number"] {
 }
 
 /* Info */
-.profile-main-info {
-  padding: 1rem;
-}
-
 .profile-about {
   padding: 0 1rem 1rem;
+}
+
+.profile-about.center {
+  text-align: center;
 }
 
 .profile-tags {
@@ -484,6 +527,25 @@ input[type="number"] {
   gap: 0.5rem;
   padding: 0 1rem 1rem;
   flex-wrap: wrap;
+}
+
+.profile-tags.center {
+  justify-content: center;
+}
+
+/* Energy + Size block */
+.profile-meta {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 1rem 1.5rem;
+  text-align: center;
+}
+
+.meta-block h4 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #777;
 }
 
 .tag {

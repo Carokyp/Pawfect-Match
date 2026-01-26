@@ -15,6 +15,30 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
+  const toggleButtons = document.querySelectorAll(".toggle-btn");
+  const dogView = document.querySelector(".dog-view");
+  const ownerView = document.querySelector(".owner-view");
+
+  if (!dogView || !ownerView) return;
+
+  toggleButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // Reset buttons
+      toggleButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      // Switch views
+      if (btn.dataset.view === "dog") {
+        dogView.classList.remove("hidden");
+        ownerView.classList.add("hidden");
+      } else {
+        ownerView.classList.remove("hidden");
+        dogView.classList.add("hidden");
+      }
+    });
+  });
+
+
   /* ===============================
      IMAGE UPLOAD PREVIEW
      (Owner + Dog)
@@ -119,3 +143,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+
