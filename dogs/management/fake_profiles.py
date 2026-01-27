@@ -268,10 +268,14 @@ class Command(BaseCommand):
         ]
 
         for data in profiles:
-            user, _ = User.objects.get_or_create(
+            user, created = User.objects.get_or_create(
                 username=data["email"],
-                defaults={"email": data["email"], "password": "test1234"}
+                defaults={"email": data["email"]}
             )
+
+            if created:
+                user.set_unusable_password()
+                user.save()
 
             owner, _ = OwnerProfile.objects.get_or_create(
                 user=user,
