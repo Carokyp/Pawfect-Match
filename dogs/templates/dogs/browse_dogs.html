@@ -86,6 +86,7 @@
             {{ dog.owner.name|default:"Greg" }},
             {{ dog.owner.age|default:"27" }}
           </h2>
+          <p>{{ dog.owner.occupation|default:"Software Engineer" }}</p>
           <p>{{ dog.owner.city|default:"Los Angeles, CA" }}</p>
         </div>
       </div>
@@ -101,16 +102,19 @@
 
       <hr class="profile-divider">
 
-      <div class="profile-tags center">
-        {% if dog.owner.interests_list %}
-        {% for interest in dog.owner.interests_list %}
-        <span class="tag">{{ interest }}</span>
-        {% endfor %}
-        {% else %}
-        <span class="tag">Hiking</span>
-        <span class="tag">Coffee</span>
-        <span class="tag">Photography</span>
-        {% endif %}
+      <div class="profile-interests left">
+        <h4>Interests</h4>
+        <div class="profile-tags">
+          {% if dog.owner.interests_list %}
+          {% for interest in dog.owner.interests_list %}
+          <span class="tag">{{ interest }}</span>
+          {% endfor %}
+          {% else %}
+          <span class="tag">Hiking</span>
+          <span class="tag">Coffee</span>
+          <span class="tag">Photography</span>
+          {% endif %}
+        </div>
       </div>
 
     </div>
