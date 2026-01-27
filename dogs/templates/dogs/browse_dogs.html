@@ -13,6 +13,8 @@
     <h1 class="app-logo m-0">Pawfect Match</h1>
   </header>
 
+  {% if dog %}
+
   <!-- PROFILE CARD -->
   <div class="profile-card">
 
@@ -27,9 +29,9 @@
 
       <div class="profile-image">
         {% if dog.profile_photo %}
-        <img src="{{ dog.profile_photo.url }}" alt="Dog photo">
+          <img src="{{ dog.profile_photo.url }}" alt="Dog photo">
         {% else %}
-        <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Dog placeholder">
+          <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Dog placeholder">
         {% endif %}
 
         <div class="image-overlay left">
@@ -64,48 +66,17 @@
 
     <!-- OWNER VIEW -->
     <div class="profile-view owner-view hidden">
-
-      <div class="profile-image">
-        {% if dog.owner.profile_photo %}
-        <img src="{{ dog.owner.profile_photo.url }}" alt="Owner photo">
-        {% else %}
-        <img src="{% static 'images/man-placeholder.jpg' %}" alt="Owner placeholder">
-        {% endif %}
-
-        <div class="image-overlay left">
-          <h2>{{ dog.owner.name }}, {{ dog.owner.age }}</h2>
-          <p>{{ dog.owner.occupation }}</p>
-          <p>{{ dog.owner.city }}</p>
-        </div>
-      </div>
-
-      <hr class="profile-divider">
-
-      <div class="profile-about center">
-        <h3>About me</h3>
-        <p>{{ dog.owner.about_me }}</p>
-      </div>
-
-      <hr class="profile-divider">
-
-      <div class="profile-interests left">
-        <h4>Interests</h4>
-        <div class="profile-tags">
-          {% for interest in dog.owner.interests_list %}
-          <span class="tag">{{ interest }}</span>
-          {% endfor %}
-        </div>
-      </div>
-
+      ...
     </div>
 
     <!-- ACTION BUTTONS -->
     <div class="action-buttons">
-      <form method="post" action="{% url 'next_dog' %}" style="display: inline;">
+      <form method="post" action="{% url 'next_dog' %}">
         {% csrf_token %}
         <button type="submit" class="action-btn dislike">✕</button>
       </form>
-      <form method="post" action="{% url 'like_dog' dog.id %}" style="display: inline;">
+
+      <form method="post" action="{% url 'like_dog' dog.id %}">
         {% csrf_token %}
         <button type="submit" class="action-btn like">❤</button>
       </form>
@@ -118,18 +89,21 @@
       <a>Profile</a>
     </nav>
 
-  </div> <!-- /profile-card -->
-</div> <!-- /discover-page -->
-{% else %}
+  </div>
 
-<div style="text-align:center; padding:2.5rem;">
-  <p style="font-size:1.1rem;">
-    No more dogs to discover 🐶
-  </p>
-  <p style="opacity:0.6;">
-    Check back later for new pups!
-  </p>
+  {% else %}
+
+  <div style="text-align:center; padding:2.5rem;">
+    <p style="font-size:1.1rem;">
+      No more dogs to discover 🐶
+    </p>
+    <p style="opacity:0.6;">
+      Check back later for new pups!
+    </p>
+  </div>
+
+  {% endif %}
+
 </div>
 
-{% endif %}
 {% endblock %}
