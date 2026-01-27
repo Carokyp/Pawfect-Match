@@ -33,12 +33,9 @@
         {% endif %}
 
         <div class="image-overlay left">
-          <h2>
-            {{ dog.name|default:"Milo" }},
-            {{ dog.age|default:"2" }}
-          </h2>
-          <p>{{ dog.breed|default:"Chow Chow" }}</p>
-          <p>{{ dog.owner.city|default:"Los Angeles, CA" }}</p>
+          <h2>{{ dog.name }}, {{ dog.age }}</h2>
+          <p>{{ dog.breed }}</p>
+          <p>{{ dog.owner.city }}</p>
         </div>
       </div>
 
@@ -46,9 +43,7 @@
 
       <div class="profile-about center">
         <h3>About me</h3>
-        <p>
-          {{ dog.about_me|default:"Playful, cuddly, and always down for a walk. Loves naps, treats, and making new dog friends." }}
-        </p>
+        <p>{{ dog.about_me }}</p>
       </div>
 
       <hr class="profile-divider">
@@ -56,16 +51,12 @@
       <div class="profile-meta">
         <div class="meta-block">
           <h4>Energy level</h4>
-          <span class="tag">
-            {{ dog.get_energy_level_display|default:"⚡️ Energetic" }}
-          </span>
+          <span class="tag">{{ dog.get_energy_level_display }}</span>
         </div>
 
         <div class="meta-block">
           <h4>Size</h4>
-          <span class="tag">
-            {{ dog.get_size_display|default:"Medium" }}
-          </span>
+          <span class="tag">{{ dog.get_size_display }}</span>
         </div>
       </div>
 
@@ -82,12 +73,9 @@
         {% endif %}
 
         <div class="image-overlay left">
-          <h2>
-            {{ dog.owner.name|default:"Greg" }},
-            {{ dog.owner.age|default:"27" }}
-          </h2>
-          <p>{{ dog.owner.occupation|default:"Software Engineer" }}</p>
-          <p>{{ dog.owner.city|default:"Los Angeles, CA" }}</p>
+          <h2>{{ dog.owner.name }}, {{ dog.owner.age }}</h2>
+          <p>{{ dog.owner.occupation }}</p>
+          <p>{{ dog.owner.city }}</p>
         </div>
       </div>
 
@@ -95,9 +83,7 @@
 
       <div class="profile-about center">
         <h3>About me</h3>
-        <p>
-          {{ dog.owner.about_me|default:"Dog dad, coffee lover, and always up for a park playdate. Looking to meet friendly pups (and humans)." }}
-        </p>
+        <p>{{ dog.owner.about_me }}</p>
       </div>
 
       <hr class="profile-divider">
@@ -105,15 +91,9 @@
       <div class="profile-interests left">
         <h4>Interests</h4>
         <div class="profile-tags">
-          {% if dog.owner.interests_list %}
           {% for interest in dog.owner.interests_list %}
           <span class="tag">{{ interest }}</span>
           {% endfor %}
-          {% else %}
-          <span class="tag">Hiking</span>
-          <span class="tag">Coffee</span>
-          <span class="tag">Photography</span>
-          {% endif %}
         </div>
       </div>
 
@@ -121,8 +101,14 @@
 
     <!-- ACTION BUTTONS -->
     <div class="action-buttons">
-      <button class="action-btn dislike">✕</button>
-      <button class="action-btn like">❤</button>
+      <form method="post" action="{% url 'next_dog' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="action-btn dislike">✕</button>
+      </form>
+      <form method="post" action="{% url 'like_dog' dog.id %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="action-btn like">❤</button>
+      </form>
     </div>
 
     <!-- BOTTOM NAV -->
@@ -132,4 +118,18 @@
       <a>Profile</a>
     </nav>
 
-    {% endblock %}
+  </div> <!-- /profile-card -->
+</div> <!-- /discover-page -->
+{% else %}
+
+<div style="text-align:center; padding:2.5rem;">
+  <p style="font-size:1.1rem;">
+    No more dogs to discover 🐶
+  </p>
+  <p style="opacity:0.6;">
+    Check back later for new pups!
+  </p>
+</div>
+
+{% endif %}
+{% endblock %}
