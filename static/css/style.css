@@ -601,6 +601,16 @@ input[type="number"] {
   border-radius: 50%;
   border: none;
   font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.action-btn:active {
+  transform: scale(0.9);
+}
+
+.action-btn:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .dislike {

@@ -57,16 +57,16 @@ class Dog(models.Model):
     def __str__(self):
         return f"{self.name} ({self.owner.name})"
 
-    def photo_mobile(self):
-        """Optimize photo for mobile display using Cloudinary
+    def get_photo_url(self):
+        """Get optimized photo URL for mobile display using Cloudinary
         transformations"""
         if self.profile_photo:
             return self.profile_photo.build_url(
-                width=380,
-                height=320,
+                width=300,
+                height=250,
                 crop="fill",
                 gravity="auto",
-                quality="auto",
+                quality="auto:low",
                 fetch_format="auto",
             )
         return None

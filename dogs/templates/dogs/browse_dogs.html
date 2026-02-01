@@ -28,8 +28,8 @@
     <div class="profile-view dog-view">
 
       <div class="profile-image">
-        {% if dog.photo_mobile %}
-          <img src="{{ dog.photo_mobile }}" alt="Dog photo">
+        {% if dog.profile_photo %}
+          <img src="{{ dog.get_photo_url }}" alt="Dog photo">
         {% else %}
           <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Dog placeholder">
         {% endif %}
@@ -68,8 +68,8 @@
     <div class="profile-view owner-view hidden">
 
       <div class="profile-image">
-        {% if dog.owner.photo_mobile %}
-          <img src="{{ dog.owner.photo_mobile }}" alt="Owner photo">
+        {% if dog.owner.profile_photo %}
+          <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo">
         {% else %}
           <img src="{% static 'images/man-placeholder.jpg' %}" alt="Owner placeholder">
         {% endif %}
