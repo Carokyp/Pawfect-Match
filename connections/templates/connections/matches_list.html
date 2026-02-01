@@ -1,0 +1,71 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}My Matches{% endblock %}
+{% block content_class %}matches-page-wrapper{% endblock %}
+
+{% block content %}
+
+<div class="matches-page">
+
+  <!-- APP HEADER -->
+  <header class="discover-header">
+    <h1 class="app-logo m-0">Pawfect Match</h1>
+  </header>
+
+  {% if matches %}
+
+  <div class="matches-container">
+    <h2>Your Matches</h2>
+    <p class="matches-count">You have {{ matches|length }} match{{ matches|length|pluralize }}</p>
+
+    <div class="matches-grid">
+      {% for match in matches %}
+      <div class="match-card">
+        <div class="match-image">
+          {% if match.dog.profile_photo %}
+            <img src="{{ match.dog.get_photo_url }}" alt="{{ match.dog.name }}">
+          {% else %}
+            <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Dog placeholder">
+          {% endif %}
+        </div>
+
+        <div class="match-info">
+          <h3>{{ match.dog.name }}</h3>
+          <p class="match-breed">{{ match.dog.breed }}</p>
+          <p class="match-owner">with {{ match.owner.name }}</p>
+          <p class="match-date">Matched on {{ match.matched_at|date:"M d, Y" }}</p>
+        </div>
+
+        <div class="match-actions">
+          <a href="#" class="btn-primary">Message</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% else %}
+
+  <div class="empty-state" style="text-align:center; padding:2.5rem;">
+    <p style="font-size:1.1rem;">
+      No matches yet 🐾
+    </p>
+    <p style="opacity:0.6; margin-bottom:1.5rem;">
+      Start liking dogs to find your perfect match!
+    </p>
+    <a href="{% url 'browse_dogs' %}" class="btn-primary" style="display:inline-block; padding:0.8rem 1.5rem; border-radius:999px;">Back to Discover</a>
+  </div>
+
+  {% endif %}
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="{% url 'browse_dogs' %}">Discover</a>
+    <a href="{% url 'matches_list' %}" class="active">Matches</a>
+    <a href="{% url 'owner_profile' %}">Profile</a>
+  </nav>
+
+</div>
+
+{% endblock %}

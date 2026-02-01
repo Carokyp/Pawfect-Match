@@ -4,6 +4,7 @@ from django.views.decorators.http import require_POST
 from .forms import DogForm
 from .models import Dog
 from profiles.models import OwnerProfile
+from connections.models import Connection
 
 
 @login_required
@@ -59,7 +60,12 @@ def browse_dogs(request):
     else:
         dog.owner.interests_list = []
 
-    return render(request, "dogs/browse_dogs.html", {"dog": dog})
+    # Vérifier si une modal de match doit s'afficher
+    match_popup = None
+    if request.session.pop("show_match_modal", False):
+        match_popup = request.session.pop("match_data", None)
+
+    return render(request, "dogs/browse_dogs.html", {"dog": dog, "match_popup": match_popup})
 
 
 @login_required
@@ -73,6 +79,33 @@ def next_dog(request):
 @login_required
 @require_POST
 def like_dog(request, dog_id):
+    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    if not owner_profile or not hasattr(owner_profile, "dog"):
+        return redirect("browse_dogs")
+
+    my_dog = owner_profile.dog
+    liked_dog = Dog.objects.get(id=dog_id)
+
+    # Créer les deux connections (match automatique)
+    Connection.objects.get_or_create(
+        from_dog=my_dog,
+        to_dog=liked_dog
+    )
+    Connection.objects.get_or_create(
+        from_dog=liked_dog,
+        to_dog=my_dog
+    )
+
+    # C'est toujours un match maintenant!
     index = request.session.get("dog_index", 0)
     request.session["dog_index"] = index + 1
+
+    # Afficher la modal de match
+    request.session["show_match_modal"] = True
+    request.session["match_data"] = {
+        "my_dog_photo": my_dog.get_photo_url(),
+        "other_dog_photo": liked_dog.get_photo_url(),
+        "other_dog_name": liked_dog.name
+    }
+
     return redirect("browse_dogs")
