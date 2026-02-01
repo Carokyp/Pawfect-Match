@@ -1349,6 +1349,10 @@ body.modal-open {
 /* Add breakpoints here if needed */
 
 @media (min-width: 768px) {
+  .discover-page {
+    max-width: 520px;
+  }
+
   .matches-grid {
     grid-template-columns: repeat(2, 1fr);
   }
