@@ -1,0 +1,115 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}My Profile{% endblock %}
+{% block content_class %}profile-page-wrapper{% endblock %}
+
+{% block content %}
+
+<div class="profile-page">
+
+  <!-- APP HEADER -->
+  <header class="discover-header">
+    <h1 class="app-logo m-0">Pawfect Match</h1>
+  </header>
+
+  <div class="profile-container">
+    <h2>My Profile</h2>
+
+    <!-- OWNER PROFILE CARD -->
+    <div class="profile-section">
+      <div class="section-header">
+        <h3>My Information</h3>
+        <a href="{% url 'edit_owner_profile' %}" class="edit-btn">Edit</a>
+      </div>
+
+      <div class="profile-display-card">
+        <div class="profile-display-image">
+          {% if owner.profile_photo %}
+            <img src="{{ owner.get_photo_url }}" alt="My photo">
+          {% else %}
+            <div class="placeholder-circle">
+              <span>📷</span>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="profile-display-info">
+          <p><strong>Name:</strong> {{ owner.name }}</p>
+          <p><strong>Age:</strong> {{ owner.age }}</p>
+          <p><strong>City:</strong> {{ owner.city }}</p>
+          {% if owner.occupation %}
+            <p><strong>Occupation:</strong> {{ owner.occupation }}</p>
+          {% endif %}
+          {% if owner.interests_list %}
+            <p><strong>Interests:</strong> 
+              {% for interest in owner.interests_list %}
+                <span class="tag">{{ interest }}</span>
+              {% endfor %}
+            </p>
+          {% endif %}
+          {% if owner.about_me %}
+            <p><strong>About me:</strong> {{ owner.about_me }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- DOG PROFILE CARD -->
+    <div class="profile-section">
+      <div class="section-header">
+        <h3>My Dog's Profile</h3>
+        {% if dog %}
+          <a href="{% url 'edit_dog_profile' %}" class="edit-btn">Edit</a>
+        {% else %}
+          <a href="{% url 'create_dog' %}" class="edit-btn">Add Dog</a>
+        {% endif %}
+      </div>
+
+      {% if dog %}
+      <div class="profile-display-card">
+        <div class="profile-display-image">
+          {% if dog.profile_photo %}
+            <img src="{{ dog.get_photo_url }}" alt="Dog photo">
+          {% else %}
+            <div class="placeholder-circle">
+              <span>🐶</span>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="profile-display-info">
+          <p><strong>Name:</strong> {{ dog.name }}</p>
+          <p><strong>Age:</strong> {{ dog.age }}</p>
+          <p><strong>Breed:</strong> {{ dog.breed }}</p>
+          {% if dog.size %}
+            <p><strong>Size:</strong> {{ dog.get_size_display }}</p>
+          {% endif %}
+          {% if dog.energy_level %}
+            <p><strong>Energy Level:</strong> {{ dog.get_energy_level_display }}</p>
+          {% endif %}
+          {% if dog.about_me %}
+            <p><strong>About:</strong> {{ dog.about_me }}</p>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <div class="empty-state-small">
+        <p>No dog profile yet</p>
+        <a href="{% url 'create_dog' %}" class="btn-primary" style="display:inline-block; padding:0.6rem 1.2rem; margin-top:1rem;">Add My Dog</a>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="{% url 'browse_dogs' %}">Discover</a>
+    <a href="{% url 'matches_list' %}">Matches</a>
+    <a href="{% url 'view_profile' %}" class="active">Profile</a>
+  </nav>
+
+</div>
+
+{% endblock %}

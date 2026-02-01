@@ -105,9 +105,20 @@ def like_dog(request, dog_id):
 
     # Afficher la modal de match
     request.session["show_match_modal"] = True
+    
+    # Get photo URLs or None if no photo
+    my_dog_photo = (
+        my_dog.get_photo_url() if my_dog.profile_photo else None
+    )
+    other_dog_photo = (
+        liked_dog.get_photo_url()
+        if liked_dog.profile_photo
+        else None
+    )
+    
     request.session["match_data"] = {
-        "my_dog_photo": my_dog.get_photo_url(),
-        "other_dog_photo": liked_dog.get_photo_url(),
+        "my_dog_photo": my_dog_photo,
+        "other_dog_photo": other_dog_photo,
         "other_dog_name": liked_dog.name
     }
 

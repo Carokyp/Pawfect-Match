@@ -1,0 +1,21 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}Edit My Profile{% endblock %}
+{% block content_class %}edit-profile-wrapper{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+  <a href="{% url 'view_profile' %}" class="back-btn">← Back to Profile</a>
+  
+  <h2>Edit My Profile</h2>
+
+  <form method="post" enctype="multipart/form-data" class="profile-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="submit-btn">Save Changes</button>
+  </form>
+</div>
+
+{% endblock %}

@@ -116,9 +116,9 @@
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-      <a class="active">Discover</a>
-      <a>Matches</a>
-      <a>Profile</a>
+      <a href="{% url 'browse_dogs' %}" class="active">Discover</a>
+      <a href="{% url 'matches_list' %}">Matches</a>
+      <a href="{% url 'view_profile' %}">Profile</a>
     </nav>
 
   </div>
@@ -142,13 +142,22 @@
 <div class="modal-backdrop is-open" id="matchModal">
   <div class="match-modal">
     <button class="close" type="button" aria-label="Close" id="closeMatchModal">×</button>
-    <h2>It's a match with {{ match_popup.other_dog_name }}!</h2>
+    <h2>It's a match with {{ match_popup.other_dog_name }}! 🎉</h2>
 
     <div class="match-avatars">
-      <img src="{{ match_popup.my_dog_photo }}" alt="My dog">
-      <img src="{{ match_popup.other_dog_photo }}" alt="Matched dog">
+      {% if match_popup.my_dog_photo %}
+        <img src="{{ match_popup.my_dog_photo }}" alt="My dog">
+      {% else %}
+        <img src="{% static 'images/dog-placeholder.jpg' %}" alt="My dog">
+      {% endif %}
+      
+      {% if match_popup.other_dog_photo %}
+        <img src="{{ match_popup.other_dog_photo }}" alt="Matched dog">
+      {% else %}
+        <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Matched dog">
+      {% endif %}
     </div>
-    <p>You and {{ match_popup.other_dog_name }} find each other</p>
+    <p>You and {{ match_popup.other_dog_name }} found each other</p>
 
     <div>
       <a class="btn-outline" href="{% url 'matches_list' %}">View Matches</a>

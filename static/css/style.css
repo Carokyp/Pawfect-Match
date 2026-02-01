@@ -486,7 +486,7 @@ input[type="number"] {
   max-height: 800px;
 }
 
-/* Bascule */
+/* Toggle */
 .profile-toggle {
   display: flex;
   justify-content: center;
@@ -622,16 +622,30 @@ input[type="number"] {
   color: #fff;
 }
 
-/* Navigation du bas */
+/* Bottom nav */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
   padding: 0.75rem 0;
   border-top: 1px solid #ddd;
 }
+
+.bottom-nav a {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.bottom-nav a:hover {
+  color: #b6b5b5;
+}
+
+.bottom-nav a.active {
+  font-weight: 600;
+  color: var(--text-dark);
+}
 /* #endregion */
 
-/* #region MODALE DE MATCH */
+/* #region MATCH MODAL */
 
 .modal-backdrop {
   position: fixed;
@@ -866,6 +880,120 @@ body.modal-open {
 
 .empty-state {
   margin-top: 3rem;
+}
+
+/* #endregion */
+
+
+/* #region PROFILE VIEW PAGE */
+.profile-page {
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.profile-container {
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-section {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #ff4da6, #b44cff);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.edit-btn:hover {
+  opacity: 0.9;
+}
+
+.profile-display-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.profile-display-image {
+  flex-shrink: 0;
+}
+
+.profile-display-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ff4da6;
+}
+
+.placeholder-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border: 3px solid #ddd;
+}
+
+.profile-display-info {
+  flex: 1;
+}
+
+.profile-display-info p {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.profile-display-info strong {
+  color: #666;
+  font-weight: 600;
+}
+
+.empty-state-small {
+  text-align: center;
+  padding: 2rem 0;
+  color: #999;
+}
+
+@media (max-width: 480px) {
+  .profile-display-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 }
 
 /* #endregion */
