@@ -42,15 +42,13 @@ class OwnerProfile(models.Model):
         return f"{self.name} ({self.user.email})"
 
     def get_photo_url(self):
-        """Get optimized photo URL for mobile display using Cloudinary
-        transformations"""
         if self.profile_photo:
             return self.profile_photo.build_url(
-                width=300,
-                height=250,
+                width=700,
+                height=700,
                 crop="fill",
                 gravity="auto",
-                quality="auto:low",
+                quality=85,
                 fetch_format="auto",
             )
         return None

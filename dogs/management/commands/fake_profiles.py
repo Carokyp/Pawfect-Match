@@ -307,7 +307,7 @@ class Command(BaseCommand):
                         owner_photo_path,
                         folder="pawfect_match/owners"
                     )
-                    owner.profile_photo = upload_result.get("secure_url")
+                    owner.profile_photo = upload_result.get("public_id")
                     owner.save()
                     self.stdout.write(f"  ✓ Owner photo uploaded")
                 except Exception as e:
@@ -343,7 +343,7 @@ class Command(BaseCommand):
                         dog_photo_path,
                         folder="pawfect_match/dogs"
                     )
-                    dog.profile_photo = upload_result.get("secure_url")
+                    dog.profile_photo = upload_result.get("public_id")
                     dog.save()
                     self.stdout.write(f"  ✓ Dog photo uploaded")
                 except Exception as e:
