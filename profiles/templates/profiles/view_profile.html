@@ -28,9 +28,7 @@
           {% if owner.profile_photo %}
             <img src="{{ owner.get_photo_url }}" alt="My photo">
           {% else %}
-            <div class="placeholder-circle">
-              <span>📷</span>
-            </div>
+            <img src="{% static 'images/owner_placeholder.png' %}" alt="My photo" class="placeholder-img">
           {% endif %}
         </div>
 
@@ -72,9 +70,7 @@
           {% if dog.profile_photo %}
             <img src="{{ dog.get_photo_url }}" alt="Dog photo">
           {% else %}
-            <div class="placeholder-circle">
-              <span>🐶</span>
-            </div>
+            <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog photo" class="placeholder-img">
           {% endif %}
         </div>
 

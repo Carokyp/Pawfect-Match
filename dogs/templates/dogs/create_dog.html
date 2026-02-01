@@ -5,7 +5,7 @@
 {% block content_class %}form-page{% endblock %}
 
 {% block back_button %}
-<a href="" class="back-button">
+<a href="{% url 'create_owner_profile' %}" class="back-button">
   <img src="{% static 'images/back_arrow.svg' %}" alt="Back">
 </a>
 {% endblock %}
@@ -36,45 +36,49 @@
         </span>
         <button type="button" class="upload-remove" aria-label="Remove image">×</button>
       </div>
+      {% if form.profile_photo.errors %}
+        <div class="form-error">{{ form.profile_photo.errors|striptags }}</div>
+      {% endif %}
+    </div>
 
-      <!-- Name -->
-      <div class="form-field">
+    <!-- Name -->
+    <div class="form-field">
         {{ form.name.label_tag }}
         {{ form.name }}
       </div>
 
-      <!-- Age -->
-      <div class="form-field">
-        {{ form.age.label_tag }}
-        {{ form.age }}
-      </div>
+    <!-- Age -->
+    <div class="form-field">
+      {{ form.age.label_tag }}
+      {{ form.age }}
+    </div>
 
-      <!-- Breed -->
-      <div class="form-field">
-        {{ form.breed.label_tag }}
-        {{ form.breed }}
-      </div>
+    <!-- Breed -->
+    <div class="form-field">
+      {{ form.breed.label_tag }}
+      {{ form.breed }}
+    </div>
 
-      <!-- Size -->
-      <div class="form-field">
-        {{ form.size.label_tag }}
-        {{ form.size }}
-      </div>
+    <!-- Size -->
+    <div class="form-field">
+      {{ form.size.label_tag }}
+      {{ form.size }}
+    </div>
 
-      <!-- Energy level -->
-      <div class="form-field">
-        {{ form.energy_level.label_tag }}
-        {{ form.energy_level }}
-      </div>
+    <!-- Energy level -->
+    <div class="form-field">
+      {{ form.energy_level.label_tag }}
+      {{ form.energy_level }}
+    </div>
 
-      <!-- About dog -->
-      <div class="form-field">
-        {{ form.about_me.label_tag }}
-        {{ form.about_me }}
-        <div class="char-counter">0 / 500</div>
-      </div>
+    <!-- About dog -->
+    <div class="form-field">
+      {{ form.about_me.label_tag }}
+      {{ form.about_me }}
+      <div class="char-counter">0 / 500</div>
+    </div>
 
-      <button type="submit" class="btn-primary">
+    <button type="submit" class="btn-primary">
         Complete Profile
       </button>
 

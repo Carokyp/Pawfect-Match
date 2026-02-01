@@ -11,6 +11,13 @@
   
   <h2>Edit Dog's Profile</h2>
 
+  {% if form.instance.profile_photo %}
+  <div class="current-photo">
+    <p><strong>Current Photo:</strong></p>
+    <img src="{{ form.instance.get_photo_url }}" alt="Current dog photo">
+  </div>
+  {% endif %}
+
   <form method="post" enctype="multipart/form-data" class="profile-form">
     {% csrf_token %}
     {{ form.as_p }}

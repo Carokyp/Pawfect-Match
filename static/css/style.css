@@ -413,7 +413,6 @@ input[type="number"] {
     #b44cff
   );
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
 
 .btn-primary:hover {
@@ -954,6 +953,12 @@ body.modal-open {
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #ff4da6;
+}
+
+.profile-display-image img.placeholder-img {
+  border: 3px solid #ddd;
+  background: #f0f0f0;
+  padding: 10px;
 }
 
 .placeholder-circle {

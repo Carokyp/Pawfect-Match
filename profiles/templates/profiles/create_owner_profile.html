@@ -5,7 +5,7 @@
 {% block content_class %}form-page{% endblock %}
 
 {% block back_button %}
-<a href="" class="back-button">
+<a href="{% url 'register' %}" class="back-button">
   <img src="{% static 'images/back_arrow.svg' %}" alt="Back">
 </a>
 {% endblock %}
@@ -26,7 +26,7 @@
     <div class="form-field">
       <label>Profile Photo <span class="required">*</span></label>
 
-      <label class="upload-box">
+      <div class="upload-box">
         {{ form.profile_photo }}
 
         <img class="image-preview" alt="" />
@@ -35,7 +35,7 @@
           Drop image or click to upload
         </span>
         <button type="button" class="upload-remove" aria-label="Remove image">×</button>
-      </label>
+      </div>
       {% if form.profile_photo.errors %}
         <div class="form-error">{{ form.profile_photo.errors|striptags }}</div>
       {% endif %}

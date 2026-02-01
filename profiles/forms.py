@@ -16,7 +16,7 @@ class OwnerProfileForm(forms.ModelForm):
         ]
 
         widgets = {
-            "profile_photo": forms.ClearableFileInput(attrs={
+            "profile_photo": forms.FileInput(attrs={
                 "accept": "image/*"
             }),
             "about_me": forms.Textarea(attrs={

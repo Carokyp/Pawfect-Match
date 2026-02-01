@@ -19,24 +19,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const dogView = document.querySelector(".dog-view");
   const ownerView = document.querySelector(".owner-view");
 
-  if (!dogView || !ownerView) return;
+  if (dogView && ownerView) {
+    toggleButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // Reset buttons
+        toggleButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
 
-  toggleButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      // Reset buttons
-      toggleButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      // Switch views
-      if (btn.dataset.view === "dog") {
-        dogView.classList.remove("hidden");
-        ownerView.classList.add("hidden");
-      } else {
-        ownerView.classList.remove("hidden");
-        dogView.classList.add("hidden");
-      }
+        // Switch views
+        if (btn.dataset.view === "dog") {
+          dogView.classList.remove("hidden");
+          ownerView.classList.add("hidden");
+        } else {
+          ownerView.classList.remove("hidden");
+          dogView.classList.add("hidden");
+        }
+      });
     });
-  });
+  }
 
 
   /* ===============================
@@ -44,26 +44,42 @@ document.addEventListener("DOMContentLoaded", () => {
      (Owner + Dog)
      =============================== */
   const fileInputs = document.querySelectorAll(".upload-box input[type='file']");
+  console.log('Found file inputs:', fileInputs.length);
 
   fileInputs.forEach((input) => {
-    input.addEventListener("change", () => {
+    console.log('Setting up listener for input:', input);
+    
+    input.addEventListener("change", (e) => {
+      console.log('File input changed!', e.target.files);
       const file = input.files[0];
-      if (!file) return;
+      if (!file) {
+        console.log('No file selected');
+        return;
+      }
 
+      console.log('File selected:', file.name, file.type);
+      
       const uploadBox = input.closest(".upload-box");
+      console.log('Upload box:', uploadBox);
+      
       const preview = uploadBox.querySelector(".image-preview");
       const placeholder = uploadBox.querySelector(".upload-placeholder");
+      console.log('Preview element:', preview);
+      console.log('Placeholder element:', placeholder);
 
-      if (!preview || !placeholder) return;
+      if (!preview || !placeholder) {
+        console.log('Missing preview or placeholder!');
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = () => {
+        console.log('File loaded, setting preview src');
         preview.src = reader.result;
-        // Prefer class toggle to leverage CSS rules
         uploadBox.classList.add("has-image");
-        // Fallback in case CSS didn't load yet
         preview.style.display = "block";
         placeholder.style.display = "none";
+        console.log('Preview should now be visible');
       };
 
       reader.readAsDataURL(file);

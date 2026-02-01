@@ -31,7 +31,7 @@
         {% if dog.profile_photo %}
           <img src="{{ dog.get_photo_url }}" alt="Dog photo">
         {% else %}
-          <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Dog placeholder">
+          <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder">
         {% endif %}
 
         <div class="image-overlay left">
@@ -71,7 +71,7 @@
         {% if dog.owner.profile_photo %}
           <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo">
         {% else %}
-          <img src="{% static 'images/man-placeholder.jpg' %}" alt="Owner placeholder">
+          <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder">
         {% endif %}
 
         <div class="image-overlay left">
@@ -142,19 +142,19 @@
 <div class="modal-backdrop is-open" id="matchModal">
   <div class="match-modal">
     <button class="close" type="button" aria-label="Close" id="closeMatchModal">×</button>
-    <h2>It's a match with {{ match_popup.other_dog_name }}! 🎉</h2>
+    <h2>It's a match with {{ match_popup.other_dog_name }}!</h2>
 
     <div class="match-avatars">
       {% if match_popup.my_dog_photo %}
         <img src="{{ match_popup.my_dog_photo }}" alt="My dog">
       {% else %}
-        <img src="{% static 'images/dog-placeholder.jpg' %}" alt="My dog">
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="My dog">
       {% endif %}
       
       {% if match_popup.other_dog_photo %}
         <img src="{{ match_popup.other_dog_photo }}" alt="Matched dog">
       {% else %}
-        <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Matched dog">
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="Matched dog">
       {% endif %}
     </div>
     <p>You and {{ match_popup.other_dog_name }} found each other</p>
