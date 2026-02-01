@@ -142,6 +142,22 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCounter();
   });
 
+  const modal = document.getElementById("matchModal");
+  const closeBtn = document.getElementById("closeMatchModal");
+
+
+  /* ===============================
+     MODAL POP UP
+     =============================== */
+
+  if (modal) {
+    const close = () => modal.classList.remove("is-open");
+    closeBtn?.addEventListener("click", close);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) close();
+    });
+  }
+
 });
 
 
