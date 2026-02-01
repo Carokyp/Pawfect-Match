@@ -101,6 +101,23 @@
 
     </div>
 
+    <!-- ACTION BUTTONS -->
+    <div class="action-buttons">
+      <form method="POST" action="{% url 'next_dog' %}">
+        {% csrf_token %}
+        <button type="submit" class="action-btn dislike" aria-label="Dislike">
+          ✕
+        </button>
+      </form>
+
+      <form method="POST" action="{% url 'like_dog' dog.id %}">
+        {% csrf_token %}
+        <button type="submit" class="action-btn like" aria-label="Like">
+          ❤
+        </button>
+      </form>
+    </div>
+
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
       <a href="{% url 'browse_dogs' %}" class="active">Discover</a>

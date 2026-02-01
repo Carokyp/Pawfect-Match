@@ -6,22 +6,86 @@
 
 {% block content %}
 
-<div class="form-page">
-  <a href="{% url 'view_profile' %}" class="back-btn">← Back to Profile</a>
-  
-  <h2>Edit My Profile</h2>
+<div class="profile-page profile-edit-page">
 
-  {% if form.instance.profile_photo %}
-  <div class="current-photo">
-    <p><strong>Current Photo:</strong></p>
-    <img src="{{ form.instance.get_photo_url }}" alt="Current profile photo">
+  <!-- APP HEADER -->
+  <header class="app-header">
+    <h1 class="app-logo m-0">Pawfect Match</h1>
+  </header>
+
+  <div class="profile-toolbar">
+    <span class="profile-title">PROFILE</span>
+    <a href="{% url 'view_profile' %}" class="profile-gear" aria-label="View profile">⚙️</a>
   </div>
-  {% endif %}
 
-  <form method="post" enctype="multipart/form-data" class="profile-form">
+  <div class="profile-tabs">
+    <a href="{% url 'view_profile' %}" class="pill-btn">
+      <span class="pill-icon">👁</span> View Profile
+    </a>
+    <a href="{% url 'edit_owner_profile' %}" class="pill-btn active">
+      <span class="pill-icon">✏️</span> Edit Profile
+    </a>
+  </div>
+
+  <div class="profile-tabs">
+    <a href="{% url 'edit_dog_profile' %}" class="pill-btn">
+      🐶 Dog Profile
+    </a>
+    <span class="pill-btn active">👤 Owner Profile</span>
+  </div>
+
+  <form method="post" enctype="multipart/form-data" class="profile-form-modern">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="submit-btn">Save Changes</button>
+
+    <div class="photo-block">
+      <label class="form-label">Profile Photo</label>
+      <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
+        {{ form.profile_photo }}
+        <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
+             {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}"{% endif %}
+             alt="Profile preview">
+        <span class="upload-placeholder">Change photo</span>
+        <button type="button" class="upload-remove" aria-label="Remove image">×</button>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-field">
+        <label class="form-label" for="{{ form.name.id_for_label }}">Name</label>
+        {{ form.name }}
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="{{ form.age.id_for_label }}">Age</label>
+        {{ form.age }}
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="{{ form.occupation.id_for_label }}">Occupation</label>
+        {{ form.occupation }}
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="{{ form.city.id_for_label }}">Location</label>
+        {{ form.city }}
+      </div>
+
+      <div class="form-field form-field-full">
+        <label class="form-label" for="{{ form.interests.id_for_label }}">Interests</label>
+        {{ form.interests }}
+      </div>
+
+      <div class="form-field form-field-full">
+        <label class="form-label" for="{{ form.about_me.id_for_label }}">About me</label>
+        {{ form.about_me }}
+        <div class="char-counter">0 / 500</div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="{% url 'view_profile' %}" class="btn-secondary">Cancel</a>
+      <button type="submit" class="btn-primary">Save owner profile</button>
+    </div>
   </form>
 </div>
 
