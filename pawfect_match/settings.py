@@ -33,7 +33,7 @@ if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
 # Quick-start development settings
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = [".herokuapp.com", "127.0.0.1", "localhost"]
 
@@ -88,8 +88,17 @@ TEMPLATES = [
 WSGI_APPLICATION = "pawfect_match.wsgi.application"
 
 DATABASES = {
-    "default": dj_database_url.config(conn_max_age=600)
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+    )
 }
+
+if not DATABASES["default"].get("ENGINE"):
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 
 # Authentication
 LOGIN_URL = "/accounts/sign-in/"
@@ -129,7 +138,7 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-#Media files
+# Media files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
