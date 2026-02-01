@@ -151,11 +151,18 @@ document.addEventListener("DOMContentLoaded", () => {
      =============================== */
 
   if (modal) {
-    const close = () => modal.classList.remove("is-open");
+    // Bloquer le scroll du body quand la modale est ouverte
+    if (modal.classList.contains("is-open")) {
+      document.body.classList.add("modal-open");
+    }
+
+    const close = () => {
+      modal.classList.remove("is-open");
+      document.body.classList.remove("modal-open"); // Débloquer le scroll
+    };
+
+    // Fermer seulement avec le bouton X (pas en cliquant à côté)
     closeBtn?.addEventListener("click", close);
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) close();
-    });
   }
 
 });

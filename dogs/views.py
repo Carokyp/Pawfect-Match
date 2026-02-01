@@ -65,7 +65,10 @@ def browse_dogs(request):
     if request.session.pop("show_match_modal", False):
         match_popup = request.session.pop("match_data", None)
 
-    return render(request, "dogs/browse_dogs.html", {"dog": dog, "match_popup": match_popup})
+    return render(request, "dogs/browse_dogs.html", {
+        "dog": dog,
+        "match_popup": match_popup
+    })
 
 
 @login_required

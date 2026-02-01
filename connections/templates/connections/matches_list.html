@@ -33,12 +33,11 @@
         <div class="match-info">
           <h3>{{ match.dog.name }}</h3>
           <p class="match-breed">{{ match.dog.breed }}</p>
-          <p class="match-owner">with {{ match.owner.name }}</p>
-          <p class="match-date">Matched on {{ match.matched_at|date:"M d, Y" }}</p>
+          <p class="match-owner">Dog of {{ match.owner.name }}</p>
         </div>
 
         <div class="match-actions">
-          <a href="#" class="btn-primary">Message</a>
+          <a href="#" class="btn-primary">View profil</a>
         </div>
       </div>
       {% endfor %}

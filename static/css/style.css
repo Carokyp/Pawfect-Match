@@ -486,7 +486,7 @@ input[type="number"] {
   max-height: 800px;
 }
 
-/* Toggle */
+/* Bascule */
 .profile-toggle {
   display: flex;
   justify-content: center;
@@ -515,7 +515,7 @@ input[type="number"] {
   object-fit: cover;
 }
 
-/* Info */
+/* Informations */
 .profile-about {
   padding: 0 1rem;
 }
@@ -582,7 +582,7 @@ input[type="number"] {
   font-size: 0.8rem;
 }
 
-/* Hide owner view */
+/* Masquer la vue propriétaire */
 .hidden {
   display: none;
 }
@@ -622,7 +622,7 @@ input[type="number"] {
   color: #fff;
 }
 
-/* Bottom nav */
+/* Navigation du bas */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
@@ -631,7 +631,7 @@ input[type="number"] {
 }
 /* #endregion */
 
-/* #region MATCH MODAL */
+/* #region MODALE DE MATCH */
 
 .modal-backdrop {
   position: fixed;
@@ -647,11 +647,17 @@ input[type="number"] {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   z-index: 1000;
+  overflow: hidden; /* No scoll */
 }
 
 .modal-backdrop.is-open {
   opacity: 1;
   visibility: visible;
+}
+
+/* Bloquer le scroll du body quand la modale est ouverte */
+body.modal-open {
+  overflow: hidden;
 }
 
 .match-modal {
@@ -694,9 +700,18 @@ input[type="number"] {
 }
 
 .match-modal h2 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
+  background-color: var(--text-dark);
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #ff4da6, #b44cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.match-modal p {
+  font-size: 1rem;
+  background-color: var(--text-dark);
+  margin-bottom: 1.5rem;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -713,9 +728,8 @@ input[type="number"] {
 .match-avatars img {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: 20%;
   object-fit: cover;
-  border: 3px solid #ff4da6;
 }
 
 .match-modal strong {
@@ -773,12 +787,6 @@ input[type="number"] {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-}
-
-@media (min-width: 768px) {
-  .matches-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .match-card {
@@ -865,6 +873,13 @@ input[type="number"] {
 
 /* #region RESPONSIVE DESIGN */
 /* Add breakpoints here if needed */
+
+@media (min-width: 768px) {
+  .matches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* #endregion */
 
 
