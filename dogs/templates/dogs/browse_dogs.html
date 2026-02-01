@@ -101,19 +101,6 @@
 
     </div>
 
-    <!-- ACTION BUTTONS -->
-    <div class="action-buttons">
-      <form method="post" action="{% url 'next_dog' %}">
-        {% csrf_token %}
-        <button type="submit" class="action-btn dislike">✕</button>
-      </form>
-
-      <form method="post" action="{% url 'like_dog' dog.id %}">
-        {% csrf_token %}
-        <button type="submit" class="action-btn like">❤</button>
-      </form>
-    </div>
-
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
       <a href="{% url 'browse_dogs' %}" class="active">Discover</a>
@@ -125,16 +112,29 @@
 
   {% else %}
 
-  <div style="text-align:center; padding:2.5rem;">
-    <p style="font-size:1.1rem;">
-      No more dogs to discover 🐶
+  <div class="empty-dogs">
+    <p class="empty-dogs-title">
+      You've discovered all available pups! 🐾
     </p>
-    <p style="opacity:0.6;">
-      Check back later for new pups!
+    <p class="empty-dogs-subtitle">
+      New matches may appear soon
     </p>
+    <form method="POST" action="{% url 'reset_matches' %}" style="margin-top: 20px;">
+      {% csrf_token %}
+      <button type="submit" class="btn-reset-matches" id="resetMatchesBtn">
+        Reset Matches
+      </button>
+    </form>
   </div>
 
   {% endif %}
+
+  <!-- BOTTOM NAV (Always visible) -->
+  <nav class="bottom-nav">
+    <a href="{% url 'browse_dogs' %}" class="active">Discover</a>
+    <a href="{% url 'matches_list' %}">Matches</a>
+    <a href="{% url 'view_profile' %}">Profile</a>
+  </nav>
 
 </div>
 
@@ -150,6 +150,8 @@
       {% else %}
         <img src="{% static 'images/dog_placeholder.png' %}" alt="My dog">
       {% endif %}
+      
+      <div class="match-heart">💖</div>
       
       {% if match_popup.other_dog_photo %}
         <img src="{{ match_popup.other_dog_photo }}" alt="Matched dog">

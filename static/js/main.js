@@ -1,4 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
+  /* ===============================
+     RESET MATCHES BUTTON
+     =============================== */
+  const resetBtn = document.getElementById("resetMatchesBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", (e) => {
+      const confirmed = confirm(
+        "Are you sure you want to reset all your matches? This will clear all your likes and let you start discovering again."
+      );
+      if (!confirmed) {
+        e.preventDefault();
+      }
+    });
+  }
 
   /* ===============================
      PASSWORD TOGGLE (eye icon)

@@ -6,14 +6,31 @@ from dogs.models import Dog
 from dogs.forms import DogForm
 
 
-@login_required
 def create_owner_profile(request):
+    # Check if email/password are in session (from register)
+    if "registration_email" not in request.session:
+        return redirect("register")
+    
     if request.method == "POST":
         form = OwnerProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            owner_profile = form.save(commit=False)
-            owner_profile.user = request.user
-            owner_profile.save()
+            # Store owner profile data in session
+            owner_data = form.cleaned_data
+            
+            # Save the profile photo to CloudinaryField temporarily
+            # We'll link it to the user when we create the user in create_dog
+            temp_owner = form.save(commit=False)
+            temp_owner.save()  # Save to get the photo uploaded to Cloudinary
+            
+            request.session["owner_profile_id"] = temp_owner.id
+            request.session["owner_profile_data"] = {
+                "name": owner_data["name"],
+                "age": owner_data["age"],
+                "city": owner_data.get("city", ""),
+                "occupation": owner_data.get("occupation", ""),
+                "interests": owner_data.get("interests", ""),
+                "about_me": owner_data.get("about_me", ""),
+            }
             return redirect("create_dog")
     else:
         form = OwnerProfileForm()

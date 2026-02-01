@@ -2,25 +2,35 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import RegisterForm
 from .forms import LoginForm
-from django.contrib.auth.models import User
 from profiles.models import OwnerProfile
 from dogs.models import Dog
 
 
 def register(request):
+    # Clean up session from previous registration attempt
+    if "registration_email" in request.session:
+        del request.session["registration_email"]
+    if "registration_password" in request.session:
+        del request.session["registration_password"]
+    if "owner_profile_data" in request.session:
+        del request.session["owner_profile_data"]
+    if "owner_profile_photo" in request.session:
+        del request.session["owner_profile_photo"]
+    if "owner_profile_id" in request.session:
+        # Delete the temp owner profile if it exists
+        owner_id = request.session["owner_profile_id"]
+        try:
+            OwnerProfile.objects.get(id=owner_id).delete()
+        except:
+            pass
+        del request.session["owner_profile_id"]
+    
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-
-            user = User.objects.create_user(
-                username=email,
-                email=email,
-                password=password
-            )
-
-            login(request, user)
+            # Store email and password in session (don't create User yet)
+            request.session["registration_email"] = form.cleaned_data["email"]
+            request.session["registration_password"] = form.cleaned_data["password"]
             return redirect("create_owner_profile")
     else:
         form = RegisterForm()
