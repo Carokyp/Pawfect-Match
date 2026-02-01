@@ -29,7 +29,7 @@
 
       <div class="profile-image">
         {% if dog.profile_photo %}
-          <img src="{{ dog.get_photo_url }}" alt="Dog photo">
+          <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
         {% else %}
           <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder">
         {% endif %}
@@ -69,7 +69,7 @@
 
       <div class="profile-image">
         {% if dog.owner.profile_photo %}
-          <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo">
+          <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
         {% else %}
           <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder">
         {% endif %}
