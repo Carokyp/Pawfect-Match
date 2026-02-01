@@ -11,7 +11,8 @@ from connections.models import Connection
 
 def create_dog(request):
     # Check if we have session data from registration
-    if "registration_email" not in request.session or "owner_profile_data" not in request.session:
+    if ("registration_email" not in request.session or
+            "owner_profile_data" not in request.session):
         return redirect("register")
     
     if request.method == "POST":
