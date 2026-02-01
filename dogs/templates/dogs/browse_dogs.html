@@ -28,8 +28,8 @@
     <div class="profile-view dog-view">
 
       <div class="profile-image">
-        {% if dog.profile_photo %}
-          <img src="{{ dog.profile_photo.url }}" alt="Dog photo">
+        {% if dog.photo_mobile %}
+          <img src="{{ dog.photo_mobile }}" alt="Dog photo">
         {% else %}
           <img src="{% static 'images/dog-placeholder.jpg' %}" alt="Dog placeholder">
         {% endif %}
@@ -66,7 +66,39 @@
 
     <!-- OWNER VIEW -->
     <div class="profile-view owner-view hidden">
-      ...
+
+      <div class="profile-image">
+        {% if dog.owner.photo_mobile %}
+          <img src="{{ dog.owner.photo_mobile }}" alt="Owner photo">
+        {% else %}
+          <img src="{% static 'images/man-placeholder.jpg' %}" alt="Owner placeholder">
+        {% endif %}
+
+        <div class="image-overlay left">
+          <h2>{{ dog.owner.name }}, {{ dog.owner.age }}</h2>
+          <p>{{ dog.owner.occupation }}</p>
+          <p>{{ dog.owner.city }}</p>
+        </div>
+      </div>
+
+      <hr class="profile-divider">
+
+      <div class="profile-about center">
+        <h3>About me</h3>
+        <p>{{ dog.owner.about_me }}</p>
+      </div>
+
+      <hr class="profile-divider">
+
+      <div class="profile-interests left">
+        <h4>Interests</h4>
+        <div class="profile-tags">
+          {% for interest in dog.owner.interests_list %}
+            <span class="tag">{{ interest }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
     </div>
 
     <!-- ACTION BUTTONS -->

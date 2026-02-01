@@ -1,13 +1,20 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
+from django.conf import settings
 from profiles.models import OwnerProfile
 from dogs.models import Dog
+import os
+import cloudinary.uploader
 
 
 class Command(BaseCommand):
     help = "fake dog & owner profiles for prototype"
 
     def handle(self, *args, **kwargs):
+        User.objects.filter(username__endswith='@test.com').delete()
+
+        media_seeds_path = os.path.join(settings.MEDIA_ROOT, "seeds")
 
         profiles = [
             {
@@ -22,7 +29,7 @@ class Command(BaseCommand):
                         "playdate. Looking to meet friendly pups (and humans)."
                     ),
                     "interests": "Hiking,Coffee,Photography",
-                    "profile_photo": "seed/owner_1.jpg",
+                    "profile_photo": "owner_1.jpg",
                 },
                 "dog": {
                     "name": "Milo",
@@ -31,10 +38,10 @@ class Command(BaseCommand):
                     "energy_level": "playful",
                     "size": "medium",
                     "about_me": (
-                        "Playful, cuddly, and always down for a walk. "
+                        "Playful, cuddly, and always down for a walk."
                         "Loves naps, treats, and making new dog friends."
                     ),
-                    "profile_photo": "seed/dog_1.jpg",
+                    "profile_photo": "dog_1.jpg",
                 }
             },
             {
@@ -48,21 +55,19 @@ class Command(BaseCommand):
                         "More coffee than tea, more walks than nightclubs."
                     ),
                     "interests": "Boxing,Surfing,Video Games",
-                    "profile_photo": "seed/owner_2.jpg",
+                    "profile_photo": "owner_2.jpg",
                 },
                 "dog": {
                     "name": "Patoo",
                     "age": 6,
                     "breed": "Finnish Lapphund",
-                    "energy_level": "full zoomies",
+                    "energy_level": "zoomies",
                     "size": "medium",
                     "about_me": (
-                        (
-                            "I love chasing leaves and will savagely "
-                            "lick your face."
-                        )
+                        "I love chasing leaves and will savagely "
+                        " lick your face."
                     ),
-                    "profile_photo": "seed/dog_2.jpg",
+                    "profile_photo": "dog_2.png",
                 }
             },
             {
@@ -75,19 +80,19 @@ class Command(BaseCommand):
                     "about_me": (
                         "I like simple people, long talks, and happy dogs."
                     ),
-                    "interests": "Cooking,Trying new restaurants,Wine",
-                    "profile_photo": "seed/owner_3.jpg",
+                    "interests": "Cooking,Restaurants,Wine",
+                    "profile_photo": "owner_3.jpg",
                 },
                 "dog": {
                     "name": "Luna",
                     "age": 3,
                     "breed": "Goldendoodle",
-                    "energy_level": "chill vibes",
+                    "energy_level": "chill",
                     "size": "medium",
                     "about_me": (
                         "Very social, especially with humans who have treats."
                     ),
-                    "profile_photo": "seed/dog_3.jpg",
+                    "profile_photo": "dog_3.jpg",
                 }
             },
             {
@@ -101,18 +106,18 @@ class Command(BaseCommand):
                         "Looking for someone to laugh with (a lot)."
                     ),
                     "interests": "Running,Music,Podcasts",
-                    "profile_photo": "seed/owner_4.jpg",
+                    "profile_photo": "owner_4.jpg",
                 },
                 "dog": {
                     "name": "Oscar",
                     "age": 4,
                     "breed": "Border Collie",
-                    "energy_level": "full zoomies",
+                    "energy_level": "zoomies",
                     "size": "large",
                     "about_me": (
                         "A bit crazy, but full of love."
                     ),
-                    "profile_photo": "seed/dog_4.jpg",
+                    "profile_photo": "dog_4.jpg",
                 }
             },
             {
@@ -126,7 +131,7 @@ class Command(BaseCommand):
                         "Food lover with a weakness for bad jokes."
                     ),
                     "interests": "Travel,Culture,Languages",
-                    "profile_photo": "seed/owner_5.jpg",
+                    "profile_photo": "owner_5.jpg",
                 },
                 "dog": {
                     "name": "Tilly",
@@ -137,7 +142,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "Calm at home, excited the second the leash comes out."
                     ),
-                    "profile_photo": "seed/dog_5.jpg",
+                    "profile_photo": "dog_5.jpg",
                 }
             },
             {
@@ -148,21 +153,21 @@ class Command(BaseCommand):
                     "city": "London",
                     "occupation": "Project Manager",
                     "about_me": (
-                        "“Gym in the morning, Netflix at night balance."
+                        "Gym in the morning, Netflix at night balance."
                     ),
                     "interests": "Cinema,TV series,Writing",
-                    "profile_photo": "seed/owner_6.jpg",
+                    "profile_photo": "owner_6.jpg",
                 },
                 "dog": {
                     "name": "Simba",
                     "age": 7,
                     "breed": "Golden Retriever",
-                    "energy_level": "couch potato",
+                    "energy_level": "couch_potato",
                     "size": "large",
                     "about_me": (
                         "Professional cuddler with irresistible puppy eyes."
                     ),
-                    "profile_photo": "seed/dog_6.jpg",
+                    "profile_photo": "dog_6.jpg",
                 }
             },
             {
@@ -176,7 +181,7 @@ class Command(BaseCommand):
                         "Always up for a new adventure, even a small one."
                     ),
                     "interests": "Surfing,Ocean,Sunshine",
-                    "profile_photo": "seed/owner_7.jpg",
+                    "profile_photo": "owner_7.jpg",
                 },
                 "dog": {
                     "name": "Finn",
@@ -187,7 +192,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "Long walks and muddy puddles are my thing."
                     ),
-                    "profile_photo": "seed/dog_7.jpg",
+                    "profile_photo": "dog_7.jpg",
                 }
             },
             {
@@ -201,18 +206,18 @@ class Command(BaseCommand):
                         "Curious, calm, and occasionally a bit awkward."
                     ),
                     "interests": "Yoga,Wellness,Meditation",
-                    "profile_photo": "seed/owner_8.jpg",
+                    "profile_photo": "owner_8.jpg",
                 },
                 "dog": {
                     "name": "Romeo",
                     "age": 2,
                     "breed": "Samoyed",
-                    "energy_level": "chill vibes",
+                    "energy_level": "chill",
                     "size": "medium",
                     "about_me": (
                         "Always ready to play, never tired."
                     ),
-                    "profile_photo": "seed/dog_8.jpg",
+                    "profile_photo": "dog_8.jpg",
                 }
             },
             {
@@ -226,18 +231,18 @@ class Command(BaseCommand):
                         "I take life seriously… but not too seriously."
                     ),
                     "interests": "Fitness,Nutrition,Health",
-                    "profile_photo": "seed/owner_9.jpg",
+                    "profile_photo": "owner_9.jpg",
                 },
                 "dog": {
                     "name": "Lola",
                     "age": 4,
                     "breed": "Cockapoo",
-                    "energy_level": "couch potato",
+                    "energy_level": "couch_potato",
                     "size": "medium",
                     "about_me": (
                         "Loyal, curious, and extremely food-motivated."
                     ),
-                    "profile_photo": "seed/dog_9.jpg",
+                    "profile_photo": "dog_9.jpg",
                 }
             },
             {
@@ -251,40 +256,104 @@ class Command(BaseCommand):
                         "Weekend nature trips and spontaneous brunches."
                     ),
                     "interests": "Reading,Art,Museums",
-                    "profile_photo": "seed/owner_10.jpg",
+                    "profile_photo": "owner_10.jpg",
                 },
                 "dog": {
                     "name": "Florence",
                     "age": 3,
                     "breed": "Corgi",
-                    "energy_level": "couch potato",
+                    "energy_level": "couch_potato",
                     "size": "small",
                     "about_me": (
                         "Small body, big personality."
                     ),
-                    "profile_photo": "seed/dog_10.jpg",
+                    "profile_photo": "dog_10.jpg",
                 }
             },
         ]
 
         for data in profiles:
-            user, created = User.objects.get_or_create(
+            self.stdout.write(f"Creating profile for {data['email']}...")
+            
+            user, _ = User.objects.get_or_create(
                 username=data["email"],
                 defaults={"email": data["email"]}
             )
 
-            if created:
-                user.set_unusable_password()
-                user.save()
+            user.set_unusable_password()
+            user.save()
 
-            owner, _ = OwnerProfile.objects.get_or_create(
+            owner_data = data["owner"].copy()
+            owner_photo_name = owner_data.pop("profile_photo")
+            
+            owner, created = OwnerProfile.objects.get_or_create(
                 user=user,
-                defaults=data["owner"]
+                defaults=owner_data
             )
+            
+            # Update owner data if it already existed
+            if not created:
+                for key, value in owner_data.items():
+                    setattr(owner, key, value)
+                owner.save()
+            
+            # Upload owner photo to Cloudinary
+            owner_photo_path = os.path.join(media_seeds_path, owner_photo_name)
+            if os.path.exists(owner_photo_path):
+                msg = f"  Uploading owner photo: {owner_photo_name}"
+                self.stdout.write(msg)
+                try:
+                    upload_result = cloudinary.uploader.upload(
+                        owner_photo_path,
+                        folder="pawfect_match/owners"
+                    )
+                    owner.profile_photo = upload_result.get("secure_url")
+                    owner.save()
+                    self.stdout.write(f"  ✓ Owner photo uploaded")
+                except Exception as e:
+                    warning_msg = (
+                        f"Could not upload {owner_photo_name}: {e}"
+                    )
+                    self.stdout.write(self.style.WARNING(warning_msg))
+            else:
+                self.stdout.write(
+                    self.style.WARNING(f"File not found: {owner_photo_path}")
+                )
 
-            Dog.objects.get_or_create(
+            dog_data = data["dog"].copy()
+            dog_photo_name = dog_data.pop("profile_photo")
+            
+            dog, created = Dog.objects.get_or_create(
                 owner=owner,
-                defaults=data["dog"]
+                defaults=dog_data
             )
+            
+            # Update dog data if it already existed
+            if not created:
+                for key, value in dog_data.items():
+                    setattr(dog, key, value)
+                dog.save()
+            
+            # Upload dog photo to Cloudinary
+            dog_photo_path = os.path.join(media_seeds_path, dog_photo_name)
+            if os.path.exists(dog_photo_path):
+                self.stdout.write(f"  Uploading dog photo: {dog_photo_name}")
+                try:
+                    upload_result = cloudinary.uploader.upload(
+                        dog_photo_path,
+                        folder="pawfect_match/dogs"
+                    )
+                    dog.profile_photo = upload_result.get("secure_url")
+                    dog.save()
+                    self.stdout.write(f"  ✓ Dog photo uploaded")
+                except Exception as e:
+                    warning_msg = (
+                        f"Could not upload {dog_photo_name}: {e}"
+                    )
+                    self.stdout.write(self.style.WARNING(warning_msg))
+            else:
+                self.stdout.write(
+                    self.style.WARNING(f"File not found: {dog_photo_path}")
+                )
 
         self.stdout.write(self.style.SUCCESS("Fake profiles created 🎉"))
