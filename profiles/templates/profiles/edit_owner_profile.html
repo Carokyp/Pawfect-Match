@@ -18,7 +18,7 @@
     <a href="{% url 'view_profile' %}" class="profile-gear" aria-label="View profile">⚙️</a>
   </div>
 
-  <form method="post" enctype="multipart/form-data" class="profile-form-modern">
+  <form method="post" enctype="multipart/form-data" class="profile-form-modern profile-edit-form">
     {% csrf_token %}
 
     <div class="photo-block">
@@ -71,6 +71,7 @@
       <button type="submit" class="btn-primary">Save owner profile</button>
     </div>
   </form>
+
 </div>
 
 {% endblock %}

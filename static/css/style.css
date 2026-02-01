@@ -161,6 +161,17 @@ a:visited {
   transform: translateY(0);
 }
 
+/* --- Logout Button (Red) --- */
+.btn-logout {
+  border-color: #f87575;
+  color: #f87575;
+}
+
+.btn-logout:hover {
+  background-color: #f87575;
+  color: #ffffff;
+}
+
 /* --- Back Button --- */
 .back-button {
   position: absolute;
@@ -181,7 +192,6 @@ a:visited {
   filter: grayscale(100%);
 }
 /* #endregion */
-
 
 /* #region FORMS & INPUTS */
 
@@ -811,7 +821,6 @@ body.modal-open {
 
 /* #endregion */
 
-
 /* #region MATCHES PAGE */
 .matches-page {
   min-height: 100vh;
@@ -820,6 +829,7 @@ body.modal-open {
 
 .matches-container {
   padding: 1.5rem;
+  text-align: center;
 }
 
 .matches-container h2 {
@@ -918,7 +928,6 @@ body.modal-open {
 }
 
 /* #endregion */
-
 
 /* #region PROFILE VIEW PAGE */
 .profile-page {
@@ -1188,8 +1197,18 @@ body.modal-open {
   }
 }
 
-/* #endregion */
+/* --- Log Out Button Container --- */
+.log_out {
+  text-align: center;
+  padding: 0.5rem;
+  margin-bottom: 5rem;
+}
 
+.log_out .btn-outline {
+  margin: 0 auto;
+}
+
+/* #endregion */
 
 /* #region PROFILE EDIT PAGE */
 
@@ -1304,7 +1323,6 @@ body.modal-open {
 
 /* #endregion */
 
-
 /* #region EMPTY STATE */
 .empty-dogs {
   text-align: center;
@@ -1349,7 +1367,6 @@ body.modal-open {
 }
 
 /* #endregion */
-
 
 /* #region RESPONSIVE DESIGN */
 /* Add breakpoints here if needed */

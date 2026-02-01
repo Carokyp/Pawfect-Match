@@ -108,6 +108,13 @@
     </div>
   </div>
 
+  <div class="log_out">
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn-outline btn-logout">Log Out</button>
+    </form>
+  </div>
+
   <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
     <a href="{% url 'browse_dogs' %}">Discover</a>
