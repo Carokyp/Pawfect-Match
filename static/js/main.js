@@ -208,11 +208,52 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!form) return;
 
     const inputs = form.querySelectorAll("input, textarea, select");
+    const handledCheckboxGroups = new Set();
+
+    const cacheKey = (name) => `${formType}_${name}`;
+
+    const getCheckboxGroup = (name) =>
+      Array.from(
+        form.querySelectorAll(`input[type="checkbox"][name="${CSS.escape(name)}"]`)
+      );
+
+    const restoreCheckboxGroup = (name) => {
+      const checkboxes = getCheckboxGroup(name);
+      const savedValue = sessionStorage.getItem(cacheKey(name));
+      if (!savedValue) return;
+      let values = [];
+      try {
+        values = JSON.parse(savedValue);
+      } catch (e) {
+        values = [];
+      }
+      checkboxes.forEach((cb) => {
+        cb.checked = values.includes(cb.value);
+      });
+    };
+
+    const saveCheckboxGroup = (name) => {
+      const checkboxes = getCheckboxGroup(name);
+      const values = checkboxes.filter((cb) => cb.checked).map((cb) => cb.value);
+      sessionStorage.setItem(cacheKey(name), JSON.stringify(values));
+    };
 
     inputs.forEach((input) => {
       if (!input.name || input.type === "file") return;
 
-      const key = `${formType}_${input.name}`;
+      if (input.type === "checkbox") {
+        if (handledCheckboxGroups.has(input.name)) return;
+        handledCheckboxGroups.add(input.name);
+
+        restoreCheckboxGroup(input.name);
+        const checkboxes = getCheckboxGroup(input.name);
+        checkboxes.forEach((cb) => {
+          cb.addEventListener("change", () => saveCheckboxGroup(input.name));
+        });
+        return;
+      }
+
+      const key = cacheKey(input.name);
       const savedValue = sessionStorage.getItem(key);
       if (savedValue !== null) {
         input.value = savedValue;
@@ -227,8 +268,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  /* ===============================
+     PILL OPTIONS (max selection)
+     =============================== */
+  const setupPillOptions = () => {
+    const groups = document.querySelectorAll(".pill-options[data-max]");
+    groups.forEach((group) => {
+      const max = parseInt(group.dataset.max || "0", 10);
+      const checkboxes = Array.from(
+        group.querySelectorAll("input[type='checkbox']")
+      );
+      if (!checkboxes.length || !max) return;
+
+      const helper = group.parentElement.querySelector(".pill-helper");
+
+      const update = () => {
+        const selected = checkboxes.filter((cb) => cb.checked);
+        const limitReached = selected.length >= max;
+
+        checkboxes.forEach((cb) => {
+          cb.disabled = limitReached && !cb.checked;
+          cb.parentElement.classList.toggle("is-disabled", cb.disabled);
+        });
+
+        if (helper) {
+          helper.textContent = `Select up to ${max} (${selected.length}/${max})`;
+        }
+      };
+
+      checkboxes.forEach((cb) => {
+        cb.addEventListener("change", update);
+      });
+
+      update();
+    });
+  };
+
   setupFormCache("owner");
   setupFormCache("dog");
+  setupPillOptions();
 
 });
 

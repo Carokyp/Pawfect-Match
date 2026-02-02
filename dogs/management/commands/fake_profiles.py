@@ -28,7 +28,7 @@ class Command(BaseCommand):
                         "Dog dad, coffee lover, and always up for a park "
                         "playdate. Looking to meet friendly pups (and humans)."
                     ),
-                    "interests": "Hiking,Coffee,Photography",
+                    "interests": "Hiking, Coffee, Photography",
                     "profile_photo": "owner_1.jpg",
                 },
                 "dog": {
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "More coffee than tea, more walks than nightclubs."
                     ),
-                    "interests": "Boxing,Surfing,Video Games",
+                    "interests": "Coffee, Travel, Music",
                     "profile_photo": "owner_2.jpg",
                 },
                 "dog": {
@@ -82,7 +82,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "I like simple people, long talks, and happy dogs."
                     ),
-                    "interests": "Cooking,Restaurants,Wine",
+                    "interests": "Cooking, Foodie, Bars",
                     "profile_photo": "owner_3.jpg",
                 },
                 "dog": {
@@ -108,7 +108,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "Looking for someone to laugh with (a lot)."
                     ),
-                    "interests": "Running,Music,Podcasts",
+                    "interests": "Fitness, Music, Dancing",
                     "profile_photo": "owner_4.jpg",
                 },
                 "dog": {
@@ -134,7 +134,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "Food lover with a weakness for bad jokes."
                     ),
-                    "interests": "Travel,Culture,Languages",
+                    "interests": "Travel, Comedie, Bars",
                     "profile_photo": "owner_5.jpg",
                 },
                 "dog": {
@@ -160,7 +160,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "Gym in the morning, Netflix at night balance."
                     ),
-                    "interests": "Cinema,TV series,Writing",
+                    "interests": "Movies, Reading, Gaming",
                     "profile_photo": "owner_6.jpg",
                 },
                 "dog": {
@@ -186,7 +186,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "Always up for a new adventure, even a small one."
                     ),
-                    "interests": "Surfing,Ocean,Sunshine",
+                    "interests": "Travel, Art, Photography",
                     "profile_photo": "owner_7.jpg",
                 },
                 "dog": {
@@ -212,7 +212,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "Curious, calm, and occasionally a bit awkward."
                     ),
-                    "interests": "Yoga,Wellness,Meditation",
+                    "interests": "Yoga, Fitness, Dancing",
                     "profile_photo": "owner_8.jpg",
                 },
                 "dog": {
@@ -238,7 +238,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "I take life seriously… but not too seriously."
                     ),
-                    "interests": "Fitness,Nutrition,Health",
+                    "interests": "Fitness, Foodie, Cooking",
                     "profile_photo": "owner_9.jpg",
                 },
                 "dog": {
@@ -264,7 +264,7 @@ class Command(BaseCommand):
                     "about_me": (
                         "Weekend nature trips and spontaneous brunches."
                     ),
-                    "interests": "Reading,Art,Museums",
+                    "interests": "Reading, Art, Comedie",
                     "profile_photo": "owner_10.jpg",
                 },
                 "dog": {

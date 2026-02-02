@@ -3,7 +3,33 @@ from django.core.exceptions import ValidationError
 from .models import OwnerProfile
 
 
+INTEREST_CHOICES = [
+    ("Hiking", "Hiking"),
+    ("Coffee", "Coffee"),
+    ("Photography", "Photography"),
+    ("Travel", "Travel"),
+    ("Cooking", "Cooking"),
+    ("Movies", "Movies"),
+    ("Music", "Music"),
+    ("Reading", "Reading"),
+    ("Fitness", "Fitness"),
+    ("Yoga", "Yoga"),
+    ("Gaming", "Gaming"),
+    ("Art", "Art"),
+    ("Dancing", "Dancing"),
+    ("Foodie", "Foodie"),
+    ("Comedie", "Comedie"),
+    ("Bars", "Bars"),
+]
+
+
 class OwnerProfileForm(forms.ModelForm):
+    interests = forms.MultipleChoiceField(
+        required=False,
+        choices=INTEREST_CHOICES,
+        widget=forms.CheckboxSelectMultiple,
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         required_fields = [
@@ -18,6 +44,13 @@ class OwnerProfileForm(forms.ModelForm):
             if field:
                 field.required = True
                 field.widget.attrs["required"] = "required"
+
+        if not self.data and self.instance and self.instance.interests:
+            self.fields["interests"].initial = [
+                interest.strip()
+                for interest in self.instance.interests.split(",")
+                if interest.strip()
+            ]
     class Meta:
         model = OwnerProfile
         fields = [
@@ -40,9 +73,6 @@ class OwnerProfileForm(forms.ModelForm):
                     "Tell us about yourself, your lifestyle ect..."
                 )
             }),
-            "interests": forms.TextInput(attrs={
-                "placeholder": "e.g., Hiking, Coffee, Photography"
-            }),
             "occupation": forms.TextInput(attrs={
                 "placeholder": "e.g., Software Engineer"
             }),
@@ -63,3 +93,4 @@ class OwnerProfileForm(forms.ModelForm):
         if not photo:
             raise ValidationError("Please select a profile photo.")
         return photo
+

@@ -16,7 +16,10 @@ def create_owner_profile(request):
         form = OwnerProfileForm(request.POST, request.FILES)
         if form.is_valid():
             # Store owner profile data in session
-            owner_data = form.cleaned_data
+            owner_data = form.cleaned_data.copy()
+            interests = owner_data.get("interests")
+            if isinstance(interests, (list, tuple)):
+                owner_data["interests"] = ", ".join(interests)
 
             # Create or reuse the user so OwnerProfile has a valid user_id
             email = request.session.get("registration_email")
@@ -30,24 +33,10 @@ def create_owner_profile(request):
                 user.save()
 
             # Create or update OwnerProfile for this user
-            owner_profile = OwnerProfile.objects.filter(user=user).first()
-            if owner_profile:
-                for field in [
-                    "name",
-                    "age",
-                    "city",
-                    "occupation",
-                    "interests",
-                    "about_me",
-                ]:
-                    setattr(owner_profile, field, owner_data.get(field, ""))
-                if owner_data.get("profile_photo"):
-                    owner_profile.profile_photo = owner_data["profile_photo"]
-                owner_profile.save()
-            else:
-                owner_profile = form.save(commit=False)
-                owner_profile.user = user
-                owner_profile.save()
+            owner_profile, _ = OwnerProfile.objects.update_or_create(
+                user=user,
+                defaults=owner_data,
+            )
 
             request.session["owner_profile_id"] = owner_profile.id
             return redirect("create_dog")

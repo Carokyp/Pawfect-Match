@@ -28,7 +28,6 @@ class OwnerProfile(models.Model):
     interests = models.CharField(
         max_length=255,
         blank=True,
-        help_text="Comma-separated interests"
     )
 
     about_me = models.TextField(

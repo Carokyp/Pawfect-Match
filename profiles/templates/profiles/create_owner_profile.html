@@ -18,7 +18,7 @@
     <span class="required">*</span> Required fields
   </p>
 
-  <form method="post" enctype="multipart/form-data" class="auth-form" data-form-type="owner">
+  <form method="post" enctype="multipart/form-data" class="auth-form" data-form-type="owner" novalidate>
     {% csrf_token %}
     {{ form.non_field_errors }}
     
@@ -43,7 +43,7 @@
 
     <!-- Name -->
     <div class="form-field">
-      {{ form.name.label_tag }}
+      <label for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="required">*</span></label>
       {{ form.name }}
       {% if form.name.errors %}
         <div class="form-error">{{ form.name.errors|striptags }}</div>
@@ -52,7 +52,7 @@
 
     <!-- Age -->
     <div class="form-field">
-      {{ form.age.label_tag }}
+      <label for="{{ form.age.id_for_label }}">{{ form.age.label }} <span class="required">*</span></label>
       {{ form.age }}
       {% if form.age.errors %}
         <div class="form-error">{{ form.age.errors|striptags }}</div>
@@ -61,7 +61,7 @@
 
     <!-- City -->
     <div class="form-field">
-      {{ form.city.label_tag }}
+      <label for="{{ form.city.id_for_label }}">{{ form.city.label }} <span class="required">*</span></label>
       {{ form.city }}
       {% if form.city.errors %}
         <div class="form-error">{{ form.city.errors|striptags }}</div>
@@ -70,7 +70,7 @@
 
     <!-- Occupation -->
     <div class="form-field">
-      {{ form.occupation.label_tag }}
+      <label for="{{ form.occupation.id_for_label }}">{{ form.occupation.label }} <span class="required">*</span></label>
       {{ form.occupation }}
       {% if form.occupation.errors %}
         <div class="form-error">{{ form.occupation.errors|striptags }}</div>
@@ -80,7 +80,15 @@
     <!-- Interests -->
     <div class="form-field">
       <label>Interests <span class="optional">(optional)</span></label>
-      {{ form.interests }}
+      <div class="pill-options" data-max="3">
+        {% for checkbox in form.interests %}
+          <label class="pill-option">
+            {{ checkbox.tag }}
+            <span>{{ checkbox.choice_label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+      <div class="pill-helper">Select up to 3</div>
       {% if form.interests.errors %}
         <div class="form-error">{{ form.interests.errors|striptags }}</div>
       {% endif %}
