@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .forms import OwnerProfileForm
 from .models import OwnerProfile
 from dogs.models import Dog
@@ -10,27 +11,45 @@ def create_owner_profile(request):
     # Check if email/password are in session (from register)
     if "registration_email" not in request.session:
         return redirect("register")
-    
+
     if request.method == "POST":
         form = OwnerProfileForm(request.POST, request.FILES)
         if form.is_valid():
             # Store owner profile data in session
             owner_data = form.cleaned_data
-            
-            # Save the profile photo to CloudinaryField temporarily
-            # We'll link it to the user when we create the user in create_dog
-            temp_owner = form.save(commit=False)
-            temp_owner.save()  # Save to get the photo uploaded to Cloudinary
-            
-            request.session["owner_profile_id"] = temp_owner.id
-            request.session["owner_profile_data"] = {
-                "name": owner_data["name"],
-                "age": owner_data["age"],
-                "city": owner_data.get("city", ""),
-                "occupation": owner_data.get("occupation", ""),
-                "interests": owner_data.get("interests", ""),
-                "about_me": owner_data.get("about_me", ""),
-            }
+
+            # Create or reuse the user so OwnerProfile has a valid user_id
+            email = request.session.get("registration_email")
+            password = request.session.get("registration_password")
+            user, created = User.objects.get_or_create(
+                username=email,
+                defaults={"email": email}
+            )
+            if password:
+                user.set_password(password)
+                user.save()
+
+            # Create or update OwnerProfile for this user
+            owner_profile = OwnerProfile.objects.filter(user=user).first()
+            if owner_profile:
+                for field in [
+                    "name",
+                    "age",
+                    "city",
+                    "occupation",
+                    "interests",
+                    "about_me",
+                ]:
+                    setattr(owner_profile, field, owner_data.get(field, ""))
+                if owner_data.get("profile_photo"):
+                    owner_profile.profile_photo = owner_data["profile_photo"]
+                owner_profile.save()
+            else:
+                owner_profile = form.save(commit=False)
+                owner_profile.user = user
+                owner_profile.save()
+
+            request.session["owner_profile_id"] = owner_profile.id
             return redirect("create_dog")
     else:
         form = OwnerProfileForm()

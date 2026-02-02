@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from profiles.models import OwnerProfile
 import re
 
 
@@ -42,10 +43,18 @@ class RegisterForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-        if User.objects.filter(username=email).exists():
-            raise forms.ValidationError(
-                "An account with this email already exists."
-            )
+        existing_user = User.objects.filter(username=email).first()
+        if existing_user:
+            owner_profile = OwnerProfile.objects.filter(user=existing_user).first()
+            has_dog = False
+            if owner_profile:
+                has_dog = hasattr(owner_profile, "dog")
+
+            # Allow resume if owner exists without dog
+            if has_dog:
+                raise forms.ValidationError(
+                    "An account with this email already exists."
+                )
         return email
 
     def clean_password(self):

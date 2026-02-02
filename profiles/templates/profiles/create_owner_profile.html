@@ -18,7 +18,7 @@
     <span class="required">*</span> Required fields
   </p>
 
-  <form method="post" enctype="multipart/form-data" class="auth-form">
+  <form method="post" enctype="multipart/form-data" class="auth-form" data-form-type="owner">
     {% csrf_token %}
     {{ form.non_field_errors }}
     
@@ -79,7 +79,7 @@
 
     <!-- Interests -->
     <div class="form-field">
-      {{ form.interests.label_tag }}
+      <label>Interests <span class="optional">(optional)</span></label>
       {{ form.interests }}
       {% if form.interests.errors %}
         <div class="form-error">{{ form.interests.errors|striptags }}</div>
@@ -88,7 +88,7 @@
 
     <!-- About me -->
     <div class="form-field">
-      {{ form.about_me.label_tag }}
+      <label>About me <span class="optional">(optional)</span></label>
       {{ form.about_me }}
       <div class="char-counter">0 / 500</div>
       {% if form.about_me.errors %}
@@ -97,7 +97,7 @@
     </div>
 
     <button type="submit" class="btn-primary">
-      Complete Profile
+      Next
     </button>
 
   </form>

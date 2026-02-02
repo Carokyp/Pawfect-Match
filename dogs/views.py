@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.models import User
 from django.views.decorators.http import require_POST
 from .forms import DogForm
 from .models import Dog
@@ -12,41 +11,18 @@ from connections.models import Connection
 def create_dog(request):
     # Check if we have session data from registration
     if ("registration_email" not in request.session or
-            "owner_profile_data" not in request.session):
+            "owner_profile_id" not in request.session):
         return redirect("register")
     
     if request.method == "POST":
         form = DogForm(request.POST, request.FILES)
         if form.is_valid():
             # Get session data
-            email = request.session.get("registration_email")
-            password = request.session.get("registration_password")
             owner_profile_id = request.session.get("owner_profile_id")
-            owner_data = request.session.get("owner_profile_data")
-            
-            # Create User
-            user = User.objects.create_user(
-                username=email,
-                email=email,
-                password=password
-            )
-            
-            # Update the temp owner profile with the user
-            if owner_profile_id:
-                owner_profile = OwnerProfile.objects.get(id=owner_profile_id)
-                owner_profile.user = user
-                owner_profile.save()
-            else:
-                # Fallback if no temp profile (shouldn't happen)
-                owner_profile = OwnerProfile.objects.create(
-                    user=user,
-                    name=owner_data["name"],
-                    age=owner_data["age"],
-                    city=owner_data.get("city", ""),
-                    occupation=owner_data.get("occupation", ""),
-                    interests=owner_data.get("interests", ""),
-                    about_me=owner_data.get("about_me", ""),
-                )
+
+            # Use existing owner profile created during owner step
+            owner_profile = OwnerProfile.objects.get(id=owner_profile_id)
+            user = owner_profile.user
             
             # Create Dog
             dog = form.save(commit=False)
@@ -56,7 +32,6 @@ def create_dog(request):
             # Clean up session
             del request.session["registration_email"]
             del request.session["registration_password"]
-            del request.session["owner_profile_data"]
             if "owner_profile_id" in request.session:
                 del request.session["owner_profile_id"]
             if "owner_profile_photo" in request.session:

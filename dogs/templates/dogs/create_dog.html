@@ -18,7 +18,7 @@
     <span class="required">*</span> Required fields
   </p>
 
-  <form method="post" enctype="multipart/form-data" class="auth-form">
+  <form method="post" enctype="multipart/form-data" class="auth-form" data-form-type="dog">
     {% csrf_token %}
     {{ form.non_field_errors }}
 

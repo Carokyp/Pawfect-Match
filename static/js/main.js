@@ -200,6 +200,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /* ===============================
+     SIMPLE FORM CACHE (sessionStorage)
+     =============================== */
+  const setupFormCache = (formType) => {
+    const form = document.querySelector(`form[data-form-type="${formType}"]`);
+    if (!form) return;
+
+    const inputs = form.querySelectorAll("input, textarea, select");
+
+    inputs.forEach((input) => {
+      if (!input.name || input.type === "file") return;
+
+      const key = `${formType}_${input.name}`;
+      const savedValue = sessionStorage.getItem(key);
+      if (savedValue !== null) {
+        input.value = savedValue;
+      }
+
+      const save = () => {
+        sessionStorage.setItem(key, input.value);
+      };
+
+      input.addEventListener("input", save);
+      input.addEventListener("change", save);
+    });
+  };
+
+  setupFormCache("owner");
+  setupFormCache("dog");
+
 });
 
 
