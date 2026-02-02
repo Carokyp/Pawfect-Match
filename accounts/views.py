@@ -77,3 +77,17 @@ def logout_view(request):
         logout(request)
         return redirect("home")
     return redirect("home")
+
+
+@login_required
+def delete_profile(request):
+    if request.method == "POST":
+        user = request.user
+        try:
+            owner_profile = OwnerProfile.objects.get(user=user)
+            owner_profile.delete()
+        except OwnerProfile.DoesNotExist:
+            pass
+        logout(request)
+        return redirect("home")
+    return redirect("view_profile")

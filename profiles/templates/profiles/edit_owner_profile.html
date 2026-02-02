@@ -72,6 +72,58 @@
     </div>
   </form>
 
+  <!-- DANGER ZONE -->
+  <div class="danger-zone">
+    <h3 class="danger-zone-title">⚠️ Danger Zone</h3>
+    <p class="danger-zone-text">Delete your profile and your dog</p>
+    <p class="danger-zone-subtext">This action is permanent and cannot be undone.</p>
+    
+    <form method="post" action="{% url 'delete_profile' %}" id="deleteForm">
+      {% csrf_token %}
+      <button type="button" class="btn-danger" onclick="openDeleteModal()">Delete My Profile</button>
+    </form>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-content">
+      <h2>Are you sure?</h2>
+      <p class="modal-warning">⚠️ This will permanently delete:</p>
+      <ul class="modal-list">
+        <li>Your profile</li>
+        <li>Your dog: <strong>{{ dog.name }}</strong></li>
+        <li>All your matches</li>
+      </ul>
+      <p class="modal-danger">This action cannot be undone.</p>
+      
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn-danger" onclick="confirmDelete()">Yes, Delete Forever</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openDeleteModal() {
+      document.getElementById('deleteModal').classList.add('is-open');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('is-open');
+    }
+
+    function confirmDelete() {
+      document.getElementById('deleteForm').submit();
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeDeleteModal();
+      }
+    });
+  </script>
+
 </div>
 
 {% endblock %}
