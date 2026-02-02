@@ -35,6 +35,7 @@ class Command(BaseCommand):
                     "name": "Milo",
                     "age": 2,
                     "breed": "Chow Chow",
+                    "gender": "male",
                     "energy_level": "playful",
                     "size": "medium",
                     "about_me": (
@@ -61,6 +62,7 @@ class Command(BaseCommand):
                     "name": "Patoo",
                     "age": 6,
                     "breed": "Finnish Lapphund",
+                    "gender": "male",
                     "energy_level": "zoomies",
                     "size": "medium",
                     "about_me": (
@@ -87,6 +89,7 @@ class Command(BaseCommand):
                     "name": "Luna",
                     "age": 3,
                     "breed": "Goldendoodle",
+                    "gender": "female",
                     "energy_level": "chill",
                     "size": "medium",
                     "about_me": (
@@ -112,6 +115,7 @@ class Command(BaseCommand):
                     "name": "Oscar",
                     "age": 4,
                     "breed": "Border Collie",
+                    "gender": "male",
                     "energy_level": "zoomies",
                     "size": "large",
                     "about_me": (
@@ -137,6 +141,7 @@ class Command(BaseCommand):
                     "name": "Tilly",
                     "age": 5,
                     "breed": "Siberian Husky",
+                    "gender": "female",
                     "energy_level": "energetic",
                     "size": "large",
                     "about_me": (
@@ -162,6 +167,7 @@ class Command(BaseCommand):
                     "name": "Simba",
                     "age": 7,
                     "breed": "Golden Retriever",
+                    "gender": "male",
                     "energy_level": "couch_potato",
                     "size": "large",
                     "about_me": (
@@ -187,6 +193,7 @@ class Command(BaseCommand):
                     "name": "Finn",
                     "age": 3,
                     "breed": "Alaskan Malamute",
+                    "gender": "male",
                     "energy_level": "playful",
                     "size": "medium",
                     "about_me": (
@@ -212,6 +219,7 @@ class Command(BaseCommand):
                     "name": "Romeo",
                     "age": 2,
                     "breed": "Samoyed",
+                    "gender": "male",
                     "energy_level": "chill",
                     "size": "medium",
                     "about_me": (
@@ -237,6 +245,7 @@ class Command(BaseCommand):
                     "name": "Lola",
                     "age": 4,
                     "breed": "Cockapoo",
+                    "gender": "female",
                     "energy_level": "couch_potato",
                     "size": "medium",
                     "about_me": (
@@ -262,6 +271,7 @@ class Command(BaseCommand):
                     "name": "Florence",
                     "age": 3,
                     "breed": "Corgi",
+                    "gender": "female",
                     "energy_level": "couch_potato",
                     "size": "small",
                     "about_me": (
@@ -286,19 +296,9 @@ class Command(BaseCommand):
             owner_data = data["owner"].copy()
             owner_photo_name = owner_data.pop("profile_photo")
             
-            owner, created = OwnerProfile.objects.get_or_create(
-                user=user,
-                defaults=owner_data
-            )
-            
-            # Update owner data if it already existed
-            if not created:
-                for key, value in owner_data.items():
-                    setattr(owner, key, value)
-                owner.save()
-            
-            # Upload owner photo to Cloudinary
+            # Upload owner photo to Cloudinary BEFORE creating profile
             owner_photo_path = os.path.join(media_seeds_path, owner_photo_name)
+            owner_photo_id = None
             if os.path.exists(owner_photo_path):
                 msg = f"  Uploading owner photo: {owner_photo_name}"
                 self.stdout.write(msg)
@@ -307,8 +307,7 @@ class Command(BaseCommand):
                         owner_photo_path,
                         folder="pawfect_match/owners"
                     )
-                    owner.profile_photo = upload_result.get("public_id")
-                    owner.save()
+                    owner_photo_id = upload_result.get("public_id")
                     self.stdout.write(f"  ✓ Owner photo uploaded")
                 except Exception as e:
                     warning_msg = (
@@ -319,9 +318,50 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.WARNING(f"File not found: {owner_photo_path}")
                 )
+            
+            # Add photo ID to owner_data before creating
+            if owner_photo_id:
+                owner_data["profile_photo"] = owner_photo_id
+            
+            owner, created = OwnerProfile.objects.get_or_create(
+                user=user,
+                defaults=owner_data
+            )
+            
+            # Update owner data if it already existed
+            if not created:
+                for key, value in owner_data.items():
+                    setattr(owner, key, value)
+                owner.save()
 
             dog_data = data["dog"].copy()
             dog_photo_name = dog_data.pop("profile_photo")
+            
+            # Upload dog photo to Cloudinary BEFORE creating profile
+            dog_photo_path = os.path.join(media_seeds_path, dog_photo_name)
+            dog_photo_id = None
+            if os.path.exists(dog_photo_path):
+                self.stdout.write(f"  Uploading dog photo: {dog_photo_name}")
+                try:
+                    upload_result = cloudinary.uploader.upload(
+                        dog_photo_path,
+                        folder="pawfect_match/dogs"
+                    )
+                    dog_photo_id = upload_result.get("public_id")
+                    self.stdout.write(f"  ✓ Dog photo uploaded")
+                except Exception as e:
+                    warning_msg = (
+                        f"Could not upload {dog_photo_name}: {e}"
+                    )
+                    self.stdout.write(self.style.WARNING(warning_msg))
+            else:
+                self.stdout.write(
+                    self.style.WARNING(f"File not found: {dog_photo_path}")
+                )
+            
+            # Add photo ID to dog_data before creating
+            if dog_photo_id:
+                dog_data["profile_photo"] = dog_photo_id
             
             dog, created = Dog.objects.get_or_create(
                 owner=owner,
@@ -333,27 +373,5 @@ class Command(BaseCommand):
                 for key, value in dog_data.items():
                     setattr(dog, key, value)
                 dog.save()
-            
-            # Upload dog photo to Cloudinary
-            dog_photo_path = os.path.join(media_seeds_path, dog_photo_name)
-            if os.path.exists(dog_photo_path):
-                self.stdout.write(f"  Uploading dog photo: {dog_photo_name}")
-                try:
-                    upload_result = cloudinary.uploader.upload(
-                        dog_photo_path,
-                        folder="pawfect_match/dogs"
-                    )
-                    dog.profile_photo = upload_result.get("public_id")
-                    dog.save()
-                    self.stdout.write(f"  ✓ Dog photo uploaded")
-                except Exception as e:
-                    warning_msg = (
-                        f"Could not upload {dog_photo_name}: {e}"
-                    )
-                    self.stdout.write(self.style.WARNING(warning_msg))
-            else:
-                self.stdout.write(
-                    self.style.WARNING(f"File not found: {dog_photo_path}")
-                )
 
         self.stdout.write(self.style.SUCCESS("Fake profiles created 🎉"))

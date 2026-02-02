@@ -11,6 +11,7 @@ class DogForm(forms.ModelForm):
             "age",
             "breed",
             "size",
+            "gender",
             "energy_level",
             "about_me",
         ]

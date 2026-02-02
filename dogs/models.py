@@ -32,6 +32,17 @@ class Dog(models.Model):
         blank=True
     )
 
+    GENDER_CHOICES = [
+        ("male", "Male"),
+        ("female", "Female"),
+    ]
+
+    gender = models.CharField(
+        max_length=10,
+        choices=GENDER_CHOICES,
+        blank=True
+    )
+
     ENERGY_LEVEL_CHOICES = [
         ('couch_potato', '🥔 Couch potato'),
         ('chill', '😌 Chill vibes'),
