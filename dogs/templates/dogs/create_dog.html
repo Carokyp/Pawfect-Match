@@ -18,7 +18,7 @@
     <span class="required">*</span> Required fields
   </p>
 
-  <form method="post" enctype="multipart/form-data" class="auth-form" data-form-type="dog">
+  <form method="post" enctype="multipart/form-data" class="auth-form" data-form-type="dog" novalidate>
     {% csrf_token %}
     {{ form.non_field_errors }}
 
@@ -43,45 +43,66 @@
 
     <!-- Name -->
     <div class="form-field">
-        {{ form.name.label_tag }}
+        <label for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="required">*</span></label>
         {{ form.name }}
+        {% if form.name.errors %}
+          <div class="form-error">{{ form.name.errors|striptags }}</div>
+        {% endif %}
       </div>
 
     <!-- Age -->
     <div class="form-field">
-      {{ form.age.label_tag }}
+      <label for="{{ form.age.id_for_label }}">{{ form.age.label }} <span class="required">*</span></label>
       {{ form.age }}
+      {% if form.age.errors %}
+        <div class="form-error">{{ form.age.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- Breed -->
     <div class="form-field">
-      {{ form.breed.label_tag }}
+      <label for="{{ form.breed.id_for_label }}">{{ form.breed.label }} <span class="required">*</span></label>
       {{ form.breed }}
+      {% if form.breed.errors %}
+        <div class="form-error">{{ form.breed.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- Size -->
     <div class="form-field">
-      {{ form.size.label_tag }}
+      <label for="{{ form.size.id_for_label }}">{{ form.size.label }} <span class="required">*</span></label>
       {{ form.size }}
+      {% if form.size.errors %}
+        <div class="form-error">{{ form.size.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- Gender -->
     <div class="form-field">
-      {{ form.gender.label_tag }}
+      <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }} <span class="required">*</span></label>
       {{ form.gender }}
+      {% if form.gender.errors %}
+        <div class="form-error">{{ form.gender.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- Energy level -->
     <div class="form-field">
-      {{ form.energy_level.label_tag }}
+      <label for="{{ form.energy_level.id_for_label }}">{{ form.energy_level.label }} <span class="required">*</span></label>
       {{ form.energy_level }}
+      {% if form.energy_level.errors %}
+        <div class="form-error">{{ form.energy_level.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <!-- About dog -->
     <div class="form-field">
-      {{ form.about_me.label_tag }}
+      <label>About me <span class="optional">(optional)</span></label>
       {{ form.about_me }}
       <div class="char-counter">0 / 500</div>
+      {% if form.about_me.errors %}
+        <div class="form-error">{{ form.about_me.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <button type="submit" class="btn-primary">
