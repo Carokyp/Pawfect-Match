@@ -141,7 +141,8 @@ def like_dog(request, dog_id):
     request.session["match_data"] = {
         "my_dog_photo": my_dog_photo,
         "other_dog_photo": other_dog_photo,
-        "other_dog_name": liked_dog.name
+        "other_dog_name": liked_dog.name,
+        "other_dog_id": liked_dog.id
     }
 
     return redirect("browse_dogs")

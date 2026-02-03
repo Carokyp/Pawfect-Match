@@ -163,8 +163,9 @@
     </div>
     <p>You and {{ match_popup.other_dog_name }} found each other</p>
 
-    <div>
+    <div class="match-actions">
       <a class="btn-outline" href="{% url 'matches_list' %}">View Matches</a>
+      <a class="btn-primary btn-message" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
     </div>
   </div>
 </div>
