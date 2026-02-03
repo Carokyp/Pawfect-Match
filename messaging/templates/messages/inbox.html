@@ -1,0 +1,54 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}Messages{% endblock %}
+{% block content_class %}discover-page-wrapper{% endblock %}
+
+{% block content %}
+
+<div class="discover-page messages-page">
+
+  <!-- APP HEADER -->
+  <header class="discover-header">
+    <h1 class="app-logo m-0">Pawfect Match</h1>
+  </header>
+
+  <div class="profile-toolbar">
+    <span class="profile-title">MESSAGES</span>
+  </div>
+
+  {% if conversations %}
+    <div class="conversations-list">
+      {% for conversation in conversations %}
+        <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card">
+          <div class="conversation-dog-info">
+            <div class="dog-avatar">
+              {% if conversation.dog.profile_photo %}
+                <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
+              {% else %}
+                <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
+              {% endif %}
+            </div>
+            <div class="dog-details">
+              <h3>{{ conversation.dog.name }}</h3>
+              <p class="dog-breed">{{ conversation.dog.breed }}</p>
+              <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
+            </div>
+          </div>
+          <div class="conversation-meta">
+            <span class="message-count">{{ conversation.message_count }}</span>
+            <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state-small">
+      <p>💬 No messages yet</p>
+      <p class="text-light">Send a message to a match to arrange a playdate!</p>
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

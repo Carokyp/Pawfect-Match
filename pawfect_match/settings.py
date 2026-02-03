@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "profiles",
     "dogs",
     "connections",
+    "messaging",
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,67 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}{{ receiver_dog.name }} - Messages{% endblock %}
+{% block content_class %}discover-page-wrapper{% endblock %}
+
+{% block content %}
+
+<div class="discover-page message-thread-page">
+
+  <!-- APP HEADER -->
+  <header class="discover-header">
+    <a href="{% url 'messages_inbox' %}" class="back-button-small" aria-label="Back to messages">
+      <span>←</span>
+    </a>
+    <h1 class="app-logo m-0">Pawfect Match</h1>
+  </header>
+
+  <!-- RECEIVER INFO -->
+  <div class="message-header">
+    <div class="receiver-avatar">
+      {% if receiver_dog.profile_photo %}
+        <img src="{{ receiver_dog.get_photo_url }}" alt="{{ receiver_dog.name }}">
+      {% else %}
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ receiver_dog.name }}">
+      {% endif %}
+    </div>
+    <div class="receiver-info">
+      <h2>{{ receiver_dog.name }}</h2>
+      <p>{{ receiver_dog.breed }}</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- MESSAGES THREAD -->
+  <div class="messages-thread">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message-bubble">
+          <p class="message-content">{{ message.content }}</p>
+          <span class="message-time">{{ message.created_at|date:"M d, H:i" }}</span>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-thread">
+        <p>No messages yet. Send your first message! 📨</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <hr class="divider">
+
+  <!-- MESSAGE FORM -->
+  {% if is_match %}
+    <div class="message-form-container">
+      <form method="POST" class="message-form">
+        {% csrf_token %}
+        {{ form.content }}
+        <button type="submit" class="btn-primary">Send 🐾</button>
+      </form>
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}
