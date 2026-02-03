@@ -9,7 +9,7 @@ class MessageForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={
                 'rows': 4,
-                'placeholder': 'Send a message to arrange a playdate... 🐕',
+                'placeholder': 'Send a message to arrange a playdate!',
                 'class': 'form-control message-input'
             })
         }
