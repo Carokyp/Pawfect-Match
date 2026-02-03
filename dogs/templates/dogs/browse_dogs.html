@@ -125,7 +125,7 @@
 
   <div class="empty-dogs">
     <p class="empty-dogs-title">
-      You've discovered all available pups! 🐾
+      You've discovered all available pups!
     </p>
     <p class="empty-dogs-subtitle">
       New matches may appear soon
@@ -161,11 +161,11 @@
         <img src="{% static 'images/dog_placeholder.png' %}" alt="Matched dog">
       {% endif %}
     </div>
-    <p>You and {{ match_popup.other_dog_name }} found each other</p>
+    <p>{{ match_popup.my_dog_name }} and {{ match_popup.other_dog_name }} found each other</p>
 
     <div class="match-actions">
       <a class="btn-outline" href="{% url 'matches_list' %}">View Matches</a>
-      <a class="btn-primary btn-message" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
+      <a class="btn-outline" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
     </div>
   </div>
 </div>

@@ -69,6 +69,12 @@ def browse_dogs(request):
             {"dog": None, "no_more_dogs": True}
         )
 
+    # Vérifier d'abord si une modal de match doit s'afficher
+    match_popup = None
+    if request.session.get("show_match_modal", False):
+        match_popup = request.session.pop("match_data", None)
+        request.session.pop("show_match_modal", False)
+
     index = request.session.get("dog_index", 0)
 
     if index >= len(dogs):
@@ -81,11 +87,6 @@ def browse_dogs(request):
         dog.owner.interests_list = [i.strip() for i in dog.owner.interests.split(",")]
     else:
         dog.owner.interests_list = []
-
-    # Vérifier si une modal de match doit s'afficher
-    match_popup = None
-    if request.session.pop("show_match_modal", False):
-        match_popup = request.session.pop("match_data", None)
 
     return render(request, "dogs/browse_dogs.html", {
         "dog": dog,
@@ -141,6 +142,7 @@ def like_dog(request, dog_id):
     request.session["match_data"] = {
         "my_dog_photo": my_dog_photo,
         "other_dog_photo": other_dog_photo,
+        "my_dog_name": my_dog.name,
         "other_dog_name": liked_dog.name,
         "other_dog_id": liked_dog.id
     }
