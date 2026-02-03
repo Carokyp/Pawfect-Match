@@ -6,6 +6,8 @@
 
 {% block content %}
 
+{% csrf_token %}
+
 <div class="discover-page messages-page">
 
   <!-- APP HEADER -->
@@ -20,35 +22,61 @@
   {% if conversations %}
     <div class="conversations-list">
       {% for conversation in conversations %}
-        <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card">
-          <div class="conversation-dog-info">
-            <div class="dog-avatar">
-              {% if conversation.dog.profile_photo %}
-                <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
-              {% else %}
-                <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
-              {% endif %}
+        <div class="conversation-item">
+          <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card">
+            <div class="conversation-dog-info">
+              <div class="dog-avatar">
+                {% if conversation.dog.profile_photo %}
+                  <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
+                {% else %}
+                  <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
+                {% endif %}
+              </div>
+              <div class="dog-details">
+                <h3>{{ conversation.dog.name }}</h3>
+                <p class="dog-breed">{{ conversation.dog.breed }}</p>
+                <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
+              </div>
             </div>
-            <div class="dog-details">
-              <h3>{{ conversation.dog.name }}</h3>
-              <p class="dog-breed">{{ conversation.dog.breed }}</p>
-              <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
+            <div class="conversation-meta">
+              <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
             </div>
-          </div>
-          <div class="conversation-meta">
-            <span class="message-count">{{ conversation.message_count }}</span>
-            <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
-          </div>
-        </a>
+          </a>
+          <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
+            🗑️
+          </button>
+        </div>
       {% endfor %}
     </div>
   {% else %}
     <div class="empty-state-small">
-      <p>💬 No messages yet</p>
+      <p>No messages yet</p>
       <p class="text-light">Send a message to a match to arrange a playdate!</p>
     </div>
   {% endif %}
 
 </div>
+
+<!-- DELETE CONFIRMATION MODAL -->
+<div class="modal-backdrop" id="deleteConfirmModal">
+  <div class="delete-modal">
+    <button class="close" type="button" aria-label="Close" id="closeDeleteModal">×</button>
+    <h2>Delete conversation?</h2>
+    <p class="delete-description">This will permanently delete all messages with <span id="deleteDogName"></span>. This action cannot be undone.</p>
+    
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="{% url 'browse_dogs' %}">Discover</a>
+  <a href="{% url 'matches_list' %}">Matches</a>
+  <a href="{% url 'messages_inbox' %}" class="active">Messages</a>
+  <a href="{% url 'view_profile' %}">Profile</a>
+</nav>
 
 {% endblock %}

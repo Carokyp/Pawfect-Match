@@ -336,6 +336,79 @@ document.addEventListener("DOMContentLoaded", () => {
    * Initialize all UI behaviors when the DOM is ready.
    * @returns {void}
    */
+  /* ===============================
+     DELETE CONVERSATION
+     =============================== */
+
+  /**
+   * Setup delete conversation modal and functionality.
+   * @returns {void}
+   */
+  const setupDeleteConversation = () => {
+    const deleteButtons = document.querySelectorAll('.btn-delete-conversation');
+    if (deleteButtons.length === 0) return;
+
+    let selectedDogId = null;
+
+    deleteButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const dogId = btn.dataset.dogId;
+        const dogName = btn.closest('.conversation-item').querySelector('.dog-details h3').textContent;
+        
+        selectedDogId = dogId;
+        document.getElementById('deleteDogName').textContent = dogName;
+        document.getElementById('deleteConfirmModal').classList.add('is-open');
+      });
+    });
+
+    // Close modal
+    const closeDeleteModal = document.getElementById('closeDeleteModal');
+    if (closeDeleteModal) {
+      closeDeleteModal.addEventListener('click', () => {
+        document.getElementById('deleteConfirmModal').classList.remove('is-open');
+      });
+    }
+
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    if (cancelDeleteBtn) {
+      cancelDeleteBtn.addEventListener('click', () => {
+        document.getElementById('deleteConfirmModal').classList.remove('is-open');
+      });
+    }
+
+    // Confirm delete
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmDeleteBtn) {
+      confirmDeleteBtn.addEventListener('click', () => {
+        if (selectedDogId) {
+          // Create form and submit
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = `/messages/delete/${selectedDogId}/`;
+          
+          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+          if (csrfToken) {
+            form.appendChild(csrfToken.cloneNode());
+          }
+          
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    }
+
+    // Close modal on backdrop click
+    const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+    if (deleteConfirmModal) {
+      deleteConfirmModal.addEventListener('click', (e) => {
+        if (e.target.id === 'deleteConfirmModal') {
+          document.getElementById('deleteConfirmModal').classList.remove('is-open');
+        }
+      });
+    }
+  };
+
   const init = () => {
     setupResetMatches();
     setupPasswordToggle();
@@ -346,6 +419,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupFormCache("owner");
     setupFormCache("dog");
     setupPillOptions();
+    setupDeleteConversation();
   };
 
   init();

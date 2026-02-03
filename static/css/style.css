@@ -11,7 +11,6 @@
 }
 /* #endregion */
 
-
 /* #region RESET & BASE STYLES */
 
 * {
@@ -41,7 +40,6 @@ a:visited {
   color: inherit;
 }
 /* #endregion */
-
 
 /* #region LAYOUT STRUCTURE */
 
@@ -103,7 +101,6 @@ a:visited {
 }
 /* #endregion */
 
-
 /* #region HOME PAGE */
 
 .home-title {
@@ -128,7 +125,6 @@ a:visited {
   align-items: center;
 }
 /* #endregion */
-
 
 /* #region BUTTONS & INTERACTIVE ELEMENTS */
 
@@ -192,6 +188,34 @@ a:visited {
   height: 20px;
   filter: grayscale(100%);
 }
+
+/* --- Back Button Messages --- */
+.back-button-messages {
+  position: fixed;
+  top: 60px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  background: rgb(230, 229, 229);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  transition: var(--transition);
+}
+
+.back-button-messages:hover {
+  background: rgb(200, 199, 199);
+  transform: translateX(-2px);
+}
+
+.back-button-messages img {
+  width: 20px;
+  height: 20px;
+  filter: grayscale(100%);
+}
+
 /* #endregion */
 
 /* #region FORMS & INPUTS */
@@ -519,7 +543,7 @@ input[type="number"] {
   max-width: 380px;
   margin: 0 auto;
   padding: 0 0.75rem;
-  padding-top: 45px;
+  padding-top: 70px;
   padding-bottom: 45px;
 }
 
@@ -1418,21 +1442,6 @@ body.modal-open {
 
 /* #endregion */
 
-/* #region RESPONSIVE DESIGN */
-/* Add breakpoints here if needed */
-
-@media (min-width: 768px) {
-  .discover-page {
-    max-width: 520px;
-  }
-
-  .matches-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* #endregion */
-
 /* #region DANGER ZONE */
 
 .danger-zone {
@@ -1608,6 +1617,7 @@ body.modal-open {
 
 /* --- Messages Inbox --- */
 .messages-page {
+  padding-top: 70px;
   padding-bottom: 80px;
 }
 
@@ -1712,6 +1722,7 @@ body.modal-open {
 
 /* --- Message Thread --- */
 .message-thread-page {
+  padding-top: 70px;
   padding-bottom: 80px;
 }
 
@@ -1754,32 +1765,86 @@ body.modal-open {
 .messages-thread {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 1rem;
   min-height: 300px;
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+}
+
+.message-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-row.sent {
+  justify-content: flex-end;
+}
+
+.message-row.received {
+  justify-content: flex-start;
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .message-bubble {
-  max-width: 80%;
-  padding: 1rem;
-  border-radius: 15px;
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 18px;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.message-row.sent .message-bubble {
   background: var(--primary-color);
   color: var(--secondary-color);
-  word-wrap: break-word;
-  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+.message-row.received .message-bubble {
+  background: #e5e5e5;
+  color: var(--primary-color);
+  border-bottom-left-radius: 4px;
 }
 
 .message-content {
   margin: 0;
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .message-time {
-  display: block;
   font-size: 0.7rem;
-  opacity: 0.8;
-  margin-top: 0.5rem;
+  opacity: 0.7;
+}
+
+.message-row.sent .message-time {
+  text-align: right;
+}
+
+.message-row.received .message-time {
+  text-align: left;
 }
 
 .empty-thread {
@@ -1802,16 +1867,18 @@ body.modal-open {
 .message-form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .message-input {
   resize: none;
   border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 0.75rem;
+  border-radius: 20px;
+  padding: 0.75rem 1rem;
   font-family: inherit;
   font-size: 0.95rem;
+  background: var(--secondary-color);
+  max-height: 100px;
 }
 
 .message-input:focus {
@@ -1820,9 +1887,26 @@ body.modal-open {
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-.message-form .btn-primary {
+.message-form .btn-send {
   padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
   align-self: flex-end;
+}
+
+.message-form .btn-send:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.message-form .btn-send:active {
+  transform: translateY(0);
 }
 
 .divider {
@@ -1850,45 +1934,168 @@ body.modal-open {
   background: #e0e0e0;
 }
 
-/* --- Bottom Nav --- */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-around;
-  padding: 0.75rem 0;
-  background: var(--secondary-color);
-  border-top: 1px solid #eee;
-  z-index: 100;
+/* #endregion */
+
+/* #region RESPONSIVE DESIGN */
+/* Add breakpoints here if needed */
+
+@media (min-width: 768px) {
+  .discover-page {
+    max-width: 520px;
+  }
+
+  .matches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.bottom-nav a {
+/* --- Conversation Delete Button --- */
+.conversation-item {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.conversation-card {
   flex: 1;
-  text-align: center;
-  padding: 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 15px;
+  border: 1px solid #eee;
   text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+.conversation-card:hover {
+  background: #f0f0f0;
+}
+
+.btn-delete-conversation {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete-conversation:hover {
+  background: rgba(248, 117, 117, 0.1);
+}
+
+.btn-delete-conversation:active {
+  transform: scale(0.95);
+}
+
+/* --- Delete Confirmation Modal --- */
+.delete-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 320px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+  position: relative;
+}
+
+.delete-modal h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.delete-description {
+  margin: 0 0 1.5rem 0;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.delete-description span {
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.delete-modal .close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  cursor: pointer;
   color: var(--text-light);
   transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-modal .close:hover {
+  color: var(--text-dark);
+  transform: rotate(90deg);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.modal-actions .btn-secondary {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background-color: #f0f0f0;
   border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-dark);
 }
 
-.bottom-nav a:hover {
-  color: var(--primary-color);
+.modal-actions .btn-secondary:hover {
+  background-color: #e0e0e0;
 }
 
-.bottom-nav a.active {
-  color: var(--primary-color);
-  border-top: 2px solid var(--primary-color);
-  padding-top: 0.73rem;
+.modal-actions .btn-danger {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background-color: #f87575;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.modal-actions .btn-danger:hover {
+  background-color: #f05555;
+  transform: translateY(-2px);
+}
+
+.modal-actions .btn-danger:active {
+  transform: translateY(0);
 }
 
 /* #endregion */
-
-
 
 
 

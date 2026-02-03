@@ -119,13 +119,6 @@
       </form>
     </div>
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-      <a href="{% url 'browse_dogs' %}" class="active">Discover</a>
-      <a href="{% url 'matches_list' %}">Matches</a>
-      <a href="{% url 'view_profile' %}">Profile</a>
-    </nav>
-
   </div>
 
   {% else %}
@@ -147,16 +140,7 @@
 
   {% endif %}
 
-  <!-- BOTTOM NAV (Always visible) -->
-  <nav class="bottom-nav">
-    <a href="{% url 'browse_dogs' %}" class="active">Discover</a>
-    <a href="{% url 'matches_list' %}">Matches</a>
-    <a href="{% url 'view_profile' %}">Profile</a>
-  </nav>
-
-</div>
-
-{% if match_popup %}
+  {% if match_popup %}
 <div class="modal-backdrop is-open" id="matchModal">
   <div class="match-modal">
     <button class="close" type="button" aria-label="Close" id="closeMatchModal">×</button>
@@ -193,5 +177,7 @@
   <a href="{% url 'messages_inbox' %}">Messages</a>
   <a href="{% url 'view_profile' %}">Profile</a>
 </nav>
+
+</div>
 
 {% endblock %}

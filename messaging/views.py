@@ -83,6 +83,21 @@ def message_thread(request, dog_id):
         receiver_dog=receiver_dog
     ).order_by('created_at')
 
+    # Prepare messages with sender info for template
+    messages_with_sender = []
+    for msg in messages:
+        sender_avatar = (
+            msg.sender_dog.profile_photo.url
+            if msg.sender_dog.profile_photo
+            else None
+        )
+        messages_with_sender.append({
+            'message': msg,
+            'is_sent': msg.sender_dog.id == my_dog.id,
+            'sender_avatar': sender_avatar,
+            'sender_name': msg.sender_dog.name,
+        })
+
     if request.method == "POST":
         form = MessageForm(request.POST)
         if form.is_valid():
@@ -96,7 +111,8 @@ def message_thread(request, dog_id):
 
     context = {
         "receiver_dog": receiver_dog,
-        "messages": messages,
+        "my_dog": my_dog,
+        "messages": messages_with_sender,
         "form": form,
         "is_match": is_match
     }
@@ -136,3 +152,24 @@ def send_message(request, dog_id):
         message.save()
 
     return redirect("message_thread", dog_id=dog_id)
+
+
+@login_required
+@require_POST
+def delete_conversation(request, dog_id):
+    """Delete all messages in a conversation"""
+    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+
+    if not owner_profile or not hasattr(owner_profile, "dog"):
+        return redirect("browse_dogs")
+
+    my_dog = owner_profile.dog
+    receiver_dog = get_object_or_404(Dog, id=dog_id)
+
+    # Delete all messages between these two dogs
+    Message.objects.filter(
+        sender_dog=my_dog,
+        receiver_dog=receiver_dog
+    ).delete()
+
+    return redirect("messages_inbox")

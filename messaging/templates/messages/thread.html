@@ -4,15 +4,18 @@
 {% block title %}{{ receiver_dog.name }} - Messages{% endblock %}
 {% block content_class %}discover-page-wrapper{% endblock %}
 
+{% block back_button %}
+<a href="{% url 'messages_inbox' %}" class="back-button-messages">
+  <img src="{% static 'images/back_arrow.svg' %}" alt="Back" />
+</a>
+{% endblock %}
+
 {% block content %}
 
 <div class="discover-page message-thread-page">
 
   <!-- APP HEADER -->
   <header class="discover-header">
-    <a href="{% url 'messages_inbox' %}" class="back-button-small" aria-label="Back to messages">
-      <span>←</span>
-    </a>
     <h1 class="app-logo m-0">Pawfect Match</h1>
   </header>
 
@@ -33,18 +36,36 @@
 
   <hr class="divider">
 
-  <!-- MESSAGES THREAD -->
+  <!-- MESSAGES THREAD - iMessage style -->
   <div class="messages-thread">
     {% if messages %}
-      {% for message in messages %}
-        <div class="message-bubble">
-          <p class="message-content">{{ message.content }}</p>
-          <span class="message-time">{{ message.created_at|date:"M d, H:i" }}</span>
+      {% for item in messages %}
+        <div class="message-row {% if item.is_sent %}sent{% else %}received{% endif %}">
+          {% if not item.is_sent %}
+            {% if item.sender_avatar %}
+              <img class="message-avatar" src="{{ item.sender_avatar }}" alt="{{ item.sender_name }}" title="{{ item.sender_name }}">
+            {% else %}
+              <img class="message-avatar" src="{% static 'images/dog_placeholder.png' %}" alt="{{ item.sender_name }}" title="{{ item.sender_name }}">
+            {% endif %}
+          {% endif %}
+          
+          <div class="message-bubble">
+            <p class="message-content">{{ item.message.content }}</p>
+            <span class="message-time">{{ item.message.created_at|date:"H:i" }}</span>
+          </div>
+          
+          {% if item.is_sent %}
+            {% if my_dog.profile_photo %}
+              <img class="message-avatar" src="{{ my_dog.get_photo_url }}" alt="{{ my_dog.name }}" title="{{ my_dog.name }}">
+            {% else %}
+              <img class="message-avatar" src="{% static 'images/dog_placeholder.png' %}" alt="{{ my_dog.name }}" title="{{ my_dog.name }}">
+            {% endif %}
+          {% endif %}
         </div>
       {% endfor %}
     {% else %}
       <div class="empty-thread">
-        <p>No messages yet. Send your first message! 📨</p>
+        <p>No messages yet. Send your first message!</p>
       </div>
     {% endif %}
   </div>
@@ -57,11 +78,20 @@
       <form method="POST" class="message-form">
         {% csrf_token %}
         {{ form.content }}
-        <button type="submit" class="btn-primary">Send 🐾</button>
+        <button type="submit" class="btn-send">Send</button>
       </form>
     </div>
   {% endif %}
 
 </div>
 
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="{% url 'browse_dogs' %}">Discover</a>
+  <a href="{% url 'matches_list' %}">Matches</a>
+  <a href="{% url 'messages_inbox' %}" class="active">Messages</a>
+  <a href="{% url 'view_profile' %}">Profile</a>
+</nav>
+
 {% endblock %}
+
