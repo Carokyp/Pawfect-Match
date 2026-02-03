@@ -1,47 +1,67 @@
 document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
+
   /* ===============================
-     RESET MATCHES BUTTON
+     CONFIRMATIONS
      =============================== */
-  const resetBtn = document.getElementById("resetMatchesBtn");
-  if (resetBtn) {
-    resetBtn.addEventListener("click", (e) => {
+
+  /**
+   * Ask confirmation before resetting matches.
+   * @returns {void}
+   */
+  const setupResetMatches = () => {
+    const resetBtn = document.getElementById("resetMatchesBtn");
+    if (!resetBtn) return;
+
+    resetBtn.addEventListener("click", (event) => {
       const confirmed = confirm(
         "Are you sure you want to reset all your matches? This will clear all your likes and let you start discovering again."
       );
       if (!confirmed) {
-        e.preventDefault();
+        event.preventDefault();
       }
     });
-  }
+  };
 
   /* ===============================
-     PASSWORD TOGGLE (eye icon)
+     AUTH UI
      =============================== */
-  const toggleBtns = document.querySelectorAll(".toggle-password");
 
-  toggleBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const input = btn.parentElement.querySelector("input");
-      if (!input) return;
-
-      input.type = input.type === "password" ? "text" : "password";
+  /**
+   * Toggle password visibility for inputs with an eye icon.
+   * @returns {void}
+   */
+  const setupPasswordToggle = () => {
+    const toggleButtons = document.querySelectorAll(".toggle-password");
+    toggleButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const input = button.parentElement.querySelector("input");
+        if (!input) return;
+        input.type = input.type === "password" ? "text" : "password";
+      });
     });
-  });
+  };
 
+  /* ===============================
+     PROFILE TOGGLE
+     =============================== */
 
-  const toggleButtons = document.querySelectorAll(".toggle-btn");
-  const dogView = document.querySelector(".dog-view");
-  const ownerView = document.querySelector(".owner-view");
+  /**
+   * Switch between dog and owner views.
+   * @returns {void}
+   */
+  const setupProfileToggle = () => {
+    const toggleButtons = document.querySelectorAll(".toggle-btn");
+    const dogView = document.querySelector(".dog-view");
+    const ownerView = document.querySelector(".owner-view");
+    if (!dogView || !ownerView || !toggleButtons.length) return;
 
-  if (dogView && ownerView) {
-    toggleButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        // Reset buttons
-        toggleButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
+    toggleButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        toggleButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
 
-        // Switch views
-        if (btn.dataset.view === "dog") {
+        if (button.dataset.view === "dog") {
           dogView.classList.remove("hidden");
           ownerView.classList.add("hidden");
         } else {
@@ -50,183 +70,186 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
-  }
-
+  };
 
   /* ===============================
-     IMAGE UPLOAD PREVIEW
-     (Owner + Dog)
+     IMAGE UPLOADS
      =============================== */
-  const fileInputs = document.querySelectorAll(".upload-box input[type='file']");
-  console.log('Found file inputs:', fileInputs.length);
 
-  fileInputs.forEach((input) => {
-    console.log('Setting up listener for input:', input);
-    
-    input.addEventListener("change", (e) => {
-      console.log('File input changed!', e.target.files);
-      const file = input.files[0];
-      if (!file) {
-        console.log('No file selected');
-        return;
-      }
+  /**
+   * Read a file input and display the preview.
+   * @param {HTMLInputElement} input - File input element.
+   * @param {HTMLElement} uploadBox - Container element.
+   * @returns {void}
+   */
+  const handleImagePreview = (input, uploadBox) => {
+    const file = input.files[0];
+    if (!file) return;
 
-      console.log('File selected:', file.name, file.type);
-      
-      const uploadBox = input.closest(".upload-box");
-      console.log('Upload box:', uploadBox);
-      
-      const preview = uploadBox.querySelector(".image-preview");
-      const placeholder = uploadBox.querySelector(".upload-placeholder");
-      console.log('Preview element:', preview);
-      console.log('Placeholder element:', placeholder);
+    const preview = uploadBox.querySelector(".image-preview");
+    const placeholder = uploadBox.querySelector(".upload-placeholder");
+    if (!preview || !placeholder) return;
 
-      if (!preview || !placeholder) {
-        console.log('Missing preview or placeholder!');
-        return;
-      }
+    const reader = new FileReader();
+    reader.onload = () => {
+      preview.src = reader.result;
+      uploadBox.classList.add("has-image");
+      preview.style.display = "block";
+      placeholder.style.display = "none";
+    };
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        console.log('File loaded, setting preview src');
-        preview.src = reader.result;
-        uploadBox.classList.add("has-image");
-        preview.style.display = "block";
-        placeholder.style.display = "none";
-        console.log('Preview should now be visible');
+    reader.readAsDataURL(file);
+  };
+
+  /**
+   * Enable image previews and optional drag-and-drop uploads.
+   * @returns {void}
+   */
+  const setupImageUploads = () => {
+    const uploadBoxes = document.querySelectorAll(".upload-box");
+    if (!uploadBoxes.length) return;
+
+    uploadBoxes.forEach((box) => {
+      const input = box.querySelector("input[type='file']");
+      const preview = box.querySelector(".image-preview");
+      const placeholder = box.querySelector(".upload-placeholder");
+      const removeBtn = box.querySelector(".upload-remove");
+      if (!input) return;
+
+      const resetImage = () => {
+        if (preview) {
+          preview.src = "";
+          preview.style.display = "none";
+        }
+        if (placeholder) {
+          placeholder.style.display = "block";
+        }
+        box.classList.remove("has-image");
+        input.value = "";
       };
 
-      reader.readAsDataURL(file);
-    });
-  });
+      input.addEventListener("change", () => handleImagePreview(input, box));
 
-  // Optional: enable basic drag-and-drop onto the upload box
-  const uploadBoxes = document.querySelectorAll(".upload-box");
-  uploadBoxes.forEach((box) => {
-    const input = box.querySelector("input[type='file']");
-    const preview = box.querySelector(".image-preview");
-    const placeholder = box.querySelector(".upload-placeholder");
-    const removeBtn = box.querySelector(".upload-remove");
-    if (!input) return;
-
-    const resetImage = () => {
-      if (preview) {
-        preview.src = "";
-        preview.style.display = "none";
-      }
-      if (placeholder) {
-        placeholder.style.display = "block";
-      }
-      box.classList.remove("has-image");
-      input.value = ""; // Clear file selection
-    };
-
-    box.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      box.style.borderColor = "#ffb6c1";
-      box.style.background = "rgba(255,182,193,0.2)";
-    });
-
-    box.addEventListener("dragleave", () => {
-      box.style.borderColor = "#ccc";
-      box.style.background = "transparent";
-    });
-
-    box.addEventListener("drop", (e) => {
-      e.preventDefault();
-      box.style.borderColor = "#ccc";
-      box.style.background = "transparent";
-      const files = e.dataTransfer.files;
-      if (files && files[0]) {
-        input.files = files;
-        input.dispatchEvent(new Event("change"));
-      }
-    });
-
-    if (removeBtn) {
-      removeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        resetImage();
+      box.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        box.style.borderColor = "#ffb6c1";
+        box.style.background = "rgba(255,182,193,0.2)";
       });
-    }
-  });
 
+      box.addEventListener("dragleave", () => {
+        box.style.borderColor = "#ccc";
+        box.style.background = "transparent";
+      });
 
-  /* ===============================
-     CHARACTER COUNTER (About me)
-     =============================== */
-  const textareas = document.querySelectorAll("textarea[maxlength]");
+      box.addEventListener("drop", (event) => {
+        event.preventDefault();
+        box.style.borderColor = "#ccc";
+        box.style.background = "transparent";
 
-  textareas.forEach((textarea) => {
-    const counter = textarea.parentElement.querySelector(".char-counter");
-    if (!counter) return;
+        const files = event.dataTransfer.files;
+        if (files && files[0]) {
+          input.files = files;
+          input.dispatchEvent(new Event("change"));
+        }
+      });
 
-    const maxLength = textarea.getAttribute("maxlength");
-
-    const updateCounter = () => {
-      counter.textContent = `${textarea.value.length} / ${maxLength}`;
-    };
-
-    textarea.addEventListener("input", updateCounter);
-    updateCounter();
-  });
-
-  const modal = document.getElementById("matchModal");
-  const closeBtn = document.getElementById("closeMatchModal");
-
-
-  /* ===============================
-     MODAL POP UP
-     =============================== */
-
-  if (modal) {
-    // Block body scroll when modal is open
-    const checkAndBlockScroll = () => {
-      if (modal.classList.contains("is-open")) {
-        document.body.classList.add("modal-open");
+      if (removeBtn) {
+        removeBtn.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          resetImage();
+        });
       }
-    };
-    checkAndBlockScroll();
+    });
+  };
 
+  /* ===============================
+     TEXT HELPERS
+     =============================== */
+
+  /**
+   * Display a live character counter for textareas with maxlength.
+   * @returns {void}
+   */
+  const setupCharacterCounters = () => {
+    const textareas = document.querySelectorAll("textarea[maxlength]");
+    textareas.forEach((textarea) => {
+      const counter = textarea.parentElement.querySelector(".char-counter");
+      if (!counter) return;
+
+      const maxLength = textarea.getAttribute("maxlength");
+      const updateCounter = () => {
+        counter.textContent = `${textarea.value.length} / ${maxLength}`;
+      };
+
+      textarea.addEventListener("input", updateCounter);
+      updateCounter();
+    });
+  };
+
+  /* ===============================
+     MODALS
+     =============================== */
+
+  /**
+   * Handle the match modal open/close and body scroll lock.
+   * @returns {void}
+   */
+  const setupMatchModal = () => {
+    const modal = document.getElementById("matchModal");
+    if (!modal) return;
+
+    const closeBtn = document.getElementById("closeMatchModal");
     const close = () => {
       modal.classList.remove("is-open");
-      document.body.classList.remove("modal-open"); // Unblock scroll
+      document.body.classList.remove("modal-open");
     };
 
-    // Close only with X button (not by clicking outside)
+    if (modal.classList.contains("is-open")) {
+      document.body.classList.add("modal-open");
+    }
+
     if (closeBtn) {
       closeBtn.addEventListener("click", close);
     }
-  }
+  };
 
   /* ===============================
-     SIMPLE FORM CACHE (sessionStorage)
+     FORM CACHE
      =============================== */
+
+  /**
+   * Cache form inputs in sessionStorage to preserve progress.
+   * @param {string} formType - Data attribute value for the form.
+   * @returns {void}
+   */
   const setupFormCache = (formType) => {
     const form = document.querySelector(`form[data-form-type="${formType}"]`);
     if (!form) return;
 
     const inputs = form.querySelectorAll("input, textarea, select");
     const handledCheckboxGroups = new Set();
-
     const cacheKey = (name) => `${formType}_${name}`;
 
     const getCheckboxGroup = (name) =>
       Array.from(
-        form.querySelectorAll(`input[type="checkbox"][name="${CSS.escape(name)}"]`)
+        form.querySelectorAll(
+          `input[type="checkbox"][name="${CSS.escape(name)}"]`
+        )
       );
 
     const restoreCheckboxGroup = (name) => {
       const checkboxes = getCheckboxGroup(name);
       const savedValue = sessionStorage.getItem(cacheKey(name));
       if (!savedValue) return;
+
       let values = [];
       try {
         values = JSON.parse(savedValue);
-      } catch (e) {
+      } catch (error) {
         values = [];
       }
+
       checkboxes.forEach((cb) => {
         cb.checked = values.includes(cb.value);
       });
@@ -269,8 +292,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /* ===============================
-     PILL OPTIONS (max selection)
+     PILL OPTIONS
      =============================== */
+
+  /**
+   * Enforce max selections on pill-style checkbox groups.
+   * @returns {void}
+   */
   const setupPillOptions = () => {
     const groups = document.querySelectorAll(".pill-options[data-max]");
     groups.forEach((group) => {
@@ -281,7 +309,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!checkboxes.length || !max) return;
 
       const helper = group.parentElement.querySelector(".pill-helper");
-
       const update = () => {
         const selected = checkboxes.filter((cb) => cb.checked);
         const limitReached = selected.length >= max;
@@ -296,18 +323,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       };
 
-      checkboxes.forEach((cb) => {
-        cb.addEventListener("change", update);
-      });
-
+      checkboxes.forEach((cb) => cb.addEventListener("change", update));
       update();
     });
   };
 
-  setupFormCache("owner");
-  setupFormCache("dog");
-  setupPillOptions();
+  /* ===============================
+     INIT
+     =============================== */
 
+  /**
+   * Initialize all UI behaviors when the DOM is ready.
+   * @returns {void}
+   */
+  const init = () => {
+    setupResetMatches();
+    setupPasswordToggle();
+    setupProfileToggle();
+    setupImageUploads();
+    setupCharacterCounters();
+    setupMatchModal();
+    setupFormCache("owner");
+    setupFormCache("dog");
+    setupPillOptions();
+  };
+
+  init();
 });
 
 
