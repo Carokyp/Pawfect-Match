@@ -6,6 +6,8 @@
 
 {% block content %}
 
+{% csrf_token %}
+
 <div class="discover-page">
 
   <!-- APP HEADER -->
@@ -130,12 +132,9 @@
     <p class="empty-dogs-subtitle">
       New matches may appear soon
     </p>
-    <form method="POST" action="{% url 'reset_matches' %}" style="margin-top: 20px;">
-      {% csrf_token %}
-      <button type="submit" class="btn-reset-matches" id="resetMatchesBtn">
-        Reset Matches
-      </button>
-    </form>
+    <button type="button" class="btn-reset-matches" id="resetMatchesBtn">
+      Reset Matches
+    </button>
   </div>
 
   {% endif %}
@@ -178,6 +177,20 @@
   <a href="{% url 'messages_inbox' %}">Messages</a>
   <a href="{% url 'view_profile' %}">Profile</a>
 </nav>
+
+<!-- RESET MATCHES MODAL -->
+<div class="modal-backdrop" id="resetConfirmModal">
+  <div class="delete-modal">
+    <button class="close" type="button" aria-label="Close" id="closeResetModal">×</button>
+    <h2>Reset matches?</h2>
+    <p class="delete-description">This will restart your discovery and reset all your likes. Are you sure?</p>
+    
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelResetBtn">Cancel</button>
+      <button class="btn-danger" id="confirmResetBtn">Reset</button>
+    </div>
+  </div>
+</div>
 
 </div>
 

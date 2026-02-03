@@ -5,24 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
      CONFIRMATIONS
      =============================== */
 
-  /**
-   * Ask confirmation before resetting matches.
-   * @returns {void}
-   */
-  const setupResetMatches = () => {
-    const resetBtn = document.getElementById("resetMatchesBtn");
-    if (!resetBtn) return;
-
-    resetBtn.addEventListener("click", (event) => {
-      const confirmed = confirm(
-        "Are you sure you want to reset all your matches? This will clear all your likes and let you start discovering again."
-      );
-      if (!confirmed) {
-        event.preventDefault();
-      }
-    });
-  };
-
   /* ===============================
      AUTH UI
      =============================== */
@@ -336,6 +318,70 @@ document.addEventListener("DOMContentLoaded", () => {
    * Initialize all UI behaviors when the DOM is ready.
    * @returns {void}
    */
+  /* ===============================
+     RESET MATCHES
+     =============================== */
+
+  /**
+   * Setup reset matches modal and functionality.
+   * @returns {void}
+   */
+  const setupResetMatches = () => {
+    const resetBtn = document.getElementById('resetMatchesBtn');
+    if (!resetBtn) return;
+
+    resetBtn.addEventListener('click', () => {
+      const resetModal = document.getElementById('resetConfirmModal');
+      if (resetModal) {
+        resetModal.classList.add('is-open');
+      }
+    });
+
+    // Close modal
+    const closeResetModal = document.getElementById('closeResetModal');
+    if (closeResetModal) {
+      closeResetModal.addEventListener('click', () => {
+        document.getElementById('resetConfirmModal').classList.remove('is-open');
+      });
+    }
+
+    const cancelResetBtn = document.getElementById('cancelResetBtn');
+    if (cancelResetBtn) {
+      cancelResetBtn.addEventListener('click', () => {
+        document.getElementById('resetConfirmModal').classList.remove('is-open');
+      });
+    }
+
+    // Confirm reset
+    const confirmResetBtn = document.getElementById('confirmResetBtn');
+    if (confirmResetBtn) {
+      confirmResetBtn.addEventListener('click', () => {
+        // Create form and submit
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/dogs/reset/';
+        
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (csrfToken) {
+          form.appendChild(csrfToken.cloneNode());
+        }
+        
+        document.body.appendChild(form);
+        form.submit();
+      });
+    }
+
+    // Close modal on backdrop click
+    const resetConfirmModal = document.getElementById('resetConfirmModal');
+    if (resetConfirmModal) {
+      resetConfirmModal.addEventListener('click', (e) => {
+        if (e.target.id === 'resetConfirmModal') {
+          document.getElementById('resetConfirmModal').classList.remove('is-open');
+        }
+      });
+    }
+  };
+
   /* ===============================
      DELETE CONVERSATION
      =============================== */

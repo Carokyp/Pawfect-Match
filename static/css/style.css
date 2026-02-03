@@ -1492,14 +1492,12 @@ body.modal-open {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
   display: inline-block;
 }
 
 .btn-danger:hover {
   background-color: #e85555;
   border-color: #e85555;
-  transform: scale(1.02);
 }
 
 .btn-danger:active {
@@ -1623,7 +1621,7 @@ body.modal-open {
   flex: 1;
 }
 
-/* #endregion %endregion */
+/* #endregion */
 
 /* #region MESSAGING */
 
@@ -1948,18 +1946,7 @@ body.modal-open {
 
 /* #endregion */
 
-/* #region RESPONSIVE DESIGN */
-/* Add breakpoints here if needed */
-
-@media (min-width: 768px) {
-  .discover-page {
-    max-width: 520px;
-  }
-
-  .matches-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+/* #region DELETE CONVERSATION MODAL */
 
 /* --- Conversation Delete Button --- */
 .conversation-item {
@@ -2083,8 +2070,8 @@ body.modal-open {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
   color: var(--text-dark);
+  transition: background-color 0.3s ease;
 }
 
 .modal-actions .btn-secondary:hover {
@@ -2101,20 +2088,27 @@ body.modal-open {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: background-color 0.3s ease;
 }
 
 .modal-actions .btn-danger:hover {
   background-color: #f05555;
-  transform: translateY(-2px);
-}
-
-.modal-actions .btn-danger:active {
-  transform: translateY(0);
 }
 
 /* #endregion */
 
+/* #region RESPONSIVE DESIGN */
+/* Add breakpoints here if needed */
 
+@media (min-width: 768px) {
+  .discover-page {
+    max-width: 520px;
+  }
+
+  .matches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* #endregion */
 
 
