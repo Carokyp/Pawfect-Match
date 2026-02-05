@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dating Safety - Pawfect Match</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    /* NAVBAR */
+    .safety-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 3rem;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .safety-navbar a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .safety-navbar a:hover {
+      color: #667eea;
+    }
+
+    .safety-navbar .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-right: auto;
+      color: #667eea;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* CONTENT */
+    .safety-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .safety-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .safety-header h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .safety-header p {
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    /* SECTION */
+    .safety-section {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .safety-section h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #667eea;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .safety-section h3 {
+      font-size: 1.3rem;
+      margin: 2rem 0 1rem;
+      color: #333;
+    }
+
+    .safety-section p {
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .safety-section ul {
+      margin: 1rem 0 1.5rem 1.5rem;
+    }
+
+    .safety-section li {
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    .tip-box {
+      background: #f0f4ff;
+      border-left: 4px solid #667eea;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+    }
+
+    .tip-box strong {
+      color: #667eea;
+    }
+
+    @media (max-width: 768px) {
+      .safety-navbar {
+        padding: 1rem;
+        gap: 1.5rem;
+      }
+
+      .safety-container {
+        padding: 5rem 1.5rem 3rem;
+      }
+
+      .safety-header h1 {
+        font-size: 2rem;
+      }
+
+      .safety-section {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="safety-navbar">
+    <a href="{% url 'home' %}" class="logo">Pawfect Match</a>
+    <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="safety-container">
+    <div class="safety-header">
+      <h1>Dating Tips & Safety</h1>
+      <p>Your guide to safe and enjoyable connections</p>
+    </div>
+
+    <!-- DATING TIPS SECTION -->
+    <section class="safety-section">
+      <h2>💡 Dating Tips</h2>
+      
+      <h3>Making a Great First Impression</h3>
+      <ul>
+        <li><strong>Be authentic:</strong> Let your true personality shine through. Honesty creates stronger connections.</li>
+        <li><strong>Show off your pet:</strong> Share cute, genuine photos of your furry friend. They're your best wingman!</li>
+        <li><strong>Write a compelling bio:</strong> Mention your pet's personality, your favorite activities together, and what you're looking for.</li>
+        <li><strong>Stay positive:</strong> Keep your profile upbeat and friendly. Positivity is attractive!</li>
+      </ul>
+
+      <h3>Starting Conversations</h3>
+      <ul>
+        <li><strong>Ask about their pet:</strong> "What's [pet name]'s favorite activity?" is always a great icebreaker.</li>
+        <li><strong>Share pet stories:</strong> Funny or heartwarming stories about your pet create instant connection.</li>
+        <li><strong>Suggest pet-friendly dates:</strong> Dog park walks, pet-friendly cafes, or hiking trails are perfect first meetups.</li>
+        <li><strong>Be responsive:</strong> Reply within a reasonable time to show genuine interest.</li>
+      </ul>
+
+      <h3>Planning the First Date</h3>
+      <ul>
+        <li><strong>Choose neutral territory:</strong> A public dog park or pet-friendly cafe is ideal.</li>
+        <li><strong>Keep it casual:</strong> Low-pressure activities like a walk make conversations flow naturally.</li>
+        <li><strong>Consider both pets:</strong> Make sure the location works for both your furry friends.</li>
+        <li><strong>Have a backup plan:</strong> Weather or pet behavior can be unpredictable!</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>Pro Tip:</strong> A first date with pets present is naturally less awkward. Your pets will break the ice and give you plenty to talk about!
+      </div>
+    </section>
+
+    <!-- DATING SAFETY SECTION -->
+    <section class="safety-section">
+      <h2>🛡️ Dating Safety</h2>
+      
+      <h3>Before Meeting In Person</h3>
+      <ul>
+        <li><strong>Take your time:</strong> Don't rush into meeting. Chat for a while to build trust and comfort.</li>
+        <li><strong>Video chat first:</strong> A quick video call helps verify identity and build rapport safely.</li>
+        <li><strong>Trust your instincts:</strong> If something feels off, it probably is. Listen to your gut.</li>
+        <li><strong>Keep personal info private:</strong> Don't share your address, workplace, or financial details early on.</li>
+      </ul>
+
+      <h3>Meeting Safely</h3>
+      <ul>
+        <li><strong>Meet in public:</strong> Always choose busy, well-lit public spaces for first dates.</li>
+        <li><strong>Tell someone:</strong> Let a friend or family member know where you're going and when you'll be back.</li>
+        <li><strong>Share your location:</strong> Use your phone's location sharing feature with a trusted contact.</li>
+        <li><strong>Arrange your own transportation:</strong> Drive yourself or use a rideshare. Don't accept rides on first dates.</li>
+        <li><strong>Stay sober:</strong> Keep a clear head on first meetings. You need to make good judgments.</li>
+      </ul>
+
+      <h3>Pet Safety</h3>
+      <ul>
+        <li><strong>Ensure compatibility:</strong> Ask about the other pet's temperament and socialization.</li>
+        <li><strong>Keep leashes handy:</strong> Even friendly pets can be unpredictable in new situations.</li>
+        <li><strong>Watch for stress signs:</strong> If either pet seems uncomfortable, be ready to leave.</li>
+        <li><strong>Bring essentials:</strong> Water, treats, and waste bags for your pet.</li>
+      </ul>
+
+      <h3>Red Flags to Watch For</h3>
+      <ul>
+        <li>🚩 Pushing to meet immediately or rushing intimacy</li>
+        <li>🚩 Refusing to video chat or meet in public places</li>
+        <li>🚩 Asking for money or financial information</li>
+        <li>🚩 Being vague about their life or avoiding questions</li>
+        <li>🚩 Making you feel uncomfortable or pressured</li>
+        <li>🚩 Aggressive or controlling behavior toward you or pets</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>Remember:</strong> Your safety and your pet's safety always come first. There's no shame in changing your mind about meeting someone or leaving a date early if you feel unsafe.
+      </div>
+
+      <h3>Report Concerns</h3>
+      <p>If someone makes you feel unsafe or violates our community guidelines, please report them immediately. We take safety seriously and will investigate all reports.</p>
+    </section>
+
+    <!-- CTA -->
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="{% url 'register' %}" style="display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.1rem;">Get Started Safely</a>
+    </div>
+  </div>
+
+</body>
+</html>

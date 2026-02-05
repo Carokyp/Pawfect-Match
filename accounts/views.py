@@ -91,3 +91,8 @@ def delete_profile(request):
         logout(request)
         return redirect("home")
     return redirect("view_profile")
+
+
+def dating_safety(request):
+    """Display dating tips and safety information"""
+    return render(request, "accounts/dating_safety.html")

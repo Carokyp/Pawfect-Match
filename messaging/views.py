@@ -35,10 +35,8 @@ def messages_inbox(request):
             conversations[receiver_id] = {
                 'dog': msg.receiver_dog,
                 'owner': msg.receiver_dog.owner,
-                'last_message': msg,
-                'message_count': 0
+                'last_message': msg
             }
-        conversations[receiver_id]['message_count'] += 1
 
     # Sort by latest message first
     conversations_list = sorted(

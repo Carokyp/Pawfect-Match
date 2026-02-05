@@ -1,23 +1,479 @@
-{% extends "base_auth.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawfect Match - Find Love Through Your Pet</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-{% block title %}Pawfect Match - Home{% endblock %}
+    html {
+      scroll-behavior: smooth;
+    }
 
-{% block content %}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #2d3748;
+      overflow-x: hidden;
+    }
 
-<h1 class="home-title">Pawfect Match</h1>
+    /* GLASS NAVBAR */
+    .glass-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 3rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
 
-<p class="home-description">
-  Meet other dog lovers, help your dog make friends,
-  and maybe find love along the way.
-</p>
+    .glass-navbar a {
+      color: #2d3748;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
 
-<div class="home-actions">
-  <a href="{% url 'register' %}" class="btn-outline">
-    Create account
-  </a>
+    .glass-navbar a:hover {
+      color: #ff6b9d;
+    }
 
-  <a href="{% url 'sign_in' %}" class="btn-outline">
-    Sign in
-  </a>
-</div>
-{% endblock %}
+    .glass-navbar .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      margin-right: auto;
+      background: linear-gradient(135deg, #ff6b9d, #c44569);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffeef8 0%, #ffe4f1 50%, #ffd4e9 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 2rem;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-content h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+      font-weight: 800;
+      color: #2d3748;
+      letter-spacing: -1px;
+    }
+
+    .hero-content p {
+      font-size: 1.3rem;
+      margin-bottom: 2.5rem;
+      color: #4a5568;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero {
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-hero.primary {
+      background: linear-gradient(135deg, #ff6b9d, #c44569);
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    }
+
+    .btn-hero.secondary {
+      background: white;
+      color: #ff6b9d;
+      border: 2px solid #ff6b9d;
+    }
+
+    .btn-hero:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+    }
+
+    /* FULL SCREEN SECTIONS */
+    .full-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem;
+      scroll-margin-top: 70px;
+    }
+
+    .full-section:nth-child(even) {
+      background: #fafafa;
+    }
+
+    .section-content {
+      max-width: 1100px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .section-text h2 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      font-weight: 800;
+      color: #2d3748;
+      line-height: 1.2;
+    }
+
+    .section-text .step-number {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6b9d, #c44569);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .section-text p {
+      font-size: 1.2rem;
+      color: #4a5568;
+      line-height: 1.8;
+    }
+
+    .section-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .visual-placeholder {
+      width: 100%;
+      max-width: 450px;
+      aspect-ratio: 1;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #ffeef8, #ffe4f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      box-shadow: 0 20px 60px rgba(255, 107, 157, 0.2);
+    }
+
+    /* WHY SECTION */
+    .why-section {
+      min-height: 100vh;
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, #ffeef8 0%, #ffe4f1 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .why-content {
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .why-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .why-header h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 800;
+      color: #2d3748;
+    }
+
+    .why-header p {
+      font-size: 1.2rem;
+      color: #4a5568;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .why-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .why-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .why-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .why-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+      color: #2d3748;
+      font-weight: 700;
+    }
+
+    .why-card p {
+      color: #4a5568;
+      line-height: 1.6;
+    }
+
+    /* SCROLL INDICATOR */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #ff6b9d;
+      font-size: 2rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 968px) {
+      .section-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .section-visual {
+        order: -1;
+      }
+
+      .visual-placeholder {
+        max-width: 350px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .glass-navbar {
+        padding: 1rem 1.5rem;
+        gap: 1.5rem;
+        font-size: 0.85rem;
+      }
+
+      .glass-navbar .logo {
+        font-size: 1.2rem;
+      }
+
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-content p {
+        font-size: 1.1rem;
+      }
+
+      .section-text h2 {
+        font-size: 2rem;
+      }
+
+      .section-text p {
+        font-size: 1.05rem;
+      }
+
+      .why-header h2 {
+        font-size: 2rem;
+      }
+
+      .full-section {
+        padding: 4rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- GLASS NAVBAR -->
+  <nav class="glass-navbar">
+    <a href="#home" class="logo">🐾 Pawfect Match</a>
+    <a href="#home">Home</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#why">Why Pawfect Match</a>
+    <a href="{% url 'dating_safety' %}">Dating</a>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="hero-section">
+    <div class="hero-content">
+      <h1>Find Love Through Your Pet</h1>
+      <p>Meet other pet lovers, help your furry friend make friends, and maybe find your perfect match along the way.</p>
+      <div class="hero-buttons">
+        <a href="{% url 'register' %}" class="btn-hero primary">Get Started</a>
+        <a href="{% url 'sign_in' %}" class="btn-hero secondary">Sign In</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">↓</div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section id="how-it-works" class="full-section">
+    <div class="section-content">
+      <div class="section-text">
+        <div class="step-number">1</div>
+        <h2>Find Love With Other Pet Lovers!</h2>
+        <p>Browse and meet new people where you can arrange a walk in the park or a coffee date. Your pet is the perfect conversation starter!</p>
+      </div>
+      <div class="section-visual">
+        <div class="visual-placeholder">🐕</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="full-section">
+    <div class="section-content">
+      <div class="section-visual">
+        <div class="visual-placeholder">📸</div>
+      </div>
+      <div class="section-text">
+        <div class="step-number">2</div>
+        <h2>Your Furry Friend Is The Icebreaker!</h2>
+        <p>Your pet's photo is seen first, making connections easier and more authentic. People connect through their shared love of animals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="full-section">
+    <div class="section-content">
+      <div class="section-text">
+        <div class="step-number">3</div>
+        <h2>Chances Are The Person Is As Likeable As Their Pet!</h2>
+        <p>Preview the owner before you give them a like to see them or keep browsing for more. Swipe right when you find someone special!</p>
+      </div>
+      <div class="section-visual">
+        <div class="visual-placeholder">❤️</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="full-section">
+    <div class="section-content">
+      <div class="section-visual">
+        <div class="visual-placeholder">💬</div>
+      </div>
+      <div class="section-text">
+        <div class="step-number">4</div>
+        <h2>See If You're A Match And Chat</h2>
+        <p>You both see possibilities. Now connect and chat to arrange your first meetup! Start your love story today.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY PAWFECT MATCH SECTION -->
+  <section id="why" class="why-section">
+    <div class="why-content">
+      <div class="why-header">
+        <h2>Why Pawfect Match?</h2>
+        <p>The perfect blend of pet love and human connection</p>
+      </div>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="icon">🐾</div>
+          <h3>Pet-First Approach</h3>
+          <p>Your pet takes center stage! Connect with people who share your love for animals.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="icon">💝</div>
+          <h3>Authentic Connections</h3>
+          <p>Pet lovers are naturally caring. Build relationships on shared values.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="icon">🎯</div>
+          <h3>Built-In Icebreaker</h3>
+          <p>No awkward small talk! Your pet naturally breaks the ice.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="icon">🌟</div>
+          <h3>Safe & Friendly</h3>
+          <p>Our community is built on respect and kindness.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="icon">📍</div>
+          <h3>Local Matches</h3>
+          <p>Find matches nearby for park walks and cafe dates.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="icon">💬</div>
+          <h3>Easy Communication</h3>
+          <p>Simple messaging makes connecting effortless.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
