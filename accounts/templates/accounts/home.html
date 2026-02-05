@@ -38,7 +38,7 @@
 
     .glass-navbar .navbar-brand {
       font-weight: 800;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       background: linear-gradient(135deg, #ff6b9d, #c44569);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -51,7 +51,8 @@
       font-weight: 500;
       font-size: 0.95rem;
       transition: color 0.3s ease;
-      margin-left: 1.5rem;
+      margin-left: 0;
+      padding: 0.5rem 0 !important;
     }
 
     .glass-navbar .nav-link:hover,
@@ -127,7 +128,7 @@
     }
 
     .hero-content h1 {
-      font-size: 4rem;
+      font-size: 1.8rem;
       margin-bottom: 1.5rem;
       line-height: 1.1;
       font-weight: 800;
@@ -136,8 +137,8 @@
     }
 
     .hero-content p {
-      font-size: 1.3rem;
-      margin-bottom: 2.5rem;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
       color: #4a5568;
       line-height: 1.6;
     }
@@ -150,9 +151,9 @@
     }
 
     .btn-hero {
-      padding: 1rem 2.5rem;
+      padding: 0.75rem 1.75rem;
       border-radius: 50px;
-      font-size: 1.05rem;
+      font-size: 0.8rem;
       font-weight: 600;
       text-decoration: none;
       transition: all 0.3s ease;
@@ -192,35 +193,26 @@
       max-width: 1100px;
       width: 100%;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: 1fr;
+      gap: 3rem;
       align-items: center;
+      text-align: center;
     }
 
-    .section-text h2 {
-      font-size: 3rem;
+    .section-text h1, h2 {
+      font-size: 1.5rem;
       margin-bottom: 1.5rem;
       font-weight: 800;
       color: #2d3748;
       line-height: 1.2;
-    }
-
-    .section-text .step-number {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      line-height: 50px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ff6b9d, #c44569);
-      color: white;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
     }
 
     .section-text p {
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       color: #4a5568;
       line-height: 1.8;
     }
@@ -230,11 +222,16 @@
       align-items: center;
       justify-content: center;
       min-height: 400px;
+      order: 1;
+    }
+
+    .section-text {
+      order: 0;
     }
 
     .visual-placeholder {
       width: 100%;
-      max-width: 450px;
+      max-width: 350px;
       aspect-ratio: 1;
       border-radius: 30px;
       background: linear-gradient(135deg, #ffeef8, #ffe4f1);
@@ -248,7 +245,7 @@
     /* WHY SECTION */
     .why-section {
       min-height: 100vh;
-      padding: 6rem 2rem;
+      padding: 3rem 2rem;
       background: linear-gradient(135deg, #ffeef8 0%, #ffe4f1 100%);
       display: flex;
       align-items: center;
@@ -262,30 +259,30 @@
 
     .why-header {
       text-align: center;
-      margin-bottom: 4rem;
+      margin-bottom: 3rem;
     }
 
     .why-header h2 {
-      font-size: 3rem;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
       font-weight: 800;
       color: #2d3748;
     }
 
     .why-header p {
-      font-size: 1.2rem;
+      font-size: 1rem;
       color: #4a5568;
     }
 
     .why-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
 
     .why-card {
       background: white;
-      padding: 2rem;
+      padding: 1.5rem;
       border-radius: 20px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       transition: transform 0.3s ease;
@@ -301,7 +298,7 @@
     }
 
     .why-card h3 {
-      font-size: 1.2rem;
+      font-size: 1rem;
       margin-bottom: 0.75rem;
       color: #2d3748;
       font-weight: 700;
@@ -310,75 +307,83 @@
     .why-card p {
       color: #4a5568;
       line-height: 1.6;
+      font-size: 0.95rem;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .glass-navbar .navbar-brand {
-        font-size: 1.2rem;
-      }
-
-      .glass-navbar .nav-link {
-        margin-left: 0;
-        padding: 0.5rem 0 !important;
-      }
-
-      .section-content {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
-
-      .section-visual {
-        order: -1;
-      }
-
-      .visual-placeholder {
-        max-width: 350px;
-      }
-
+    /* MOBILE FIRST - Base styles are for mobile */
+    
+    /* Override for larger screens */
+    @media (min-width: 769px) {
       .hero-content h1 {
-        font-size: 1.8rem;
+        font-size: 4rem;
       }
 
       .hero-content p {
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
       }
 
       .btn-hero {
-        padding: 0.75rem 1.75rem;
-        font-size: 0.8rem;
-      }
-
-      .section-text h2 {
-        font-size: 2rem;
-      }
-
-      .section-text p {
+        padding: 1rem 2.5rem;
         font-size: 1.05rem;
       }
 
-      .why-header h2 {
-        font-size: 2rem;
-      }
-
-      .full-section {
-        padding: 0rem 1.5rem;
-      }
-    }
-
-    @media (max-width: 968px) {
       .section-content {
-        grid-template-columns: 1fr;
-        gap: 3rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
       }
 
       .section-visual {
-        order: -1;
+        order: 0;
+      }
+
+      .section-text {
+        order: 0;
       }
 
       .visual-placeholder {
-        max-width: 350px;
+        max-width: 450px;
+      }
+
+      .section-text h2 {
+        font-size: 1.6rem;
+      }
+
+      .section-text p {
+        font-size: 1.2rem;
+      }
+
+      .why-header h2 {
+        font-size: 3rem;
+      }
+
+      .why-header p {
+        font-size: 1.2rem;
+      }
+
+      .why-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .why-card {
+        padding: 2rem;
+      }
+
+      .why-card h3 {
+        font-size: 1.2rem;
+      }
+
+      .why-header {
+        margin-bottom: 4rem;
+      }
+
+      .why-section {
+        padding: 6rem 2rem;
+      }
+
+      .full-section {
+        padding: 0 1.5rem;
       }
     }
   </style>
@@ -420,9 +425,9 @@
   <section id="how-it-works" class="full-section">
     <div class="section-content">
       <div class="section-text">
-        <div class="step-number">1</div>
-        <h2>Find Love With Other Pet Lovers!</h2>
-        <p>Browse and meet new people where you can arrange a walk in the park or a coffee date. Your pet is the perfect conversation starter!</p>
+        <h1>HOW DOES IT WORK?</h1>
+        <h2>Find love with other pet lovers!</h2>
+        <p>Browse and meet new people where you can arrange a walk in the park or a coffee date </p>
       </div>
       <div class="section-visual">
         <div class="visual-placeholder">🐕</div>
@@ -437,7 +442,6 @@
         <div class="visual-placeholder">📸</div>
       </div>
       <div class="section-text">
-        <div class="step-number">2</div>
         <h2>Your Furry Friend Is The Icebreaker!</h2>
         <p>Your pet's photo is seen first, making connections easier and more authentic. People connect through their shared love of animals.</p>
       </div>
@@ -448,9 +452,8 @@
   <section class="full-section">
     <div class="section-content">
       <div class="section-text">
-        <div class="step-number">3</div>
         <h2>Chances Are The Person Is As Likeable As Their Pet!</h2>
-        <p>Preview the owner before you give them a like to see them or keep browsing for more. Swipe right when you find someone special!</p>
+        <p>Preview the owner before you give them a like to see them or keep browsing for more. Give a like when you find someone special!</p>
       </div>
       <div class="section-visual">
         <div class="visual-placeholder">❤️</div>
@@ -465,9 +468,8 @@
         <div class="visual-placeholder">💬</div>
       </div>
       <div class="section-text">
-        <div class="step-number">4</div>
         <h2>See If You're A Match And Chat</h2>
-        <p>You both see possibilities. Now connect and chat to arrange your first meetup! Start your love story today.</p>
+        <p>You both see possibilities. Chat to arrange your first date! Start your love story today.</p>
       </div>
     </div>
   </section>
