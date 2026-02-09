@@ -7,7 +7,7 @@
 
 {% block back_button %}
 <a href="{% url 'home' %}" class="back-button">
-  <img src="{% static 'images/back_arrow.svg' %}" alt="Back" />
+  <i class="fa-solid fa-arrow-left"></i>
 </a>
 {% endblock %}
 
@@ -15,11 +15,9 @@
 <div class="form-page-container">
 
   <h1>Create account</h1>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-    Dolor reprehenderit minus magnam nulla
-  </p>
+  <p>Welcome! Create your Pawfect Match account to connect with fellow dog lovers and start your journey. Registration is quick and easy!</p>
 
-  <form method="post" class="auth-form">
+  <form method="post" class="auth-form no-border-fields">
     {% csrf_token %}
 
     {{ form.non_field_errors }}
@@ -55,9 +53,11 @@
       {{ form.password_confirm }}
     </div>
 
-    <button type="submit" class="btn-outline form-create-btn">
-      Create account
-    </button>
+    <div class="form-create-btn">
+      <button type="submit" class="btn-hero secondary">
+        Create account
+      </button>
+    </div>
   </form>
 
 </div>

@@ -6,7 +6,7 @@
 
 {% block back_button %}
 <a href="{% url 'register' %}" class="back-button">
-  <img src="{% static 'images/back_arrow.svg' %}" alt="Back">
+  <i class="fa-solid fa-arrow-left"></i>
 </a>
 {% endblock %}
 
@@ -104,9 +104,11 @@
       {% endif %}
     </div>
 
-    <button type="submit" class="btn-primary">
-      Next
-    </button>
+    <div class="form-next-btn">
+      <button type="submit" class="btn-hero secondary">
+        Next
+      </button>
+    </div>
 
   </form>
 </div>
