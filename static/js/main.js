@@ -1,6 +1,18 @@
+
+
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
-  
+
+   // Auto-collapse Bootstrap navbar on mobile when a nav-link is clicked
+  document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      var navbar = document.querySelector('.navbar-collapse');
+      if (navbar && navbar.classList.contains('show')) {
+        var toggleButton = document.querySelector('.navbar-toggler');
+        if (toggleButton) toggleButton.click();
+      }
+    });
+  });
   /* ===============================
      AUTH UI
      =============================== */

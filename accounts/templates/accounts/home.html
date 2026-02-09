@@ -1,397 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pawfect Match - Find Love Through Your Pet</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #2d3748;
-      overflow-x: hidden;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* GLASS NAVBAR */
-    .glass-navbar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.404) !important;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      z-index: 1000;
-    }
-
-    .glass-navbar .navbar-brand {
-      font-weight: 800;
-      font-size: 1.2rem;
-      background: linear-gradient(135deg, #ff6b9d, #c44569);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-    }
-
-    .glass-navbar .nav-link {
-      color: #2d3748 !important;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: color 0.3s ease;
-      margin-left: 0;
-      padding: 0.5rem 0 !important;
-    }
-
-    .glass-navbar .nav-link:hover,
-    .glass-navbar .nav-link:active,
-    .glass-navbar .nav-link:focus {
-      color: #ff6b9d !important;
-    }
-
-    .glass-navbar .nav-link.active {
-      color: #ff6b9d !important;
-      font-weight: 600;
-    }
-
-    .glass-navbar .navbar-toggler {
-      border: none;
-      padding: 0.25rem 0.75rem;
-    }
-
-    .glass-navbar .navbar-toggler:focus {
-      box-shadow: none;
-      outline: none;
-    }
-
-    .glass-navbar .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%232d3748' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-
-    /* HERO SECTION */
-    .hero-section {
-      position: relative;
-      min-height: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 3.5rem 0 0 0;
-    }
-
-    .hero-image-mobile {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 2rem;
-    }
-
-    @media (min-width: 768px) {
-      .hero-section {
-        background: url("{% static 'images/hero2_1600px.webp' %}") center / cover no-repeat;
-        flex-direction: row;
-      }
-      
-      .hero-image-mobile {
-        display: none;
-      }
-    }
-
-    .hero-content {
-      max-width: 700px;
-      animation: fadeInUp 1s ease-out;
-      padding: 0 1rem;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .hero-content h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.1;
-      font-weight: 800;
-      color: #2d3748;
-      letter-spacing: -1px;
-    }
-
-    .hero-content p {
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-      color: #4a5568;
-      line-height: 1.6;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-hero {
-      padding: 0.75rem 1.75rem;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    .btn-hero.primary {
-      background: linear-gradient(135deg, #ff6b9d, #c44569);
-      color: white;
-      box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
-    }
-
-    .btn-hero.secondary {
-      background: white;
-      color: #ff6b9d;
-      border: 2px solid #ff6b9d;
-    }
-
-    .btn-hero:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
-    }
-
-    /* FULL SCREEN SECTIONS */
-    .full-section {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 1.5rem;
-    }
-
-    .full-section:nth-child(even) {
-      background: #fafafa;
-    }
-
-    .section-content {
-      max-width: 1100px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 3rem;
-      align-items: center;
-      text-align: center;
-    }
-
-    .section-text h1, h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      font-weight: 800;
-      color: #2d3748;
-      line-height: 1.2;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      justify-content: center;
-    }
-
-    .section-text p {
-      font-size: 1.05rem;
-      color: #4a5568;
-      line-height: 1.8;
-    }
-
-    .section-visual {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 400px;
-      order: 1;
-    }
-
-    .section-text {
-      order: 0;
-    }
-
-    .visual-placeholder {
-      width: 100%;
-      max-width: 350px;
-      aspect-ratio: 1;
-      border-radius: 30px;
-      background: linear-gradient(135deg, #ffeef8, #ffe4f1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 5rem;
-      box-shadow: 0 20px 60px rgba(255, 107, 157, 0.2);
-    }
-
-    /* WHY SECTION */
-    .why-section {
-      min-height: 100vh;
-      padding: 3rem 2rem;
-      background: linear-gradient(135deg, #ffeef8 0%, #ffe4f1 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .why-content {
-      max-width: 1200px;
-      width: 100%;
-    }
-
-    .why-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .why-header h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      font-weight: 800;
-      color: #2d3748;
-    }
-
-    .why-header p {
-      font-size: 1rem;
-      color: #4a5568;
-    }
-
-    .why-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .why-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease;
-    }
-
-    .why-card:hover {
-      transform: translateY(-10px);
-    }
-
-    .why-card .icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .why-card h3 {
-      font-size: 1rem;
-      margin-bottom: 0.75rem;
-      color: #2d3748;
-      font-weight: 700;
-    }
-
-    .why-card p {
-      color: #4a5568;
-      line-height: 1.6;
-      font-size: 0.95rem;
-    }
-
-    /* MOBILE FIRST - Base styles are for mobile */
-    
-    /* Override for larger screens */
-    @media (min-width: 769px) {
-      .hero-content h1 {
-        font-size: 4rem;
-      }
-
-      .hero-content p {
-        font-size: 1.3rem;
-        margin-bottom: 2.5rem;
-      }
-
-      .btn-hero {
-        padding: 1rem 2.5rem;
-        font-size: 1.05rem;
-      }
-
-      .section-content {
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-      }
-
-      .section-visual {
-        order: 0;
-      }
-
-      .section-text {
-        order: 0;
-      }
-
-      .visual-placeholder {
-        max-width: 450px;
-      }
-
-      .section-text h2 {
-        font-size: 1.6rem;
-      }
-
-      .section-text p {
-        font-size: 1.2rem;
-      }
-
-      .why-header h2 {
-        font-size: 3rem;
-      }
-
-      .why-header p {
-        font-size: 1.2rem;
-      }
-
-      .why-grid {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-      }
-
-      .why-card {
-        padding: 2rem;
-      }
-
-      .why-card h3 {
-        font-size: 1.2rem;
-      }
-
-      .why-header {
-        margin-bottom: 4rem;
-      }
-
-      .why-section {
-        padding: 6rem 2rem;
-      }
-
-      .full-section {
-        padding: 0 1.5rem;
-      }
-    }
-  </style>
-</head>
-<body>
-
+{% block header %}
   <!-- GLASS NAVBAR WITH BOOTSTRAP -->
-  <nav class="glass-navbar navbar navbar-expand-lg">
+  <nav class="navbar navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'home' %}">🐾 Pawfect Match</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -407,10 +19,14 @@
       </div>
     </div>
   </nav>
+{% endblock %}
 
+{% block layout %}
   <!-- HERO SECTION -->
   <section id="home" class="hero-section">
-    <img src="{% static 'images/hero2_800px.webp' %}" alt="Pawfect Match Hero" class="hero-image-mobile">
+    <div>
+      <img class="hero-image" src="{% static 'images/couple_1300px.webp' %}" alt="couple cuddling a dog">
+    </div>
     <div class="hero-content">
       <h1>Find Love Through Your Pet</h1>
       <p>Meet other pet lovers, help your furry friend make friends, and maybe find your perfect match along the way.</p>
@@ -425,12 +41,9 @@
   <section id="how-it-works" class="full-section">
     <div class="section-content">
       <div class="section-text">
-        <h1>HOW DOES IT WORK?</h1>
         <h2>Find love with other pet lovers!</h2>
         <p>Browse and meet new people where you can arrange a walk in the park or a coffee date </p>
-      </div>
-      <div class="section-visual">
-        <div class="visual-placeholder">🐕</div>
+         <img class="section-image" src="{% static 'images/people_looking_at_phone.png' %}" alt="people looking at they phone">
       </div>
     </div>
   </section>
@@ -438,12 +51,10 @@
   <!-- STEP 2 -->
   <section id="how-it-works" class="full-section">
     <div class="section-content">
-      <div class="section-visual">
-        <div class="visual-placeholder">📸</div>
-      </div>
       <div class="section-text">
         <h2>Your Furry Friend Is The Icebreaker!</h2>
         <p>Your pet's photo is seen first, making connections easier and more authentic. People connect through their shared love of animals.</p>
+        <img class="section-image" src="{% static 'images/' %}" alt="">
       </div>
     </div>
   </section>
@@ -454,9 +65,7 @@
       <div class="section-text">
         <h2>Chances Are The Person Is As Likeable As Their Pet!</h2>
         <p>Preview the owner before you give them a like to see them or keep browsing for more. Give a like when you find someone special!</p>
-      </div>
-      <div class="section-visual">
-        <div class="visual-placeholder">❤️</div>
+        <img class="section-image" src="{% static 'images/' %}" alt="">
       </div>
     </div>
   </section>
@@ -464,12 +73,10 @@
   <!-- STEP 4 -->
   <section class="full-section">
     <div class="section-content">
-      <div class="section-visual">
-        <div class="visual-placeholder">💬</div>
-      </div>
       <div class="section-text">
         <h2>See If You're A Match And Chat</h2>
         <p>You both see possibilities. Chat to arrange your first date! Start your love story today.</p>
+        <img class="section-image" src="{% static 'images/' %}" alt="">
       </div>
     </div>
   </section>
@@ -479,42 +86,26 @@
     <div class="why-content">
       <div class="why-header">
         <h2>Why Pawfect Match?</h2>
-        <p>The perfect blend of pet love and human connection</p>
+        <p>Meet single parent looking for connection and playdates for they dog</p>
       </div>
 
       <div class="why-grid">
         <div class="why-card">
-          <div class="icon">🐾</div>
           <h3>Pet-First Approach</h3>
           <p>Your pet takes center stage! Connect with people who share your love for animals.</p>
         </div>
 
         <div class="why-card">
-          <div class="icon">💝</div>
           <h3>Authentic Connections</h3>
           <p>Pet lovers are naturally caring. Build relationships on shared values.</p>
         </div>
 
         <div class="why-card">
-          <div class="icon">🎯</div>
-          <h3>Built-In Icebreaker</h3>
-          <p>No awkward small talk! Your pet naturally breaks the ice.</p>
-        </div>
-
-        <div class="why-card">
-          <div class="icon">🌟</div>
           <h3>Safe & Friendly</h3>
           <p>Our community is built on respect and kindness.</p>
         </div>
 
         <div class="why-card">
-          <div class="icon">📍</div>
-          <h3>Local Matches</h3>
-          <p>Find matches nearby for park walks and cafe dates.</p>
-        </div>
-
-        <div class="why-card">
-          <div class="icon">💬</div>
           <h3>Easy Communication</h3>
           <p>Simple messaging makes connecting effortless.</p>
         </div>
@@ -522,19 +113,4 @@
     </div>
   </section>
 
-</body>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // Close navbar when link is clicked
-  document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      const navbar = document.querySelector('.navbar-collapse');
-      if (navbar.classList.contains('show')) {
-        const toggleButton = document.querySelector('.navbar-toggler');
-        toggleButton.click();
-      }
-    });
-  });
-</script>
-</html>
+{% endblock %}
