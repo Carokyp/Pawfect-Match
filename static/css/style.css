@@ -1580,31 +1580,6 @@ body.modal-open {
   margin-top: 1.25rem;
 }
 
-.btn-secondary {
-  flex: 1;
-  padding: 0.75rem;
-  border-radius: 999px;
-  border: none;
-  background: #e6e6e6;
-  color: #444;
-  text-align: center;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.profile-form-modern .btn-primary {
-  flex: 1;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #7b61ff, #a855f7);
-  color: #fff;
-}
-
-@media (max-width: 480px) {
-  .profile-form-modern .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* #endregion */
 
 /* #region EMPTY STATE */

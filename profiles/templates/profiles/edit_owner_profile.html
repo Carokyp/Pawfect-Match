@@ -38,11 +38,6 @@
     </div>
   </nav>
 
-  <div class="profile-toolbar">
-    <span class="profile-title">PROFILE</span>
-    <a href="{% url 'view_profile' %}" class="profile-gear" aria-label="View profile">⚙️</a>
-  </div>
-
   <form method="post" enctype="multipart/form-data" class="profile-form-modern profile-edit-form">
     {% csrf_token %}
 
@@ -90,8 +85,8 @@
     </div>
 
     <div class="form-actions">
-      <a href="{% url 'view_profile' %}" class="btn-secondary">Cancel</a>
-      <button type="submit" class="btn-primary">Save owner profile</button>
+      <a href="{% url 'view_profile' %}" class="btn-hero secondary">Cancel</a>
+      <button type="submit" class="btn-hero primary">Save owner profile</button>
     </div>
   </form>
 
