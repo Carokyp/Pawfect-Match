@@ -10,49 +10,74 @@
 
 <div class="discover-page messages-page">
 
-  <!-- APP HEADER -->
-  <header class="discover-header">
-    <h1 class="app-logo m-0">Pawfect Match</h1>
-  </header>
-
+  <!--NAVBAR-->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <span class="navbar-brand">🐾 Pawfect Match</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'browse_dogs' %}">Discover</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'messages_inbox' %}">Messages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'view_profile' %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
   <div class="profile-toolbar">
     <span class="profile-title">MESSAGES</span>
   </div>
 
   {% if conversations %}
-    <div class="conversations-list">
-      {% for conversation in conversations %}
-        <div class="conversation-item">
-          <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card">
-            <div class="conversation-dog-info">
-              <div class="dog-avatar">
-                {% if conversation.dog.profile_photo %}
-                  <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
-                {% else %}
-                  <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
-                {% endif %}
-              </div>
-              <div class="dog-details">
-                <h3>{{ conversation.dog.name }}</h3>
-                <p class="dog-breed">{{ conversation.dog.breed }}</p>
-                <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
-              </div>
-            </div>
-            <div class="conversation-meta">
-              <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
-            </div>
-          </a>
-          <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
-            <img src="{% static 'images/bin.png' %}" alt="Delete Conversation">
-          </button>
+  <div class="conversations-list">
+    {% for conversation in conversations %}
+    <div class="conversation-item">
+      <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card">
+        <div class="conversation-dog-info">
+          <div class="dog-avatar">
+            {% if conversation.dog.profile_photo %}
+            <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
+            {% else %}
+            <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
+            {% endif %}
+          </div>
+          <div class="dog-details">
+            <h3>{{ conversation.dog.name }}</h3>
+            <p class="dog-breed">{{ conversation.dog.breed }}</p>
+            <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
+          </div>
         </div>
-      {% endfor %}
+        <div class="conversation-meta">
+          <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
+        </div>
+      </a>
+      <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
+        <img src="{% static 'images/bin.png' %}" alt="Delete Conversation">
+      </button>
     </div>
+    {% endfor %}
+  </div>
   {% else %}
-    <div class="empty-state-small">
-      <p>No messages yet</p>
-      <p>Send a message to a match to arrange a playdate!</p>
-    </div>
+  <div class="empty-state-small">
+    <p>No messages yet</p>
+    <p>Send a message to a match to arrange a playdate!</p>
+  </div>
   {% endif %}
 
 </div>
@@ -62,42 +87,14 @@
   <div class="delete-modal">
     <button class="close" type="button" aria-label="Close" id="closeDeleteModal">×</button>
     <h2>Delete conversation?</h2>
-    <p class="delete-description">This will permanently delete all messages with <span id="deleteDogName"></span>. This action cannot be undone.</p>
-    
+    <p class="delete-description">This will permanently delete all messages with <span id="deleteDogName"></span>. This
+      action cannot be undone.</p>
+
     <div class="modal-actions">
       <button class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
       <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
     </div>
   </div>
 </div>
-
-<!-- TOP NAVBAR (hamburger menu for mobile) -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <span class="navbar-brand">🐾 Pawfect Match</span>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'browse_dogs' %}">Discover</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'messages_inbox' %}">Messages</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'view_profile' %}">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Log out</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
 
 {% endblock %}

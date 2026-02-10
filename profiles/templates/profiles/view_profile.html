@@ -7,12 +7,36 @@
 {% block content %}
 
 <div class="discover-page profile-view-page">
-
-  <!-- APP HEADER -->
-  <header class="discover-header">
-    <h1 class="app-logo m-0">Pawfect Match</h1>
-  </header>
-
+  <!--NAVBAR-->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <span class="navbar-brand">🐾 Pawfect Match</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'browse_dogs' %}">Discover</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'messages_inbox' %}">Messages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'view_profile' %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
   <div class="profile-toolbar">
     <span class="profile-title">PROFILE</span>
     <a href="{% url 'edit_owner_profile' %}" class="profile-gear" aria-label="Edit profile">⚙️</a>
@@ -27,9 +51,9 @@
 
       <div class="profile-image">
         {% if dog.profile_photo %}
-          <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
+        <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
         {% else %}
-          <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog photo">
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog photo">
         {% endif %}
 
         <div class="image-overlay left">
@@ -77,9 +101,9 @@
 
       <div class="profile-image">
         {% if owner.profile_photo %}
-          <img src="{{ owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
+        <img src="{{ owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
         {% else %}
-          <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner photo">
+        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner photo">
         {% endif %}
 
         <div class="image-overlay left">
@@ -102,7 +126,7 @@
         <h4>Interests</h4>
         <div class="profile-tags">
           {% for interest in owner.interests_list %}
-            <span class="tag">{{ interest }}</span>
+          <span class="tag">{{ interest }}</span>
           {% endfor %}
         </div>
       </div>
@@ -115,36 +139,6 @@
       <button type="submit" class="btn-outline btn-logout">Log Out</button>
     </form>
   </div>
-
-  <!-- TOP NAVBAR (hamburger menu for mobile) -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <span class="navbar-brand">🐾 Pawfect Match</span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'browse_dogs' %}">Discover</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'messages_inbox' %}">Messages</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'view_profile' %}">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
 </div>
 
 {% endblock %}
