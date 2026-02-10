@@ -102,6 +102,8 @@ def next_dog(request):
     return redirect("browse_dogs")
 
 
+
+
 @login_required
 @require_POST
 def like_dog(request, dog_id):
