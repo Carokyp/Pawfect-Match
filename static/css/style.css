@@ -17,6 +17,7 @@
   /* hover / strong accent */
   --orange-900: #6B2A0A;
   /* dark / text on light */
+  --text-dark: #441c06;
   --border-radius: 30px;
   --transition: all 0.3s ease;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -1059,8 +1060,7 @@ input[type="number"] {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   z-index: 1000;
-  overflow: hidden;
-  /* No scoll */
+  overflow: hidden; /* No scoll */
 }
 
 .modal-backdrop.is-open {
@@ -1169,45 +1169,14 @@ body.modal-open {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.30);
 }
 
-.match-modal strong {
-  display: block;
-  font-size: 1.2rem;
-  margin: 1rem 0 0.5rem 0;
-}
-
-.match-modal p {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-
 .match-actions {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
   width: 100%;
-  max-width: 200px;
+  max-width: 180px;
   margin: 0 auto;
 }
-
-.match-modal .btn-outline {
-  display: inline-block;
-  padding: 0.65rem 1.2rem;
-  border: 2px solid #000;
-  border-radius: 999px;
-  background: white;
-  color: #000;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  text-align: center;
-  width: 100%;
-}
-
-.match-modal .btn-outline:hover {
-  background: #000;
-  color: white;
-}
-
 /* #endregion */
 
 /* #region MATCHES PAGE */

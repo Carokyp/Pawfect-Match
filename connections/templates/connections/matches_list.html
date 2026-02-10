@@ -118,7 +118,10 @@
         <div class="message-btn">
           <a href="{% url 'message_thread' match.dog.id %}" class="btn-hero primary">Message</a>
         </div>
-      <!-- Delete Match Modal (global, outside loop) -->
+      </div>
+      {% endfor %}
+
+      <!-- Delete Match Modal (global, en dehors de la boucle) -->
       <div class="modal-overlay" id="deleteMatchModal" style="display:none;">
         <div class="modal-content">
           <h2>Delete Match</h2>
@@ -129,8 +132,6 @@
           </div>
         </div>
       </div>
-      </div>
-      {% endfor %}
     </div>
   </div>
   {% else %}
