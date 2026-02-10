@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login as auth_login
 from django.views.decorators.http import require_POST
 from .forms import DogForm
 from .models import Dog
 from profiles.models import OwnerProfile
-from connections.models import Connection
+from connections.models import Connection, Dislike
 
 
 def create_dog(request):
@@ -52,13 +51,21 @@ def browse_dogs(request):
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
 
     dogs = Dog.objects.all()
+    remaining_dogs_count = 0
     if owner_profile and hasattr(owner_profile, "dog"):
         my_dog = owner_profile.dog
-        # Exclude own dog and dogs already liked
         liked_dog_ids = Connection.objects.filter(
             from_dog=my_dog
         ).values_list('to_dog_id', flat=True)
-        dogs = dogs.exclude(owner=owner_profile).exclude(id__in=liked_dog_ids)
+        disliked_dog_ids = Dislike.objects.filter(
+            from_dog=my_dog
+        ).values_list('to_dog_id', flat=True)
+        dogs = (
+            dogs.exclude(owner=owner_profile)
+                .exclude(id__in=liked_dog_ids)
+                .exclude(id__in=disliked_dog_ids)
+        )
+        remaining_dogs_count = dogs.count()
 
     dogs = list(dogs)
 
@@ -72,16 +79,15 @@ def browse_dogs(request):
         return render(
             request,
             "dogs/browse_dogs.html",
-            {"dog": None, "no_more_dogs": True, "match_popup": match_popup}
+            {
+                "dog": None,
+                "no_more_dogs": True,
+                "match_popup": match_popup,
+                "remaining_dogs_count": remaining_dogs_count
+            }
         )
 
-    index = request.session.get("dog_index", 0)
-
-    if index >= len(dogs):
-        index = 0
-        request.session["dog_index"] = 0
-
-    dog = dogs[index]
+    dog = dogs[0]  # Toujours le premier chien de la liste filtrée
 
     if dog.owner.interests:
         dog.owner.interests_list = [i.strip() for i in dog.owner.interests.split(",")]
@@ -90,7 +96,8 @@ def browse_dogs(request):
 
     return render(request, "dogs/browse_dogs.html", {
         "dog": dog,
-        "match_popup": match_popup
+        "match_popup": match_popup,
+        "remaining_dogs_count": remaining_dogs_count
     })
 
 
@@ -154,22 +161,33 @@ def like_dog(request, dog_id):
 
 @login_required(login_url='sign_in')
 @require_POST
-def reset_matches(request):
-    """Clear all matches for the logged-in user's dog and restart discovery."""
-    owner_profile = getattr(request.user, "owner_profile", None)
-    if not owner_profile:
+def dislike_dog(request, dog_id):
+    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    if not owner_profile or not hasattr(owner_profile, "dog"):
         return redirect("browse_dogs")
 
-    try:
-        my_dog = owner_profile.dog
-    except Dog.DoesNotExist:
+    my_dog = owner_profile.dog
+    disliked_dog = Dog.objects.get(id=dog_id)
+
+    # Enregistre le dislike
+    Dislike.objects.get_or_create(
+        from_dog=my_dog,
+        to_dog=disliked_dog
+    )
+
+    return redirect("browse_dogs")
+
+
+@login_required(login_url='sign_in')
+@require_POST
+def reset_matches(request):
+    """Clear all matches for the logged-in user's dog and restart discovery."""
+    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    if not owner_profile or not hasattr(owner_profile, "dog"):
         return redirect("browse_dogs")
-    
-    # Delete all connections where this dog is the one doing the liking
+
+    my_dog = owner_profile.dog
     Connection.objects.filter(from_dog=my_dog).delete()
-    
-    # Clear any session match data
-    if "match_data" in request.session:
-        del request.session["match_data"]
-    
+    Dislike.objects.filter(from_dog=my_dog).delete()
+
     return redirect("browse_dogs")

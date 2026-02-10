@@ -131,7 +131,7 @@
 
     <!-- ACTION BUTTONS -->
     <div class="action-buttons">
-      <form method="POST" action="{% url 'next_dog' %}">
+      <form method="POST" action="{% url 'dislike_dog' dog.id %}">
         {% csrf_token %}
         <button type="submit" class="action-btn dislike" aria-label="Dislike">
           ✕
@@ -208,6 +208,10 @@
       </div>
     </div>
   </div>
+
+  <form id="resetMatchesForm" method="post" action="{% url 'reset_matches' %}" style="display:none;">
+    {% csrf_token %}
+  </form>
 
 </div>
 

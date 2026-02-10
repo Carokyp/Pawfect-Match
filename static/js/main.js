@@ -365,18 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmResetBtn = document.getElementById('confirmResetBtn');
     if (confirmResetBtn) {
       confirmResetBtn.addEventListener('click', () => {
-        // Create form and submit
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/dogs/reset/';
-        
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-        if (csrfToken) {
-          form.appendChild(csrfToken.cloneNode());
-        }
-        
-        document.body.appendChild(form);
-        form.submit();
+        document.getElementById('resetMatchesForm').submit();
       });
     }
 

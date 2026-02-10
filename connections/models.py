@@ -18,3 +18,19 @@ class Connection(models.Model):
 
     def __str__(self):
         return f"{self.from_dog} ❤️ {self.to_dog}"
+
+
+class Dislike(models.Model):
+    from_dog = models.ForeignKey(
+        Dog,
+        related_name="dislikes_given",
+        on_delete=models.CASCADE
+    )
+    to_dog = models.ForeignKey(
+        Dog,
+        related_name="dislikes_received",
+        on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+

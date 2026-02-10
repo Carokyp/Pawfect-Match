@@ -1,7 +1,5 @@
 from connections.models import Connection
-
 from django.views.decorators.http import require_POST
-    # Suppression de l'import redondant
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
