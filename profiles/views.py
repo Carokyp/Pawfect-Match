@@ -1,3 +1,7 @@
+from connections.models import Connection
+
+from django.views.decorators.http import require_POST
+    # Suppression de l'import redondant
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -65,7 +69,9 @@ def view_profile(request):
     
     # Prepare interests as list
     if owner_profile.interests:
-        owner_profile.interests_list = [i.strip() for i in owner_profile.interests.split(",")]
+        owner_profile.interests_list = [
+            i.strip() for i in owner_profile.interests.split(",")
+        ]
     else:
         owner_profile.interests_list = []
     
@@ -85,7 +91,9 @@ def edit_owner_profile(request):
         return redirect("create_owner_profile")
     
     if request.method == "POST":
-        form = OwnerProfileForm(request.POST, request.FILES, instance=owner_profile)
+        form = OwnerProfileForm(
+            request.POST, request.FILES, instance=owner_profile
+        )
         if form.is_valid():
             form.save()
             return redirect("view_profile")
@@ -128,3 +136,26 @@ def edit_dog_profile(request):
         "profiles/edit_dog_profile.html",
         {"form": form}
     )
+
+
+# Vue pour supprimer le profil, le chien et l'utilisateur
+@login_required
+@require_POST
+def delete_profile(request):
+    user = request.user
+    owner_profile = OwnerProfile.objects.filter(user=user).first()
+    if owner_profile:
+        # Supprimer le chien associé
+        try:
+            dog = owner_profile.dog
+            # Supprimer toutes les connexions du chien
+            Connection.objects.filter(from_dog=dog).delete()
+            Connection.objects.filter(to_dog=dog).delete()
+            dog.delete()
+        except Dog.DoesNotExist:
+            pass
+        # Supprimer le profil
+        owner_profile.delete()
+    # Supprimer l'utilisateur
+    user.delete()
+    return redirect("home")
