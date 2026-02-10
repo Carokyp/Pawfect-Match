@@ -10,10 +10,35 @@
 
 <div class="discover-page">
 
-  <!-- APP HEADER -->
-  <header class="discover-header">
-    <h1 class="app-logo m-0">Pawfect Match</h1>
-  </header>
+  <!--NAVBAR-->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <span class="navbar-brand">🐾 Pawfect Match</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'browse_dogs' %}">Discover</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'messages_inbox' %}">Messages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'view_profile' %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
   {% if dog %}
 
@@ -31,12 +56,12 @@
 
       <div class="profile-image">
         {% if dog.profile_photo %}
-          <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
+        <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
         {% else %}
-          <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder">
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder">
         {% endif %}
 
-        <div class="image-overlay left">
+        <div class="image-overlay">
           <h2>{{ dog.name }}, {{ dog.age }}</h2>
           <p>{{ dog.breed }}</p>
           <p>{{ dog.owner.city }}</p>
@@ -72,12 +97,12 @@
 
       <div class="profile-image">
         {% if dog.owner.profile_photo %}
-          <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
+        <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
         {% else %}
-          <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder">
+        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder">
         {% endif %}
 
-        <div class="image-overlay left">
+        <div class="image-overlay">
           <h2>{{ dog.owner.name }}, {{ dog.owner.age }}</h2>
           <p>{{ dog.owner.occupation }}</p>
           <p>{{ dog.owner.city }}</p>
@@ -97,7 +122,7 @@
         <h4>Interests</h4>
         <div class="profile-tags">
           {% for interest in dog.owner.interests_list %}
-            <span class="tag">{{ interest }}</span>
+          <span class="tag">{{ interest }}</span>
           {% endfor %}
         </div>
       </div>
@@ -140,76 +165,49 @@
   {% endif %}
 
   {% if match_popup %}
-<div class="modal-backdrop is-open" id="matchModal">
-  <div class="match-modal">
-    <button class="close" type="button" aria-label="Close" id="closeMatchModal">×</button>
-    <h2>It's a match with {{ match_popup.other_dog_name }}!</h2>
+  <div class="modal-backdrop is-open" id="matchModal">
+    <div class="match-modal">
+      <button class="close" type="button" aria-label="Close" id="closeMatchModal">×</button>
+      <h2>It's a match with {{ match_popup.other_dog_name }}!</h2>
 
-    <div class="match-avatars">
-      {% if match_popup.my_dog_photo %}
+      <div class="match-avatars">
+        {% if match_popup.my_dog_photo %}
         <img src="{{ match_popup.my_dog_photo }}" alt="My dog">
-      {% else %}
+        {% else %}
         <img src="{% static 'images/dog_placeholder.png' %}" alt="My dog">
-      {% endif %}
-      
-      <div class="match-heart">💖</div>
-      
-      {% if match_popup.other_dog_photo %}
+        {% endif %}
+
+        <div class="match-heart">💖</div>
+
+        {% if match_popup.other_dog_photo %}
         <img src="{{ match_popup.other_dog_photo }}" alt="Matched dog">
-      {% else %}
+        {% else %}
         <img src="{% static 'images/dog_placeholder.png' %}" alt="Matched dog">
-      {% endif %}
-    </div>
-    <p>{{ match_popup.my_dog_name }} and {{ match_popup.other_dog_name }} found each other</p>
+        {% endif %}
+      </div>
+      <p>{{ match_popup.my_dog_name }} and {{ match_popup.other_dog_name }} found each other</p>
 
-    <div class="match-actions">
-      <a class="btn-outline" href="{% url 'matches_list' %}">View Matches</a>
-      <a class="btn-outline" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
-    </div>
-  </div>
-</div>
-{% endif %}
-
-
-<!-- TOP NAVBAR (hamburger menu for mobile) -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <span class="navbar-brand">🐾 Pawfect Match</span>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'messages_inbox' %}">Messages</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'view_profile' %}">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Log out</a>
-        </li>
-      </ul>
+      <div class="match-actions">
+        <a class="btn-outline" href="{% url 'matches_list' %}">View Matches</a>
+        <a class="btn-outline" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
+      </div>
     </div>
   </div>
-</nav>
+  {% endif %}
 
-<!-- RESET MATCHES MODAL -->
-<div class="modal-backdrop" id="resetConfirmModal">
-  <div class="delete-modal">
-    <button class="close" type="button" aria-label="Close" id="closeResetModal">×</button>
-    <h2>Reset matches?</h2>
-    <p class="delete-description">This will restart your discovery and reset all your likes. Are you sure?</p>
-    
-    <div class="modal-actions">
-      <button class="btn-secondary" id="cancelResetBtn">Cancel</button>
-      <button class="btn-danger" id="confirmResetBtn">Reset</button>
+  <!-- RESET MATCHES MODAL -->
+  <div class="modal-backdrop" id="resetConfirmModal">
+    <div class="delete-modal">
+      <button class="close" type="button" aria-label="Close" id="closeResetModal">×</button>
+      <h2>Reset matches?</h2>
+      <p class="delete-description">This will restart your discovery and reset all your likes. Are you sure?</p>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="cancelResetBtn">Cancel</button>
+        <button class="btn-danger" id="confirmResetBtn">Reset</button>
+      </div>
     </div>
   </div>
-</div>
 
 </div>
 

@@ -34,9 +34,14 @@ def matches_list(request):
         ).exists()
         
         if reverse_connection:
+            owner = connection.to_dog.owner
+            if hasattr(owner, 'interests') and owner.interests:
+                owner.interests_list = [i.strip() for i in owner.interests.split(',') if i.strip()]
+            else:
+                owner.interests_list = []
             matches_list.append({
                 'dog': connection.to_dog,
-                'owner': connection.to_dog.owner,
+                'owner': owner,
                 'matched_at': connection.created_at
             })
     

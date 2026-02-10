@@ -56,7 +56,7 @@
         <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog photo">
         {% endif %}
 
-        <div class="image-overlay left">
+        <div class="image-overlay">
           <h2>{{ dog.name }}{% if dog.age %}, {{ dog.age }}{% endif %}</h2>
           <p>{{ dog.breed }}</p>
           <p>{{ dog.owner.city }}</p>

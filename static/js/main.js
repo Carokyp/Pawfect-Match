@@ -41,23 +41,26 @@ document.addEventListener("DOMContentLoaded", () => {
    * @returns {void}
    */
   const setupProfileToggle = () => {
-    const toggleButtons = document.querySelectorAll(".toggle-btn");
-    const dogView = document.querySelector(".dog-view");
-    const ownerView = document.querySelector(".owner-view");
-    if (!dogView || !ownerView || !toggleButtons.length) return;
+    // Pour chaque carte profile
+    document.querySelectorAll('.profile-card').forEach((card) => {
+      const toggleButtons = card.querySelectorAll('.toggle-btn');
+      const dogView = card.querySelector('.dog-view');
+      const ownerView = card.querySelector('.owner-view');
+      if (!dogView || !ownerView || !toggleButtons.length) return;
 
-    toggleButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        toggleButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
+      toggleButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          toggleButtons.forEach((btn) => btn.classList.remove('active'));
+          button.classList.add('active');
 
-        if (button.dataset.view === "dog") {
-          dogView.classList.remove("hidden");
-          ownerView.classList.add("hidden");
-        } else {
-          ownerView.classList.remove("hidden");
-          dogView.classList.add("hidden");
-        }
+          if (button.dataset.view === 'dog') {
+            dogView.classList.remove('hidden');
+            ownerView.classList.add('hidden');
+          } else {
+            ownerView.classList.remove('hidden');
+            dogView.classList.add('hidden');
+          }
+        });
       });
     });
   };
