@@ -50,8 +50,7 @@
       <label class="form-label">Profile Photo</label>
       <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
         {{ form.profile_photo }}
-        <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}" {% if
-          form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}" {% endif %} alt="Profile preview">
+        <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}" {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}"{% endif %} alt="Profile preview">
         <span class="upload-placeholder">Change photo</span>
         <button type="button" class="upload-remove" aria-label="Remove image">×</button>
       </div>

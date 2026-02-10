@@ -40,7 +40,6 @@
 
   <div class="profile-toolbar">
     <span class="profile-title">PROFILE</span>
-    <a href="{% url 'view_profile' %}" class="profile-gear" aria-label="View profile">⚙️</a>
   </div>
 
   <form method="post" enctype="multipart/form-data" class="profile-form-modern profile-edit-form">
@@ -50,8 +49,7 @@
       <label class="form-label">Profile Photo</label>
       <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
         {{ form.profile_photo }}
-        <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}" {% if
-          form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}" {% endif %} alt="Dog preview">
+        <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}" {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}"{% endif %} alt="Dog preview">
         <span class="upload-placeholder">Change photo</span>
         <button type="button" class="upload-remove" aria-label="Remove image">×</button>
       </div>

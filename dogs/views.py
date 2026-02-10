@@ -62,18 +62,18 @@ def browse_dogs(request):
 
     dogs = list(dogs)
 
-    if not dogs:
-        return render(
-            request,
-            "dogs/browse_dogs.html",
-            {"dog": None, "no_more_dogs": True}
-        )
-
     # Vérifier d'abord si une modal de match doit s'afficher
     match_popup = None
     if request.session.get("show_match_modal", False):
         match_popup = request.session.pop("match_data", None)
         request.session.pop("show_match_modal", False)
+
+    if not dogs:
+        return render(
+            request,
+            "dogs/browse_dogs.html",
+            {"dog": None, "no_more_dogs": True, "match_popup": match_popup}
+        )
 
     index = request.session.get("dog_index", 0)
 

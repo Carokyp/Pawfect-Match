@@ -38,15 +38,14 @@
   </nav>
   
   <div class="profile-toolbar">
-    <span class="profile-title">PROFILE</span>
-    <a href="{% url 'edit_owner_profile' %}" class="profile-gear" aria-label="Edit profile">⚙️</a>
+    <span class="profile-title">YOUR PROFILES</span>
   </div>
 
   <div class="profile-view dog-view">
     {% if dog %}
     <div class="profile-card profile-card-view">
       <div class="card-header-bar">
-        <a href="{% url 'edit_dog_profile' %}" class="btn-outline">Edit</a>
+        <a href="{% url 'edit_dog_profile' %}" class="btn-hero secondary">Edit</a>
       </div>
 
       <div class="profile-image">
@@ -88,7 +87,7 @@
     {% else %}
     <div class="empty-state-small">
       <p>No dog profile yet</p>
-      <a href="{% url 'create_dog' %}" class="btn-primary">Add My Dog</a>
+      <a href="{% url 'create_dog' %}" class="btn-hero secondary">Add My Dog</a>
     </div>
     {% endif %}
   </div>
@@ -96,7 +95,7 @@
   <div class="profile-view owner-view">
     <div class="profile-card profile-card-view">
       <div class="card-header-bar">
-        <a href="{% url 'edit_owner_profile' %}" class="btn-outline">Edit</a>
+        <a href="{% url 'edit_owner_profile' %}" class="btn-hero secondary">Edit</a>
       </div>
 
       <div class="profile-image">
@@ -131,13 +130,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="log_out">
-    <form method="POST" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <button type="submit" class="btn-outline btn-logout">Log Out</button>
-    </form>
   </div>
 </div>
 
