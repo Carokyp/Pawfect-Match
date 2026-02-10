@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.contrib.auth import login as auth_login
 from .forms import DogForm
 from .models import Dog
 from profiles.models import OwnerProfile
@@ -107,8 +108,6 @@ def next_dog(request):
     index = request.session.get("dog_index", 0)
     request.session["dog_index"] = index + 1
     return redirect("browse_dogs")
-
-
 
 
 @login_required

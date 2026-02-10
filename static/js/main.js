@@ -496,6 +496,13 @@ document.addEventListener("DOMContentLoaded", () => {
           // Remove card from UI
           const card = document.querySelector(`.profile-card[data-dog-id="${selectedDogId}"]`);
           if (card) card.remove();
+
+          // Vérifie s'il reste des cartes de match
+          const remainingCards = document.querySelectorAll('.profile-card');
+          if (remainingCards.length === 0) {
+            // Recharge la page pour afficher l'écran "No matches yet"
+            window.location.reload();
+          }
         }
         modal.style.display = 'none';
         selectedDogId = null;
