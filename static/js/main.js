@@ -1,5 +1,3 @@
-
-
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
@@ -466,6 +464,64 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+    /* ===============================
+     DELETE MATCH
+     =============================== */
+  const setupDeleteMatch = () => {
+    let selectedDogId = null;
+    const deleteButtons = document.querySelectorAll('.btn-delete-match');
+    const modal = document.getElementById('deleteMatchModal');
+    const cancelBtn = document.getElementById('cancelDeleteMatchBtn');
+    const confirmBtn = document.getElementById('confirmDeleteMatchBtn');
+    if (!deleteButtons.length || !modal) return;
+
+    deleteButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectedDogId = btn.dataset.dogId;
+        modal.style.display = 'flex';
+      });
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      selectedDogId = null;
+    });
+
+    confirmBtn.addEventListener('click', () => {
+      if (!selectedDogId) return;
+      // CSRF token
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+      console.log('CSRF token:', csrfToken ? csrfToken.value : 'not found');
+      fetch('/connections/delete_match/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': csrfToken ? csrfToken.value : ''
+        },
+        body: `dog_id=${selectedDogId}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          // Remove card from UI
+          const card = document.querySelector(`.profile-card[data-dog-id="${selectedDogId}"]`);
+          if (card) card.remove();
+        }
+        modal.style.display = 'none';
+        selectedDogId = null;
+      });
+    });
+
+    // Close modal on backdrop click
+    modal.addEventListener('click', (e) => {
+      if (e.target.id === 'deleteMatchModal') {
+        modal.style.display = 'none';
+        selectedDogId = null;
+      }
+    });
+  };
+
   const init = () => {
     setupResetMatches();
     setupPasswordToggle();
@@ -477,6 +533,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupFormCache("dog");
     setupPillOptions();
     setupDeleteConversation();
+    setupDeleteMatch();
   };
 
   init();

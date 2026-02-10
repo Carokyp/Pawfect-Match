@@ -7,6 +7,37 @@
 {% block content %}
 
 <div class="profile-page profile-edit-page">
+
+  <!--NAVBAR-->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <span class="navbar-brand">🐾 Pawfect Match</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'browse_dogs' %}">Discover</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'messages_inbox' %}">Messages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'view_profile' %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <div class="profile-toolbar">
     <span class="profile-title">PROFILE</span>
     <a href="{% url 'view_profile' %}" class="profile-gear" aria-label="View profile">⚙️</a>
@@ -19,9 +50,8 @@
       <label class="form-label">Profile Photo</label>
       <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
         {{ form.profile_photo }}
-        <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
-             {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}"{% endif %}
-             alt="Profile preview">
+        <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}" {% if
+          form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}" {% endif %} alt="Profile preview">
         <span class="upload-placeholder">Change photo</span>
         <button type="button" class="upload-remove" aria-label="Remove image">×</button>
       </div>
@@ -71,7 +101,7 @@
     <h3 class="danger-zone-title">⚠️ Danger Zone</h3>
     <p class="danger-zone-text">Delete your profile and your dog</p>
     <p class="danger-zone-subtext">This action is permanent and cannot be undone.</p>
-    
+
     <form method="post" action="{% url 'delete_profile' %}" id="deleteForm">
       {% csrf_token %}
       <button type="button" class="btn-danger" onclick="openDeleteModal()">Delete My Profile</button>
@@ -89,7 +119,7 @@
         <li>All your matches</li>
       </ul>
       <p class="modal-danger">This action cannot be undone.</p>
-      
+
       <div class="modal-actions">
         <button type="button" class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
         <button type="button" class="btn-danger" onclick="confirmDelete()">Yes, Delete Forever</button>

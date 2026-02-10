@@ -22,7 +22,7 @@ def register(request):
         owner_id = request.session["owner_profile_id"]
         try:
             OwnerProfile.objects.get(id=owner_id).delete()
-        except:
+        except OwnerProfile.DoesNotExist:
             pass
         del request.session["owner_profile_id"]
     

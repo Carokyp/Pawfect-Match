@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap');
 
 /* #region CSS VARIABLES & ROOT */
@@ -441,6 +442,13 @@ section.full-section:nth-of-type(5) {
   filter: grayscale(100%);
 }
 
+.message-btn{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
 /* --- Form Buttons --- */
 .form-create-btn,
 .form-sign-in-btn {
@@ -449,17 +457,34 @@ section.full-section:nth-of-type(5) {
   margin: 2rem auto 0;
 }
 
-.message-btn{
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-}
-
 .form-next-btn{
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+}
+
+/* --- Delete Match Button --- */
+.btn-delete-match {
+  background: none;
+  color: #f87575;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+  margin-top: 10px;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.btn-delete-match:hover {
+  background: #ffe6e6;
+  color: #e85555;
+  transform: scale(1.08);
 }
 
 
@@ -1205,6 +1230,18 @@ body.modal-open {
   grid-template-columns: 1fr;
   gap: 1rem;
 }
+
+.profile-card {
+  position: relative;
+}
+.delete-match-row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 40px;
+}
+
 /* #endregion */
 
 /* #region PROFILE VIEW PAGE */

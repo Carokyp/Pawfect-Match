@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse, HttpResponseForbidden
 from .models import Connection
 from profiles.models import OwnerProfile
+from dogs.models import Dog
 
 
 @login_required
@@ -44,9 +47,28 @@ def matches_list(request):
                 'owner': owner,
                 'matched_at': connection.created_at
             })
-    
+
     return render(
         request,
         "connections/matches_list.html",
         {"matches": matches_list}
     )
+
+
+@login_required
+@require_POST
+def delete_match(request):
+    """Supprime la connexion entre deux chiens (match)"""
+    dog_id = request.POST.get('dog_id')
+    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    if not owner_profile or not hasattr(owner_profile, "dog"):
+        return HttpResponseForbidden()
+    my_dog = owner_profile.dog
+    try:
+        other_dog = Dog.objects.get(id=dog_id)
+    except Dog.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Dog not found'})
+    # Delete both directions
+    Connection.objects.filter(from_dog=my_dog, to_dog=other_dog).delete()
+    Connection.objects.filter(from_dog=other_dog, to_dog=my_dog).delete()
+    return JsonResponse({'success': True})

@@ -1,5 +1,12 @@
 from django.urls import path
-from .views import register, home, login_view, logout_view, delete_profile, dating_safety
+from .views import (
+    register,
+    home,
+    login_view,
+    logout_view,
+    delete_profile,
+    dating_safety,
+)
 
 urlpatterns = [
     path("", home, name="home"),
