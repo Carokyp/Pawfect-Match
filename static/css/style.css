@@ -889,13 +889,14 @@ input[type="number"] {
   border: none;
   border-radius: 999px;
   padding: 0.4rem 1rem;
-  background: #eee;
+  background: #ffefe4;
+  color: var(--text-dark);
   font-weight: 500;
   cursor: pointer;
 }
 
 .toggle-btn.active {
-  background: #fff;
+  background: var(--orange-200);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -909,10 +910,12 @@ input[type="number"] {
 
 /* --- Info blocks --- */
 .profile-about {
+  color: var(--text-dark);
   padding: 0 1rem;
 }
 
 .profile-about h3 {
+  color: var(--text-dark);
   font-size: 1rem;
   font-weight: 600;
 }
@@ -937,7 +940,7 @@ input[type="number"] {
   font-size: 0.75rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #777;
+  color: var(--text-dark);
 }
 
 .profile-tags {
@@ -964,11 +967,11 @@ input[type="number"] {
   font-size: 0.75rem;
   font-weight: 600;
   margin-bottom: 0.6rem;
-  color: #777;
+  color: var(--text-dark);
 }
 
 .tag {
-  background: #eee;
+  background: #ffefe4;;
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   font-size: 0.8rem;
@@ -1006,42 +1009,13 @@ input[type="number"] {
 }
 
 .dislike {
-  background: #eee;
+  background: #ffefe4;
 }
 
 .like {
-  background: linear-gradient(135deg, #ff4da6, #b44cff);
+  background: linear-gradient(135deg, #E85D1F, #FFB07A);
   color: #fff;
 }
-
-/* Bottom nav */
-.bottom-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-around;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #ddd;
-  background: white;
-  z-index: 100;
-}
-
-.bottom-nav a {
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.bottom-nav a:hover {
-  color: #b6b5b5;
-}
-
-.bottom-nav a.active {
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
 /* #endregion */
 
 /* #region MATCH MODAL */
