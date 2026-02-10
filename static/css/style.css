@@ -449,11 +449,19 @@ section.full-section:nth-of-type(5) {
   margin: 2rem auto 0;
 }
 
+.message-btn{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
 .form-next-btn{
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
 }
+
 
 /* #endregion */
 
@@ -775,6 +783,8 @@ input[type="number"] {
   bottom: 0;
   width: 100%;
   padding: 1rem;
+  text-align: left;
+  align-items: flex-start;
   color: white;
   background: linear-gradient(to top,
       rgba(0, 0, 0, 0.65),
@@ -783,12 +793,12 @@ input[type="number"] {
 
 .image-overlay h2 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 .image-overlay p {
   margin: 0.2rem 0;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 /* --- Dividers --- */
@@ -1178,11 +1188,10 @@ body.modal-open {
 /* #region MATCHES PAGE */
 .matches-page {
   min-height: 100vh;
-  padding-top: 80px;
+  padding-top: 65px;
 }
 
 .matches-container {
-  padding: 1.5rem;
   text-align: center;
 }
 
@@ -1191,96 +1200,11 @@ body.modal-open {
   margin-bottom: 0.5rem;
 }
 
-.matches-count {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-
 .matches-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
 }
-
-.match-card {
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.match-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-.match-image {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-}
-
-.match-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.match-info {
-  padding: 1rem;
-}
-
-.match-info h3 {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.1rem;
-}
-
-.match-breed {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.match-owner {
-  color: #999;
-  font-size: 0.85rem;
-  margin: 0.25rem 0;
-}
-
-.match-date {
-  color: #bbb;
-  font-size: 0.8rem;
-  margin: 0.5rem 0 0 0;
-}
-
-.match-actions {
-  padding: 0.5rem 1rem 1rem 1rem;
-}
-
-.btn-primary {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #f5f4f4, #e8cdfb);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-}
-
-.empty-state {
-  margin-top: 3rem;
-}
-
 /* #endregion */
 
 /* #region PROFILE VIEW PAGE */

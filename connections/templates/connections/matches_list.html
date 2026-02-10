@@ -110,8 +110,9 @@
             </div>
           </div>
         </div>
-        <div class="profile-actions" style="margin-top:1rem; text-align:center;">
-          <a href="{% url 'message_thread' match.dog.id %}" class="btn-primary">Message</a>
+        <hr class="profile-divider">
+        <div class="message-btn">
+          <a href="{% url 'message_thread' match.dog.id %}" class="btn-hero primary">Message</a>
         </div>
       </div>
       {% endfor %}
