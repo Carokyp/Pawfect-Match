@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="profile-page profile-edit-page">
+<div class="profile-edit-page">
 
   <!--NAVBAR-->
   <nav class="navbar navbar-expand-lg">
@@ -38,6 +38,10 @@
     </div>
   </nav>
 
+  <div class="d-flex align-items-center justify-content-center m-3">
+    <span class="fw-bold small">EDIT YOUR PROFILE</span>
+  </div>
+  
   <form method="post" enctype="multipart/form-data" class="profile-form-modern profile-edit-form">
     {% csrf_token %}
 

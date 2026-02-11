@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="discover-page profil-page">
+<div class="discover-page profile-page">
   <!--NAVBAR-->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
@@ -36,16 +36,16 @@
       </div>
     </div>
   </nav>
-  
-  <div class="profile-toolbar">
-    <span class="profile-title">YOUR PROFILES</span>
+
+  <div class="d-flex align-items-center justify-content-center m-3">
+    <span class="fw-bold small">YOUR PROFILES</span>
   </div>
 
   <div class="profile-view dog-view">
     {% if dog %}
     <div class="profile-card profile-card-view">
       <div class="card-header-bar">
-        <a href="{% url 'edit_dog_profile' %}" class="btn-hero secondary">Edit</a>
+        <a href="{% url 'edit_dog_profile' %}" class="btn-edit-profile primary">Edit</a>
       </div>
 
       <div class="profile-image">
@@ -89,7 +89,7 @@
   <div class="profile-view owner-view">
     <div class="profile-card profile-card-view">
       <div class="card-header-bar">
-        <a href="{% url 'edit_owner_profile' %}" class="btn-hero secondary">Edit</a>
+        <a href="{% url 'edit_owner_profile' %}" class="btn-edit-profile primary">Edit</a>
       </div>
 
       <div class="profile-image">
@@ -126,5 +126,7 @@
     </div>
   </div>
 </div>
+
+{% endif %}
 
 {% endblock %}

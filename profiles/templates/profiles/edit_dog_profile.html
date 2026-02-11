@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="profile-page profile-edit-page">
+<div class="profile-edit-page">
 
   <!--NAVBAR-->
   <nav class="navbar navbar-expand-lg">
@@ -38,57 +38,60 @@
     </div>
   </nav>
 
-  <div class="profile-toolbar">
-    <span class="profile-title">PROFILE</span>
+  <div class="d-flex align-items-center justify-content-center m-3">
+    <span class="fw-bold small" style="color: var(--text-dark);">EDIT YOUR PROFILE</span>
   </div>
 
   <form method="post" enctype="multipart/form-data" class="profile-form-modern profile-edit-form">
     {% csrf_token %}
 
-    <div class="photo-block">
-      <label class="form-label">Profile Photo</label>
-      <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
-        {{ form.profile_photo }}
-        <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}" {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}"{% endif %} alt="Dog preview">
-        <span class="upload-placeholder">Change photo</span>
-        <button type="button" class="upload-remove" aria-label="Remove image">×</button>
+    <div class="profile-edit-card">
+      <div class="photo-block">
+        <label class="form-label">Profile Photo</label>
+        <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
+          {{ form.profile_photo }}
+          <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
+            src="{{ form.instance.profile_photo.url }}" alt="Dog preview">
+          <span class="upload-placeholder">Change photo</span>
+          <button type="button" class="upload-remove" aria-label="Remove image">×</button>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label" for="{{ form.name.id_for_label }}">Name</label>
+          {{ form.name }}
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="{{ form.age.id_for_label }}">Age</label>
+          {{ form.age }}
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="{{ form.breed.id_for_label }}">Breed</label>
+          {{ form.breed }}
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="{{ form.size.id_for_label }}">Size</label>
+          {{ form.size }}
+        </div>
+
+        <div class="form-field form-field-full">
+          <label class="form-label" for="{{ form.about_me.id_for_label }}">About me</label>
+          {{ form.about_me }}
+          <div class="char-counter">0 / 500</div>
+        </div>
+
+        <div class="form-field form-field-full">
+          <label class="form-label" for="{{ form.energy_level.id_for_label }}">Energy level</label>
+          {{ form.energy_level }}
+        </div>
       </div>
     </div>
-
-    <div class="form-grid">
-      <div class="form-field">
-        <label class="form-label" for="{{ form.name.id_for_label }}">Name</label>
-        {{ form.name }}
-      </div>
-
-      <div class="form-field">
-        <label class="form-label" for="{{ form.age.id_for_label }}">Age</label>
-        {{ form.age }}
-      </div>
-
-      <div class="form-field">
-        <label class="form-label" for="{{ form.breed.id_for_label }}">Breed</label>
-        {{ form.breed }}
-      </div>
-
-      <div class="form-field">
-        <label class="form-label" for="{{ form.size.id_for_label }}">Size</label>
-        {{ form.size }}
-      </div>
-
-      <div class="form-field form-field-full">
-        <label class="form-label" for="{{ form.about_me.id_for_label }}">About me</label>
-        {{ form.about_me }}
-        <div class="char-counter">0 / 500</div>
-      </div>
-
-      <div class="form-field form-field-full">
-        <label class="form-label" for="{{ form.energy_level.id_for_label }}">Energy level</label>
-        {{ form.energy_level }}
-      </div>
-    </div>
-
-    <div class="form-actions">
+    
+    <div class="form-actions d-flex justify-content-center gap-3 mt-4">
       <a href="{% url 'view_profile' %}" class="btn-hero secondary">Cancel</a>
       <button type="submit" class="btn-hero primary">Save dog profile</button>
     </div>
