@@ -1447,25 +1447,6 @@ body.modal-open {
   color: #999;
 }
 
-@media (max-width: 480px) {
-  .profile-display-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-}
-
-/* --- Log Out Button Container --- */
-.log_out {
-  text-align: center;
-  padding: 0.5rem;
-  margin-bottom: 5rem;
-}
-
-.log_out .btn-outline {
-  margin: 0 auto;
-}
-
 /* #endregion */
 
 /* #region PROFILE EDIT PAGE */

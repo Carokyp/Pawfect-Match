@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="discover-page profile-view-page">
+<div class="discover-page profil-page">
   <!--NAVBAR-->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
@@ -84,12 +84,6 @@
         </div>
       </div>
     </div>
-    {% else %}
-    <div class="empty-state-small">
-      <p>No dog profile yet</p>
-      <a href="{% url 'create_dog' %}" class="btn-hero secondary">Add My Dog</a>
-    </div>
-    {% endif %}
   </div>
 
   <div class="profile-view owner-view">
@@ -105,7 +99,7 @@
         <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner photo">
         {% endif %}
 
-        <div class="image-overlay left">
+        <div class="image-overlay">
           <h2>{{ owner.name }}{% if owner.age %}, {{ owner.age }}{% endif %}</h2>
           <p>{{ owner.occupation }}</p>
           <p>{{ owner.city }}</p>
