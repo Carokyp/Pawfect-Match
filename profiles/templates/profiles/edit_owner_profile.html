@@ -4,11 +4,7 @@
 {% block title %}Edit My Profile{% endblock %}
 {% block content_class %}edit-profile-wrapper{% endblock %}
 
-{% block content %}
-
-<div class="profile-edit-page">
-
-  <!--NAVBAR-->
+{% block header %}
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <span class="navbar-brand">🐾 Pawfect Match</span>
@@ -37,6 +33,11 @@
       </div>
     </div>
   </nav>
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-edit-page">
   <div class="d-flex align-items-center justify-content-center m-3">
     <span class="fw-bold small" style="color: var(--text-dark);">EDIT YOUR PROFILE</span>
   </div>
