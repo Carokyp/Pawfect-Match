@@ -11,8 +11,15 @@
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <span class="navbar-brand">🐾 Pawfect Match</span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
-        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
@@ -38,11 +45,10 @@
   </nav>
 
   <div class="d-flex align-items-center justify-content-center m-3">
-    <span class="fw-bold small">YOUR PROFILES</span>
+    <span class="fw-bold small" style="color: var(--text-dark);">YOUR PROFILES</span>
   </div>
 
-  <div class="profile-view dog-view">
-    {% if dog %}
+  {% if dog %}
     <div class="profile-card profile-card-view">
       <div class="card-header-bar">
         <a href="{% url 'edit_dog_profile' %}" class="btn-edit-profile primary">Edit</a>
@@ -50,9 +56,9 @@
 
       <div class="profile-image">
         {% if dog.profile_photo %}
-        <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
+        <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high" />
         {% else %}
-        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog photo">
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog photo" />
         {% endif %}
 
         <div class="image-overlay">
@@ -63,14 +69,14 @@
         </div>
       </div>
 
-      <hr class="profile-divider">
+      <hr class="profile-divider" />
 
       <div class="profile-about center">
         <h3>About me</h3>
         <p>{{ dog.about_me }}</p>
       </div>
 
-      <hr class="profile-divider">
+      <hr class="profile-divider" />
 
       <div class="profile-meta">
         <div class="meta-block">
@@ -84,9 +90,8 @@
         </div>
       </div>
     </div>
-  </div>
+  {% endif %}
 
-  <div class="profile-view owner-view">
     <div class="profile-card profile-card-view">
       <div class="card-header-bar">
         <a href="{% url 'edit_owner_profile' %}" class="btn-edit-profile primary">Edit</a>
@@ -94,9 +99,9 @@
 
       <div class="profile-image">
         {% if owner.profile_photo %}
-        <img src="{{ owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
+        <img src="{{ owner.get_photo_url }}" alt="Owner photo" fetchpriority="high" />
         {% else %}
-        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner photo">
+        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner photo" />
         {% endif %}
 
         <div class="image-overlay">
@@ -106,14 +111,14 @@
         </div>
       </div>
 
-      <hr class="profile-divider">
+      <hr class="profile-divider" />
 
       <div class="profile-about center">
         <h3>About me</h3>
         <p>{{ owner.about_me }}</p>
       </div>
 
-      <hr class="profile-divider">
+      <hr class="profile-divider" />
 
       <div class="profile-interests left">
         <h4>Interests</h4>
@@ -124,9 +129,44 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-{% endif %}
+  <!-- DANGER ZONE -->
+  <div class="danger-zone">
+    <p class="danger-zone-text">Delete your profile and your dog</p>
+    <p class="danger-zone-subtext">
+      This action is permanent and cannot be undone.
+    </p>
+
+    <form method="post" action="{% url 'delete_profile' %}" id="deleteForm">
+      {% csrf_token %}
+      <button type="button" class="btn-danger delete-profile-btn" onclick="openDeleteModal()">
+        Delete My Profile
+      </button>
+    </form>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-content">
+      <h2>Are you sure?</h2>
+      <p class="modal-warning">⚠️ This will permanently delete:</p>
+      <ul class="modal-list">
+        <li>Your profile</li>
+        {% if dog %}
+        <li>Your dog: <strong>{{ dog.name }}</strong></li>
+        {% endif %}
+        <li>All your matches</li>
+      </ul>
+      <p class="modal-danger">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeDeleteModal()">
+          Cancel
+        </button>
+        <button type="button" class="btn-danger" onclick="confirmDelete()">
+          Yes, Delete
+        </button>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

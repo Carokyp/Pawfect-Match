@@ -1,3 +1,4 @@
+import ast
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import OwnerProfile
@@ -44,13 +45,35 @@ class OwnerProfileForm(forms.ModelForm):
             if field:
                 field.required = True
                 field.widget.attrs["required"] = "required"
+        if self.instance and self.instance.pk:
+            self.fields["profile_photo"].required = False
+            self.fields["profile_photo"].widget.attrs.pop("required", None)
 
         if not self.data and self.instance and self.instance.interests:
-            self.fields["interests"].initial = [
-                interest.strip()
-                for interest in self.instance.interests.split(",")
-                if interest.strip()
-            ]
+            self.fields["interests"].initial = self._parse_interests(
+                self.instance.interests
+            )
+
+    @staticmethod
+    def _parse_interests(value):
+        if not value:
+            return []
+        if isinstance(value, (list, tuple)):
+            return [str(item).strip() for item in value if str(item).strip()]
+        value = str(value).strip()
+        if value.startswith("[") and value.endswith("]"):
+            try:
+                parsed = ast.literal_eval(value)
+            except (ValueError, SyntaxError):
+                parsed = None
+            if isinstance(parsed, (list, tuple)):
+                return [
+                    str(item).strip()
+                    for item in parsed
+                    if str(item).strip()
+                ]
+        return [item.strip() for item in value.split(",") if item.strip()]
+
     class Meta:
         model = OwnerProfile
         fields = [
@@ -69,6 +92,7 @@ class OwnerProfileForm(forms.ModelForm):
             }),
             "about_me": forms.Textarea(attrs={
                 "rows": 4,
+                "maxlength": 150,
                 "placeholder": (
                     "Tell us about yourself, your lifestyle ect..."
                 )
@@ -90,7 +114,20 @@ class OwnerProfileForm(forms.ModelForm):
 
     def clean_profile_photo(self):
         photo = self.cleaned_data.get("profile_photo")
+        if not photo and self.instance and self.instance.pk:
+            return self.instance.profile_photo
         if not photo:
             raise ValidationError("Please select a profile photo.")
         return photo
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        interests = self.cleaned_data.get("interests")
+        if isinstance(interests, (list, tuple)):
+            instance.interests = ", ".join(interests)
+        elif interests is None:
+            instance.interests = ""
+        if commit:
+            instance.save()
+        return instance
 

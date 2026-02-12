@@ -86,7 +86,7 @@
         <div class="form-field form-field-full">
           <label class="form-label" for="{{ form.about_me.id_for_label }}">About me</label>
           {{ form.about_me }}
-          <div class="char-counter">0 / 500</div>
+          <div class="char-counter">0 / 150</div>
         </div>
 
         <div class="form-field form-field-full">
@@ -95,10 +95,10 @@
         </div>
       </div>
     </div>
-    
+
     <div class="form-actions d-flex justify-content-center gap-3 mt-4">
       <a href="{% url 'view_profile' %}" class="btn-hero secondary">Cancel</a>
-      <button type="submit" class="btn-hero primary">Save dog profile</button>
+      <button type="submit" class="btn-hero primary">Save profile</button>
     </div>
   </form>
 </div>

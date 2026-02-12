@@ -1,3 +1,4 @@
+import ast
 from connections.models import Connection
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, redirect
@@ -65,13 +66,24 @@ def view_profile(request):
     if hasattr(owner_profile, "dog"):
         dog = owner_profile.dog
     
-    # Prepare interests as list
-    if owner_profile.interests:
-        owner_profile.interests_list = [
-            i.strip() for i in owner_profile.interests.split(",")
-        ]
-    else:
-        owner_profile.interests_list = []
+    def parse_interests(value):
+        if not value:
+            return []
+        value = str(value).strip()
+        if value.startswith("[") and value.endswith("]"):
+            try:
+                parsed = ast.literal_eval(value)
+            except (ValueError, SyntaxError):
+                parsed = None
+            if isinstance(parsed, (list, tuple)):
+                return [
+                    str(item).strip()
+                    for item in parsed
+                    if str(item).strip()
+                ]
+        return [item.strip() for item in value.split(",") if item.strip()]
+
+    owner_profile.interests_list = parse_interests(owner_profile.interests)
     
     return render(
         request,

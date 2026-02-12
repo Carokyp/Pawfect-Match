@@ -518,6 +518,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  /* ===============================
+     DELETE PROFILE
+     =============================== */
+
+  /**
+   * Setup delete profile modal and functionality.
+   * @returns {void}
+   */
+  const setupDeleteProfile = () => {
+    const deleteModal = document.getElementById('deleteModal');
+    if (!deleteModal) return;
+
+    // Open modal
+    window.openDeleteModal = function() {
+      deleteModal.classList.add('is-open');
+    };
+
+    // Close modal
+    window.closeDeleteModal = function() {
+      deleteModal.classList.remove('is-open');
+    };
+
+    // Confirm delete
+    window.confirmDelete = function() {
+      document.getElementById('deleteForm').submit();
+    };
+
+    // Close modal on backdrop click
+    deleteModal.addEventListener('click', function (e) {
+      if (e.target === this) {
+        window.closeDeleteModal();
+      }
+    });
+  };
+
   const init = () => {
     setupResetMatches();
     setupPasswordToggle();
@@ -530,6 +565,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupPillOptions();
     setupDeleteConversation();
     setupDeleteMatch();
+    setupDeleteProfile();
   };
 
   init();

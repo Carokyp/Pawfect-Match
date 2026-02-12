@@ -58,7 +58,7 @@ class Dog(models.Model):
     )
 
     about_me = models.TextField(
-        max_length=500,
+        max_length=150,
         blank=True,
         help_text="Tell us about your dog's personality"
     )

@@ -20,6 +20,9 @@ class DogForm(forms.ModelForm):
             if field:
                 field.required = True
                 field.widget.attrs["required"] = "required"
+        if self.instance and self.instance.pk:
+            self.fields["profile_photo"].required = False
+            self.fields["profile_photo"].widget.attrs.pop("required", None)
 
     class Meta:
         model = Dog
@@ -40,6 +43,7 @@ class DogForm(forms.ModelForm):
             }),
             "about_me": forms.Textarea(attrs={
                 "rows": 4,
+                "maxlength": 150,
                 "placeholder": (
                     "Tell us about your dog's personality, "
                     "favorite activities etc..."
@@ -59,6 +63,8 @@ class DogForm(forms.ModelForm):
 
     def clean_profile_photo(self):
         photo = self.cleaned_data.get("profile_photo")
+        if not photo and self.instance and self.instance.pk:
+            return self.instance.profile_photo
         if not photo:
             raise ValidationError("Please select a profile photo.")
         return photo

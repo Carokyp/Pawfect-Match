@@ -347,6 +347,7 @@ section.full-section:nth-of-type(5) {
 
 /* #region BUTTONS & INTERACTIVE ELEMENTS */
 
+/* --- Primary/Secondary Hero Buttons --- */
 .btn-hero {
   display: inline-flex;
   align-items: center;
@@ -359,13 +360,13 @@ section.full-section:nth-of-type(5) {
   transition: all 0.3s ease;
 }
 
-.btn-hero.primary{
+.btn-hero.primary {
   background: var(--orange-900);
   color: white;
   border: 3px solid var(--orange-900);
 }
 
-.btn-hero.secondary{
+.btn-hero.secondary {
   background: white;
   color: var(--orange-900);
   border: 3px solid var(--orange-900);
@@ -384,6 +385,7 @@ section.full-section:nth-of-type(5) {
   transform: translateY(-3px);
 }
 
+/* --- Edit Profile Button --- */
 .btn-edit-profile {
   display: inline-flex;
   align-items: center;
@@ -397,7 +399,7 @@ section.full-section:nth-of-type(5) {
   transition: all 0.3s ease;
 }
 
-.btn-edit-profile.primary{
+.btn-edit-profile.primary {
   background: var(--orange-900);
   color: white;
   border: 3px solid var(--orange-900);
@@ -409,7 +411,60 @@ section.full-section:nth-of-type(5) {
   border: 3px solid var(--orange-700);
 }
 
-/* --- Logout Button (Red) --- */
+/* --- Danger/Delete Button --- */
+.btn-danger {
+  background-color: #f87575;
+  color: #ffffff;
+  border: 2px solid #f87575;
+  padding: 0.75rem 2rem;
+  margin-top: 1rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-danger:hover {
+  background-color: #e85555;
+  border-color: #e85555;
+}
+
+/* -- Danger/Delete Profile Button */
+
+.delete-profile-btn{
+  font-size: 0.8rem;
+}
+
+.modal-actions .btn-secondary,
+.modal-actions .btn-danger {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-actions .btn-secondary {
+  background-color: #f0f0f0;
+  color: var(--text-dark);
+}
+
+.modal-actions .btn-danger {
+  background-color: #f87575;
+  color: white;
+  margin: 0;
+}
+
+.modal-actions .btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* --- Logout Button --- */
 .btn-logout {
   border-color: #f87575;
   color: #f87575;
@@ -420,7 +475,7 @@ section.full-section:nth-of-type(5) {
   color: #ffffff;
 }
 
-/* --- Back Button Background --- */
+/* --- Back Button --- */
 .back-button {
   transition: background 0.35s cubic-bezier(0.4,0,0.2,1), transform 0.35s cubic-bezier(0.4,0,0.2,1);
   position: absolute;
@@ -440,7 +495,7 @@ section.full-section:nth-of-type(5) {
   transform: translateX(-2px);
 }
 
-/* --- Back Button Messages --- */
+/* --- Back Button (Messages) --- */
 .back-button-messages {
   position: fixed;
   top: 60px;
@@ -467,7 +522,8 @@ section.full-section:nth-of-type(5) {
   filter: grayscale(100%);
 }
 
-.message-btn{
+/* --- Message Button Wrapper --- */
+.message-btn {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
@@ -482,7 +538,7 @@ section.full-section:nth-of-type(5) {
   margin: 2rem auto 0;
 }
 
-.form-next-btn{
+.form-next-btn {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
@@ -506,6 +562,7 @@ section.full-section:nth-of-type(5) {
   margin-top: 10px;
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
+
 .btn-delete-match:hover {
   background: #ffe6e6;
   color: #e85555;
@@ -1201,7 +1258,6 @@ body.modal-open {
 /* #endregion */
 
 /* #region EDIT PROFILE PAGE */
-
 .profile-edit-page{
   min-height: 100vh;
   padding-top: 30px;
@@ -1304,10 +1360,9 @@ body.modal-open {
   gap: 0.75rem;
   margin-top: 1.25rem;
 }
-
 /* #endregion */
 
-/* #region EMPTY STATE */
+/* #region NO MORE MATCHES*/
 .empty-dogs {
   text-align: center;
   padding: 2.5rem;
@@ -1355,64 +1410,27 @@ body.modal-open {
 /* #region DANGER ZONE */
 
 .danger-zone {
-  margin-top: 4rem;
+  margin-top: 1rem;
   padding: 2rem;
-  border: 2px solid #f87575;
+  border: 3px solid #f87575;
   border-radius: var(--border-radius);
-  background-color: rgba(248, 117, 117, 0.05);
+  justify-content: center;
+  background-color: rgb(255 255 255);
+  text-align: center;
 }
 
-.danger-zone-title {
-  font-size: 1.25rem;
-  font-weight: 600;
+.danger-zone p {
   color: #f87575;
-  margin-bottom: 0.5rem;
-}
-
-.danger-zone-text {
-  font-size: 1rem;
-  color: var(--text-dark);
-  margin-bottom: 0.25rem;
-}
-
-.danger-zone-subtext {
-  font-size: 0.875rem;
-  color: var(--text-light);
-  margin-bottom: 1.5rem;
-}
-
-.btn-danger {
-  background-color: #f87575;
-  color: #ffffff;
-  border: 2px solid #f87575;
-  padding: 0.75rem 2rem;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-block;
-}
-
-.btn-danger:hover {
-  background-color: #e85555;
-  border-color: #e85555;
-}
-
-.btn-danger:active {
-  transform: scale(0.98);
-}
-
+  margin-bottom: 0.25rem;}
 /* #endregion */
 
 /* #region DELETE MODAL */
 
+/* .modal-overlay now uses Bootstrap utilities + custom backdrop */
 .modal-overlay {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   justify-content: center;
@@ -1426,7 +1444,7 @@ body.modal-open {
 .modal-content {
   background-color: #ffffff;
   border-radius: var(--border-radius);
-  padding: 2rem;
+  padding: 1.7rem 1rem;
   max-width: 500px;
   width: 90%;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -1446,37 +1464,29 @@ body.modal-open {
 }
 
 .modal-content h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  font-size: 1.3rem;
   color: var(--text-dark);
 }
 
 .modal-warning {
-  font-size: 0.95rem;
   color: #f87575;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .modal-list {
   list-style: none;
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
+  padding: 0;
+  text-align: center;
+  margin: 0;
 }
 
 .modal-list li {
-  padding: 0.5rem 0;
   color: var(--text-dark);
-  position: relative;
-  padding-left: 1.5rem;
-}
-
-.modal-list li:before {
-  content: "•";
-  color: #f87575;
-  font-weight: bold;
-  position: absolute;
-  left: 0;
+  margin-bottom: 0.2rem;
 }
 
 .modal-list li strong {
@@ -1484,12 +1494,12 @@ body.modal-open {
 }
 
 .modal-danger {
-  font-size: 0.9rem;
   color: #f87575;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin: 1rem 0 2rem;
   padding: 1rem;
   background-color: rgba(248, 117, 117, 0.1);
+  text-align: center;
   border-radius: 10px;
 }
 
@@ -1497,27 +1507,6 @@ body.modal-open {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
-}
-
-.modal-actions .btn-secondary {
-  flex: 1;
-  padding: 0.75rem 1.5rem;
-  background-color: #f0f0f0;
-  border: none;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  color: var(--text-dark);
-}
-
-.modal-actions .btn-secondary:hover {
-  background-color: #e0e0e0;
-}
-
-.modal-actions .btn-danger {
-  flex: 1;
 }
 
 /* #endregion */
@@ -1961,7 +1950,7 @@ body.modal-open {
   gap: 0.75rem;
 }
 
-.modal-actions .btn-secondary {
+.modal-delete-msg .btn-secondary {
   flex: 1;
   padding: 0.75rem 1rem;
   background-color: #f0f0f0;
@@ -1974,11 +1963,11 @@ body.modal-open {
   transition: background-color 0.3s ease;
 }
 
-.modal-actions .btn-secondary:hover {
+.modal-delete-msg .btn-secondary:hover {
   background-color: #e0e0e0;
 }
 
-.modal-actions .btn-danger {
+.modal-delete-msg .btn-danger {
   flex: 1;
   padding: 0.75rem 1rem;
   background-color: #f87575;
@@ -1991,7 +1980,7 @@ body.modal-open {
   transition: background-color 0.3s ease;
 }
 
-.modal-actions .btn-danger:hover {
+.modal-delete-msg .btn-danger:hover {
   background-color: #f05555;
 }
 

@@ -31,7 +31,7 @@ class OwnerProfile(models.Model):
     )
 
     about_me = models.TextField(
-        max_length=500,
+        max_length=150,
         blank=True
     )
 
