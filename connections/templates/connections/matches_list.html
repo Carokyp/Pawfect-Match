@@ -135,15 +135,15 @@
     </div>
   </div>
   {% else %}
-  <div class="empty-state" style="text-align:center; padding:2.5rem;">
-    <p style="font-size:1.1rem;">
-      No matches yet 🐾
+  <div class="empty-matches">
+    <p class="matches-title">
+      No matches yet
     </p>
-    <p style="opacity:0.6; margin-bottom:1.5rem;">
+    <p class="matches-subtitle m-0">
       Start liking dogs to find your perfect match!
     </p>
-    <a href="{% url 'browse_dogs' %}" class="btn-primary"
-      style="display:inline-block; padding:0.8rem 1.5rem; border-radius:999px;">Back to Discover</a>
+    <img class=" mb-5 mt-5" style="width: 100px; height: 100px;" src="{% static 'images/sad_emoji.png' %}" alt="sad emoji">
+    <a href="{% url 'browse_dogs' %}" class="btn-hero primary">Back to Discover</a>
   </div>
   {% endif %}
 </div>

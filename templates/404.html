@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block layout %}
+  <!-- 404 ERROR SECTION -->
+  <section class="hero-section" style="min-height: 80vh;">
+    <div class="hero-content" style="padding: 3rem 1rem;">
+      <h1 style="font-size: 4rem; margin-bottom: 1rem;">404</h1>
+      <h2 style="font-size: 1.5rem; color: var(--orange-500); margin-bottom: 1.5rem;">Page Not Found</h2>
+      <p style="margin-bottom: 2rem; max-width: 400px;">Oops! Looks like this page went for a walk and didn't come back. Let's get you back on track.</p>
+      <div class="hero-buttons">
+        <a href="{% url 'home' %}" class="btn-hero primary">Back to Home</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'browse_dogs' %}" class="btn-hero secondary">Browse Dogs</a>
+        {% else %}
+        <a href="{% url 'register' %}" class="btn-hero secondary">Get Started</a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -91,3 +91,13 @@ def delete_profile(request):
         logout(request)
         return redirect("home")
     return redirect("view_profile")
+
+
+def custom_404(request, exception):
+    """Custom 404 error page."""
+    return render(request, "404.html", status=404)
+
+
+def test_404(request):
+    """Test view for 404 page."""
+    return render(request, "404.html")

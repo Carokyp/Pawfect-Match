@@ -6,6 +6,7 @@ from .forms import DogForm
 from .models import Dog
 from profiles.models import OwnerProfile
 from connections.models import Connection, Dislike
+from messaging.models import Message
 
 
 def create_dog(request):
@@ -188,5 +189,7 @@ def reset_matches(request):
     my_dog = owner_profile.dog
     Connection.objects.filter(from_dog=my_dog).delete()
     Dislike.objects.filter(from_dog=my_dog).delete()
+    Message.objects.filter(sender_dog=my_dog).delete()
+    Message.objects.filter(receiver_dog=my_dog).delete()
 
     return redirect("browse_dogs")
