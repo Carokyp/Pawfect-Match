@@ -21,6 +21,13 @@ class LoginForm(AuthenticationForm):
         })
     )
 
+    error_messages = {
+        'invalid_login': (
+            "We couldn't find an account. "
+            "Please check your email and password."
+        )
+    }
+
 
 class RegisterForm(forms.Form):
     email = forms.EmailField(
