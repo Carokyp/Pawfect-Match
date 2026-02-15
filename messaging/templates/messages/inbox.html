@@ -40,8 +40,8 @@
     </div>
   </nav>
   
-  <div class="profile-toolbar">
-    <span class="profile-title">MESSAGES</span>
+  <div class="d-flex justify-content-center align-items-center py-2">
+    <span class="fw-bold" style="color: var(--text-dark);">MESSAGES</span>
   </div>
 
   {% if conversations %}
@@ -90,7 +90,7 @@
     <p class="delete-description">This will permanently delete all messages with <span id="deleteDogName"></span>. This
       action cannot be undone.</p>
 
-    <div class="modal-delete-msg">
+    <div class="modal-delete-msg modal-button-group d-flex justify-content-center gap-2">
       <button class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
       <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
     </div>

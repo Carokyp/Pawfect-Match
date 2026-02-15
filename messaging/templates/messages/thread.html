@@ -6,7 +6,7 @@
 
 {% block back_button %}
 <a href="{% url 'messages_inbox' %}" class="back-button-messages">
-  <img src="{% static 'images/back_arrow.svg' %}" alt="Back" />
+  <i class="fa-solid fa-arrow-left"></i>
 </a>
 {% endblock %}
 
@@ -27,8 +27,6 @@
       <p>{{ receiver_dog.breed }}</p>
     </div>
   </div>
-
-  <hr class="divider">
 
   <!-- MESSAGES THREAD - iMessage style -->
   <div class="messages-thread">
@@ -64,15 +62,13 @@
     {% endif %}
   </div>
 
-  <hr class="divider">
-
   <!-- MESSAGE FORM -->
   {% if is_match %}
     <div class="message-form-container">
       <form method="POST" class="message-form">
         {% csrf_token %}
         {{ form.content }}
-        <button type="submit" class="btn-send">Send</button>
+        <button type="submit" class="send-msg btn-secondary">Send</button>
       </form>
     </div>
   {% endif %}
