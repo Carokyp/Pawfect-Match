@@ -29,6 +29,52 @@ class LoginForm(AuthenticationForm):
     }
 
 
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={
+            "placeholder": "Enter your email address"
+        })
+    )
+    
+    new_password = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput(attrs={
+            "autocomplete": "new-password"
+        })
+    )
+    
+    new_password_confirm = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput(attrs={
+            "autocomplete": "new-password"
+        })
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not User.objects.filter(username=email).exists():
+            raise ValidationError("No account found with this email address.")
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get("new_password")
+        new_password_confirm = cleaned_data.get("new_password_confirm")
+
+        if new_password and new_password_confirm:
+            if new_password != new_password_confirm:
+                raise ValidationError("The two password fields must match.")
+            
+            # Validate password strength
+            try:
+                validate_password(new_password)
+            except ValidationError as e:
+                raise ValidationError(e.messages)
+
+        return cleaned_data
+
+
 class RegisterForm(forms.Form):
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={

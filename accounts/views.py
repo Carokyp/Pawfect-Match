@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm
-from .forms import LoginForm
+from django.contrib.auth.models import User
+from .forms import RegisterForm, LoginForm, ForgotPasswordForm
 from profiles.models import OwnerProfile
 from dogs.models import Dog
 
@@ -101,3 +101,24 @@ def custom_404(request, exception):
 def test_404(request):
     """Test view for 404 page."""
     return render(request, "404.html")
+
+
+def forgot_password(request):
+    """Simple password reset without email verification."""
+    if request.method == "POST":
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            new_password = form.cleaned_data["new_password"]
+            
+            # Update the user's password
+            user = User.objects.get(username=email)
+            user.set_password(new_password)
+            user.save()
+            
+            # Redirect to sign in with success message
+            return render(request, "accounts/password_reset_success.html")
+    else:
+        form = ForgotPasswordForm()
+    
+    return render(request, "accounts/forgot_password.html", {"form": form})

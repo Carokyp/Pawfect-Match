@@ -18,27 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
-from accounts.views import home, test_404
+from accounts.views import home, test_404, forgot_password
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home, name="home"),
     path("404-page/", test_404, name="test_404"),
     
-    # Password reset URLs
-    path("password-reset/", 
-         auth_views.PasswordResetView.as_view(), 
-         name="password_reset"),
-    path("password-reset/done/", 
-         auth_views.PasswordResetDoneView.as_view(), 
-         name="password_reset_done"),
-    path("reset/<uidb64>/<token>/", 
-         auth_views.PasswordResetConfirmView.as_view(), 
-         name="password_reset_confirm"),
-    path("reset/done/", 
-         auth_views.PasswordResetCompleteView.as_view(), 
-         name="password_reset_complete"),
+    # Simple password reset (no email)
+    path("password-reset/", forgot_password, name="password_reset"),
     
     path("accounts/", include("accounts.urls")),
     path("profiles/", include("profiles.urls")),
