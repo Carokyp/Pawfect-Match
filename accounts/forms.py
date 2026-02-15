@@ -33,7 +33,6 @@ class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(
         label="Email",
         widget=forms.EmailInput(attrs={
-            "placeholder": "Enter your email address"
         })
     )
     
@@ -71,6 +70,25 @@ class ForgotPasswordForm(forms.Form):
                 validate_password(new_password)
             except ValidationError as e:
                 raise ValidationError(e.messages)
+
+            # Custom validators (match registration requirements)
+            if not re.search(r"[A-Z]", new_password):
+                raise ValidationError(
+                    "Password must contain at least one uppercase "
+                    "letter (A-Z)."
+                )
+
+            if not re.search(r"[0-9]", new_password):
+                raise ValidationError(
+                    "Password must contain at least one digit (0-9)."
+                )
+
+            special_chars = r"[!@#$%^&*()_+\-=\[\]{};:\"\\|,.<>\/?]"
+            if not re.search(special_chars, new_password):
+                raise ValidationError(
+                    "Password must contain at least one special "
+                    "character (!@#$%^&*)."
+                )
 
         return cleaned_data
 

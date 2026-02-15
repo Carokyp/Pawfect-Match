@@ -21,18 +21,15 @@ from django.conf.urls.static import static
 from accounts.views import home, test_404, forgot_password
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("", home, name="home"),
     path("404-page/", test_404, name="test_404"),
-    
-    # Simple password reset (no email)
-    path("password-reset/", forgot_password, name="password_reset"),
-    
     path("accounts/", include("accounts.urls")),
-    path("profiles/", include("profiles.urls")),
-    path("dogs/", include("dogs.urls")),
+    path("admin/", admin.site.urls),
     path("connections/", include("connections.urls")),
+    path("dogs/", include("dogs.urls")),
     path("messages/", include("messaging.urls")),
+    path("password-reset/", forgot_password, name="password_reset"),
+    path("profiles/", include("profiles.urls")),
 ]
 
 if settings.DEBUG:

@@ -85,11 +85,13 @@ a:visited {
 
 .auth-content.form-page {
   text-align: left;
-  padding: 5rem 1rem 3rem 1rem;
+  min-height: 100vh;
+  padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 70px;
 }
 
 .auth-content.form-page>*:not(.back-button) {
@@ -116,35 +118,7 @@ a:visited {
 
 /* #endregion */
 
-/* #region HOME PAGE */
-
-/* HOME PAGE */
-.home-title,
-.section-text h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  color: var(--orange-500);
-}
-
-.home-description,
-.section-text p,
-.why-header p {
-  font-size: 1rem;
-  color: var(--orange-500);
-  line-height: 1.5;
-  margin-bottom: 2rem;
-  max-width: 320px;
-}
-
-.home-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-}
-
-/* NAVBAR */
+/* #region NAVBAR */
 .navbar {
   position: absolute;
   top: 0;
@@ -197,6 +171,10 @@ a:visited {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E85D1F' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
+/* #endregion */
+
+/* #region HOME PAGE */
+
 /* HERO */
 .hero-section {
   position: relative;
@@ -234,7 +212,7 @@ a:visited {
 .hero-content p {
   font-size: 0.95rem;
   margin-bottom: 1.5rem;
-  color: var(--orange-500);
+  color: var(--text-dark);
 }
 
 .hero-buttons {
@@ -281,7 +259,7 @@ section.full-section:nth-of-type(5) {
 
 .section-text p {
   font-size: 1.05rem;
-  color: var(--orange-500);
+  color: var(--text-dark);
 }
 
 .section-image {
@@ -315,7 +293,7 @@ section.full-section:nth-of-type(5) {
 .why-header h2 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--orange-500);
 }
 
@@ -341,7 +319,7 @@ section.full-section:nth-of-type(5) {
 }
 
 .why-card p {
-  color: var(--orange-500);
+  color: var(--text-dark);
   font-size: 0.95rem;
   margin: 0;
 }
@@ -636,8 +614,6 @@ section.full-section:nth-of-type(5) {
 .btn-delete-conversation:active {
   transform: scale(0.95);
 }
-
-
 /* #endregion */
 
 /* #region FORMS & INPUTS */
@@ -730,6 +706,23 @@ section.full-section:nth-of-type(5) {
   text-decoration: underline;
 }
 
+/* --- Password Reset Success --- */
+.success-image img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+  border-radius: 50%;
+}
+
+
+.success-text p{
+  color: var(--text-dark);
+}
+
+.success-text h1{
+  font-size: 1.3rem !important;
+}
 
 /* --- Pill Options (Interests) --- */
 .pill-options {
@@ -912,7 +905,7 @@ section.full-section:nth-of-type(5) {
 }
 
 
-.form-field select.form-select {
+.form-field select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1509,7 +1502,7 @@ body.modal-open {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 620px;
 }
 
 .empty-dogs-title,
