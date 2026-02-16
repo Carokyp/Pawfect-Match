@@ -113,6 +113,80 @@ Key sections and navigation flow:
  - Environment-based config via `python-dotenv` and `env.py`.
  - Custom CSS and JavaScript for UI enhancements.
 
+
+### CRUD Operations
+
+**Pawfect-Match** implements full CRUD (Create, Read, Update, Delete) functionality across all core features:
+
+#### **User Accounts**
+- **Create**: Users can register a new account with email and password
+- **Read**: Users can sign in to access their account
+- **Delete**: Users can permanently delete their entire account (removes user, profiles, dog, connections, and messages)
+
+#### **Owner Profiles**
+- **Create**: During registration, users create their owner profile with name, age, city, occupation, interests, and photo
+- **Read**: Users can view their complete profile and other users' profiles when browsing dogs
+- **Update**: Users can edit their owner profile information and update their photo at any time
+- **Delete**: Owner profile is deleted as part of account deletion
+
+#### **Dog Profiles**
+- **Create**: After creating an owner profile, users add their dog's profile with photo, name, age, breed, size, gender, energy level, and about section
+- **Read**: Users can view their dog's profile and browse other dogs' profiles on the discovery page
+- **Update**: Users can edit their dog's profile information and update photos
+- **Delete**: Dog profile is deleted as part of account deletion
+
+#### **Connections (Matches)**
+- **Create**: Users can like dogs to create automatic bidirectional matches (no swipe-right/left waiting—instant connection)
+- **Create**: Users can dislike dogs to remove them from their discovery feed
+- **Read**: Users can view all their matches in a dedicated matches list showing matched dogs and owner information
+- **Delete**: Users can unmatch individual connections from their matches list
+- **Delete**: When no more dogs are available to browse, users can reset all matches, dislikes, and messages to restart their discovery experience
+
+#### **Messages**
+- **Create**: Users can send messages to matched dogs through conversation threads
+- **Read**: Users can view their inbox showing all conversations and read full message threads with each match
+- **Delete**: Users can delete entire conversation threads from their inbox
+
+#### **User Feedback**
+- "It's a match!" modal popup with photos when matches occur
+- Form validation error messages displayed on forms
+
+### Database Schema
+The system uses the Django ORM with a PostgreSQL database in production (via `DATABASE_URL`). The core data model is focused on owners, dogs, matches, and messaging.
+
+**Models**
+- User (Django auth)
+   - Standard authentication user model used for login and ownership.
+- OwnerProfile
+   - user (OneToOne -> User)
+   - profile_photo (CloudinaryField)
+   - name, age, city, occupation
+   - interests (comma-separated string)
+   - about_me, created_at
+- Dog
+   - owner (OneToOne -> OwnerProfile)
+   - profile_photo (CloudinaryField)
+   - name, age, breed
+   - size, gender, energy_level (choices)
+   - about_me, created_at
+- Connection
+   - from_dog (ForeignKey -> Dog)
+   - to_dog (ForeignKey -> Dog)
+   - created_at
+- Dislike
+   - from_dog (ForeignKey -> Dog)
+   - to_dog (ForeignKey -> Dog)
+   - created_at
+- Message
+   - sender_dog (ForeignKey -> Dog)
+   - receiver_dog (ForeignKey -> Dog)
+   - content, created_at
+
+**Schema characteristics**
+- One-to-one: User -> OwnerProfile, OwnerProfile -> Dog.
+- One-to-many: Dog -> Connection/Dislike/Message.
+- Match logic uses bidirectional Connection entries.
+
 ### Skeleton
 
 ### Wireframes
@@ -142,6 +216,7 @@ Orange brand palette for energy and warmth, balanced with light backgrounds.
 ## Features
 
 #### **Responsive Design**
+Works seamlessly across desktops, tablets, and mobile devices with Bootstrap 5 responsive grid system and mobile-first design principles.
 
 #### **User Experience Enhancements**
 
