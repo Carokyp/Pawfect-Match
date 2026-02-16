@@ -667,113 +667,62 @@ __Frameworks, Libraries & Programs Used__
 ## Credits
 
 HERO
--https://www.freepik.com/free-photo/couple-love-looks-lying-sleeping-labrador-husband-wife-relax-cozy-atmosphere_12432327.htm#from_element=cross_selling__photo
-
--https://www.freepik.com/free-photo/couple-looking-road-with-their-dog_980601.htm#fromView=search&page=7&position=12&uuid=28e7f528-3d67-48ea-ba60-11e02a142fcb&query=Couple+with+dogs
-
--https://www.freepik.com/free-photo/joyful-girl-tourist-looks-mobile-phone-texts-message-smartphone-social-media-application-walks_38794425.htm#fromView=search&page=2&position=47&uuid=39f84724-60b2-45b5-ad1b-9b13e319a27c&query=woman+browsing+on+phone
-
--https://www.freepik.com/free-photo/lifestyle-portrait-handsome-young-man-sitting-cafe-checking-his-phone-drinking-coffee_157867299.htm#fromView=search&page=1&position=3&uuid=b68dfbe1-a3de-4d8a-9b96-073d5d5fba3b&query=man+browsing+phone
-
-
--Artiste/ https://unsplash.com/@maeva_vgr
--Image/ https://unsplash.com/photos/a-couple-of-dogs-standing-on-top-of-a-leaf-covered-field-uJf5PtyI6Lg
-
--Artiste/ https://unsplash.com/@wellgraf
--Image/ https://unsplash.com/photos/man-standing-near-golden-labrador-retriever-viewing-bridge-and-high-rise-buildings-Kr29K3_c28A
-
--Artiste/ https://unsplash.com/@alexandermassph
--Image/ https://unsplash.com/photos/a-woman-holding-a-dog-in-her-arms-3Tuy8tU2rEE
-
--Artiste/ https://unsplash.com/@nate_dumlao
--Image/ https://unsplash.com/photos/person-carrying-dog-yCKKd37OsgI
-
--Artiste/ https://unsplash.com/@alexandermassph
--Image/ https://unsplash.com/photos/a-woman-holding-a-dog-in-a-field-Zt8scxJbUd8
-
--Artiste/ https://unsplash.com/@barcstamaas
--Image/ https://unsplash.com/@alexandermassph
-
--Artiste/ https://unsplash.com/@alvannee
--Image/ https://unsplash.com/photos/corgi-dog-wearing-a-blue-shirt-in-a-garden-ogNx3sqEa6M
-
+- [Freepik: Joyful girl tourist looks mobile phone](https://www.freepik.com/free-photo/joyful-girl-tourist-looks-mobile-phone-texts-message-smartphone-social-media-application-walks_38794425.htm#fromView=search&page=2&position=47&uuid=39f84724-60b2-45b5-ad1b-9b13e319a27c&query=woman+browsing+on+phone)
+- [Freepik: Handsome man sitting cafe checking phone](https://www.freepik.com/free-photo/lifestyle-portrait-handsome-young-man-sitting-cafe-checking-his-phone-drinking-coffee_157867299.htm#fromView=search&page=1&position=3&uuid=b68dfbe1-a3de-4d8a-9b96-073d5d5fba3b&query=man+browsing+phone)
 
 DOGS
 
--Artiste/ https://unsplash.com/@brookecagle
--Image/ https://unsplash.com/photos/long-coated-brown-dog-Ntm4C2lCWxQ
-
--Artiste/ https://unsplash.com/@kierancwhite
--Image/ https://unsplash.com/photos/close-up-photo-of-black-and-white-siberian-husky-dog-NKN25UfGfkQ
-
--Artiste/ https://unsplash.com/@alanking
--Image/ https://unsplash.com/photos/long-coated-brown-dog-KZv7w34tluA
-
--Artiste/ https://unsplash.com/@whoisperi
--Image/ https://unsplash.com/photos/white-long-coat-small-dog-5Vr_RVPfbMI
-
--Artiste/ https://unsplash.com/@justnjames
--Image/ https://unsplash.com/photos/adult-dog-sitting-on-white-sand-near-seashore-KFJuCzJiQYU
-
--Artiste/ https://unsplash.com/@dinetackimanni
--Image/ https://unsplash.com/photos/brown-and-white-long-coated-dog-8mxSINYFoSw
-
--Artiste/ https://unsplash.com/@baptiststandaert
--Image/ https://unsplash.com/photos/long-coated-black-and-white-dog-during-daytime-mx0DEnfYxic
-
--Artiste/ https://unsplash.com/@victor_vector
--Image/ https://unsplash.com/photos/black-smooth-coated-dog-2pbnDRhXc6Q
-
--Artiste/ https://unsplash.com/@rpnickson
--Image/ https://unsplash.com/photos/brown-puppy-on-bed-gRHEt2kF3NU
-
--Artiste/ https://unsplash.com/@gxldy
--Image/ https://unsplash.com/photos/black-and-white-husky-v0_MCllHY9M
+- Artiste: [@brookecagle](https://unsplash.com/@brookecagle)
+  - Image: [Ntm4C2lCWxQ](https://unsplash.com/photos/long-coated-brown-dog-Ntm4C2lCWxQ)
+- Artiste: [@kierancwhite](https://unsplash.com/@kierancwhite)
+  - Image: [NKN25UfGfkQ](https://unsplash.com/photos/close-up-photo-of-black-and-white-siberian-husky-dog-NKN25UfGfkQ)
+- Artiste: [@alanking](https://unsplash.com/@alanking)
+  - Image: [KZv7w34tluA](https://unsplash.com/photos/long-coated-brown-dog-KZv7w34tluA)
+- Artiste: [@whoisperi](https://unsplash.com/@whoisperi)
+  - Image: [5Vr_RVPfbMI](https://unsplash.com/photos/white-long-coat-small-dog-5Vr_RVPfbMI)
+- Artiste: [@justnjames](https://unsplash.com/@justnjames)
+  - Image: [KFJuCzJiQYU](https://unsplash.com/photos/adult-dog-sitting-on-white-sand-near-seashore-KFJuCzJiQYU)
+- Artiste: [@dinetackimanni](https://unsplash.com/@dinetackimanni)
+  - Image: [8mxSINYFoSw](https://unsplash.com/photos/brown-and-white-long-coated-dog-8mxSINYFoSw)
+- Artiste: [@baptiststandaert](https://unsplash.com/@baptiststandaert)
+  - Image: [mx0DEnfYxic](https://unsplash.com/photos/long-coated-black-and-white-dog-during-daytime-mx0DEnfYxic)
+- Artiste: [@rpnickson](https://unsplash.com/@rpnickson)
+  - Image: [gRHEt2kF3NU](https://unsplash.com/photos/brown-puppy-on-bed-gRHEt2kF3NU)
+- Artiste: [@gxldy](https://unsplash.com/@gxldy)
+  - Image: [v0_MCllHY9M](https://unsplash.com/photos/black-and-white-husky-v0_MCllHY9M)
 
 PERSONE
 
--Artiste/ https://unsplash.com/@xoutcastx
--Image/ https://unsplash.com/photos/man-standing-in-front-of-window-8Vt2haq8NSQ
-
--Artiste/ https://unsplash.com/@jonasjaekenmedia
--Image/ https://unsplash.com/photos/woman-in-gray-hoodie-sitting-on-black-bench-5g7tSrQSJEo
-
--Artiste/ https://unsplash.com/@lancereis
--Image/ https://unsplash.com/photos/a-man-with-a-beard-pp76Y6Fq6xw
-
--Artiste/ https://unsplash.com/@xoutcastx
--Image/ https://unsplash.com/photos/mens-white-crew-neck-shirt-bdYJWXg4pK4
-
--Artiste/ https://unsplash.com/@sxth
--Image/ https://unsplash.com/photos/man-sitting-near-hibiscus-flowers-during-daytime-IMYvZjlX3jE
-
--Artiste/ https://unsplash.com/@courtneymcook
--Image/ https://unsplash.com/photos/woman-smiling-wearing-denim-jacket-TSZo17r3m0s
-
--Artiste/ https://unsplash.com/@cikstefan
--Image/ https://unsplash.com/photos/smiling-woman-wearing-white-and-black-pinstriped-collared-top-QXevDflbl8A
-
--Artiste/ https://unsplash.com/@haletat
--Image/ https://unsplash.com/photos/a-woman-sitting-on-a-white-chair-next-to-a-table-5b_RXCDykto
-
--Artiste/ https://unsplash.com/@armedshutter
--Image/ https://unsplash.com/photos/woman-looking-sideways-leaning-on-white-wall-6W4F62sN_yI
-
--Artiste/ https://unsplash.com/@zabegina
--Image/ https://unsplash.com/photos/woman-in-black-tank-top-and-blue-denim-shorts-5c-B5MGiv2c
-
+- Artiste: [@xoutcastx](https://unsplash.com/@xoutcastx)
+  - Image: [8Vt2haq8NSQ](https://unsplash.com/photos/man-standing-in-front-of-window-8Vt2haq8NSQ)
+- Artiste: [@jonasjaekenmedia](https://unsplash.com/@jonasjaekenmedia)
+  - Image: [5g7tSrQSJEo](https://unsplash.com/photos/woman-in-gray-hoodie-sitting-on-black-bench-5g7tSrQSJEo)
+- Artiste: [@lancereis](https://unsplash.com/@lancereis)
+  - Image: [pp76Y6Fq6xw](https://unsplash.com/photos/a-man-with-a-beard-pp76Y6Fq6xw)
+- Artiste: [@xoutcastx](https://unsplash.com/@xoutcastx)
+  - Image: [bdYJWXg4pK4](https://unsplash.com/photos/mens-white-crew-neck-shirt-bdYJWXg4pK4)
+- Artiste: [@sxth](https://unsplash.com/@sxth)
+  - Image: [IMYvZjlX3jE](https://unsplash.com/photos/man-sitting-near-hibiscus-flowers-during-daytime-IMYvZjlX3jE)
+- Artiste: [@courtneymcook](https://unsplash.com/@courtneymcook)
+  - Image: [TSZo17r3m0s](https://unsplash.com/photos/woman-smiling-wearing-denim-jacket-TSZo17r3m0s)
+- Artiste: [@cikstefan](https://unsplash.com/@cikstefan)
+  - Image: [QXevDflbl8A](https://unsplash.com/photos/smiling-woman-wearing-white-and-black-pinstriped-collared-top-QXevDflbl8A)
+- Artiste: [@haletat](https://unsplash.com/@haletat)
+  - Image: [5b_RXCDykto](https://unsplash.com/photos/a-woman-sitting-on-a-white-chair-next-to-a-table-5b_RXCDykto)
+- Artiste: [@armedshutter](https://unsplash.com/@armedshutter)
+  - Image: [6W4F62sN_yI](https://unsplash.com/photos/woman-looking-sideways-leaning-on-white-wall-6W4F62sN_yI)
 
 ### Visual Design References
 
 WEBSITE INSPO
--https://fetchadate.com/
--https://www.frolly.com/
--https://puppilovers.com/
+- [fetchadate.com](https://fetchadate.com/)
+- [frolly.com](https://www.frolly.com/)
+- [puppilovers.com](https://puppilovers.com/)
 
 APP INSPO
--Bumbule
--Tinder
--Hinge
+- [Bumbule](https://bumble.com/)
+- [Tinder](https://tinder.com/)
+- [Hinge](https://hinge.co/)
 
 ### Code References
 
