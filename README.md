@@ -245,6 +245,8 @@ The system uses the Django ORM with a PostgreSQL database in production (via `DA
 ### Skeleton
 
 ### Wireframes
+   Made in figma
+
  - Wireframes created during planning for the main flows:
     - Home and onboarding: hero CTA, "How it works" steps, and value props.
     - Authentication: sign up, sign in, and password reset entry.
@@ -451,13 +453,12 @@ Orange brand palette for energy and warmth, balanced with light backgrounds.
 - **Action Buttons**:
   - Dislike (X icon): Skip dog and remove from future results
   - Like (Heart icon): Create bidirectional match and trigger modal
-  - Buttons disabled during processing to prevent double-clicks
   
 - **Match Logic**:
   - Instant bidirectional matching (both connection entries created)
   - No waiting for mutual likes - immediate match confirmation
   - "It's a Match!" modal popup with both dog photos
-  - "Message Now" button in modal linking to chat thread
+  - "Send Message" and "View Matches" buttons in modal linking to chat thread and matches
   
 - **Empty State**:
   - Message: "No more dogs to discover"
@@ -468,7 +469,6 @@ Orange brand palette for energy and warmth, balanced with light backgrounds.
   - Excludes own dog
   - Excludes already liked dogs
   - Excludes disliked dogs
-  - Shows one dog at a time in card format
 
 #### **Matches List**
 - Grid layout of all matched dog profiles
@@ -477,10 +477,9 @@ Orange brand palette for energy and warmth, balanced with light backgrounds.
   - Dog name and age
   - Owner name
   - "Message" button linking to conversation
-  - "Delete Match" button with confirmation
+  - Red X button in top-right corner to delete match with confirmation modal
 - Empty state message when no matches
 - Delete match removes both bidirectional connection entries
-- Responsive grid (1 column mobile, 2-3 columns tablet/desktop)
 
 #### **Messages / Inbox**
 - List of all active conversations
@@ -488,24 +487,18 @@ Orange brand palette for energy and warmth, balanced with light backgrounds.
   - Matched dog photo
   - Last message preview
   - Timestamp of last message
-  - Unread indicator (if applicable)
 - Empty state: "No messages yet"
 - Click conversation to open thread
-- Responsive list layout
+- Delete conversation button (trash icon) with confirmation modal
 
 **Message Thread**
 - Full conversation history with matched dog
 - Messages displayed chronologically (oldest to newest)
-- Sent messages aligned right with distinct styling
-- Received messages aligned left
 - Timestamps on each message
 - Send message form at bottom:
   - Text area input
   - Send button
-  - AJAX or form submission
-- "Delete Conversation" button with confirmation
-- Header shows matched dog name and photo
-- Auto-scroll to latest message
+- Header shows matched dog name, breed and photo
 
 #### **Modals**
 
@@ -513,39 +506,42 @@ Orange brand palette for energy and warmth, balanced with light backgrounds.
 - Triggered on successful like that creates a match
 - Displays side-by-side photos of both matched dogs
 - Congratulations message
-- "Message Now" button to start conversation
-- "Keep Browsing" button to continue discovering
+- "Send Message" button to start conversation
+- "View Matches" button to view all matches
+- "×" close button (gray) to dismiss modal and continue browsing
 - Overlay backdrop with click-outside-to-close
 
 **Delete Account Modal**
 - Confirmation dialog for account deletion
-- Warning text explaining permanent action
-- Lists what will be deleted: User account, profiles, dog, connections, messages
+- Warning text explaining permanent action with warning icon
+- Lists what will be deleted: User profile, dog profile, all matches, all conversations
 - "Cancel" button (closes modal, no action)
-- "Delete Account" button (red/danger styling, executes deletion)
+- "Yes, Delete" button (red/danger styling, executes deletion)
 - Triggered from Profile page
 
 **Delete Match Confirmation**
-- Appears when user clicks delete on a match card
-- Confirms action before removing connection
-- "Cancel" and "Confirm Delete" options
+- Appears when user clicks on red X button (×) on the top right of the match card
+- Modal with confirmation message: "Are you sure you want to delete this match?"
+- "Cancel" button (closes modal, no action)
+- "Delete" button (red/danger styling, removes both connection entries)
 
 **Delete Conversation Confirmation**
-- Triggered from message thread view
-- Confirms deletion of entire conversation history
+- Triggered from trash icon button in inbox conversation list
+- Modal with confirmation message and dog name
 - Warning that messages will be permanently lost
-- "Cancel" and "Delete" buttons
+- "Cancel" button (closes modal, no action)
+- "Delete" button (removes all messages from conversation)
 
 #### **Admin Panel**
 - Django admin interface at `/admin`
-- Full CRUD on User, OwnerProfile, Dog, Connection, Message models
-- Custom MessageAdmin with list_display, search_fields, list_filter
-- Search messages by dog name
-- Filter messages by creation date
-- Read-only timestamps
-- User management with permissions and groups
-- Ability to view all connections across entire database
-- Delete records for moderation
+- Full CRUD on OwnerProfile, Dog, Connection, and Message models
+- **MessageAdmin Customization**:
+  - Displays: sender dog name, receiver dog name, creation date
+  - Search by dog name (searches both sender and receiver dog names)
+  - Filter messages by creation date
+  - Read-only timestamp field to prevent accidental modification
+- Delete records for moderation (default Django delete functionality)
+- Default Django User management (permissions, groups, password management) available through admin
 
 ### Future Features
 
@@ -559,7 +555,6 @@ The following features are planned for future releases to enhance user experienc
 - **Read Receipts**: Blue checkmarks showing when messages are seen
 
 #### **Advanced Matching & Discovery**
-- **Location-Based Matching**: GPS/geolocation to prioritize nearby dog owners
 - **Distance Filters**: Set maximum radius for potential matches (5km, 10km, 25km, etc.)
 - **Advanced Search Filters**:
   - Breed preferences
@@ -576,9 +571,7 @@ The following features are planned for future releases to enhance user experienc
 
 #### **Enhanced Profiles**
 - **Photo Galleries**: Multiple images per dog and owner (up to 6 photos)
-- **Video Profiles**: 15-30 second video introductions
 - **Profile Verification**: Blue checkmark badge after ID/photo verification
-- **Profile Views Tracking**: See who viewed your profile
 - **Multiple Dogs Per Account**: Add and manage profiles for multiple pets
 - **Extended Profile Fields**:
   - Dog vaccination status
@@ -588,28 +581,20 @@ The following features are planned for future releases to enhance user experienc
 
 #### **Safety & Moderation**
 - **Block/Report User**: Report inappropriate behavior or block users
-- **Photo Moderation**: AI-powered content moderation before photos go live
 - **Safety Center**: In-app dating safety tips and resources
 - **Emergency Contact Sharing**: Optional feature to share location during first meetings
-- **Background Checks**: Optional verification for added safety
-- **Automated Abuse Detection**: Flag suspicious patterns or language
 
 #### **Social Features**
 - **Events & Meetups**: Create and join local dog park meetups or playdates
-- **Group Chats**: Multi-user conversations for coordinating group walks
 - **Social Media Integration**:
   - Share profile to Instagram/Facebook
-  - Import photos from social accounts
   - Login with Facebook/Google
-- **Friend Referrals**: Invite friends and earn rewards
-- **Success Stories**: Share and read stories of successful matches
 
 #### **Communication Enhancements**
 - **Voice Messages**: Send audio clips in conversations
 - **Photo Sharing in Chat**: Send pictures directly within message threads
 - **GIFs & Stickers**: Express emotions with animated images
 - **Emoji Reactions**: React to messages with emojis
-- **Message Scheduling**: Schedule messages to send later
 
 #### **Premium/Paid Features**
 - **Subscription Plans**:
@@ -618,57 +603,12 @@ The following features are planned for future releases to enhance user experienc
   - **Premium Plus ($19.99/month)**: All Premium features + profile boost, advanced filters, read receipts
   
 - **In-App Purchases**:
-  - Profile boosts (increase visibility for 24 hours)
   - Super likes (show extra interest)
   - Undo last dislike
-  - Unlock specific profiles you're interested in
-
-#### **Calendar & Planning**
-- **Date Scheduler**: Integrated calendar to plan and confirm dog dates
-- **Reminders**: Push notifications for upcoming planned meetups
-- **Favorite Locations**: Save and share favorite dog-friendly spots
-- **Weather Integration**: Check weather before planning outdoor activities
-
-#### **Analytics & Insights**
-- **Profile Stats Dashboard**:
-  - Profile views over time
-  - Like/match ratio
-  - Response rate
-  - Most popular photos
-- **Match Quality Score**: Compatibility percentage with each match
-- **Profile Optimization Tips**: AI suggestions to improve profile appeal
-
-#### **Email Notifications**
-- Digest emails for new matches and messages
-- Weekly activity summary
-- Re-engagement emails for inactive users
-- Match recommendations based on preferences
-
-#### **Gamification**
-- **Achievement Badges**: Earn badges for app milestones (first match, 10 messages sent, etc.)
-- **Streak Tracking**: Daily login streaks with rewards
-- **Profile Completion Rewards**: Incentivize complete profile setup
-- **Referral Rewards**: Credits for inviting friends
 
 #### **Accessibility Improvements**
 - **Multiple Language Support**: Translate interface to French, Spanish, German, etc.
 - **Dark Mode**: Eye-friendly dark theme option
-- **Text-to-Speech**: Read profiles and messages aloud
-- **Adjustable Font Sizes**: Accessibility options for vision impairments
-- **High Contrast Mode**: Enhanced visibility for low vision users
-
-#### **Performance & Technical**
-- **Progressive Web App (PWA)**: Install as mobile app, offline capabilities
-- **Lazy Loading**: Optimize image loading for faster page speeds
-- **CDN Integration**: Serve assets from geographically distributed servers
-- **Advanced Caching**: Reduce server load and improve response times
-- **A/B Testing Framework**: Test feature variations for optimal UX
-
-#### **Business Features**
-- **Dog Business Profiles**: Veterinarians, trainers, groomers can create service profiles
-- **Sponsored Listings**: Partner businesses can advertise services
-- **Affiliate Program**: Earn commissions promoting dog products/services
-- **Analytics Dashboard for Business**: Partner portal with insights
 
 ## Technologies Used
 
@@ -677,6 +617,7 @@ __Languages Used__
 * [HTML5](https://en.wikipedia.org/wiki/HTML5)
 * [CSS](https://en.wikipedia.org/wiki/CSS)
 * [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
+* [Python](https://en.wikipedia.org/wiki/Python_(programming_language)
   
 __Frameworks, Libraries & Programs Used__
 
@@ -684,9 +625,10 @@ __Frameworks, Libraries & Programs Used__
 * [Google Fonts](https://fonts.google.com/): was used to import the 'Baloo 2', 'Quicksand', and 'Poppins' fonts into the style.css 
 * [Font Awesome](https://fontawesome.com/): was used to add icons for aesthetic and UX purposes.
 * [GitHub](https://github.com/): is used as the repository for the project's code after being pushed from Git.
+* [Heroku]():
 * [Photoshop](https://www.adobe.com/uk/products/photoshop.html): was used for early design to help get a better idea of which colors and images would suit the website. It was also used to resize and edit pictures, as well as create the menus and color palette
 * [Visual Studio Git Source Control](https://learn.microsoft.com/en-us/visualstudio/version-control/git-with-visual-studio?view=vs-2022): was used to commit and push or pull changes to GitHub 
-* [Balsamiq](https://balsamiq.com/): was used to create the wireframes during the design process.
+* [Figma](): was used to create the wireframes during the design process.
 * [ChatGPT](https://openai.com/chatgpt): was used to assist with grammar correction, code structure improvements, and README documentation organization
 * [Copilot in VS Code](https://code.visualstudio.com/docs/copilot/overview): was used to help with code completion, debugging, and suggesting best practices for JavaScript implementation
 * [WAVE](https://wave.webaim.org/) & [Lighthouse](https://developer.chrome.com/docs/lighthouse): Used for accessibility testing to ensure that all content is readable and accessible to every user.
@@ -724,7 +666,114 @@ __Frameworks, Libraries & Programs Used__
 
 ## Credits
 
+HERO
+-https://www.freepik.com/free-photo/couple-love-looks-lying-sleeping-labrador-husband-wife-relax-cozy-atmosphere_12432327.htm#from_element=cross_selling__photo
+
+-https://www.freepik.com/free-photo/couple-looking-road-with-their-dog_980601.htm#fromView=search&page=7&position=12&uuid=28e7f528-3d67-48ea-ba60-11e02a142fcb&query=Couple+with+dogs
+
+-https://www.freepik.com/free-photo/joyful-girl-tourist-looks-mobile-phone-texts-message-smartphone-social-media-application-walks_38794425.htm#fromView=search&page=2&position=47&uuid=39f84724-60b2-45b5-ad1b-9b13e319a27c&query=woman+browsing+on+phone
+
+-https://www.freepik.com/free-photo/lifestyle-portrait-handsome-young-man-sitting-cafe-checking-his-phone-drinking-coffee_157867299.htm#fromView=search&page=1&position=3&uuid=b68dfbe1-a3de-4d8a-9b96-073d5d5fba3b&query=man+browsing+phone
+
+
+-Artiste/ https://unsplash.com/@maeva_vgr
+-Image/ https://unsplash.com/photos/a-couple-of-dogs-standing-on-top-of-a-leaf-covered-field-uJf5PtyI6Lg
+
+-Artiste/ https://unsplash.com/@wellgraf
+-Image/ https://unsplash.com/photos/man-standing-near-golden-labrador-retriever-viewing-bridge-and-high-rise-buildings-Kr29K3_c28A
+
+-Artiste/ https://unsplash.com/@alexandermassph
+-Image/ https://unsplash.com/photos/a-woman-holding-a-dog-in-her-arms-3Tuy8tU2rEE
+
+-Artiste/ https://unsplash.com/@nate_dumlao
+-Image/ https://unsplash.com/photos/person-carrying-dog-yCKKd37OsgI
+
+-Artiste/ https://unsplash.com/@alexandermassph
+-Image/ https://unsplash.com/photos/a-woman-holding-a-dog-in-a-field-Zt8scxJbUd8
+
+-Artiste/ https://unsplash.com/@barcstamaas
+-Image/ https://unsplash.com/@alexandermassph
+
+-Artiste/ https://unsplash.com/@alvannee
+-Image/ https://unsplash.com/photos/corgi-dog-wearing-a-blue-shirt-in-a-garden-ogNx3sqEa6M
+
+
+DOGS
+
+-Artiste/ https://unsplash.com/@brookecagle
+-Image/ https://unsplash.com/photos/long-coated-brown-dog-Ntm4C2lCWxQ
+
+-Artiste/ https://unsplash.com/@kierancwhite
+-Image/ https://unsplash.com/photos/close-up-photo-of-black-and-white-siberian-husky-dog-NKN25UfGfkQ
+
+-Artiste/ https://unsplash.com/@alanking
+-Image/ https://unsplash.com/photos/long-coated-brown-dog-KZv7w34tluA
+
+-Artiste/ https://unsplash.com/@whoisperi
+-Image/ https://unsplash.com/photos/white-long-coat-small-dog-5Vr_RVPfbMI
+
+-Artiste/ https://unsplash.com/@justnjames
+-Image/ https://unsplash.com/photos/adult-dog-sitting-on-white-sand-near-seashore-KFJuCzJiQYU
+
+-Artiste/ https://unsplash.com/@dinetackimanni
+-Image/ https://unsplash.com/photos/brown-and-white-long-coated-dog-8mxSINYFoSw
+
+-Artiste/ https://unsplash.com/@baptiststandaert
+-Image/ https://unsplash.com/photos/long-coated-black-and-white-dog-during-daytime-mx0DEnfYxic
+
+-Artiste/ https://unsplash.com/@victor_vector
+-Image/ https://unsplash.com/photos/black-smooth-coated-dog-2pbnDRhXc6Q
+
+-Artiste/ https://unsplash.com/@rpnickson
+-Image/ https://unsplash.com/photos/brown-puppy-on-bed-gRHEt2kF3NU
+
+-Artiste/ https://unsplash.com/@gxldy
+-Image/ https://unsplash.com/photos/black-and-white-husky-v0_MCllHY9M
+
+PERSONE
+
+-Artiste/ https://unsplash.com/@xoutcastx
+-Image/ https://unsplash.com/photos/man-standing-in-front-of-window-8Vt2haq8NSQ
+
+-Artiste/ https://unsplash.com/@jonasjaekenmedia
+-Image/ https://unsplash.com/photos/woman-in-gray-hoodie-sitting-on-black-bench-5g7tSrQSJEo
+
+-Artiste/ https://unsplash.com/@lancereis
+-Image/ https://unsplash.com/photos/a-man-with-a-beard-pp76Y6Fq6xw
+
+-Artiste/ https://unsplash.com/@xoutcastx
+-Image/ https://unsplash.com/photos/mens-white-crew-neck-shirt-bdYJWXg4pK4
+
+-Artiste/ https://unsplash.com/@sxth
+-Image/ https://unsplash.com/photos/man-sitting-near-hibiscus-flowers-during-daytime-IMYvZjlX3jE
+
+-Artiste/ https://unsplash.com/@courtneymcook
+-Image/ https://unsplash.com/photos/woman-smiling-wearing-denim-jacket-TSZo17r3m0s
+
+-Artiste/ https://unsplash.com/@cikstefan
+-Image/ https://unsplash.com/photos/smiling-woman-wearing-white-and-black-pinstriped-collared-top-QXevDflbl8A
+
+-Artiste/ https://unsplash.com/@haletat
+-Image/ https://unsplash.com/photos/a-woman-sitting-on-a-white-chair-next-to-a-table-5b_RXCDykto
+
+-Artiste/ https://unsplash.com/@armedshutter
+-Image/ https://unsplash.com/photos/woman-looking-sideways-leaning-on-white-wall-6W4F62sN_yI
+
+-Artiste/ https://unsplash.com/@zabegina
+-Image/ https://unsplash.com/photos/woman-in-black-tank-top-and-blue-denim-shorts-5c-B5MGiv2c
+
+
 ### Visual Design References
+
+WEBSITE INSPO
+-https://fetchadate.com/
+-https://www.frolly.com/
+-https://puppilovers.com/
+
+APP INSPO
+-Bumbule
+-Tinder
+-Hinge
 
 ### Code References
 
