@@ -1021,9 +1021,7 @@ input[type="number"] {
   width: 100%;
   max-width: 380px;
   margin: 0 auto;
-  padding: 0 0.75rem;
-  padding-top: 70px;
-  padding-bottom: 45px;
+  padding: 50px 12px;
 }
 
 /* --- Header --- */
@@ -1502,7 +1500,7 @@ body.modal-open {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 620px;
+  min-height: 500px;
 }
 
 .empty-dogs-title,
@@ -1518,7 +1516,6 @@ body.modal-open {
 .matches-subtitle{
   opacity: 0.6;
   font-size: 0.9rem !important;
-  margin-bottom: 2rem;
   color: var(--text-dark);
 }
 /* #endregion */
@@ -1658,9 +1655,8 @@ body.modal-open {
   justify-content: space-between;
   min-width: 0;
   padding: 1rem;
-  background: #f9f9f9;
+  background: #ffffff;
   border-radius: 15px;
-  border: 1px solid #eee;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
