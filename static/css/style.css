@@ -177,7 +177,6 @@ a:visited {
 
 /* HERO */
 .hero-section {
-  position: relative;
   min-height: auto;
   display: flex;
   flex-direction: column;
@@ -185,14 +184,11 @@ a:visited {
   justify-content: center;
   text-align: center;
   overflow-x: hidden;
+  padding-top: 4rem;
 }
 
 .hero-image {
-  width: 150vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-48%);
-  display: block;
+  width:100%;
   margin-bottom: 1.5rem;
 }
 
@@ -263,11 +259,9 @@ section.full-section:nth-of-type(5) {
 }
 
 .section-image {
-  width: 90vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
   display: block;
+  object-fit: cover;
 }
 
 /* WHY SECTION */
@@ -1995,6 +1989,100 @@ body.modal-open {
 
 /* Tablet: 768px+ */
 @media (min-width: 768px) {
+  .hero-section {
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    padding: 4.5rem 1rem 0;
+  }
+
+  .hero-section > div:first-child {
+    order: 2;
+    flex: 1.2;
+  }
+
+  .hero-section > div:last-child {
+    order: 1;
+    flex: 1;
+    text-align: left;
+  }
+
+  .hero-content {
+    text-align: left;
+  }
+
+  .hero-buttons {
+    justify-content: flex-start;
+  }
+
+  /* Section 1: Image left, Text right */
+  section:nth-of-type(2).full-section .section-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    align-items: start;
+  }
+
+  section:nth-of-type(2).full-section .section-text > img {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  section:nth-of-type(2).full-section .text-content {
+    grid-column: 2;
+  }
+
+  /* Section 2: Text left, Image right */
+  section:nth-of-type(3).full-section .section-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    align-items: start;
+  }
+
+  section:nth-of-type(3).full-section .text-content {
+    grid-column: 1;
+  }
+
+  section:nth-of-type(3).full-section .section-text > img {
+    grid-column: 2;
+    width: 100%;
+  }
+
+  /* Section 3: Image left, Text right */
+  section:nth-of-type(4).full-section .section-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    align-items: start;
+  }
+
+  section:nth-of-type(4).full-section .section-text > img {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  section:nth-of-type(4).full-section .text-content {
+    grid-column: 2;
+  }
+
+  /* Section 4: Text left, Image right */
+  section:nth-of-type(5).full-section .section-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    align-items: start;
+  }
+
+  section:nth-of-type(5).full-section .text-content {
+    grid-column: 1;
+  }
+
+  section:nth-of-type(5).full-section .section-text > img {
+    grid-column: 2;
+    width: 100%;
+  }
+
   .discover-page {
     max-width: 520px;
   }
