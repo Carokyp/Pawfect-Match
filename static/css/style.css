@@ -1993,6 +1993,7 @@ body.modal-open {
 /* #region RESPONSIVE DESIGN */
 /* Add breakpoints here if needed */
 
+/* Tablet: 768px+ */
 @media (min-width: 768px) {
   .discover-page {
     max-width: 520px;
@@ -2002,7 +2003,7 @@ body.modal-open {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
+/* Desktop: 992px+ */
 @media (min-width: 992px) {
   .navbar .container-fluid {
     max-width: 1800px;
@@ -2019,5 +2020,10 @@ body.modal-open {
     padding: 0.5rem 0.25rem !important;
   }
 }
+/* Large Desktop: 1200px+ */
+@media (min-width: 1200px) { }
+
+/* Extra Large: 1400px+ */
+@media (min-width: 1400px) { }
 
 /* #endregion */
