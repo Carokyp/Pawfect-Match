@@ -237,12 +237,22 @@ section.full-section:nth-of-type(5) {
   background: var(--orange-100) !important;
 }
 
-.section-content {
+.section-content-1,
+.section-content-2,
+.section-content-3,
+.section-content-4 {
   max-width: 1100px;
   width: 100%;
   text-align: center;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+.section-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .section-text h2 {
@@ -266,8 +276,7 @@ section.full-section:nth-of-type(5) {
 
 /* WHY SECTION */
 .why-section {
-  min-height: 100vh;
-  padding: 3rem 2rem;
+  padding: 2.5rem 1.5rem;
   background: var(--orange-200) !important;
   display: flex;
   align-items: center;
@@ -2015,72 +2024,81 @@ body.modal-open {
     justify-content: flex-start;
   }
 
-  /* Section 1: Image left, Text right */
-  section:nth-of-type(2).full-section .section-text {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 1rem;
-    align-items: start;
+  /* Sections: Like hero, change to row layout */
+  .full-section .section-content-1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0 1rem;
   }
 
-  section:nth-of-type(2).full-section .section-text > img {
-    grid-column: 1;
-    width: 100%;
+  .full-section .section-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  section:nth-of-type(2).full-section .text-content {
-    grid-column: 2;
+  .full-section .section-content-1 > div:last-child {
+    flex: 1;
   }
 
-  /* Section 2: Text left, Image right */
-  section:nth-of-type(3).full-section .section-text {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 1rem;
-    align-items: start;
+  .full-section .section-content-2{
+    display: flex;
+    flex-direction: row-reverse;;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0 1rem;
   }
 
-  section:nth-of-type(3).full-section .text-content {
-    grid-column: 1;
+  .full-section .section-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  section:nth-of-type(3).full-section .section-text > img {
-    grid-column: 2;
-    width: 100%;
+  .full-section .section-content-2 > div:last-child {
+    flex: 1;
   }
 
-  /* Section 3: Image left, Text right */
-  section:nth-of-type(4).full-section .section-text {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 1rem;
-    align-items: start;
+  .full-section .section-content-3{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0 1rem;
   }
 
-  section:nth-of-type(4).full-section .section-text > img {
-    grid-column: 1;
-    width: 100%;
+  .full-section .section-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  section:nth-of-type(4).full-section .text-content {
-    grid-column: 2;
+  .full-section .section-content-3 > div:last-child {
+    flex: 1;
   }
 
-  /* Section 4: Text left, Image right */
-  section:nth-of-type(5).full-section .section-text {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 1rem;
-    align-items: start;
+  .full-section .section-content-4 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0 1rem;
   }
 
-  section:nth-of-type(5).full-section .text-content {
-    grid-column: 1;
+  .full-section .section-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  section:nth-of-type(5).full-section .section-text > img {
-    grid-column: 2;
-    width: 100%;
+  .full-section .section-content-4 > div:last-child {
+    flex: 1;
+  }
+
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .discover-page {
@@ -2091,6 +2109,7 @@ body.modal-open {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 /* Desktop: 992px+ */
 @media (min-width: 992px) {
   .navbar .container-fluid {
@@ -2108,6 +2127,7 @@ body.modal-open {
     padding: 0.5rem 0.25rem !important;
   }
 }
+
 /* Large Desktop: 1200px+ */
 @media (min-width: 1200px) { }
 
