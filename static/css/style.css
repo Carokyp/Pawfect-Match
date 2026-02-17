@@ -624,11 +624,22 @@ section.full-section:nth-of-type(5) {
   max-width: 320px;
 }
 
-.form-card {
+.form-card,
+.auth-card {
   background: white;
   border-radius: 24px;
   padding: 1.5rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Auth-specific tweaks */
+.auth-card {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.auth-card p {
+  color: var(--text-dark);
 }
 
 /* --- Form Fields --- */
@@ -641,15 +652,16 @@ section.full-section:nth-of-type(5) {
 .form-field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .form-field label {
   font-weight: 500;
   margin-bottom: 0.4rem;
+  color: var(--text-dark);
 }
 
-/* Grouping base styles for form fields */
+/* Base styles for form fields - matches profile edit styling */
 .form-field input,
 .form-field textarea,
 .form-field select {
@@ -658,13 +670,6 @@ section.full-section:nth-of-type(5) {
   border: 2px solid #999;
   background: #ffffff;
   font-size: 1rem;
-}
-
-.form-field input {
-  /* For backward compatibility, keep border-radius if needed */
-  border-radius: var(--border-radius);
-  border: 1px solid var(--orange-900);
-  padding: 0.6rem;
 }
 
 /* --- Sign up link --- */
@@ -678,16 +683,12 @@ section.full-section:nth-of-type(5) {
   color: var(--text-dark);
 }
 
-.auth-link {
+.auth-link,
+.forgot-password-link {
   color: var(--orange-500);
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s ease;
-}
-
-.auth-link:hover {
-  color: var(--orange-700);
-  text-decoration: underline;
 }
 
 /* --- Forgot Password Link --- */
@@ -695,14 +696,13 @@ section.full-section:nth-of-type(5) {
   display: block;
   text-align: right;
   font-size: 0.8rem;
-  color: var(--text-dark);
+  color: var(--text-dark) !important;
   margin-top: 0.5rem;
-  text-decoration: none;
-  transition: color 0.3s ease;
 }
 
+.auth-link:hover,
 .forgot-password-link:hover {
-  color: var(--orange-700);
+  color: var(--orange-700) !important;
   text-decoration: underline;
 }
 
@@ -714,7 +714,6 @@ section.full-section:nth-of-type(5) {
   box-shadow: var(--shadow);
   border-radius: 50%;
 }
-
 
 .success-text p{
   color: var(--text-dark);
@@ -887,23 +886,6 @@ section.full-section:nth-of-type(5) {
 }
 
 /* --- Create profils -- */
-
-.form-field input,
-.form-field textarea,
-.form-field select {
-  padding: 0.75rem 1rem;
-  border-radius: 16px;
-  border: 2px solid #999;
-  background: #ffffff;
-  font-size: 1rem;
-}
-
-.no-border-fields .form-field input,
-.no-border-fields .form-field textarea,
-.no-border-fields .form-field select {
-  border: none !important;
-}
-
 
 .form-field select {
   appearance: none;
@@ -1387,7 +1369,8 @@ body.modal-open {
   padding-top: 30px;
 }
 
-.profile-edit-card {
+.profile-edit-card
+{
   background: white;
   border-radius: 24px;
   padding: 1rem 1.5rem;

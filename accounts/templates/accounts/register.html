@@ -13,11 +13,11 @@
 
 {% block content %}
 <div class="form-page-container">
+  <div class="auth-card">
+    <h1>Create account</h1>
+    <p>Welcome! Create your Pawfect Match account to connect with fellow dog lovers and start your journey. Registration is quick and easy!</p>
 
-  <h1>Create account</h1>
-  <p>Welcome! Create your Pawfect Match account to connect with fellow dog lovers and start your journey. Registration is quick and easy!</p>
-
-  <form method="post" class="auth-form no-border-fields">
+    <form method="post" class="auth-form">
     {% csrf_token %}
 
     {{ form.non_field_errors }}
@@ -40,7 +40,7 @@
           <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon"/>
         </button>
       </div>
-      <ul style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem; margin-left: 1.2rem;">
+      <ul style="font-size: 0.75rem; color: var(--text-dark); margin: 0; opacity: 0.7;">
         <li>Minimum 8 characters</li>
         <li>At least one uppercase letter (A–Z)</li>
         <li>At least one digit (0–9)</li>
@@ -58,7 +58,7 @@
         Create account
       </button>
     </div>
-  </form>
-
+    </form>
+  </div>
 </div>
 {% endblock %}
