@@ -4,7 +4,6 @@
 {% block title %}Login - Pawfect Match{% endblock %}
 
 {% block content_class %}form-page{% endblock %}
-
 {% block back_button %}
 <a href="{% url 'home' %}" class="back-button">
   <i class="fa-solid fa-arrow-left"></i>
@@ -12,41 +11,48 @@
 {% endblock %}
 
 {% block content %}
-<div class="form-page-container">
+<div class="form-page-container form-with-image">
   <div class="auth-card">
-    <h1>Sign in</h1>
-    <p>Welcome back! Log in to continue.</p>
+    <div class="auth-card-split">
+      <div class="auth-card-form">
+        <h1>Sign in</h1>
+        <p>Welcome back! Log in to continue.</p>
 
-    <form method="post" action="{% url 'sign_in' %}" class="auth-form">
-      {% csrf_token %}
+        <form method="post" action="{% url 'sign_in' %}" class="auth-form">
+          {% csrf_token %}
 
-      {{ form.non_field_errors }}
+          {{ form.non_field_errors }}
 
-      <div class="form-field">
-        {{ form.username.label_tag }}
-        {{ form.username }}
-      </div>
+          <div class="form-field">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+          </div>
 
-      <div class="form-field">
-        {{ form.password.label_tag }}
-        <div class="input-wrapper">
-          {{ form.password }}
-          <button type="button" class="toggle-password">
-            <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon"/>
-          </button>
+          <div class="form-field">
+            {{ form.password.label_tag }}
+            <div class="input-wrapper">
+              {{ form.password }}
+              <button type="button" class="toggle-password">
+                <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon" />
+              </button>
+            </div>
+            <a href="{% url 'password_reset' %}" class="forgot-password-link">Forgot password?</a>
+          </div>
+
+          <div class="form-sign-in-btn">
+            <button type="submit" class="btn-hero secondary">
+              Sign in
+            </button>
+          </div>
+        </form>
+
+        <div class="auth-redirect">
+          <p>Don't have an account? <a href="{% url 'register' %}" class="auth-link">Sign up</a></p>
         </div>
-        <a href="{% url 'password_reset' %}" class="forgot-password-link">Forgot password?</a>
       </div>
-
-      <div class="form-sign-in-btn">
-        <button type="submit" class="btn-hero secondary">
-          Sign in
-        </button>
+      <div class="form-page-image">
+        <img src="{% static 'images/sign_in_image.png' %}" alt="Girl holding a golden retriever puppy">
       </div>
-    </form>
-
-    <div class="auth-redirect">
-      <p>Don't have an account? <a href="{% url 'register' %}" class="auth-link">Sign up</a></p>
     </div>
   </div>
 </div>

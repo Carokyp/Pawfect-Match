@@ -12,53 +12,61 @@
 {% endblock %}
 
 {% block content %}
-<div class="form-page-container">
+<div class="form-page-container form-with-image">
   <div class="auth-card">
-    <h1>Create account</h1>
-    <p>Welcome! Create your Pawfect Match account to connect with fellow dog lovers and start your journey. Registration is quick and easy!</p>
+    <div class="auth-card-split">
+      <div class="auth-card-form">
+        <h1>Create account</h1>
+        <p>Welcome! Create your Pawfect Match account to connect with fellow dog 
+          lovers and start your journey. Registration is quick and easy!</p>
 
-    <form method="post" class="auth-form">
-    {% csrf_token %}
+        <form method="post" class="auth-form">
+        {% csrf_token %}
 
-    {{ form.non_field_errors }}
-    {{ form.email.errors }}
-    {{ form.password.errors }}
-    {{ form.password_confirm.errors }}
+        {{ form.non_field_errors }}
+        {{ form.email.errors }}
+        {{ form.password.errors }}
+        {{ form.password_confirm.errors }}
 
-    <div class="form-field">
-      {{ form.email.label_tag }}
-      {{ form.email }}
-    </div>
+        <div class="form-field">
+          {{ form.email.label_tag }}
+          {{ form.email }}
+        </div>
 
-    <div class="form-field password-field">
-      {{ form.password.label_tag }}
+        <div class="form-field password-field">
+          {{ form.password.label_tag }}
 
-      <div class="input-wrapper">
-        {{ form.password }}
+          <div class="input-wrapper">
+            {{ form.password }}
 
-        <button type="button" class="toggle-password">
-          <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon"/>
-        </button>
+            <button type="button" class="toggle-password">
+              <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon"/>
+            </button>
+          </div>
+          <ul style="font-size: 0.75rem; color: var(--text-dark); margin: 0; opacity: 0.7;">
+            <li>Minimum 8 characters</li>
+            <li>At least one uppercase letter (A–Z)</li>
+            <li>At least one digit (0–9)</li>
+            <li>At least one special character (!@#$%^&*...)</li>
+          </ul>
+        </div>
+
+        <div class="form-field">
+          {{ form.password_confirm.label_tag }}
+          {{ form.password_confirm }}
+        </div>
+
+        <div class="form-create-btn">
+          <button type="submit" class="btn-hero secondary">
+            Create account
+          </button>
+        </div>
+        </form>
       </div>
-      <ul style="font-size: 0.75rem; color: var(--text-dark); margin: 0; opacity: 0.7;">
-        <li>Minimum 8 characters</li>
-        <li>At least one uppercase letter (A–Z)</li>
-        <li>At least one digit (0–9)</li>
-        <li>At least one special character (!@#$%^&*...)</li>
-      </ul>
+      <div class="form-page-image">
+        <img src="{% static 'images/create_form_image.png' %}" alt="Happy couple holding handswith their dog">
+      </div>
     </div>
-
-    <div class="form-field">
-      {{ form.password_confirm.label_tag }}
-      {{ form.password_confirm }}
-    </div>
-
-    <div class="form-create-btn">
-      <button type="submit" class="btn-hero secondary">
-        Create account
-      </button>
-    </div>
-    </form>
   </div>
 </div>
 {% endblock %}
