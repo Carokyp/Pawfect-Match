@@ -2068,6 +2068,12 @@ body.modal-open {
     font-size: 1rem;
   }
 
+  /* Auth form button typography for tablet */
+  .form-create-btn .btn-hero,
+  .form-sign-in-btn .btn-hero {
+    font-size: 1rem;
+  }
+
   .hero-section {
     flex-direction: row;
     text-align: left;
@@ -2282,6 +2288,12 @@ body.modal-open {
   }
 
   .success-text p {
+    font-size: 1.125rem;
+  }
+
+  /* Auth form button typography for laptop */
+  .form-create-btn .btn-hero,
+  .form-sign-in-btn .btn-hero {
     font-size: 1.125rem;
   }
   
