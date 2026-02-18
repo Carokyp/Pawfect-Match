@@ -16,5 +16,6 @@
       "comments": false,
       "strings": true
     }
-  }
+  },
+  "workbench.colorTheme": "One Dark Pro"
 }
