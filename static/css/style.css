@@ -640,6 +640,36 @@ section.full-section:nth-of-type(5) {
   color: var(--text-dark);
 }
 
+/* --- Owner profile form layout --- */
+.owner-profile-form {
+  max-width: 320px;
+}
+
+.owner-profile-split {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.owner-profile-photo {
+  width: 100%;
+}
+
+.owner-profile-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.owner-profile-full {
+  grid-column: 1 / -1;
+  justify-content: end;
+}
+
+.pill-option span {
+    padding: 0.45rem 0.4rem !important;
+}
+
 /* --- Form Fields --- */
 
 /* Registration form container color */
@@ -2030,6 +2060,38 @@ body.modal-open {
 
   .auth-card-form {
     flex: 1;
+  }
+
+  .auth-content.form-page .owner-profile-card {
+    max-width: 900px;
+  }
+
+  .owner-profile-form {
+    max-width: none;
+  }
+
+  .owner-profile-split {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .owner-profile-photo {
+    flex: 0 0 240px;
+  }
+
+  .owner-profile-photo .upload-box {
+    min-height: 240px;
+  }
+
+  .owner-profile-fields {
+    flex: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.25rem;
+  }
+
+  .owner-profile-fields .form-field {
+    margin-bottom: 0;
   }
 
   .form-page-image {
