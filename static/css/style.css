@@ -712,6 +712,8 @@ section.full-section:nth-of-type(5) {
   border: 2px solid #999;
   background: #ffffff;
   font-size: 1rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* --- Sign up link --- */
@@ -2132,7 +2134,8 @@ body.modal-open {
 
   /* Auth form button typography for tablet */
   .form-create-btn .btn-hero,
-  .form-sign-in-btn .btn-hero {
+  .form-sign-in-btn .btn-hero,
+  .form-next-btn .btn-hero {
     font-size: 1rem;
   }
 
