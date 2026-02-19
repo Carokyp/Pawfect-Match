@@ -666,6 +666,31 @@ section.full-section:nth-of-type(5) {
   justify-content: end;
 }
 
+/* --- Dog profile form layout --- */
+.dog-profile-form {
+  max-width: 320px;
+}
+
+.dog-profile-split {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dog-profile-photo {
+  width: 100%;
+}
+
+.dog-profile-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.dog-profile-full {
+  grid-column: 1 / -1;
+}
+
 .pill-option span {
     padding: 0.45rem 0.4rem !important;
 }
@@ -1068,6 +1093,10 @@ input[type="number"] {
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   max-height: 800px;
+}
+
+.profile-views-grid {
+  display: block;
 }
 
 /* --- Profile card view (profile page only) --- */
@@ -2096,6 +2125,38 @@ body.modal-open {
     margin-bottom: 0;
   }
 
+  .auth-content.form-page .dog-profile-card {
+    max-width: 900px;
+  }
+
+  .dog-profile-form {
+    max-width: none;
+  }
+
+  .dog-profile-split {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .dog-profile-photo {
+    flex: 0 0 240px;
+  }
+
+  .dog-profile-photo .upload-box {
+    min-height: 240px;
+  }
+
+  .dog-profile-fields {
+    flex: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.25rem;
+  }
+
+  .dog-profile-fields .form-field {
+    margin-bottom: 0;
+  }
+
   .form-page-image {
     flex: 1.2;
     max-width: 520px;
@@ -2251,7 +2312,40 @@ body.modal-open {
   }
 
   .discover-page {
-    max-width: 520px;
+    max-width: 1000px;
+  }
+
+  .profile-views-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 0 1rem 1rem;
+  }
+
+  .profile-card .profile-view.hidden {
+    display: block;
+  }
+
+  .profile-toggle {
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 0 1rem 0.75rem;
+  }
+
+  .profile-toggle .toggle-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    background: var(--orange-200);
+    color: var(--orange-900);
+  }
+
+  .profile-toggle .toggle-btn.active {
+    background: var(--orange-200);
+    color: var(--orange-900);
+    box-shadow: none;
   }
 
   .matches-grid {

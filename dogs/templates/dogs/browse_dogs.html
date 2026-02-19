@@ -55,82 +55,84 @@
       <button class="toggle-btn" data-view="owner">Owner</button>
     </div>
 
-    <!-- DOG VIEW -->
-    <div class="profile-view dog-view">
+    <div class="profile-views-grid">
+      <!-- DOG VIEW -->
+      <div class="profile-view dog-view">
 
-      <div class="profile-image">
-        {% if dog.profile_photo %}
-        <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
-        {% else %}
-        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder">
-        {% endif %}
+        <div class="profile-image">
+          {% if dog.profile_photo %}
+          <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
+          {% else %}
+          <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder">
+          {% endif %}
 
-        <div class="image-overlay">
-          <h2>{{ dog.name }}, {{ dog.age }}</h2>
-          <p>{{ dog.breed }}</p>
-          <p>{{ dog.owner.city }}</p>
-          <p>{{ dog.get_gender_display }}</p>
-        </div>
-      </div>
-
-      <hr class="profile-divider">
-
-      <div class="profile-about center">
-        <h3>About me</h3>
-        <p>{{ dog.about_me }}</p>
-      </div>
-
-      <hr class="profile-divider">
-
-      <div class="profile-meta">
-        <div class="meta-block">
-          <h4>Energy level</h4>
-          <span class="tag">{{ dog.get_energy_level_display }}</span>
+          <div class="image-overlay">
+            <h2>{{ dog.name }}, {{ dog.age }}</h2>
+            <p>{{ dog.breed }}</p>
+            <p>{{ dog.owner.city }}</p>
+            <p>{{ dog.get_gender_display }}</p>
+          </div>
         </div>
 
-        <div class="meta-block">
-          <h4>Size</h4>
-          <span class="tag">{{ dog.get_size_display }}</span>
+        <hr class="profile-divider">
+
+        <div class="profile-about center">
+          <h3>About me</h3>
+          <p>{{ dog.about_me }}</p>
         </div>
-      </div>
 
-    </div>
+        <hr class="profile-divider">
 
-    <!-- OWNER VIEW -->
-    <div class="profile-view owner-view hidden">
+        <div class="profile-meta">
+          <div class="meta-block">
+            <h4>Energy level</h4>
+            <span class="tag">{{ dog.get_energy_level_display }}</span>
+          </div>
 
-      <div class="profile-image">
-        {% if dog.owner.profile_photo %}
-        <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
-        {% else %}
-        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder">
-        {% endif %}
-
-        <div class="image-overlay">
-          <h2>{{ dog.owner.name }}, {{ dog.owner.age }}</h2>
-          <p>{{ dog.owner.occupation }}</p>
-          <p>{{ dog.owner.city }}</p>
+          <div class="meta-block">
+            <h4>Size</h4>
+            <span class="tag">{{ dog.get_size_display }}</span>
+          </div>
         </div>
+
       </div>
 
-      <hr class="profile-divider">
+      <!-- OWNER VIEW -->
+      <div class="profile-view owner-view hidden">
 
-      <div class="profile-about center">
-        <h3>About me</h3>
-        <p>{{ dog.owner.about_me }}</p>
-      </div>
+        <div class="profile-image">
+          {% if dog.owner.profile_photo %}
+          <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
+          {% else %}
+          <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder">
+          {% endif %}
 
-      <hr class="profile-divider">
-
-      <div class="profile-interests left">
-        <h4>Interests</h4>
-        <div class="profile-tags">
-          {% for interest in dog.owner.interests_list %}
-          <span class="tag">{{ interest }}</span>
-          {% endfor %}
+          <div class="image-overlay">
+            <h2>{{ dog.owner.name }}, {{ dog.owner.age }}</h2>
+            <p>{{ dog.owner.occupation }}</p>
+            <p>{{ dog.owner.city }}</p>
+          </div>
         </div>
-      </div>
 
+        <hr class="profile-divider">
+
+        <div class="profile-about center">
+          <h3>About me</h3>
+          <p>{{ dog.owner.about_me }}</p>
+        </div>
+
+        <hr class="profile-divider">
+
+        <div class="profile-interests left">
+          <h4>Interests</h4>
+          <div class="profile-tags">
+            {% for interest in dog.owner.interests_list %}
+            <span class="tag">{{ interest }}</span>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <!-- ACTION BUTTONS -->
