@@ -1723,16 +1723,8 @@ body.modal-open {
   transition: background-color 0.2s;
 }
 
-.conversation-item:last-child {
-  border-bottom: none;
-}
-
 .conversation-item:hover {
   background-color: #f9f9f9;
-}
-
-.conversation-item.active {
-  background-color: var(--orange-100);
 }
 
 .btn-delete-conversation {
@@ -1997,7 +1989,7 @@ body.modal-open {
   background: white;
   border-radius: 20px;
   padding: 2rem;
-  max-width: 320px;
+  max-width: 500px;
   width: 90%;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   animation: slideUp 0.3s ease-out;
@@ -2549,7 +2541,8 @@ body.modal-open {
   }
 
   .discover-page.messages-page {
-        max-width: 1400px;
+    max-width: 1400px;
+    padding: 50px 30px;
   }
 
 }

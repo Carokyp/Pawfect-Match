@@ -46,7 +46,9 @@
 
   {% if conversations %}
   <!-- BIG WRAPPER CARD -->
-  <div class="messages-container-card">
+    <div class="messages-container-card"
+      data-my-dog-name="{{ my_dog.name }}"
+      data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
     <div class="messages-split-container">
       <!-- INBOX LIST -->
       <div class="messages-inbox-panel">
@@ -170,132 +172,5 @@
     </div>
   </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Handle conversation switching on desktop
-  const conversationCards = document.querySelectorAll('.conversation-card');
-  const myDogAvatar = "{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}";
-  
-  conversationCards.forEach(card => {
-    card.addEventListener('click', function(e) {
-      // Only prevent default on desktop (when thread panel is visible)
-      const threadPanel = document.querySelector('.messages-thread-panel');
-      if (window.innerWidth >= 992 && threadPanel && getComputedStyle(threadPanel).display !== 'none') {
-        e.preventDefault();
-        
-        const dogId = this.dataset.dogId;
-        const dogName = this.dataset.name;
-        const dogBreed = this.dataset.breed;
-        const dogPhoto = this.dataset.photo;
-        
-        // Update header
-        document.getElementById('thread-name').textContent = dogName;
-        document.getElementById('thread-breed').textContent = dogBreed;
-        document.getElementById('thread-avatar').src = dogPhoto;
-        document.getElementById('receiver-dog-id').value = dogId;
-        
-        // Fetch messages for this conversation
-        fetch(`/messages/api/${dogId}/`)
-          .then(response => response.json())
-          .then(data => {
-            const messagesContainer = document.getElementById('messages-thread');
-            messagesContainer.innerHTML = '';
-            
-            if (data.messages && data.messages.length > 0) {
-              data.messages.forEach(msg => {
-                const messageRow = document.createElement('div');
-                messageRow.className = `message-row ${msg.is_sent ? 'sent' : 'received'}`;
-                
-                const avatar = msg.is_sent ? myDogAvatar : dogPhoto;
-                const avatarAlt = msg.is_sent ? '{{ my_dog.name }}' : dogName;
-                
-                if (!msg.is_sent) {
-                  messageRow.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
-                }
-                
-                messageRow.innerHTML += `
-                  <div class="message-bubble">
-                    <p class="message-content">${msg.content}</p>
-                    <span class="message-time">${msg.time}</span>
-                  </div>
-                `;
-                
-                if (msg.is_sent) {
-                  messageRow.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
-                }
-                
-                messagesContainer.appendChild(messageRow);
-              });
-            } else {
-              messagesContainer.innerHTML = '<div class="empty-thread"><p>No messages yet. Send your first message!</p></div>';
-            }
-            
-            // Scroll to bottom
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-          });
-        
-        // Update active state
-        document.querySelectorAll('.conversation-item').forEach(item => {
-          item.classList.remove('active');
-        });
-        this.closest('.conversation-item').classList.add('active');
-      }
-    });
-  });
-  
-  // Handle message sending with AJAX
-  const messageForm = document.getElementById('message-form');
-  if (messageForm) {
-    messageForm.addEventListener('submit', function(e) {
-      const threadPanel = document.querySelector('.messages-thread-panel');
-      if (window.innerWidth >= 992 && threadPanel && getComputedStyle(threadPanel).display !== 'none') {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const receiverDogId = document.getElementById('receiver-dog-id').value;
-        
-        fetch(`/messages/send/${receiverDogId}/`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
-            'X-Requested-With': 'XMLHttpRequest'
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            // Append new message to thread
-            const messagesContainer = document.getElementById('messages-thread');
-            const messageRow = document.createElement('div');
-            messageRow.className = 'message-row sent';
-            
-            messageRow.innerHTML = `
-              <div class="message-bubble">
-                <p class="message-content">${data.message.content}</p>
-                <span class="message-time">${data.message.time}</span>
-              </div>
-              <img class="message-avatar" src="${myDogAvatar}" alt="{{ my_dog.name }}">
-            `;
-            
-            messagesContainer.appendChild(messageRow);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            // Clear form
-            this.querySelector('textarea').value = '';
-          }
-        });
-      }
-    });
-  }
-  
-  // Set first conversation as active
-  const firstConversation = document.querySelector('.conversation-item');
-  if (firstConversation) {
-    firstConversation.classList.add('active');
-  }
-});
-</script>
 
 {% endblock %}

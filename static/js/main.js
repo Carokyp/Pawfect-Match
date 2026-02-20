@@ -381,6 +381,133 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /* ===============================
+     MESSAGES INBOX
+     =============================== */
+
+  /**
+   * Setup inbox interactions for split-view messaging.
+   * @returns {void}
+   */
+  const setupMessagesInbox = () => {
+    const inboxCard = document.querySelector('.messages-container-card');
+    if (!inboxCard) return;
+
+    const myDogAvatar = inboxCard.dataset.myDogAvatar || '';
+    const myDogName = inboxCard.dataset.myDogName || 'You';
+
+    const conversationCards = document.querySelectorAll('.conversation-card');
+    conversationCards.forEach((card) => {
+      card.addEventListener('click', function (e) {
+        const threadPanel = document.querySelector('.messages-thread-panel');
+        if (window.innerWidth >= 992 && threadPanel && getComputedStyle(threadPanel).display !== 'none') {
+          e.preventDefault();
+
+          const dogId = this.dataset.dogId;
+          const dogName = this.dataset.name;
+          const dogBreed = this.dataset.breed;
+          const dogPhoto = this.dataset.photo;
+
+          document.getElementById('thread-name').textContent = dogName;
+          document.getElementById('thread-breed').textContent = dogBreed;
+          document.getElementById('thread-avatar').src = dogPhoto;
+          document.getElementById('receiver-dog-id').value = dogId;
+
+          fetch(`/messages/api/${dogId}/`)
+            .then(response => response.json())
+            .then(data => {
+              const messagesContainer = document.getElementById('messages-thread');
+              messagesContainer.innerHTML = '';
+
+              if (data.messages && data.messages.length > 0) {
+                data.messages.forEach(msg => {
+                  const messageRow = document.createElement('div');
+                  messageRow.className = `message-row ${msg.is_sent ? 'sent' : 'received'}`;
+
+                  const avatar = msg.is_sent ? myDogAvatar : dogPhoto;
+                  const avatarAlt = msg.is_sent ? myDogName : dogName;
+
+                  if (!msg.is_sent) {
+                    messageRow.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
+                  }
+
+                  messageRow.innerHTML += `
+                    <div class="message-bubble">
+                      <p class="message-content">${msg.content}</p>
+                      <span class="message-time">${msg.time}</span>
+                    </div>
+                  `;
+
+                  if (msg.is_sent) {
+                    messageRow.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
+                  }
+
+                  messagesContainer.appendChild(messageRow);
+                });
+              } else {
+                messagesContainer.innerHTML = '<div class="empty-thread"><p>No messages yet. Send your first message!</p></div>';
+              }
+
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+
+          document.querySelectorAll('.conversation-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          this.closest('.conversation-item').classList.add('active');
+        }
+      });
+    });
+
+    const messageForm = document.getElementById('message-form');
+    if (messageForm) {
+      messageForm.addEventListener('submit', function (e) {
+        const threadPanel = document.querySelector('.messages-thread-panel');
+        if (window.innerWidth >= 992 && threadPanel && getComputedStyle(threadPanel).display !== 'none') {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+          const receiverDogId = document.getElementById('receiver-dog-id').value;
+
+          fetch(`/messages/send/${receiverDogId}/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              const messagesContainer = document.getElementById('messages-thread');
+              const messageRow = document.createElement('div');
+              messageRow.className = 'message-row sent';
+
+              messageRow.innerHTML = `
+                <div class="message-bubble">
+                  <p class="message-content">${data.message.content}</p>
+                  <span class="message-time">${data.message.time}</span>
+                </div>
+                <img class="message-avatar" src="${myDogAvatar}" alt="${myDogName}">
+              `;
+
+              messagesContainer.appendChild(messageRow);
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+              this.querySelector('textarea').value = '';
+            }
+          });
+        }
+      });
+    }
+
+    const firstConversation = document.querySelector('.conversation-item');
+    if (firstConversation) {
+      firstConversation.classList.add('active');
+    }
+  };
+
+  /* ===============================
      DELETE CONVERSATION
      =============================== */
 
@@ -563,6 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupFormCache("owner");
     setupFormCache("dog");
     setupPillOptions();
+    setupMessagesInbox();
     setupDeleteConversation();
     setupDeleteMatch();
     setupDeleteProfile();
