@@ -45,33 +45,105 @@
   </div>
 
   {% if conversations %}
-  <div class="conversations-list">
-    {% for conversation in conversations %}
-    <div class="conversation-item">
-      <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card">
-        <div class="conversation-dog-info">
-          <div class="dog-avatar">
-            {% if conversation.dog.profile_photo %}
-            <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
+  <!-- BIG WRAPPER CARD -->
+  <div class="messages-container-card">
+    <div class="messages-split-container">
+      <!-- INBOX LIST -->
+      <div class="messages-inbox-panel">
+        <div class="conversations-list">
+          {% for conversation in conversations %}
+          <div class="conversation-item" data-dog-id="{{ conversation.dog.id }}">
+            <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
+              <img src="{% static 'images/bin.png' %}" alt="Delete">
+            </button>
+            <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card" data-dog-id="{{ conversation.dog.id }}"
+               data-name="{{ conversation.dog.name }}"
+               data-breed="{{ conversation.dog.breed }}"
+               data-photo="{% if conversation.dog.profile_photo %}{{ conversation.dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
+              <div class="conversation-dog-info">
+                <div class="dog-avatar">
+                  {% if conversation.dog.profile_photo %}
+                  <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
+                  {% else %}
+                  <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
+                  {% endif %}
+                </div>
+                <div class="dog-details">
+                  <h3>{{ conversation.dog.name }}</h3>
+                  <p class="dog-breed">{{ conversation.dog.breed }}</p>
+                  <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
+                </div>
+              </div>
+              <div class="conversation-meta">
+                <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- THREAD PANEL (Desktop only) -->
+      <div class="messages-thread-panel">
+        <div class="message-header">
+          <div class="receiver-avatar">
+            {% if first_receiver_dog.profile_photo %}
+              <img src="{{ first_receiver_dog.get_photo_url }}" alt="{{ first_receiver_dog.name }}" id="thread-avatar">
             {% else %}
-            <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
+              <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ first_receiver_dog.name }}" id="thread-avatar">
             {% endif %}
           </div>
-          <div class="dog-details">
-            <h3>{{ conversation.dog.name }}</h3>
-            <p class="dog-breed">{{ conversation.dog.breed }}</p>
-            <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
+          <div class="receiver-info">
+            <h2 id="thread-name">{{ first_receiver_dog.name }}</h2>
+            <p id="thread-breed">{{ first_receiver_dog.breed }}</p>
           </div>
         </div>
-        <div class="conversation-meta">
-          <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
+
+        <div class="messages-thread" id="messages-thread">
+          {% if first_messages %}
+            {% for item in first_messages %}
+              <div class="message-row {% if item.is_sent %}sent{% else %}received{% endif %}">
+                {% if not item.is_sent %}
+                  {% if item.sender_avatar %}
+                    <img class="message-avatar" src="{{ item.sender_avatar }}" alt="{{ item.sender_name }}">
+                  {% else %}
+                    <img class="message-avatar" src="{% static 'images/dog_placeholder.png' %}" alt="{{ item.sender_name }}">
+                  {% endif %}
+                {% endif %}
+                
+                <div class="message-bubble">
+                  <p class="message-content">{{ item.message.content }}</p>
+                  <span class="message-time">{{ item.message.created_at|date:"H:i" }}</span>
+                </div>
+                
+                {% if item.is_sent %}
+                  {% if my_dog.profile_photo %}
+                    <img class="message-avatar" src="{{ my_dog.get_photo_url }}" alt="{{ my_dog.name }}">
+                  {% else %}
+                    <img class="message-avatar" src="{% static 'images/dog_placeholder.png' %}" alt="{{ my_dog.name }}">
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="empty-thread">
+              <p>No messages yet. Send your first message!</p>
+            </div>
+          {% endif %}
         </div>
-      </a>
-      <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
-        <img src="{% static 'images/bin.png' %}" alt="Delete Conversation">
-      </button>
+
+        {% if is_match %}
+          <div class="message-form-container">
+            <form method="POST" class="message-form" id="message-form">
+              {% csrf_token %}
+              <input type="hidden" name="receiver_dog_id" id="receiver-dog-id" value="{{ first_receiver_dog.id }}">
+              {{ form.content }}
+              <button type="submit" class="send-msg btn-secondary">Send</button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
     </div>
-    {% endfor %}
   </div>
   {% else %}
   <div class="no-msg">
@@ -98,5 +170,132 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle conversation switching on desktop
+  const conversationCards = document.querySelectorAll('.conversation-card');
+  const myDogAvatar = "{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}";
+  
+  conversationCards.forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Only prevent default on desktop (when thread panel is visible)
+      const threadPanel = document.querySelector('.messages-thread-panel');
+      if (window.innerWidth >= 992 && threadPanel && getComputedStyle(threadPanel).display !== 'none') {
+        e.preventDefault();
+        
+        const dogId = this.dataset.dogId;
+        const dogName = this.dataset.name;
+        const dogBreed = this.dataset.breed;
+        const dogPhoto = this.dataset.photo;
+        
+        // Update header
+        document.getElementById('thread-name').textContent = dogName;
+        document.getElementById('thread-breed').textContent = dogBreed;
+        document.getElementById('thread-avatar').src = dogPhoto;
+        document.getElementById('receiver-dog-id').value = dogId;
+        
+        // Fetch messages for this conversation
+        fetch(`/messages/api/${dogId}/`)
+          .then(response => response.json())
+          .then(data => {
+            const messagesContainer = document.getElementById('messages-thread');
+            messagesContainer.innerHTML = '';
+            
+            if (data.messages && data.messages.length > 0) {
+              data.messages.forEach(msg => {
+                const messageRow = document.createElement('div');
+                messageRow.className = `message-row ${msg.is_sent ? 'sent' : 'received'}`;
+                
+                const avatar = msg.is_sent ? myDogAvatar : dogPhoto;
+                const avatarAlt = msg.is_sent ? '{{ my_dog.name }}' : dogName;
+                
+                if (!msg.is_sent) {
+                  messageRow.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
+                }
+                
+                messageRow.innerHTML += `
+                  <div class="message-bubble">
+                    <p class="message-content">${msg.content}</p>
+                    <span class="message-time">${msg.time}</span>
+                  </div>
+                `;
+                
+                if (msg.is_sent) {
+                  messageRow.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
+                }
+                
+                messagesContainer.appendChild(messageRow);
+              });
+            } else {
+              messagesContainer.innerHTML = '<div class="empty-thread"><p>No messages yet. Send your first message!</p></div>';
+            }
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          });
+        
+        // Update active state
+        document.querySelectorAll('.conversation-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        this.closest('.conversation-item').classList.add('active');
+      }
+    });
+  });
+  
+  // Handle message sending with AJAX
+  const messageForm = document.getElementById('message-form');
+  if (messageForm) {
+    messageForm.addEventListener('submit', function(e) {
+      const threadPanel = document.querySelector('.messages-thread-panel');
+      if (window.innerWidth >= 992 && threadPanel && getComputedStyle(threadPanel).display !== 'none') {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const receiverDogId = document.getElementById('receiver-dog-id').value;
+        
+        fetch(`/messages/send/${receiverDogId}/`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Append new message to thread
+            const messagesContainer = document.getElementById('messages-thread');
+            const messageRow = document.createElement('div');
+            messageRow.className = 'message-row sent';
+            
+            messageRow.innerHTML = `
+              <div class="message-bubble">
+                <p class="message-content">${data.message.content}</p>
+                <span class="message-time">${data.message.time}</span>
+              </div>
+              <img class="message-avatar" src="${myDogAvatar}" alt="{{ my_dog.name }}">
+            `;
+            
+            messagesContainer.appendChild(messageRow);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Clear form
+            this.querySelector('textarea').value = '';
+          }
+        });
+      }
+    });
+  }
+  
+  // Set first conversation as active
+  const firstConversation = document.querySelector('.conversation-item');
+  if (firstConversation) {
+    firstConversation.classList.add('active');
+  }
+});
+</script>
 
 {% endblock %}

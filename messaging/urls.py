@@ -10,4 +10,9 @@ urlpatterns = [
         views.delete_conversation,
         name="delete_conversation"
     ),
+    path(
+        "api/<int:dog_id>/",
+        views.get_conversation_messages,
+        name="get_conversation_messages"
+    ),
 ]
