@@ -48,6 +48,10 @@ body {
   background-color: var(--orange-100);
 }
 
+main {
+  flex: 1 0 auto;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -1405,7 +1409,7 @@ body.modal-open {
 .matches-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .profile-card {
@@ -2069,15 +2073,15 @@ body.modal-open {
     max-width: 1100px;
   }
 
-  .auth-card-split{
+  .auth-card-split {
     flex-direction: row;
-    align-items: stretch; 
+    align-items: stretch;
     gap: 2.5rem;
   }
 
-  .auth-card-split.success-split{
+  .auth-card-split.success-split {
     flex-direction: row;
-    align-items: center; 
+    align-items: center;
     gap: 2.5rem;
   }
 
@@ -2200,12 +2204,12 @@ body.modal-open {
     padding: 4.5rem 1rem 0;
   }
 
-  .hero-section > div:first-child {
+  .hero-section>div:first-child {
     order: 2;
     flex: 1.2;
   }
 
-  .hero-section > div:last-child {
+  .hero-section>div:last-child {
     order: 1;
     flex: 1;
     text-align: left;
@@ -2223,7 +2227,7 @@ body.modal-open {
     margin-bottom: 0;
   }
 
-  .full-section{
+  .full-section {
     margin-top: 0;
   }
 
@@ -2242,13 +2246,14 @@ body.modal-open {
     flex-direction: column;
   }
 
-  .full-section .section-content-1 > div:last-child {
+  .full-section .section-content-1>div:last-child {
     flex: 1;
   }
 
-  .full-section .section-content-2{
+  .full-section .section-content-2 {
     display: flex;
-    flex-direction: row-reverse;;
+    flex-direction: row-reverse;
+    ;
     align-items: center;
     gap: 2rem;
     padding: 1rem 0 1rem;
@@ -2260,11 +2265,11 @@ body.modal-open {
     flex-direction: column;
   }
 
-  .full-section .section-content-2 > div:last-child {
+  .full-section .section-content-2>div:last-child {
     flex: 1;
   }
 
-  .full-section .section-content-3{
+  .full-section .section-content-3 {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -2278,7 +2283,7 @@ body.modal-open {
     flex-direction: column;
   }
 
-  .full-section .section-content-3 > div:last-child {
+  .full-section .section-content-3>div:last-child {
     flex: 1;
   }
 
@@ -2296,7 +2301,7 @@ body.modal-open {
     flex-direction: column;
   }
 
-  .full-section .section-content-4 > div:last-child {
+  .full-section .section-content-4>div:last-child {
     flex: 1;
   }
 
@@ -2308,39 +2313,44 @@ body.modal-open {
     max-width: 1000px;
   }
 
-    .profile-views-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.5rem;
-      padding: 0 1rem 1rem;
-    }
-  
-    .profile-card .profile-view.hidden {
-      display: block;
-    }
+  .discover-page.message-thread-page{
+    max-width: 500px;
+    padding: 50px 12px;
+  }
 
-    .profile-toggle {
-      pointer-events: none;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.5rem;
-      padding: 1rem 0.75rem;
-      justify-items: center;
-    }
-  
-    .profile-toggle .toggle-btn {
-      width: 40%;
-      justify-content: center;
-      text-align: center;
-      background: var(--orange-200);
-      color: var(--orange-900);
-      box-shadow: none;
-    }
-  
-    .matches-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    }
+  .discover-page.messages-page{
+    max-width: 600px;
+  }
+
+  .profile-views-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 0 1rem 1rem;
+  }
+
+  .profile-card .profile-view.hidden {
+    display: block;
+  }
+
+  .profile-toggle {
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0.75rem;
+    justify-items: center;
+  }
+
+  .profile-toggle .toggle-btn {
+    width: 40%;
+    justify-content: center;
+    text-align: center;
+    background: var(--orange-200);
+    color: var(--orange-900);
+    box-shadow: none;
+  }
+}
 
 /* Desktop: 992px+ */
 @media (min-width: 992px) {
@@ -2520,7 +2530,7 @@ body.modal-open {
   }
 
   .discover-page {
-    padding: 70px 12px;
+    padding: 80px 12px;
   }
 }
 
