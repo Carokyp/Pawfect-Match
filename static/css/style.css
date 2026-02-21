@@ -1716,10 +1716,11 @@ body.modal-open {
 .conversation-item {
   position: relative;
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   gap: 0.5rem;
   border-bottom: 1px solid #e0e0e0;
-  padding: 0.5rem;
+  padding: 0.15rem 0.4rem;
   transition: background-color 0.2s;
 }
 
@@ -1910,8 +1911,8 @@ body.modal-open {
 }
 
 .message-avatar {
-  width: 32px;
-  height: 32px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -2396,6 +2397,11 @@ body.modal-open {
     color: var(--orange-900);
     box-shadow: none;
   }
+
+  .dog-avatar {
+    width: 55px;
+    height: 55px;
+  }
 }
 
 /* Desktop: 992px+ */
@@ -2517,6 +2523,10 @@ body.modal-open {
     border-right: 1px solid #e0e0e0;
   }
 
+  .conversation-item {
+    flex-direction: row;
+  }
+
   .messages-thread-panel {
     display: flex;
     flex-direction: column;
@@ -2560,6 +2570,11 @@ body.modal-open {
 
   .navbar .navbar-nav {
     gap: 1rem;
+  }
+
+  .message-avatar {
+    width: 45px;
+    height: 45px;
   }
 }
 
