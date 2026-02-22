@@ -13,8 +13,8 @@
 {% block content %}
 
 <div class="form-card owner-profile-card">
-  <h1 class="form-title">CREATE YOUR OWNER PROFILE</h1>
-  <p class="form-subtitle">
+  <h1 class="form-title text-center">CREATE YOUR OWNER PROFILE</h1>
+  <p class="form-subtitle text-center">
     <span class="required">*</span> Required fields
   </p>
 
@@ -80,40 +80,38 @@
             <div class="form-error">{{ form.occupation.errors|striptags }}</div>
           {% endif %}
         </div>
-
-        <!-- Interests -->
-        <div class="form-field owner-profile-full">
-          <label>Interests <span class="optional">(optional)</span></label>
-          <div class="pill-options" data-max="3">
-            {% for checkbox in form.interests %}
-              <label class="pill-option">
-                {{ checkbox.tag }}
-                <span>{{ checkbox.choice_label }}</span>
-              </label>
-            {% endfor %}
-          </div>
-          <div class="pill-helper">Select up to 3</div>
-          {% if form.interests.errors %}
-            <div class="form-error">{{ form.interests.errors|striptags }}</div>
-          {% endif %}
-        </div>
-
-        <!-- About me -->
-        <div class="form-field owner-profile-full">
-          <label>About me <span class="optional">(optional)</span></label>
-          {{ form.about_me }}
-          <div class="char-counter">0 / 150</div>
-          {% if form.about_me.errors %}
-            <div class="form-error">{{ form.about_me.errors|striptags }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-next-btn owner-profile-full">
-          <button type="submit" class="btn-hero secondary">
-            Next
-          </button>
-        </div>
       </div>
+    </div>
+
+    <!-- Interests -->
+    <div class="form-field owner-profile-interests">
+      <label>Interests <span class="optional">(optional)</span></label>
+      <div class="pill-options" data-max="3">
+        {% for checkbox in form.interests %}
+          <label class="pill-option">
+            {{ checkbox.tag }}
+            <span>{{ checkbox.choice_label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+      <div class="pill-helper">Select up to 3</div>
+      {% if form.interests.errors %}
+        <div class="form-error">{{ form.interests.errors|striptags }}</div>
+      {% endif %}
+    </div>
+
+    <!-- About me -->
+    <div class="form-field owner-profile-about">
+      <label>About me <span class="optional">(optional)</span></label>
+      {{ form.about_me }}
+      <div class="char-counter">0 / 150</div>
+      {% if form.about_me.errors %}
+        <div class="form-error">{{ form.about_me.errors|striptags }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-actions d-flex justify-content-center gap-3 mt-4">
+      <button type="submit" class="btn-hero secondary">Next</button>
     </div>
 
   </form>

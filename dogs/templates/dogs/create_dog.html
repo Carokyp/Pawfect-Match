@@ -13,8 +13,8 @@
 {% block content %}
 
 <div class="form-card dog-profile-card">
-  <h1 class="form-title">CREATE YOUR DOG PROFILE</h1>
-  <p class="form-subtitle">
+  <h1 class="form-title text-center">CREATE YOUR DOG PROFILE</h1>
+  <p class="form-subtitle text-center">
     <span class="required">*</span> Required fields
   </p>
 
@@ -45,77 +45,77 @@
       </div>
 
       <div class="dog-profile-fields">
-        <!-- Name -->
-        <div class="form-field">
-          <label for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="required">*</span></label>
-          {{ form.name }}
-          {% if form.name.errors %}
-          <div class="form-error">{{ form.name.errors|striptags }}</div>
-          {% endif %}
-        </div>
+        <div class="dog-profile-identity">
+          <!-- Name -->
+          <div class="form-field">
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="required">*</span></label>
+            {{ form.name }}
+            {% if form.name.errors %}
+            <div class="form-error">{{ form.name.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <!-- Age -->
-        <div class="form-field">
-          <label for="{{ form.age.id_for_label }}">{{ form.age.label }} <span class="required">*</span></label>
-          {{ form.age }}
-          {% if form.age.errors %}
-          <div class="form-error">{{ form.age.errors|striptags }}</div>
-          {% endif %}
-        </div>
+          <!-- Age -->
+          <div class="form-field">
+            <label for="{{ form.age.id_for_label }}">{{ form.age.label }} <span class="required">*</span></label>
+            {{ form.age }}
+            {% if form.age.errors %}
+            <div class="form-error">{{ form.age.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <!-- Breed -->
-        <div class="form-field">
-          <label for="{{ form.breed.id_for_label }}">{{ form.breed.label }} <span class="required">*</span></label>
-          {{ form.breed }}
-          {% if form.breed.errors %}
-          <div class="form-error">{{ form.breed.errors|striptags }}</div>
-          {% endif %}
-        </div>
+          <!-- Breed -->
+          <div class="form-field">
+            <label for="{{ form.breed.id_for_label }}">{{ form.breed.label }} <span class="required">*</span></label>
+            {{ form.breed }}
+            {% if form.breed.errors %}
+            <div class="form-error">{{ form.breed.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <!-- Size -->
-        <div class="form-field">
-          <label for="{{ form.size.id_for_label }}">{{ form.size.label }} <span class="required">*</span></label>
-          {{ form.size }}
-          {% if form.size.errors %}
-          <div class="form-error">{{ form.size.errors|striptags }}</div>
-          {% endif %}
-        </div>
+          <!-- Gender -->
+          <div class="form-field">
+            <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }} <span class="required">*</span></label>
+            {{ form.gender }}
+            {% if form.gender.errors %}
+            <div class="form-error">{{ form.gender.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <!-- Gender -->
-        <div class="form-field">
-          <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }} <span class="required">*</span></label>
-          {{ form.gender }}
-          {% if form.gender.errors %}
-          <div class="form-error">{{ form.gender.errors|striptags }}</div>
-          {% endif %}
-        </div>
+          <!-- Size -->
+          <div class="form-field">
+            <label for="{{ form.size.id_for_label }}">{{ form.size.label }} <span class="required">*</span></label>
+            {{ form.size }}
+            {% if form.size.errors %}
+            <div class="form-error">{{ form.size.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <!-- Energy level -->
-        <div class="form-field">
-          <label for="{{ form.energy_level.id_for_label }}">{{ form.energy_level.label }} <span
-              class="required">*</span></label>
-          {{ form.energy_level }}
-          {% if form.energy_level.errors %}
-          <div class="form-error">{{ form.energy_level.errors|striptags }}</div>
-          {% endif %}
-        </div>
-
-        <!-- About dog -->
-        <div class="form-field dog-profile-full">
-          <label>About me <span class="optional">(optional)</span></label>
-          {{ form.about_me }}
-          <div class="char-counter">0 / 150</div>
-          {% if form.about_me.errors %}
-          <div class="form-error">{{ form.about_me.errors|striptags }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-next-btn dog-profile-full">
-          <button type="submit" class="btn-hero secondary">
-            Complete Profile
-          </button>
+          <!-- Energy level -->
+          <div class="form-field">
+            <label for="{{ form.energy_level.id_for_label }}">{{ form.energy_level.label }} <span
+                class="required">*</span></label>
+            {{ form.energy_level }}
+            {% if form.energy_level.errors %}
+            <div class="form-error">{{ form.energy_level.errors|striptags }}</div>
+            {% endif %}
+          </div>
         </div>
       </div>
+    </div>
+
+    <!-- About dog -->
+    <div class="form-field dog-profile-about">
+      <label>About me <span class="optional">(optional)</span></label>
+      {{ form.about_me }}
+      <div class="char-counter">0 / 150</div>
+      {% if form.about_me.errors %}
+      <div class="form-error">{{ form.about_me.errors|striptags }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-actions d-flex justify-content-center gap-3 mt-4">
+      <button type="submit" class="btn-hero secondary">Complete Profile</button>
     </div>
   </form>
 </div>
