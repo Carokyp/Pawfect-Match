@@ -650,12 +650,20 @@ section.full-section:nth-of-type(5) {
 
 .owner-profile-photo {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .owner-profile-fields {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
+}
+
+.owner-profile-interests,
+.owner-profile-about {
+  width: 100%;
 }
 
 .owner-profile-full {
@@ -679,6 +687,12 @@ section.full-section:nth-of-type(5) {
 }
 
 .dog-profile-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dog-profile-identity {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
@@ -2174,7 +2188,7 @@ body.modal-open {
 
   .owner-profile-split {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     gap: 2rem;
   }
 
@@ -2192,6 +2206,14 @@ body.modal-open {
     gap: 1rem 1.25rem;
   }
 
+  .owner-profile-about {
+    margin-top: 1.5rem;
+  }
+
+  .owner-profile-interests {
+    margin-top: 1.25rem;
+  }
+
   .owner-profile-fields .form-field {
     margin-bottom: 0;
   }
@@ -2206,7 +2228,7 @@ body.modal-open {
 
   .dog-profile-split {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     gap: 2rem;
   }
 
@@ -2220,8 +2242,16 @@ body.modal-open {
 
   .dog-profile-fields {
     flex: 1;
+    gap: 1.25rem;
+  }
+
+  .dog-profile-identity {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .dog-profile-about {
+    margin-top: 1.5rem;
   }
 
   .dog-profile-fields .form-field {
@@ -2254,6 +2284,7 @@ body.modal-open {
 
   .auth-content p {
     font-size: 1rem;
+    text-align: start !important;
   }
 
   .success-text h1 {

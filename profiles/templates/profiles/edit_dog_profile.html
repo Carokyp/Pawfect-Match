@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}Edit Dog Profile{% endblock %}
-{% block content_class %}edit-profile-wrapper{% endblock %}
+{% block content_class %}form-page{% endblock %}
 
 {% block header %}
   <nav class="navbar navbar-expand-lg">
@@ -37,64 +37,96 @@
 
 {% block content %}
 
-<div class="profile-edit-page">
+<div class="form-card dog-profile-card">
+  <h1 class="form-title text-center">EDIT YOUR DOG PROFILE</h1>
+  <p class="form-subtitle text-center">
+    <span class="required">*</span> Required fields
+  </p>
 
-  <div class="d-flex align-items-center justify-content-center m-3">
-    <span class="fw-bold small" style="color: var(--text-dark);">EDIT YOUR PROFILE</span>
-  </div>
-
-  <form method="post" enctype="multipart/form-data" class="profile-form-modern profile-edit-form">
+  <form method="post" enctype="multipart/form-data" class="auth-form dog-profile-form" data-form-type="dog" novalidate>
     {% csrf_token %}
+    {{ form.non_field_errors }}
 
-    <div class="profile-edit-card">
-      <div class="photo-block">
-        <label class="form-label">Profile Photo</label>
-        <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
-          {{ form.profile_photo }}
-          <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
-            src="{{ form.instance.profile_photo.url }}" alt="Dog preview">
-          <span class="upload-placeholder">Change photo</span>
-          <button type="button" class="upload-remove" aria-label="Remove image">×</button>
+    <div class="dog-profile-split">
+      <div class="dog-profile-photo">
+        <div class="form-field">
+          <label>Profile Photo <span class="required">*</span></label>
+
+          <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
+            {{ form.profile_photo }}
+
+            <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
+              {% if form.instance.profile_photo %}src="{{ form.instance.profile_photo.url }}"{% endif %} alt="" />
+
+            <span class="upload-placeholder">Change photo</span>
+            <button type="button" class="upload-remove" aria-label="Remove image">×</button>
+          </div>
+          {% if form.profile_photo.errors %}
+            <div class="form-error">{{ form.profile_photo.errors|striptags }}</div>
+          {% endif %}
         </div>
       </div>
 
-      <div class="form-grid">
-        <div class="form-field">
-          <label class="form-label" for="{{ form.name.id_for_label }}">Name</label>
-          {{ form.name }}
-        </div>
+      <div class="dog-profile-fields">
+        <div class="dog-profile-identity">
+          <div class="form-field">
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="required">*</span></label>
+            {{ form.name }}
+            {% if form.name.errors %}
+              <div class="form-error">{{ form.name.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <div class="form-field">
-          <label class="form-label" for="{{ form.age.id_for_label }}">Age</label>
-          {{ form.age }}
-        </div>
+          <div class="form-field">
+            <label for="{{ form.age.id_for_label }}">{{ form.age.label }} <span class="required">*</span></label>
+            {{ form.age }}
+            {% if form.age.errors %}
+              <div class="form-error">{{ form.age.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <div class="form-field">
-          <label class="form-label" for="{{ form.breed.id_for_label }}">Breed</label>
-          {{ form.breed }}
-        </div>
+          <div class="form-field">
+            <label for="{{ form.breed.id_for_label }}">{{ form.breed.label }} <span class="required">*</span></label>
+            {{ form.breed }}
+            {% if form.breed.errors %}
+              <div class="form-error">{{ form.breed.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <div class="form-field">
-          <label class="form-label" for="{{ form.size.id_for_label }}">Size</label>
-          {{ form.size }}
-        </div>
+          <div class="form-field">
+            <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }} <span class="required">*</span></label>
+            {{ form.gender }}
+            {% if form.gender.errors %}
+              <div class="form-error">{{ form.gender.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <div class="form-field">
-          <label class="form-label" for="{{ form.gender.id_for_label }}">Gender</label>
-          {{ form.gender }}
-        </div>
+          <div class="form-field">
+            <label for="{{ form.size.id_for_label }}">{{ form.size.label }} <span class="required">*</span></label>
+            {{ form.size }}
+            {% if form.size.errors %}
+              <div class="form-error">{{ form.size.errors|striptags }}</div>
+            {% endif %}
+          </div>
 
-        <div class="form-field form-field-full">
-          <label class="form-label" for="{{ form.about_me.id_for_label }}">About me</label>
-          {{ form.about_me }}
-          <div class="char-counter">0 / 150</div>
-        </div>
-
-        <div class="form-field form-field-full">
-          <label class="form-label" for="{{ form.energy_level.id_for_label }}">Energy level</label>
-          {{ form.energy_level }}
+          <div class="form-field">
+            <label for="{{ form.energy_level.id_for_label }}">{{ form.energy_level.label }} <span class="required">*</span></label>
+            {{ form.energy_level }}
+            {% if form.energy_level.errors %}
+              <div class="form-error">{{ form.energy_level.errors|striptags }}</div>
+            {% endif %}
+          </div>
         </div>
       </div>
+    </div>
+
+    <div class="form-field dog-profile-about">
+      <label>About me <span class="optional">(optional)</span></label>
+      {{ form.about_me }}
+      <div class="char-counter">0 / 150</div>
+      {% if form.about_me.errors %}
+        <div class="form-error">{{ form.about_me.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <div class="form-actions d-flex justify-content-center gap-3 mt-4">

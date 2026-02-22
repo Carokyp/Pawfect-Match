@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}Edit My Profile{% endblock %}
-{% block content_class %}edit-profile-wrapper{% endblock %}
+{% block content_class %}form-page{% endblock %}
 
 {% block header %}
   <nav class="navbar navbar-expand-lg">
@@ -37,69 +37,96 @@
 
 {% block content %}
 
-<div class="profile-edit-page">
-  <div class="d-flex align-items-center justify-content-center m-3">
-    <span class="fw-bold small" style="color: var(--text-dark);">EDIT YOUR PROFILE</span>
-  </div>
+<div class="form-card owner-profile-card">
+  <h1 class="form-title text-center">EDIT YOUR OWNER PROFILE</h1>
+  <p class="form-subtitle text-center">
+    <span class="required">*</span> Required fields
+  </p>
 
-  <form method="post" enctype="multipart/form-data" class="profile-form-modern profile-edit-form">
+  <form method="post" enctype="multipart/form-data" class="auth-form owner-profile-form" data-form-type="owner" novalidate>
     {% csrf_token %}
+    {{ form.non_field_errors }}
 
-    <div class="profile-edit-card">
-      <div class="photo-block">
-        <label class="form-label">Profile Photo</label>
-        <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
-          {{ form.profile_photo }}
-          <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
-          {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}" {% endif %} alt="Profile preview">
-          <span class="upload-placeholder">Change photo</span>
-          <button type="button" class="upload-remove" aria-label="Remove image">×</button>
-        </div>
-      </div>
-
-      <div class="form-grid">
+    <div class="owner-profile-split">
+      <div class="owner-profile-photo">
         <div class="form-field">
-          <label class="form-label" for="{{ form.name.id_for_label }}">Name</label>
-          {{ form.name }}
-        </div>
+          <label>Profile Photo <span class="required">*</span></label>
 
-        <div class="form-field">
-          <label class="form-label" for="{{ form.age.id_for_label }}">Age</label>
-          {{ form.age }}
-        </div>
+          <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
+            {{ form.profile_photo }}
 
-        <div class="form-field">
-          <label class="form-label" for="{{ form.occupation.id_for_label }}">Occupation</label>
-          {{ form.occupation }}
-        </div>
+            <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
+              {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}"{% endif %} alt="" />
 
-        <div class="form-field">
-          <label class="form-label" for="{{ form.city.id_for_label }}">Location</label>
-          {{ form.city }}
-        </div>
-
-        <div class="form-field">
-          <label>Interests <span class="optional">(optional)</span></label>
-          <div class="pill-options" data-max="3">
-            {% for checkbox in form.interests %}
-            <label class="pill-option">
-              {{ checkbox.tag }}
-              <span>{{ checkbox.choice_label }}</span>
-            </label>
-            {% endfor %}
+            <span class="upload-placeholder">Change photo</span>
+            <button type="button" class="upload-remove" aria-label="Remove image">×</button>
           </div>
-          <div class="pill-helper">Select up to 3</div>
-          {% if form.interests.errors %}
-          <div class="form-error">{{ form.interests.errors|striptags }}</div>
+          {% if form.profile_photo.errors %}
+            <div class="form-error">{{ form.profile_photo.errors|striptags }}</div>
           {% endif %}
         </div>
 
-        <div class="form-field form-field-full">
-          <label class="form-label" for="{{ form.about_me.id_for_label }}">About me</label>
-          {{ form.about_me }}
-          <div class="char-counter">0 / 150</div>
-        </div>
       </div>
+
+      <div class="owner-profile-fields">
+        <div class="form-field">
+          <label for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="required">*</span></label>
+          {{ form.name }}
+          {% if form.name.errors %}
+            <div class="form-error">{{ form.name.errors|striptags }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          <label for="{{ form.age.id_for_label }}">{{ form.age.label }} <span class="required">*</span></label>
+          {{ form.age }}
+          {% if form.age.errors %}
+            <div class="form-error">{{ form.age.errors|striptags }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          <label for="{{ form.city.id_for_label }}">{{ form.city.label }} <span class="required">*</span></label>
+          {{ form.city }}
+          {% if form.city.errors %}
+            <div class="form-error">{{ form.city.errors|striptags }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          <label for="{{ form.occupation.id_for_label }}">{{ form.occupation.label }} <span class="required">*</span></label>
+          {{ form.occupation }}
+          {% if form.occupation.errors %}
+            <div class="form-error">{{ form.occupation.errors|striptags }}</div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+    <div class="form-field owner-profile-interests">
+      <label>Interests <span class="optional">(optional)</span></label>
+      <div class="pill-options" data-max="3">
+        {% for checkbox in form.interests %}
+          <label class="pill-option">
+            {{ checkbox.tag }}
+            <span>{{ checkbox.choice_label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+      <div class="pill-helper">Select up to 3</div>
+      {% if form.interests.errors %}
+        <div class="form-error">{{ form.interests.errors|striptags }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-field owner-profile-about">
+      <label>About me <span class="optional">(optional)</span></label>
+      {{ form.about_me }}
+      <div class="char-counter">0 / 150</div>
+      {% if form.about_me.errors %}
+        <div class="form-error">{{ form.about_me.errors|striptags }}</div>
+      {% endif %}
     </div>
 
     <div class="form-actions d-flex justify-content-center gap-3 mt-4">
