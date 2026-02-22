@@ -444,7 +444,7 @@ section.full-section:nth-of-type(5) {
 /* -- Danger/Delete Profile Button */
 
 .delete-profile-btn {
-  font-size: 0.8rem;
+  font-size: 0.95rem;
 }
 
 /* --- Secondary Button Base --- */
@@ -1055,7 +1055,7 @@ input[type="number"] {
 
 .image-overlay p {
   margin: 0.2rem 0;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 /* --- Dividers --- */
@@ -1108,6 +1108,33 @@ input[type="number"] {
   align-items: center;
   padding-bottom: 0.75rem;
   padding-top: 0.75rem;
+}
+
+.card-footer-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.card-footer-bar .btn-edit-profile {
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+}
+
+/* Inline edit button - compact, no extra space */
+.profile-edit-inline {
+  padding: 2rem 1rem 0.5rem;
+  text-align: center;
+}
+
+.profile-edit-inline .btn-edit-profile {
+  display: inline-block;
+  font-size: 0.95rem;
+  width: 180px;
 }
 
 /* --- Toggle --- */
@@ -2398,6 +2425,58 @@ body.modal-open {
     box-shadow: none;
   }
 
+  /* Profile cards side-by-side on tablet+ */
+  .profile-page {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 50px 1rem 1rem;
+    max-width: 800px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .profile-page > .d-flex {
+    grid-column: 1 / -1;
+  }
+
+  .profile-page .profile-card-view {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .dog-profile,
+  .owner-profile {
+    display: block;
+  }
+
+  /* Push edit button to bottom of card */
+  .profile-page .profile-edit-inline {
+    margin-top: auto;
+  }
+
+  /* Increase button font sizes on tablet+ */
+  .profile-edit-inline .btn-edit-profile,
+  .delete-profile-btn {
+    font-size: 0.8rem;
+  }
+
+  /* Side-by-side layout */
+  .profile-page {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: stretch;
+  }
+
+  .profile-page .danger-zone {
+    grid-column: 1 / -1;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .dog-avatar {
     width: 55px;
     height: 55px;
@@ -2555,6 +2634,21 @@ body.modal-open {
     padding: 50px 30px;
   }
 
+  /* Profile buttons sizing for desktop */
+  .profile-edit-inline .btn-edit-profile,
+  .delete-profile-btn {
+    font-size: 0.95rem;
+  }
+
+}
+
+/* Desktop: 1024px+ */
+@media (min-width: 1024px) {
+  
+  .profile-page-title {
+    font-size: 1rem !important;
+  }
+
 }
 
 /* Large Desktop: 1200px+ */
@@ -2576,6 +2670,7 @@ body.modal-open {
     width: 45px;
     height: 45px;
   }
+
 }
 
 /* Extra Large: 1400px+ */
@@ -2594,6 +2689,32 @@ body.modal-open {
     width: 80%;
     display: block;
     margin: 0 auto;
+  }
+
+  /* Increase profile card font sizes on extra large screens */
+  .profile-card .image-overlay h2 {
+    font-size: 2rem;
+  }
+
+  .profile-card .image-overlay p {
+    font-size: 1.5rem;
+  }
+
+  .profile-card .profile-about h3 {
+    font-size: 1.1rem;
+  }
+
+  .profile-card .profile-about p {
+    font-size: 1.05rem;
+  }
+
+  .profile-card .profile-interests h4,
+  .profile-card .meta-block h4 {
+    font-size: 0.85rem;
+  }
+
+  .profile-card .tag {
+    font-size: 0.9rem;
   }
 
   .section-content-1 .section-text h2,
@@ -2632,6 +2753,26 @@ body.modal-open {
 
   .discover-page {
     padding: 80px 12px;
+  }
+
+  .profile-page {
+    max-width: 1000px;
+  }
+}
+
+@media (min-width: 1800px) {
+
+  .profile-page > .profile-card-view {
+    align-self: stretch;
+  }
+
+  .profile-page > .d-flex,
+  .profile-page .danger-zone {
+    align-self: center;
+  }
+
+  .profile-page .profile-card-view {
+    height: 100%;
   }
 }
 

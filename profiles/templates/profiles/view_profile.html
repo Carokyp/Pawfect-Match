@@ -45,15 +45,11 @@
   </nav>
 
   <div class="d-flex align-items-center justify-content-center m-3">
-    <span class="fw-bold small" style="color: var(--text-dark);">YOUR PROFILES</span>
+    <span class="fw-bold small profile-page-title" style="color: var(--text-dark);">YOUR PROFILES</span>
   </div>
 
   {% if dog %}
-    <div class="profile-card profile-card-view">
-      <div class="card-header-bar">
-        <a href="{% url 'edit_dog_profile' %}" class="btn-edit-profile primary">Edit</a>
-      </div>
-
+    <div class="profile-card profile-card-view dog-profile">
       <div class="profile-image">
         {% if dog.profile_photo %}
         <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high" />
@@ -89,14 +85,14 @@
           <span class="tag">{{ dog.get_size_display }}</span>
         </div>
       </div>
+
+      <div class="profile-edit-inline">
+        <a href="{% url 'edit_dog_profile' %}" class="btn-edit-profile primary">Edit Dog Profile</a>
+      </div>
     </div>
   {% endif %}
 
-    <div class="profile-card profile-card-view">
-      <div class="card-header-bar">
-        <a href="{% url 'edit_owner_profile' %}" class="btn-edit-profile primary">Edit</a>
-      </div>
-
+    <div class="profile-card profile-card-view owner-profile">
       <div class="profile-image">
         {% if owner.profile_photo %}
         <img src="{{ owner.get_photo_url }}" alt="Owner photo" fetchpriority="high" />
@@ -127,6 +123,10 @@
           <span class="tag">{{ interest }}</span>
           {% endfor %}
         </div>
+      </div>
+
+      <div class="profile-edit-inline">
+        <a href="{% url 'edit_owner_profile' %}" class="btn-edit-profile primary">Edit Owner Profile</a>
       </div>
     </div>
 
@@ -164,7 +164,7 @@
           Cancel
         </button>
         <button type="button" class="btn-danger" onclick="confirmDelete()">
-          Yes, Delete
+          Delete
         </button>
       </div>
     </div>
