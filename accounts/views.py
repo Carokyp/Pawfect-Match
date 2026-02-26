@@ -32,8 +32,12 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             # Store email and password in session (don't create User yet)
-            request.session["registration_email"] = form.cleaned_data["email"]
-            request.session["registration_password"] = form.cleaned_data["password"]
+            request.session["registration_email"] = (
+                form.cleaned_data["email"]
+            )
+            request.session["registration_password"] = (
+                form.cleaned_data["password"]
+            )
             return redirect("create_owner_profile")
     else:
         form = RegisterForm()

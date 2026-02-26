@@ -117,7 +117,9 @@ class RegisterForm(forms.Form):
         email = self.cleaned_data["email"]
         existing_user = User.objects.filter(username=email).first()
         if existing_user:
-            owner_profile = OwnerProfile.objects.filter(user=existing_user).first()
+            owner_profile = OwnerProfile.objects.filter(
+                user=existing_user
+            ).first()
             has_dog = False
             if owner_profile:
                 has_dog = hasattr(owner_profile, "dog")

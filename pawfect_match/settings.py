@@ -12,7 +12,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 if os.path.isfile(BASE_DIR / "env.py"):
     import sys
     sys.path.insert(0, str(BASE_DIR))
-    import env
+    import env  # noqa: F401
 
 # Load environment variables before configuring third-party clients
 load_dotenv(BASE_DIR / ".env")

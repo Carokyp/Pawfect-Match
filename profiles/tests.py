@@ -31,7 +31,7 @@ class OwnerProfileTestCase(TestCase):
     
     def test_owner_profile_retrieval(self):
         """Test retrieving an OwnerProfile"""
-        profile = OwnerProfile.objects.create(
+        OwnerProfile.objects.create(
             user=self.user,
             name="Jane Smith",
             age=25

@@ -163,7 +163,9 @@ class ForgotPasswordFormTestCase(TestCase):
         )
     
     def test_forgot_password_valid_form(self):
-        """Test forgot password form with valid email and matching passwords."""
+        """
+        Test forgot password form with valid email and matching passwords.
+        """
         form_data = {
             'email': 'testuser@example.com',
             'new_password': 'NewPass123!',
@@ -203,7 +205,9 @@ class ForgotPasswordFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
     
     def test_forgot_password_no_special_character(self):
-        """Test forgot password form with password missing special character."""
+        """
+        Test forgot password form with password missing special character.
+        """
         form_data = {
             'email': 'testuser@example.com',
             'new_password': 'NewPass123',
