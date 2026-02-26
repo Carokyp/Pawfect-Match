@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block layout %}
-  <!-- 404 ERROR SECTION -->
-  <section class="hero-section error-404-section">
-    <div class="hero-content error-404-content">
-      <h1>404</h1>
-      <h2>Page Not Found</h2>
-      <p>Sorry, this page isn't a match... Maybe try to navigate to another one?</p>
+  <!-- 405 ERROR SECTION -->
+  <section class="hero-section error-section">
+    <div class="hero-content error-content">
+      <h1>405</h1>
+      <h2>Method Not Allowed</h2>
+      <p>Sorry, this request method is not allowed for this page.</p>
       <img src="{% static 'images/sad_dog.png' %}" alt="sad dog">
       <div class="hero-buttons">
         <a href="{% url 'home' %}" class="btn-hero primary">Back to Home</a>

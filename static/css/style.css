@@ -321,30 +321,30 @@ section.full-section:nth-of-type(5) {
 
 /* #endregion */
 
-/* #region 404 ERROR PAGE */
-.error-404-content {
+/* #region ERROR PAGES */
+.error-content {
   padding: 3rem 1rem;
 }
 
-.error-404-content h1 {
+.error-content h1 {
   font-size: 4rem;
   margin-bottom: 1rem;
   color: var(--text-dark);
 }
 
-.error-404-content h2 {
+.error-content h2 {
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
   color: var(--text-dark);
 }
 
-.error-404-content p {
+.error-content p {
   margin-bottom: 2rem;
   max-width: 400px;
   color: var(--text-dark);
 }
 
-.error-404-content img {
+.error-content img {
   width: 150px;
   height: 150px;
   object-fit: cover;
@@ -2512,6 +2512,26 @@ body.modal-open {
     width: 55px;
     height: 55px;
   }
+
+  .hero-section .error-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-content {
+    padding: 0 0.5rem 2rem 0.5rem;
+  }
+
+  .hero-section>div:last-child {
+    text-align: center;
+  }
+
+  .error-content img {
+    width: 200px;
+    height: 200px;
+  }
+
 }
 
 /* Desktop: 992px+ */
@@ -2671,6 +2691,10 @@ body.modal-open {
     font-size: 0.95rem;
   }
 
+  .hero-content h1 {
+    font-size: 4rem;
+  }
+
 }
 
 /* Desktop: 1024px+ */
@@ -2678,6 +2702,20 @@ body.modal-open {
   
   .profile-page-title {
     font-size: 1rem !important;
+  }
+
+  .hero-content.error-content img{
+    width: 250px;
+    height: 250px;
+    margin-bottom: 3rem;
+  }
+
+  .error-content h1 {
+    font-size: 5rem;
+  }
+
+  .error-content p {
+    font-size: 1.5rem;
   }
 
 }

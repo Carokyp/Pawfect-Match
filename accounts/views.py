@@ -93,14 +93,44 @@ def delete_profile(request):
     return redirect("view_profile")
 
 
-def custom_404(request, exception):
+def handler404(request, exception):
     """Custom 404 error page."""
-    return render(request, "404.html", status=404)
+    return render(request, "errors/404.html", status=404)
+
+
+def handler500(request):
+    """Custom 500 error page."""
+    return render(request, "errors/500.html", status=500)
+
+
+def handler403(request, exception):
+    """Custom 403 error page."""
+    return render(request, "errors/403.html", status=403)
+
+
+def handler405(request, exception):
+    """Custom 405 error page."""
+    return render(request, "errors/405.html", status=405)
 
 
 def test_404(request):
     """Test view for 404 page."""
-    return render(request, "404.html")
+    return render(request, "errors/404.html")
+
+
+def test_500(request):
+    """Test view for 500 page."""
+    return render(request, "errors/500.html")
+
+
+def test_403(request):
+    """Test view for 403 page."""
+    return render(request, "errors/403.html")
+
+
+def test_405(request):
+    """Test view for 405 page."""
+    return render(request, "errors/405.html")
 
 
 def forgot_password(request):

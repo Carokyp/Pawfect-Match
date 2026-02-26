@@ -18,11 +18,21 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from accounts.views import home, test_404, forgot_password
+from accounts.views import (
+    home,
+    test_404,
+    test_500,
+    test_403,
+    test_405,
+    forgot_password,
+)
 
 urlpatterns = [
     path("", home, name="home"),
     path("404-page/", test_404, name="test_404"),
+    path("500-page/", test_500, name="test_500"),
+    path("403-page/", test_403, name="test_403"),
+    path("405-page/", test_405, name="test_405"),
     path("accounts/", include("accounts.urls")),
     path("admin/", admin.site.urls),
     path("connections/", include("connections.urls")),
@@ -38,4 +48,7 @@ if settings.DEBUG:
     )
 
 # Custom error handlers
-handler404 = "accounts.views.custom_404"
+handler404 = "accounts.views.handler404"
+handler500 = "accounts.views.handler500"
+handler403 = "accounts.views.handler403"
+handler405 = "accounts.views.handler405"
