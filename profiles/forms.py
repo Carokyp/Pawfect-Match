@@ -1,6 +1,8 @@
 import ast
+
 from django import forms
 from django.core.exceptions import ValidationError
+
 from .models import OwnerProfile
 
 
@@ -47,7 +49,9 @@ class OwnerProfileForm(forms.ModelForm):
                 field.widget.attrs["required"] = "required"
         if self.instance and self.instance.pk:
             self.fields["profile_photo"].required = False
-            self.fields["profile_photo"].widget.attrs.pop("required", None)
+            self.fields["profile_photo"].widget.attrs.pop(
+                "required", None
+            )
 
         if not self.data and self.instance and self.instance.interests:
             self.fields["interests"].initial = self._parse_interests(

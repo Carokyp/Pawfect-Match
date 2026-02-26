@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 from django.contrib.auth import login as auth_login
-from .forms import DogForm
-from .models import Dog
-from profiles.models import OwnerProfile
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
+
 from connections.models import Connection, Dislike
 from messaging.models import Message
+from profiles.models import OwnerProfile
+
+from .forms import DogForm
+from .models import Dog
 
 
 def create_dog(request):
@@ -14,7 +16,7 @@ def create_dog(request):
     if ("registration_email" not in request.session or
             "owner_profile_id" not in request.session):
         return redirect("register")
-    
+
     if request.method == "POST":
         form = DogForm(request.POST, request.FILES)
         if form.is_valid():
@@ -24,12 +26,12 @@ def create_dog(request):
             # Use existing owner profile created during owner step
             owner_profile = OwnerProfile.objects.get(id=owner_profile_id)
             user = owner_profile.user
-            
+
             # Create Dog
             dog = form.save(commit=False)
             dog.owner = owner_profile
             dog.save()
-            
+
             # Clean up session
             del request.session["registration_email"]
             del request.session["registration_password"]
@@ -37,10 +39,10 @@ def create_dog(request):
                 del request.session["owner_profile_id"]
             if "owner_profile_photo" in request.session:
                 del request.session["owner_profile_photo"]
-            
+
             # Log in user
             auth_login(request, user)
-            
+
             return redirect("browse_dogs")
     else:
         form = DogForm()
@@ -71,7 +73,7 @@ def browse_dogs(request):
 
     dogs = list(dogs)
 
-    # Vérifier d'abord si une modal de match doit s'afficher
+    # Check if a match modal should be displayed
     match_popup = None
     if request.session.get("show_match_modal", False):
         match_popup = request.session.pop("match_data", None)
@@ -89,7 +91,7 @@ def browse_dogs(request):
             }
         )
 
-    dog = dogs[0]  # Toujours le premier chien de la liste filtrée
+    dog = dogs[0]  # Always the first dog from the filtered list
 
     if dog.owner.interests:
         dog.owner.interests_list = [i.strip() for i in dog.owner.interests.split(",")]
@@ -121,7 +123,7 @@ def like_dog(request, dog_id):
     my_dog = owner_profile.dog
     liked_dog = Dog.objects.get(id=dog_id)
 
-    # Créer les deux connections (match automatique)
+    # Create both connections (automatic match)
     Connection.objects.get_or_create(
         from_dog=my_dog,
         to_dog=liked_dog
@@ -131,13 +133,13 @@ def like_dog(request, dog_id):
         to_dog=my_dog
     )
 
-    # C'est toujours un match maintenant!
+    # It's always a match now!
     index = request.session.get("dog_index", 0)
     request.session["dog_index"] = index + 1
 
-    # Afficher la modal de match
+    # Display the match modal
     request.session["show_match_modal"] = True
-    
+
     # Get photo URLs or None if no photo
     my_dog_photo = (
         my_dog.get_photo_url() if my_dog.profile_photo else None
@@ -147,7 +149,7 @@ def like_dog(request, dog_id):
         if liked_dog.profile_photo
         else None
     )
-    
+
     request.session["match_data"] = {
         "my_dog_photo": my_dog_photo,
         "other_dog_photo": other_dog_photo,
@@ -169,7 +171,7 @@ def dislike_dog(request, dog_id):
     my_dog = owner_profile.dog
     disliked_dog = Dog.objects.get(id=dog_id)
 
-    # Enregistre le dislike
+    # Record the dislike
     Dislike.objects.get_or_create(
         from_dog=my_dog,
         to_dog=disliked_dog

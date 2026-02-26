@@ -1,10 +1,12 @@
+import re
+
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+
 from profiles.models import OwnerProfile
-import re
 
 
 class LoginForm(AuthenticationForm):
@@ -32,17 +34,16 @@ class LoginForm(AuthenticationForm):
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(
         label="Email",
-        widget=forms.EmailInput(attrs={
-        })
+        widget=forms.EmailInput(attrs={})
     )
-    
+
     new_password = forms.CharField(
         label="New Password",
         widget=forms.PasswordInput(attrs={
             "autocomplete": "new-password"
         })
     )
-    
+
     new_password_confirm = forms.CharField(
         label="Confirm New Password",
         widget=forms.PasswordInput(attrs={
@@ -64,7 +65,7 @@ class ForgotPasswordForm(forms.Form):
         if new_password and new_password_confirm:
             if new_password != new_password_confirm:
                 raise ValidationError("The two password fields must match.")
-            
+
             # Validate password strength
             try:
                 validate_password(new_password)
@@ -136,7 +137,7 @@ class RegisterForm(forms.Form):
                 validate_password(password)
             except ValidationError as e:
                 raise forms.ValidationError(e.messages)
-            
+
             # Custom validators
             if not re.search(r'[A-Z]', password):
                 raise forms.ValidationError(

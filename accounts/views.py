@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import RegisterForm, LoginForm, ForgotPasswordForm
-from profiles.models import OwnerProfile
+from django.shortcuts import render, redirect
+
 from dogs.models import Dog
+from profiles.models import OwnerProfile
+
+from .forms import RegisterForm, LoginForm, ForgotPasswordForm
 
 
 def register(request):
@@ -25,7 +27,7 @@ def register(request):
         except OwnerProfile.DoesNotExist:
             pass
         del request.session["owner_profile_id"]
-    
+
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -140,15 +142,15 @@ def forgot_password(request):
         if form.is_valid():
             email = form.cleaned_data["email"]
             new_password = form.cleaned_data["new_password"]
-            
+
             # Update the user's password
             user = User.objects.get(username=email)
             user.set_password(new_password)
             user.save()
-            
+
             # Redirect to sign in with success message
             return render(request, "accounts/password_reset_success.html")
     else:
         form = ForgotPasswordForm()
-    
+
     return render(request, "accounts/forgot_password.html", {"form": form})

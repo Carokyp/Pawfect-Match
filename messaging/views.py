@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 from django.http import JsonResponse
-from profiles.models import OwnerProfile
-from dogs.models import Dog
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+
 from connections.models import Connection
-from .models import Message
+from dogs.models import Dog
+from profiles.models import OwnerProfile
+
 from .forms import MessageForm
+from .models import Message
 
 
 @login_required
@@ -24,9 +26,9 @@ def messages_inbox(request):
     my_dog = owner_profile.dog
 
     # Get all unique receiver dogs with their last message
-    sent_messages = Message.objects.filter(sender_dog=my_dog).select_related(
-        'receiver_dog', 'receiver_dog__owner'
-    )
+    sent_messages = Message.objects.filter(
+        sender_dog=my_dog
+    ).select_related('receiver_dog', 'receiver_dog__owner')
 
     # Group by receiver dog (get latest message per conversation)
     conversations = {}
@@ -54,7 +56,7 @@ def messages_inbox(request):
 
     if conversations_list:
         first_receiver_dog = conversations_list[0]['dog']
-        
+
         # Check if it's a match
         is_match = Connection.objects.filter(
             from_dog=my_dog,
@@ -63,13 +65,13 @@ def messages_inbox(request):
             from_dog=first_receiver_dog,
             to_dog=my_dog
         ).exists()
-        
+
         # Get messages for first conversation
         messages = Message.objects.filter(
             sender_dog=my_dog,
             receiver_dog=first_receiver_dog
         ).order_by('created_at')
-        
+
         for msg in messages:
             sender_avatar = (
                 msg.sender_dog.profile_photo.url
@@ -82,7 +84,7 @@ def messages_inbox(request):
                 'sender_avatar': sender_avatar,
                 'sender_name': msg.sender_dog.name,
             })
-        
+
         form = MessageForm()
 
     # Handle message sending from inbox

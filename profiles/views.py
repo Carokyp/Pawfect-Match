@@ -1,13 +1,16 @@
 import ast
-from connections.models import Connection
-from django.views.decorators.http import require_POST
-from django.shortcuts import render, redirect
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
+
+from connections.models import Connection
+from dogs.forms import DogForm
+from dogs.models import Dog
+
 from .forms import OwnerProfileForm
 from .models import OwnerProfile
-from dogs.models import Dog
-from dogs.forms import DogForm
 
 
 def create_owner_profile(request):
@@ -57,10 +60,10 @@ def create_owner_profile(request):
 def view_profile(request):
     """View and edit owner profile and dog profile"""
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
-    
+
     if not owner_profile:
         return redirect("create_owner_profile")
-    
+
     # Get or None for dog
     dog = None
     if hasattr(owner_profile, "dog"):
@@ -83,8 +86,10 @@ def view_profile(request):
                 ]
         return [item.strip() for item in value.split(",") if item.strip()]
 
-    owner_profile.interests_list = parse_interests(owner_profile.interests)
-    
+    owner_profile.interests_list = parse_interests(
+        owner_profile.interests
+    )
+
     return render(
         request,
         "profiles/view_profile.html",
@@ -96,10 +101,10 @@ def view_profile(request):
 def edit_owner_profile(request):
     """Edit owner profile"""
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
-    
+
     if not owner_profile:
         return redirect("create_owner_profile")
-    
+
     if request.method == "POST":
         form = OwnerProfileForm(
             request.POST, request.FILES, instance=owner_profile
@@ -109,7 +114,7 @@ def edit_owner_profile(request):
             return redirect("view_profile")
     else:
         form = OwnerProfileForm(instance=owner_profile)
-    
+
     return render(
         request,
         "profiles/edit_owner_profile.html",
@@ -121,16 +126,16 @@ def edit_owner_profile(request):
 def edit_dog_profile(request):
     """Edit dog profile"""
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
-    
+
     if not owner_profile:
         return redirect("create_owner_profile")
-    
+
     # Get or create dog
     try:
         dog = owner_profile.dog
     except Dog.DoesNotExist:
         dog = None
-    
+
     if request.method == "POST":
         form = DogForm(request.POST, request.FILES, instance=dog)
         if form.is_valid():
@@ -140,7 +145,7 @@ def edit_dog_profile(request):
             return redirect("view_profile")
     else:
         form = DogForm(instance=dog)
-    
+
     return render(
         request,
         "profiles/edit_dog_profile.html",
@@ -148,24 +153,24 @@ def edit_dog_profile(request):
     )
 
 
-# Vue pour supprimer le profil, le chien et l'utilisateur
+# Delete profile, dog, and user
 @login_required
 @require_POST
 def delete_profile(request):
     user = request.user
     owner_profile = OwnerProfile.objects.filter(user=user).first()
     if owner_profile:
-        # Supprimer le chien associé
+        # Delete associated dog
         try:
             dog = owner_profile.dog
-            # Supprimer toutes les connexions du chien
+            # Delete all dog connections
             Connection.objects.filter(from_dog=dog).delete()
             Connection.objects.filter(to_dog=dog).delete()
             dog.delete()
         except Dog.DoesNotExist:
             pass
-        # Supprimer le profil
+        # Delete the profile
         owner_profile.delete()
-    # Supprimer l'utilisateur
+    # Delete the user
     user.delete()
     return redirect("home")
