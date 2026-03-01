@@ -10,7 +10,7 @@
 
 <div class="discover-page">
 
-  <!--NAVBAR-->
+  <!-- Main navigation for authenticated users -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <span class="navbar-brand">🐾 Pawfect Match</span>
@@ -40,28 +40,31 @@
     </div>
   </nav>
 
-  <div class="d-flex justify-content-center align-items-center py-3">
-    <span class="fw-bold" style="color: var(--text-dark);">DISCOVER</span>
-  </div>
+  <!-- Page title header -->
+  <header class="page-header">
+    <h1 class="page-title">DISCOVER</h1>
+  </header>
 
   {% if dog %}
 
-  <!-- PROFILE CARD -->
-  <div class="profile-card">
+  <!-- Dog profile card with toggle between dog and owner views -->
+  <article class="profile-card">
 
-    <!-- TOGGLE -->
+    <!-- View toggle: switch between dog and owner information -->
     <div class="profile-toggle">
       <button class="toggle-btn active" data-view="dog">Dog</button>
       <button class="toggle-btn" data-view="owner">Owner</button>
     </div>
 
     <div class="profile-views-grid">
-      <!-- DOG VIEW -->
-      <div class="profile-view dog-view">
+      
+      <!-- Dog information view -->
+      <section class="profile-view dog-view">
 
+        <!-- Dog profile image with overlay info -->
         <div class="profile-image">
           {% if dog.profile_photo %}
-          <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high">
+          <img src="{{ dog.get_photo_url }}" alt="{{ dog.name }} profile photo" fetchpriority="high">
           {% else %}
           <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder">
           {% endif %}
@@ -76,6 +79,7 @@
 
         <hr class="profile-divider">
 
+        <!-- Dog biography section -->
         <div class="profile-about center">
           <h3>About me</h3>
           <p>{{ dog.about_me }}</p>
@@ -83,6 +87,7 @@
 
         <hr class="profile-divider">
 
+        <!-- Dog characteristics metadata -->
         <div class="profile-meta">
           <div class="meta-block">
             <h4>Energy level</h4>
@@ -95,14 +100,15 @@
           </div>
         </div>
 
-      </div>
+      </section>
 
-      <!-- OWNER VIEW -->
-      <div class="profile-view owner-view hidden">
+      <!-- Owner information view (hidden by default) -->
+      <section class="profile-view owner-view hidden">
 
+        <!-- Owner profile image with overlay info -->
         <div class="profile-image">
           {% if dog.owner.profile_photo %}
-          <img src="{{ dog.owner.get_photo_url }}" alt="Owner photo" fetchpriority="high">
+          <img src="{{ dog.owner.get_photo_url }}" alt="{{ dog.owner.name }} profile photo" fetchpriority="high">
           {% else %}
           <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder">
           {% endif %}
@@ -116,6 +122,7 @@
 
         <hr class="profile-divider">
 
+        <!-- Owner biography section -->
         <div class="profile-about center">
           <h3>About me</h3>
           <p>{{ dog.owner.about_me }}</p>
@@ -123,6 +130,7 @@
 
         <hr class="profile-divider">
 
+        <!-- Owner interests section -->
         <div class="profile-interests left">
           <h4>Interests</h4>
           <div class="profile-tags">
@@ -132,31 +140,32 @@
           </div>
         </div>
 
-      </div>
+      </section>
     </div>
 
-    <!-- ACTION BUTTONS -->
-    <div class="action-buttons">
+    <!-- Action buttons: like and dislike -->
+    <footer class="action-buttons">
       <form method="POST" action="{% url 'dislike_dog' dog.id %}">
         {% csrf_token %}
-        <button type="submit" class="action-btn dislike" aria-label="Dislike">
+        <button type="submit" class="action-btn dislike" aria-label="Dislike this profile">
           ✕
         </button>
       </form>
 
       <form method="POST" action="{% url 'like_dog' dog.id %}">
         {% csrf_token %}
-        <button type="submit" class="action-btn like" aria-label="Like">
+        <button type="submit" class="action-btn like" aria-label="Like this profile">
           ❤
         </button>
       </form>
-    </div>
+    </footer>
 
-  </div>
+  </article>
 
   {% else %}
 
-  <div class="empty-dogs">
+  <!-- Empty state when no more dogs to discover -->
+  <section class="empty-dogs">
     <p class="empty-dogs-title">
       You've discovered all available pups!
     </p>
@@ -166,56 +175,64 @@
     <button type="button" class="btn-hero primary" id="resetMatchesBtn">
       Reset Matches
     </button>
-  </div>
+  </section>
 
   {% endif %}
 
   {% if match_popup %}
-  <div class="modal-backdrop is-open" id="matchModal">
+  
+  <!-- Match notification modal -->
+  <aside class="modal-backdrop is-open" id="matchModal" role="dialog" aria-labelledby="matchModalTitle" aria-modal="true">
     <div class="match-modal">
-      <button class="close" type="button" aria-label="Close" id="closeMatchModal">×</button>
-      <h2>It's a match with {{ match_popup.other_dog_name }}!</h2>
+      <button class="close" type="button" aria-label="Close modal" id="closeMatchModal">×</button>
+      <h2 id="matchModalTitle">It's a match with {{ match_popup.other_dog_name }}!</h2>
 
+      <!-- Matched dogs avatars display -->
       <div class="match-avatars">
         {% if match_popup.my_dog_photo %}
-        <img src="{{ match_popup.my_dog_photo }}" alt="My dog">
+        <img src="{{ match_popup.my_dog_photo }}" alt="Your dog {{ match_popup.my_dog_name }}">
         {% else %}
-        <img src="{% static 'images/dog_placeholder.png' %}" alt="My dog">
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="Your dog placeholder">
         {% endif %}
 
-        <div class="match-heart">🧡</div>
+        <div class="match-heart" aria-hidden="true">🧡</div>
 
         {% if match_popup.other_dog_photo %}
-        <img src="{{ match_popup.other_dog_photo }}" alt="Matched dog">
+        <img src="{{ match_popup.other_dog_photo }}" alt="Matched dog {{ match_popup.other_dog_name }}">
         {% else %}
-        <img src="{% static 'images/dog_placeholder.png' %}" alt="Matched dog">
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="Matched dog placeholder">
         {% endif %}
       </div>
+      
       <p>{{ match_popup.my_dog_name }} and {{ match_popup.other_dog_name }} found each other</p>
 
+      <!-- Match modal actions -->
       <div class="match-actions">
         <a class="btn-hero secondary" href="{% url 'matches_list' %}">View Matches</a>
         <a class="btn-hero primary" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
       </div>
     </div>
-  </div>
+  </aside>
+  
   {% endif %}
 
-  <!-- RESET MATCHES MODAL -->
-  <div class="modal-backdrop" id="resetConfirmModal">
+  <!-- Reset matches confirmation modal -->
+  <aside class="modal-backdrop" id="resetConfirmModal" role="dialog" aria-labelledby="resetModalTitle" aria-modal="true">
     <div class="delete-modal">
-      <button class="close" type="button" aria-label="Close" id="closeResetModal">×</button>
-      <h2>Reset matches?</h2>
+      <button class="close" type="button" aria-label="Close modal" id="closeResetModal">×</button>
+      <h2 id="resetModalTitle">Reset matches?</h2>
       <p class="delete-description">This will restart your discovery and reset all your likes. Are you sure?</p>
 
-      <div class="modal-actions modal-button-group d-flex justify-content-center gap-2">
+      <!-- Modal action buttons -->
+      <div class="modal-actions modal-button-group">
         <button class="btn-secondary" id="cancelResetBtn">Cancel</button>
         <button class="btn-danger" id="confirmResetBtn">Reset</button>
       </div>
     </div>
-  </div>
+  </aside>
 
-  <form id="resetMatchesForm" method="post" action="{% url 'reset_matches' %}" style="display:none;">
+  <!-- Hidden form for reset matches submission -->
+  <form id="resetMatchesForm" method="post" action="{% url 'reset_matches' %}" class="hidden-form">
     {% csrf_token %}
   </form>
 

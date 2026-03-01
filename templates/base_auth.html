@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 
 {% block layout %}
-  <!-- Contenu au-dessus -->
+  <!-- Main content wrapper for authenticated pages -->
   <div class="auth-content {% block content_class %}{% endblock %}">
+    
+    <!-- Optional back button block -->
     {% block back_button %}
     {% endblock %}
+    
+    <!-- Page-specific content -->
     {% block content %}
     {% endblock %}
+    
   </div>
 {% endblock %}

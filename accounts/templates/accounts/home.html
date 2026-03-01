@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block header %}
-  <!-- NAVBAR -->
+  <!-- Main navigation for unauthenticated homepage -->
   <nav class="navbar navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'home' %}">🐾 Pawfect Match</a>
@@ -21,11 +21,12 @@
 {% endblock %}
 
 {% block layout %}
-  <!-- HERO SECTION -->
+  
+  <!-- Hero section: primary call-to-action and value proposition -->
   <section id="home" class="hero-section">
-    <div>
-      <img class="hero-image" src="{% static 'images/couple_1300px.png' %}" alt="couple cuddling a dog">
-    </div>
+    <figure class="hero-image-wrapper">
+      <img class="hero-image" src="{% static 'images/couple_1300px.png' %}" alt="Happy couple cuddling with their dog">
+    </figure>
     <div class="hero-content">
       <h1>Find Love Through Your Pet</h1>
       <p>Meet other pet lovers, help your furry friend make friends, and maybe find your perfect match along the way.</p>
@@ -36,87 +37,101 @@
     </div>
   </section>
 
-  <!-- STEP 1 -->
-  <section id="how-it-works" class="full-section">
-    <div class="section-content-1">
-      <div class="section-text">
-        <h2>Find love with other pet lovers!</h2>
-        <p>Browse and meet new people where you can arrange a walk in the park or a coffee date </p>
+  <!-- How it works section: step-by-step guide with 4 subsections with different colors -->
+  
+  <!-- Step 1: Browse and meet pet lovers -->
+  <section id="how-it-works" class="full-section how-it-works-section">
+    <article>
+      <div class="section-content-1">
+        <div class="section-text">
+          <h2>Find love with other pet lovers!</h2>
+          <p>Browse and meet new people where you can arrange a walk in the park or a coffee date</p>
+        </div>
+        <figure class="section-image-wrapper">
+          <img class="section-image" src="{% static 'images/section_1.png' %}" alt="People browsing profiles on their phones">
+        </figure>
       </div>
-      <div>
-        <img class="section-image" src="{% static 'images/section_1.png' %}" alt="people looking at they phone matching">
-      </div>
-    </div>
+    </article>
   </section>
 
-  <!-- STEP 2 -->
-  <section id="how-it-works" class="full-section">
-    <div class="section-content-2">
-      <div class="section-text">
+  <!-- Step 2: Your pet is the icebreaker -->
+  <section class="full-section how-it-works-section">
+    <article>
+      <div class="section-content-2">
+        <div class="section-text">
           <h2>Your Furry Friend Is The Icebreaker!</h2>
           <p>Your pet's photo is seen first, making connections easier and more authentic. People connect through their shared love of animals.</p>
+        </div>
+        <figure class="section-image-wrapper">
+          <img class="section-image" src="{% static 'images/section_2.png' %}" alt="Dog profile cards showing a golden retriever and samoyed">
+        </figure>
       </div>
-      <div>
-        <img class="section-image" src="{% static 'images/section_2.png' %}" alt="Dog profile card showing a golden retriever and samoyed">
-      </div>
-    </div>
+    </article>
   </section>
 
-  <!-- STEP 3 -->
-  <section class="full-section">
-    <div class="section-content-3">
-      <div class="section-text">
-        <h2>Chances Are The Person Is As Likeable As Their Pet!</h2>
-        <p>Preview the owner before you give them a like to see them or keep browsing for more. Give a like when you find
-          someone special!</p>
+  <!-- Step 3: Preview owner profiles -->
+  <section class="full-section how-it-works-section">
+    <article>
+      <div class="section-content-3">
+        <div class="section-text">
+          <h2>Chances Are The Person Is As Likeable As Their Pet!</h2>
+          <p>Preview the owner before you give them a like to see them or keep browsing for more. Give a like when you find someone special!</p>
+        </div>
+        <figure class="section-image-wrapper">
+          <img class="section-image" src="{% static 'images/section_3.png' %}" alt="Owner profile previews showing potential matches">
+        </figure>
       </div>
-      <div>
-        <img class="section-image" src="{% static 'images/section_3.png' %}" alt="Owner profile preview showing a man and a woman">
-      </div>
-    </div>
+    </article>
   </section>
 
-  <!-- STEP 4 -->
-  <section class="full-section">
-    <div class="section-content-4">
-      <div class="section-text">
-        <h2>See If You're A Match And Chat</h2>
-        <p>You both see possibilities. Chat to arrange your first date! Start your love story today.</p>
+  <!-- Step 4: Match and chat -->
+  <section class="full-section how-it-works-section">
+    <article>
+      <div class="section-content-4">
+        <div class="section-text">
+          <h2>See If You're A Match And Chat</h2>
+          <p>You both see possibilities. Chat to arrange your first date! Start your love story today.</p>
+        </div>
+        <figure class="section-image-wrapper">
+          <img class="section-image" src="{% static 'images/section_4.png' %}" alt="Match notification screen and chat interface">
+        </figure>
       </div>
-      <div>
-        <img class="section-image" src="{% static 'images/section_4.png' %}" alt="Match notification and chat interface">
-      </div>
-    </div>
+    </article>
   </section>
 
-  <!-- WHY PAWFECT MATCH SECTION -->
+  <!-- Benefits section: why choose Pawfect Match -->
   <section id="why" class="why-section">
     <div class="why-content">
-      <div class="why-header">
+      
+      <!-- Section header -->
+      <header class="why-header">
         <h2>Why Pawfect Match?</h2>
-        <p>Meet single parent looking for connection and playdates for they dog</p>
-      </div>
+        <p>Meet single parents looking for connection and playdates for their dogs</p>
+      </header>
 
+      <!-- Benefits grid -->
       <div class="why-grid">
-        <div class="why-card">
+        
+        <article class="why-card">
           <h3>Pet-First Approach</h3>
           <p>Your pet takes center stage! Connect with people who share your love for animals.</p>
-        </div>
+        </article>
 
-        <div class="why-card">
+        <article class="why-card">
           <h3>Authentic Connections</h3>
           <p>Pet lovers are naturally caring. Build relationships on shared values.</p>
-        </div>
+        </article>
 
-        <div class="why-card">
+        <article class="why-card">
           <h3>Safe & Friendly</h3>
           <p>Our community is built on respect and kindness.</p>
-        </div>
+        </article>
 
-        <div class="why-card">
+        <article class="why-card">
           <h3>Easy Communication</h3>
           <p>Simple messaging makes connecting effortless.</p>
-        </div>
+        </article>
+        
       </div>
     </div>
   </section>

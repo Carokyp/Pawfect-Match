@@ -185,15 +185,21 @@ a:visited {
   padding-top: 4rem;
 }
 
+.hero-image-wrapper {
+  margin: 0;
+  width: 100%;
+}
+
 .hero-image {
   width:100%;
   margin-bottom: 1.5rem;
+  display: block;
 }
 
 .hero-content {
   max-width: 700px;
   padding: 0 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .hero-content h1 {
@@ -216,24 +222,36 @@ a:visited {
   flex-wrap: wrap;
 }
 
+/* HOW IT WORKS SECTION */
+.how-it-works-section {
+  position: relative;
+}
+
 /* FULL SCREEN SECTIONS */
 .full-section {
   display: flex;
   justify-content: center;
   padding: 0 1.5rem;
-  margin-top: 1rem;
   background: var(--orange-200);
 }
 
-/* SECTION: Your Furry Friend Is The Icebreaker! */
-section.full-section:nth-of-type(3) {
+/* Alternate background colors for sections */
+.full-section:nth-of-type(2) {
+  background: var(--orange-200) !important;
+}
+
+.full-section:nth-of-type(3) {
   background: var(--orange-100) !important;
 }
 
-/* SECTION: See If You're A Match And Chat */
-section.full-section:nth-of-type(5) {
+.full-section:nth-of-type(4) {
+  background: var(--orange-200) !important;
+}
+
+.full-section:nth-of-type(5) {
   background: var(--orange-100) !important;
 }
+
 
 .section-content-1,
 .section-content-2,
@@ -241,7 +259,7 @@ section.full-section:nth-of-type(5) {
 .section-content-4 {
   width: 100%;
   text-align: center;
-  margin-top: 1.5rem;
+  margin: 1.5rem 0rem;
   max-width: 1800px;
 }
 
@@ -263,6 +281,11 @@ section.full-section:nth-of-type(5) {
 .section-text p {
   font-size: 1.05rem;
   color: var(--text-dark);
+}
+
+.section-image-wrapper {
+  margin: 0;
+  width: 100%;
 }
 
 .section-image {
@@ -1086,7 +1109,22 @@ input[type="number"] {
   padding: 50px 12px;
 }
 
-/* --- Header --- */
+/* --- Page Header --- */
+.page-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.page-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+/* --- Discover Header (legacy) --- */
 .discover-header {
   text-align: center;
   padding: 2rem 0;
@@ -1095,6 +1133,11 @@ input[type="number"] {
 .app-logo {
   font-weight: 700;
   font-size: 1.5rem;
+}
+
+/* --- Hidden Form --- */
+.hidden-form {
+  display: none;
 }
 
 /* --- Card (shared with Profile view) --- */
@@ -1447,6 +1490,16 @@ body.modal-open {
   margin-bottom: 0.5rem;
 }
 
+/* Matches page header */
+.matches-header {
+  margin-bottom: 2rem;
+}
+
+.matches-header .matches-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .matches-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1463,6 +1516,23 @@ body.modal-open {
   justify-content: flex-end;
   align-items: center;
   height: 40px;
+}
+
+/* Empty matches state */
+.empty-matches-container {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.empty-matches-container .empty-matches {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.empty-matches-container .empty-state-emoji {
+  width: 100px;
+  height: 100px;
+  margin: 3rem 0;
 }
 
 /* #endregion */
@@ -2305,16 +2375,16 @@ body.modal-open {
   .hero-section {
     flex-direction: row;
     text-align: left;
-    align-items: center;
+    align-items: flex-end;
     padding: 4.5rem 1rem 0;
   }
 
-  .hero-section>div:first-child {
+  .hero-section>:first-child {
     order: 2;
     flex: 1.2;
   }
 
-  .hero-section>div:last-child {
+  .hero-section>:last-child {
     order: 1;
     flex: 1;
     text-align: left;
@@ -2325,7 +2395,7 @@ body.modal-open {
   }
 
   .hero-buttons {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .hero-image {
@@ -2351,14 +2421,13 @@ body.modal-open {
     flex-direction: column;
   }
 
-  .full-section .section-content-1>div:last-child {
+  .full-section .section-content-1>:last-child {
     flex: 1;
   }
 
   .full-section .section-content-2 {
     display: flex;
     flex-direction: row-reverse;
-    ;
     align-items: center;
     gap: 2rem;
     padding: 1rem 0 1rem;
@@ -2370,7 +2439,7 @@ body.modal-open {
     flex-direction: column;
   }
 
-  .full-section .section-content-2>div:last-child {
+  .full-section .section-content-2>:last-child {
     flex: 1;
   }
 
@@ -2388,7 +2457,7 @@ body.modal-open {
     flex-direction: column;
   }
 
-  .full-section .section-content-3>div:last-child {
+  .full-section .section-content-3>:last-child {
     flex: 1;
   }
 
@@ -2406,7 +2475,7 @@ body.modal-open {
     flex-direction: column;
   }
 
-  .full-section .section-content-4>div:last-child {
+  .full-section .section-content-4>:last-child {
     flex: 1;
   }
 

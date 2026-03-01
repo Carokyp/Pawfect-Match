@@ -1,22 +1,79 @@
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-   // Auto-collapse Bootstrap navbar on mobile when a nav-link is clicked
-  document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
-    link.addEventListener('click', function() {
-      var navbar = document.querySelector('.navbar-collapse');
-      if (navbar && navbar.classList.contains('show')) {
-        var toggleButton = document.querySelector('.navbar-toggler');
-        if (toggleButton) toggleButton.click();
-      }
+  /* ===============================
+     NAVBAR AUTO-COLLAPSE
+     =============================== */
+
+  /**
+   * Auto-collapse Bootstrap navbar on mobile when a nav link is clicked.
+   * Prevents the navbar from staying open after navigation on small screens.
+   * @returns {void}
+   */
+  const setupNavbarCollapse = () => {
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        const navbar = document.querySelector('.navbar-collapse');
+        if (navbar && navbar.classList.contains('show')) {
+          const toggleButton = document.querySelector('.navbar-toggler');
+          if (toggleButton) toggleButton.click();
+        }
+      });
     });
-  });
+
+    /**
+     * Close all currently opened Bootstrap navbar collapse panels.
+     * Uses Bootstrap Collapse API when available and falls back to manual class/ARIA updates.
+     * @returns {void}
+     */
+    const closeOpenNavbars = () => {
+      document.querySelectorAll('.navbar-collapse.show').forEach((openNavbar) => {
+        if (window.bootstrap && window.bootstrap.Collapse) {
+          window.bootstrap.Collapse.getOrCreateInstance(openNavbar).hide();
+          return;
+        }
+
+        openNavbar.classList.remove('show');
+        const controlledByToggler = document.querySelector(
+          `.navbar-toggler[aria-controls="${openNavbar.id}"]`
+        );
+        if (controlledByToggler) {
+          controlledByToggler.setAttribute('aria-expanded', 'false');
+          controlledByToggler.classList.add('collapsed');
+        }
+      });
+    };
+
+    /**
+     * Handle outside interactions to close opened mobile navbars.
+     * Ignores clicks/touches on the toggler button or inside the expanded menu.
+     * @param {MouseEvent | TouchEvent} event - User interaction event.
+     * @returns {void}
+     */
+    const handleOutsideNavbarInteraction = (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      if (target.closest('.navbar-collapse') || target.closest('.navbar-toggler')) {
+        return;
+      }
+
+      closeOpenNavbars();
+    };
+
+    document.addEventListener('click', handleOutsideNavbarInteraction);
+    document.addEventListener('touchstart', handleOutsideNavbarInteraction, { passive: true });
+  };
+
   /* ===============================
      AUTH UI
      =============================== */
 
   /**
    * Toggle password visibility for inputs with an eye icon.
+   * Allows users to show/hide password text by clicking the toggle button.
+   * Searches for all elements with the "toggle-password" class and attaches click handlers.
    * @returns {void}
    */
   const setupPasswordToggle = () => {
@@ -35,11 +92,13 @@ document.addEventListener("DOMContentLoaded", () => {
      =============================== */
 
   /**
-   * Switch between dog and owner views.
+   * Switch between dog and owner views on profile cards.
+   * Manages the visibility of dog/owner information sections within each profile card.
+   * Handles button states and view transitions.
    * @returns {void}
    */
   const setupProfileToggle = () => {
-    // Pour chaque carte profile
+    // For each profile card, setup toggle functionality
     document.querySelectorAll('.profile-card').forEach((card) => {
       const toggleButtons = card.querySelectorAll('.toggle-btn');
       const dogView = card.querySelector('.dog-view');
@@ -68,9 +127,11 @@ document.addEventListener("DOMContentLoaded", () => {
      =============================== */
 
   /**
-   * Read a file input and display the preview.
-   * @param {HTMLInputElement} input - File input element.
-   * @param {HTMLElement} uploadBox - Container element.
+   * Read a file from input and display a preview image.
+   * Uses FileReader API to convert the selected file to a data URL and update the preview.
+   * Shows the preview image and hides the placeholder text.
+   * @param {HTMLInputElement} input - File input element containing the selected image.
+   * @param {HTMLElement} uploadBox - Container element with preview and placeholder elements.
    * @returns {void}
    */
   const handleImagePreview = (input, uploadBox) => {
@@ -93,7 +154,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Enable image previews and optional drag-and-drop uploads.
+   * Enable image previews and drag-and-drop uploads for all upload boxes.
+   * Features:
+   * - Live preview on file selection
+   * - Drag-and-drop support with visual feedback
+   * - Remove button to clear selection
+   * - Hidden input flag to track removal state for backend validation
    * @returns {void}
    */
   const setupImageUploads = () => {
@@ -108,6 +174,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const removeBtn = box.querySelector(".upload-remove");
       if (!input) return;
 
+      /**
+       * Reset image display to initial state.
+       * Clears preview, shows placeholder, and sets removal flag to "1" for backend validation.
+       */
       const resetImage = () => {
         if (preview) {
           preview.src = "";
@@ -168,7 +238,9 @@ document.addEventListener("DOMContentLoaded", () => {
      =============================== */
 
   /**
-   * Display a live character counter for textareas with maxlength.
+   * Display a live character counter for textareas with maxlength attribute.
+   * Updates the counter on every input event to show current length vs maximum.
+   * Requires a sibling element with class "char-counter" to display the count.
    * @returns {void}
    */
   const setupCharacterCounters = () => {
@@ -193,6 +265,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Handle the match modal open/close and body scroll lock.
+   * Prevents body scrolling when modal is open by adding "modal-open" class.
+   * Sets up close button event handler.
    * @returns {void}
    */
   const setupMatchModal = () => {
@@ -219,8 +293,10 @@ document.addEventListener("DOMContentLoaded", () => {
      =============================== */
 
   /**
-   * Cache form inputs in sessionStorage to preserve progress.
-   * @param {string} formType - Data attribute value for the form.
+   * Cache form inputs in sessionStorage to preserve user progress.
+   * Automatically saves and restores form field values including text inputs, textareas, 
+   * selects, and checkbox groups. Excludes file inputs for security reasons.
+   * @param {string} formType - Data attribute value identifying the form (e.g., "owner", "dog").
    * @returns {void}
    */
   const setupFormCache = (formType) => {
@@ -231,6 +307,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const handledCheckboxGroups = new Set();
     const cacheKey = (name) => `${formType}_${name}`;
 
+    /**
+     * Get all checkboxes with the specified name.
+     * @param {string} name - The name attribute of checkbox inputs.
+     * @returns {Array<HTMLInputElement>} Array of checkbox elements.
+     */
     const getCheckboxGroup = (name) =>
       Array.from(
         form.querySelectorAll(
@@ -238,6 +319,10 @@ document.addEventListener("DOMContentLoaded", () => {
         )
       );
 
+    /**
+     * Restore checkbox group selections from sessionStorage.
+     * @param {string} name - The name attribute of checkbox group.
+     */
     const restoreCheckboxGroup = (name) => {
       const checkboxes = getCheckboxGroup(name);
       const savedValue = sessionStorage.getItem(cacheKey(name));
@@ -247,6 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         values = JSON.parse(savedValue);
       } catch (error) {
+        // If JSON parsing fails, reset to empty array
         values = [];
       }
 
@@ -255,6 +341,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     };
 
+    /**
+     * Save checkbox group selections to sessionStorage.
+     * @param {string} name - The name attribute of checkbox group.
+     */
     const saveCheckboxGroup = (name) => {
       const checkboxes = getCheckboxGroup(name);
       const values = checkboxes.filter((cb) => cb.checked).map((cb) => cb.value);
@@ -296,7 +386,9 @@ document.addEventListener("DOMContentLoaded", () => {
      =============================== */
 
   /**
-   * Enforce max selections on pill-style checkbox groups.
+   * Enforce maximum selection limits on pill-style checkbox groups.
+   * Disables unchecked options when the limit is reached and updates helper text.
+   * Reads the max limit from the data-max attribute on the container.
    * @returns {void}
    */
   const setupPillOptions = () => {
@@ -309,15 +401,22 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!checkboxes.length || !max) return;
 
       const helper = group.parentElement.querySelector(".pill-helper");
+      
+      /**
+       * Update UI state based on current selections.
+       * Disables checkboxes when limit is reached and updates counter text.
+       */
       const update = () => {
         const selected = checkboxes.filter((cb) => cb.checked);
         const limitReached = selected.length >= max;
 
+        // Disable unchecked options when limit is reached
         checkboxes.forEach((cb) => {
           cb.disabled = limitReached && !cb.checked;
           cb.parentElement.classList.toggle("is-disabled", cb.disabled);
         });
 
+        // Update helper text with current selection count
         if (helper) {
           helper.textContent = `Select up to ${max} (${selected.length}/${max})`;
         }
@@ -329,19 +428,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /* ===============================
-     INIT
-     =============================== */
-
-  /**
-   * Initialize all UI behaviors when the DOM is ready.
-   * @returns {void}
-   */
-  /* ===============================
      RESET MATCHES
      =============================== */
 
   /**
    * Setup reset matches modal and functionality.
+   * Allows users to clear all their match history with a confirmation modal.
+   * Handles modal open/close and form submission.
    * @returns {void}
    */
   const setupResetMatches = () => {
@@ -395,6 +488,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Setup inbox interactions for split-view messaging.
+   * Implements a two-panel messaging interface on desktop (>=992px):
+   * - Left panel: conversation list
+   * - Right panel: message thread
+   * Fetches and displays messages via AJAX, handles message sending,
+   * and maintains active conversation state.
    * @returns {void}
    */
   const setupMessagesInbox = () => {
@@ -408,9 +506,11 @@ document.addEventListener("DOMContentLoaded", () => {
     conversationCards.forEach((card) => {
       card.addEventListener('click', function (e) {
         const threadPanel = document.querySelector('.messages-thread-panel');
+        // Only use split-view behavior on desktop screens
         if (window.innerWidth >= 992 && threadPanel && getComputedStyle(threadPanel).display !== 'none') {
           e.preventDefault();
 
+          // Extract conversation details from card data attributes
           const dogId = this.dataset.dogId;
           const dogName = this.dataset.name;
           const dogBreed = this.dataset.breed;
@@ -421,12 +521,14 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById('thread-avatar').src = dogPhoto;
           document.getElementById('receiver-dog-id').value = dogId;
 
+          // Fetch message thread via API
           fetch(`/messages/api/${dogId}/`)
             .then(response => response.json())
             .then(data => {
               const messagesContainer = document.getElementById('messages-thread');
               messagesContainer.innerHTML = '';
 
+              // Render messages if available
               if (data.messages && data.messages.length > 0) {
                 data.messages.forEach(msg => {
                   const messageRow = document.createElement('div');
@@ -456,6 +558,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 messagesContainer.innerHTML = '<div class="empty-thread"><p>No messages yet. Send your first message!</p></div>';
               }
 
+              // Auto-scroll to bottom to show latest message
               messagesContainer.scrollTop = messagesContainer.scrollHeight;
             });
 
@@ -467,10 +570,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    // Handle message form submission via AJAX on desktop
     const messageForm = document.getElementById('message-form');
     if (messageForm) {
       messageForm.addEventListener('submit', function (e) {
         const threadPanel = document.querySelector('.messages-thread-panel');
+        // Only use AJAX submission on desktop split-view
         if (window.innerWidth >= 992 && threadPanel && getComputedStyle(threadPanel).display !== 'none') {
           e.preventDefault();
 
@@ -488,6 +593,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(response => response.json())
           .then(data => {
             if (data.success) {
+              // Append new message to thread
               const messagesContainer = document.getElementById('messages-thread');
               const messageRow = document.createElement('div');
               messageRow.className = 'message-row sent';
@@ -503,6 +609,7 @@ document.addEventListener("DOMContentLoaded", () => {
               messagesContainer.appendChild(messageRow);
               messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
+              // Clear textarea after successful send
               this.querySelector('textarea').value = '';
             }
           });
@@ -522,6 +629,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Setup delete conversation modal and functionality.
+   * Allows users to delete an entire conversation thread with confirmation.
+   * Handles modal display, close actions, and form submission to backend.
    * @returns {void}
    */
   const setupDeleteConversation = () => {
@@ -532,10 +641,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     deleteButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        e.stopPropagation();
+        e.stopPropagation(); // Prevent conversation card click
         const dogId = btn.dataset.dogId;
         const dogName = btn.closest('.conversation-item').querySelector('.dog-details h3').textContent;
         
+        // Store selected conversation and show confirmation modal
         selectedDogId = dogId;
         document.getElementById('deleteDogName').textContent = dogName;
         document.getElementById('deleteConfirmModal').classList.add('is-open');
@@ -557,16 +667,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Confirm delete
+    // Confirm delete - submit form to backend
     const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
     if (confirmDeleteBtn) {
       confirmDeleteBtn.addEventListener('click', () => {
         if (selectedDogId) {
-          // Create form and submit
+          // Create and submit form dynamically
           const form = document.createElement('form');
           form.method = 'POST';
           form.action = `/messages/delete/${selectedDogId}/`;
           
+          // Add CSRF token for security
           const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
           if (csrfToken) {
             form.appendChild(csrfToken.cloneNode());
@@ -589,9 +700,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-    /* ===============================
+  /* ===============================
      DELETE MATCH
      =============================== */
+
+  /**
+   * Setup delete match modal and functionality.
+   * Allows users to unmatch with another dog profile via a confirmation modal.
+   * Makes an AJAX request to delete the match and removes the card from UI.
+   * @returns {void}
+   */
   const setupDeleteMatch = () => {
     let selectedDogId = null;
     const deleteButtons = document.querySelectorAll('.btn-delete-match');
@@ -615,9 +733,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     confirmBtn.addEventListener('click', () => {
       if (!selectedDogId) return;
-      // CSRF token
+      
+      // Get CSRF token for secure POST request
       const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-      console.log('CSRF token:', csrfToken ? csrfToken.value : 'not found');
+      
       fetch('/connections/delete_match/', {
         method: 'POST',
         headers: {
@@ -629,14 +748,14 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          // Remove card from UI
+          // Remove match card from UI
           const card = document.querySelector(`.profile-card[data-dog-id="${selectedDogId}"]`);
           if (card) card.remove();
 
-          // Vérifie s'il reste des cartes de match
+          // Check if any match cards remain
           const remainingCards = document.querySelectorAll('.profile-card');
           if (remainingCards.length === 0) {
-            // Recharge la page pour afficher l'écran "No matches yet"
+            // Reload page to show "No matches yet" empty state
             window.location.reload();
           }
         }
@@ -660,23 +779,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Setup delete profile modal and functionality.
+   * Handles the critical action of permanently deleting a user profile.
+   * Exposes global functions for modal control (open/close/confirm).
    * @returns {void}
    */
   const setupDeleteProfile = () => {
     const deleteModal = document.getElementById('deleteModal');
     if (!deleteModal) return;
 
-    // Open modal
+    // Expose global functions for template onclick handlers
+    
+    /**
+     * Open the delete profile confirmation modal.
+     */
     window.openDeleteModal = function() {
       deleteModal.classList.add('is-open');
     };
 
-    // Close modal
+    /**
+     * Close the delete profile confirmation modal.
+     */
     window.closeDeleteModal = function() {
       deleteModal.classList.remove('is-open');
     };
 
-    // Confirm delete
+    /**
+     * Submit the delete profile form after confirmation.
+     */
     window.confirmDelete = function() {
       document.getElementById('deleteForm').submit();
     };
@@ -689,8 +818,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  /* ===============================
+     INITIALIZATION
+     =============================== */
+
+  /**
+   * Initialize all UI components and behaviors.
+   * Called automatically when DOM is fully loaded.
+   * Sets up all event listeners and interactive features for the application.
+   * @returns {void}
+   */
   const init = () => {
-    setupResetMatches();
+    setupNavbarCollapse();
     setupPasswordToggle();
     setupProfileToggle();
     setupImageUploads();
@@ -699,12 +838,14 @@ document.addEventListener("DOMContentLoaded", () => {
     setupFormCache("owner");
     setupFormCache("dog");
     setupPillOptions();
+    setupResetMatches();
     setupMessagesInbox();
     setupDeleteConversation();
     setupDeleteMatch();
     setupDeleteProfile();
   };
 
+  // Start initialization
   init();
 });
 
