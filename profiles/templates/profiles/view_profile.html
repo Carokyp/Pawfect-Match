@@ -49,9 +49,11 @@
     <h1 class="page-title profile-page-title">YOUR PROFILES</h1>
   </header>
 
-  {% if dog %}
-    <!-- Dog profile card -->
-    <article class="profile-card profile-card-view dog-profile">
+  <!-- Profile cards grid -->
+  <div class="profile-views-grid">
+    {% if dog %}
+      <!-- Dog profile card -->
+      <article class="profile-card profile-card-view dog-profile">
       <div class="profile-image">
         {% if dog.profile_photo %}
         <img src="{{ dog.get_photo_url }}" alt="{{ dog.name }} profile photo" fetchpriority="high" />
@@ -92,7 +94,7 @@
         <a href="{% url 'edit_dog_profile' %}" class="btn-edit-profile primary">Edit Dog Profile</a>
       </div>
     </article>
-  {% endif %}
+    {% endif %}
 
     <!-- Owner profile card -->
     <article class="profile-card profile-card-view owner-profile">
@@ -132,6 +134,8 @@
         <a href="{% url 'edit_owner_profile' %}" class="btn-edit-profile primary">Edit Owner Profile</a>
       </div>
     </article>
+  </div>
+  <!-- End profile cards grid -->
 
   <!-- Profile deletion section -->
   <section class="danger-zone" aria-label="Delete profile section">

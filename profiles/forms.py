@@ -118,7 +118,8 @@ class OwnerProfileForm(forms.ModelForm):
         }
 
     def clean_profile_photo(self):
-        """Validate that profile photo is always provided."""
+        """Validate that profile photo is always provided and
+        file size is within limits."""
         photo = self.cleaned_data.get("profile_photo")
         photo_removed = self.data.get("profile_photo_removed") == "1"
         existing_photo = (
@@ -131,6 +132,15 @@ class OwnerProfileForm(forms.ModelForm):
             raise ValidationError("Please select a profile photo.")
 
         if photo:
+            # Strict file size validation (9.5 MB to have some buffer)
+            MAX_FILE_SIZE_BYTES = 9.5 * 1024 * 1024
+            if photo.size > MAX_FILE_SIZE_BYTES:
+                size_mb = photo.size / (1024 * 1024)
+                raise ValidationError(
+                    f"File too large ({size_mb:.1f} MB). "
+                    "Maximum size is 9.5 MB. "
+                    "Please use a smaller or compressed image."
+                )
             return photo
         if existing_photo:
             return existing_photo

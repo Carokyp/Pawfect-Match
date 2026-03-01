@@ -382,7 +382,7 @@ a:visited {
   justify-content: center;
   padding: 0.75rem 1.75rem;
   border-radius: 50px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -731,6 +731,7 @@ a:visited {
 
 .form-field label {
   font-weight: 500;
+  font-size: 1rem;
   margin-bottom: 0.4rem;
   color: var(--text-dark);
 }
@@ -746,6 +747,14 @@ a:visited {
   font-size: 1rem;
   width: 100%;
   max-width: 100%;
+}
+
+/* --- Form Title --- */
+h1.form-title {
+  font-size: 1.3rem !important;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
 }
 
 /* --- Sign up link --- */
@@ -1094,11 +1103,16 @@ input[type="number"] {
   padding: 1rem 0;
 }
 
-.page-title {
+/* Consistent page heading styling */
+.discover-page h1,
+.matches-page h1,
+.messages-page h1,
+.profile-page h1 {
+  font-size: 1.1rem !important;
   font-weight: 700;
-  font-size: 0.95rem;
   color: var(--text-dark);
   margin: 0;
+  margin-bottom: 0.5rem;
 }
 
 /* --- Hidden Form --- */
@@ -1427,17 +1441,17 @@ body.modal-open {
   text-align: center;
 }
 
+.matches-count {
+  display: flex !important;
+  justify-content: center !important;
+}
+
 .matches-container h2 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
-/* Matches page header */
-
-.matches-header .matches-title {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
+/* Matches page header - sizing handled by generic h1 rule */
 
 .matches-grid {
   display: grid;
@@ -1484,7 +1498,7 @@ body.modal-open {
 
 /* #endregion */
 
-/* #region EDIT PROFILE PAGE (DEPRECATED) */
+/* #region EDIT PROFILE PAGE */
 
 .form-actions {
   display: flex;
@@ -1567,6 +1581,12 @@ body.modal-open {
   width: 90%;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
 }
 
 @keyframes slideUp {
@@ -1586,6 +1606,12 @@ body.modal-open {
   text-align: center;
   font-size: 1.3rem;
   color: var(--text-dark);
+}
+
+.modal-content p {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .modal-warning {
@@ -2194,6 +2220,10 @@ body.modal-open {
     font-size: 2rem;
   }
 
+  h1.form-title {
+    font-size: 1.5rem !important;
+  }
+
   .auth-content p {
     font-size: 1rem;
     text-align: start !important;
@@ -2412,12 +2442,18 @@ body.modal-open {
 
   /* Side-by-side layout */
   .profile-page {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     align-items: stretch;
+  }
+  
+  .profile-page .navbar,
+  .profile-page .page-header,
+  .profile-page .profile-views-grid,
+  .profile-page .danger-zone {
+    grid-column: 1 / -1;
   }
 
   .profile-page .danger-zone {
-    grid-column: 1 / -1;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
@@ -2445,6 +2481,18 @@ body.modal-open {
   .error-content img {
     width: 200px;
     height: 200px;
+  }
+
+  .matches-header{
+    text-align: center;
+  }
+
+  /* Consistent page heading sizes on tablet+ */
+  .discover-page h1,
+  .matches-page h1,
+  .messages-page h1,
+  .profile-page h1 {
+    font-size: 1.1rem !important;
   }
 
 }
@@ -2551,16 +2599,28 @@ body.modal-open {
   .form-sign-in-btn .btn-hero {
     font-size: 1.125rem;
   }
+
+  h1.form-title {
+    font-size: 1.5rem !important;
+  }
   
   .auth-content.form-page {
     padding-top: 90px;
+  }
+
+  /* Consistent page heading sizes on desktop */
+  .discover-page h1,
+  .matches-page h1,
+  .messages-page h1,
+  .profile-page h1 {
+    font-size: 1.1rem !important;
   }
 
   /* Messages split-screen layout */
   .messages-split-container {
     display: grid;
     grid-template-columns: 380px 1fr;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 190px);
   }
 
   .messages-inbox-panel {
@@ -2597,7 +2657,7 @@ body.modal-open {
 
   .discover-page.messages-page {
     max-width: 1400px;
-    padding: 50px 30px;
+    padding: 80px 30px 50px;
   }
 
   /* Profile buttons sizing for desktop */
