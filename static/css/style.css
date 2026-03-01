@@ -217,6 +217,10 @@ a:visited {
   flex-wrap: wrap;
 }
 
+.hero-buttons a {
+  font-size: 0.7rem;
+}
+
 /* HOW IT WORKS SECTION */
 .how-it-works-section {
   position: relative;
@@ -2274,6 +2278,10 @@ body.modal-open {
     justify-content: center;
   }
 
+  .hero-buttons a {
+    font-size: 0.8rem;
+  }
+
   .hero-image {
     margin-bottom: 0;
   }
@@ -2667,7 +2675,7 @@ body.modal-open {
   }
 
   .hero-content h1 {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
 }
