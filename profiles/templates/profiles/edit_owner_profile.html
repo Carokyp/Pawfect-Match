@@ -5,6 +5,7 @@
 {% block content_class %}form-page{% endblock %}
 
 {% block header %}
+  <!-- Main navigation for authenticated pages -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <span class="navbar-brand">🐾 Pawfect Match</span>
@@ -37,12 +38,16 @@
 
 {% block content %}
 
-<div class="form-card owner-profile-card">
-  <h1 class="form-title text-center">EDIT YOUR OWNER PROFILE</h1>
-  <p class="form-subtitle text-center">
-    <span class="required">*</span> Required fields
-  </p>
+<!-- Owner profile edit card -->
+<section class="form-card owner-profile-card">
+  <header>
+    <h1 class="form-title text-center">EDIT YOUR OWNER PROFILE</h1>
+    <p class="form-subtitle text-center">
+      <span class="required">*</span> Required fields
+    </p>
+  </header>
 
+  <!-- Owner profile edit form -->
   <form method="post" enctype="multipart/form-data" class="auth-form owner-profile-form" data-form-type="owner" novalidate>
     {% csrf_token %}
     {{ form.non_field_errors }}
@@ -130,11 +135,12 @@
       {% endif %}
     </div>
 
+    <!-- Form actions -->
     <div class="form-actions d-flex justify-content-center gap-3 mt-4">
       <a href="{% url 'view_profile' %}" class="btn-hero secondary">Cancel</a>
       <button type="submit" class="btn-hero primary">Save profile</button>
     </div>
   </form>
-</div>
+</section>
 
 {% endblock %}

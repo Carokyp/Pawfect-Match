@@ -7,7 +7,7 @@
 {% block content %}
 
 <div class="discover-page profile-page">
-  <!--NAVBAR-->
+  <!-- Main navigation for authenticated pages -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <span class="navbar-brand">🐾 Pawfect Match</span>
@@ -44,17 +44,19 @@
     </div>
   </nav>
 
-  <div class="d-flex align-items-center justify-content-center m-3">
-    <span class="fw-bold small profile-page-title" style="color: var(--text-dark);">YOUR PROFILES</span>
-  </div>
+  <!-- Profile page title -->
+  <header class="page-header">
+    <h1 class="page-title profile-page-title">YOUR PROFILES</h1>
+  </header>
 
   {% if dog %}
-    <div class="profile-card profile-card-view dog-profile">
+    <!-- Dog profile card -->
+    <article class="profile-card profile-card-view dog-profile">
       <div class="profile-image">
         {% if dog.profile_photo %}
-        <img src="{{ dog.get_photo_url }}" alt="Dog photo" fetchpriority="high" />
+        <img src="{{ dog.get_photo_url }}" alt="{{ dog.name }} profile photo" fetchpriority="high" />
         {% else %}
-        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog photo" />
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder" />
         {% endif %}
 
         <div class="image-overlay">
@@ -89,15 +91,16 @@
       <div class="profile-edit-inline">
         <a href="{% url 'edit_dog_profile' %}" class="btn-edit-profile primary">Edit Dog Profile</a>
       </div>
-    </div>
+    </article>
   {% endif %}
 
-    <div class="profile-card profile-card-view owner-profile">
+    <!-- Owner profile card -->
+    <article class="profile-card profile-card-view owner-profile">
       <div class="profile-image">
         {% if owner.profile_photo %}
-        <img src="{{ owner.get_photo_url }}" alt="Owner photo" fetchpriority="high" />
+        <img src="{{ owner.get_photo_url }}" alt="{{ owner.name }} profile photo" fetchpriority="high" />
         {% else %}
-        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner photo" />
+        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder" />
         {% endif %}
 
         <div class="image-overlay">
@@ -128,10 +131,10 @@
       <div class="profile-edit-inline">
         <a href="{% url 'edit_owner_profile' %}" class="btn-edit-profile primary">Edit Owner Profile</a>
       </div>
-    </div>
+    </article>
 
-  <!-- DANGER ZONE -->
-  <div class="danger-zone">
+  <!-- Profile deletion section -->
+  <section class="danger-zone" aria-label="Delete profile section">
     <p class="danger-zone-text">Delete your profile and your dog</p>
     <p class="danger-zone-subtext">
       This action is permanent and cannot be undone.
@@ -143,12 +146,12 @@
         Delete My Profile
       </button>
     </form>
-  </div>
+  </section>
 
-  <!-- DELETE CONFIRMATION MODAL -->
-  <div class="modal-overlay" id="deleteModal">
+  <!-- Delete profile confirmation modal -->
+  <aside class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteProfileTitle">
     <div class="modal-content">
-      <h2>Are you sure?</h2>
+      <h2 id="deleteProfileTitle">Are you sure?</h2>
       <p class="modal-warning">⚠️ This will permanently delete:</p>
       <ul class="modal-list">
         <li>Your profile</li>
@@ -168,6 +171,6 @@
         </button>
       </div>
     </div>
-  </div>
+  </aside>
 
 {% endblock %}

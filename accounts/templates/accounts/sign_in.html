@@ -11,13 +11,16 @@
 {% endblock %}
 
 {% block content %}
-<div class="form-page-container form-with-image">
-  <div class="auth-card">
+<!-- Sign in page content -->
+<section class="form-page-container form-with-image">
+  <article class="auth-card">
     <div class="auth-card-split">
-      <div class="auth-card-form">
+      <section class="auth-card-form">
+        <!-- Sign in heading -->
         <h1>Sign in</h1>
         <p>Welcome back! Log in to continue.</p>
 
+        <!-- Sign in form -->
         <form method="post" action="{% url 'sign_in' %}" class="auth-form">
           {% csrf_token %}
 
@@ -49,11 +52,13 @@
         <div class="auth-redirect">
           <p>Don't have an account? <a href="{% url 'register' %}" class="auth-link">Sign up</a></p>
         </div>
-      </div>
-      <div class="form-page-image">
+      </section>
+
+      <!-- Supporting image -->
+      <figure class="form-page-image">
         <img src="{% static 'images/sign_in_image.png' %}" alt="Girl holding a golden retriever puppy">
-      </div>
+      </figure>
     </div>
-  </div>
-</div>
+  </article>
+</section>
 {% endblock %}

@@ -12,6 +12,10 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='ownerprofile',
-            options={'ordering': ['-created_at'], 'verbose_name': 'Owner Profile', 'verbose_name_plural': 'Owner Profiles'},
+            options={
+                'ordering': ['-created_at'],
+                'verbose_name': 'Owner Profile',
+                'verbose_name_plural': 'Owner Profiles'
+            },
         ),
     ]

@@ -12,12 +12,16 @@
 
 {% block content %}
 
-<div class="form-card owner-profile-card">
-  <h1 class="form-title text-center">CREATE YOUR OWNER PROFILE</h1>
-  <p class="form-subtitle text-center">
-    <span class="required">*</span> Required fields
-  </p>
+<!-- Owner profile creation card -->
+<section class="form-card owner-profile-card">
+  <header>
+    <h1 class="form-title text-center">CREATE YOUR OWNER PROFILE</h1>
+    <p class="form-subtitle text-center">
+      <span class="required">*</span> Required fields
+    </p>
+  </header>
 
+  <!-- Owner profile creation form -->
   <form method="post" enctype="multipart/form-data" class="auth-form owner-profile-form" data-form-type="owner" novalidate>
     {% csrf_token %}
     {{ form.non_field_errors }}
@@ -110,11 +114,12 @@
       {% endif %}
     </div>
 
+    <!-- Submit actions -->
     <div class="form-actions d-flex justify-content-center gap-3 mt-4">
       <button type="submit" class="btn-hero secondary">Next</button>
     </div>
 
   </form>
-</div>
+</section>
 
 {% endblock %}

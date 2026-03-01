@@ -13,13 +13,13 @@
 {% block content %}
 
 <div class="discover-page message-thread-page">
+  <!-- Messages page title -->
+  <header class="page-header">
+    <h1 class="page-title">MESSAGES</h1>
+  </header>
 
-  <div class="d-flex justify-content-center align-items-center py-2">
-    <span class="fw-bold mt-0 mb-2" style="color: var(--text-dark);">MESSAGES</span>
-  </div>
-
-  <!-- RECEIVER INFO -->
-  <div class="message-header">
+  <!-- Active conversation recipient -->
+  <header class="message-header">
     <div class="receiver-avatar">
       {% if receiver_dog.profile_photo %}
         <img src="{{ receiver_dog.get_photo_url }}" alt="{{ receiver_dog.name }}">
@@ -31,10 +31,10 @@
       <h2>{{ receiver_dog.name }}</h2>
       <p>{{ receiver_dog.breed }}</p>
     </div>
-  </div>
+  </header>
 
-  <!-- MESSAGES THREAD-->
-  <div class="messages-thread">
+  <!-- Conversation messages -->
+  <section class="messages-thread" aria-live="polite">
     {% if messages %}
       {% for item in messages %}
         <div class="message-row {% if item.is_sent %}sent{% else %}received{% endif %}">
@@ -65,17 +65,17 @@
         <p>No messages yet. Send your first message!</p>
       </div>
     {% endif %}
-  </div>
+  </section>
 
-  <!-- MESSAGE FORM -->
+  <!-- Message composer (only for matched dogs) -->
   {% if is_match %}
-    <div class="message-form-container">
+    <footer class="message-form-container">
       <form method="POST" class="message-form">
         {% csrf_token %}
         {{ form.content }}
         <button type="submit" class="send-msg btn-secondary">Send</button>
       </form>
-    </div>
+    </footer>
   {% endif %}
 
 </div>

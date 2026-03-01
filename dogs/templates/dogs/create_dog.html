@@ -12,12 +12,16 @@
 
 {% block content %}
 
-<div class="form-card dog-profile-card">
-  <h1 class="form-title text-center">CREATE YOUR DOG PROFILE</h1>
-  <p class="form-subtitle text-center">
-    <span class="required">*</span> Required fields
-  </p>
+<!-- Dog profile creation card -->
+<section class="form-card dog-profile-card">
+  <header>
+    <h1 class="form-title text-center">CREATE YOUR DOG PROFILE</h1>
+    <p class="form-subtitle text-center">
+      <span class="required">*</span> Required fields
+    </p>
+  </header>
 
+  <!-- Dog profile creation form -->
   <form method="post" enctype="multipart/form-data" class="auth-form dog-profile-form" data-form-type="dog" novalidate>
     {% csrf_token %}
     {{ form.non_field_errors }}
@@ -114,10 +118,11 @@
       {% endif %}
     </div>
 
+    <!-- Submit actions -->
     <div class="form-actions d-flex justify-content-center gap-3 mt-4">
       <button type="submit" class="btn-hero secondary">Complete Profile</button>
     </div>
   </form>
-</div>
+</section>
 
 {% endblock %}

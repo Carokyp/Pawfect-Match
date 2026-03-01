@@ -9,8 +9,7 @@
 {% csrf_token %}
 
 <div class="discover-page messages-page">
-
-  <!--NAVBAR-->
+  <!-- Main navigation for authenticated pages -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <span class="navbar-brand">🐾 Pawfect Match</span>
@@ -39,22 +38,23 @@
       </div>
     </div>
   </nav>
-  
-  <div class="d-flex justify-content-center align-items-center py-2">
-    <span class="fw-bold" style="color: var(--text-dark);">MESSAGES</span>
-  </div>
+
+  <!-- Messages page title -->
+  <header class="page-header">
+    <h1 class="page-title">MESSAGES</h1>
+  </header>
 
   {% if conversations %}
-  <!-- BIG WRAPPER CARD -->
-    <div class="messages-container-card"
+  <!-- Messages split layout: inbox list + desktop thread preview -->
+  <section class="messages-container-card"
       data-my-dog-name="{{ my_dog.name }}"
       data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
     <div class="messages-split-container">
-      <!-- INBOX LIST -->
-      <div class="messages-inbox-panel">
+      <!-- Inbox list panel -->
+      <section class="messages-inbox-panel" aria-label="Conversations list">
         <div class="conversations-list">
           {% for conversation in conversations %}
-          <div class="conversation-item" data-dog-id="{{ conversation.dog.id }}">
+          <article class="conversation-item" data-dog-id="{{ conversation.dog.id }}">
             <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
               <img src="{% static 'images/bin.png' %}" alt="Delete">
             </button>
@@ -80,14 +80,14 @@
                 <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
               </div>
             </a>
-          </div>
+          </article>
           {% endfor %}
         </div>
-      </div>
+      </section>
 
-      <!-- THREAD PANEL (Desktop only) -->
-      <div class="messages-thread-panel">
-        <div class="message-header">
+      <!-- Thread preview panel (desktop only) -->
+      <section class="messages-thread-panel" aria-label="Conversation preview">
+        <header class="message-header">
           <div class="receiver-avatar">
             {% if first_receiver_dog.profile_photo %}
               <img src="{{ first_receiver_dog.get_photo_url }}" alt="{{ first_receiver_dog.name }}" id="thread-avatar">
@@ -99,9 +99,9 @@
             <h2 id="thread-name">{{ first_receiver_dog.name }}</h2>
             <p id="thread-breed">{{ first_receiver_dog.breed }}</p>
           </div>
-        </div>
+        </header>
 
-        <div class="messages-thread" id="messages-thread">
+        <section class="messages-thread" id="messages-thread" aria-live="polite">
           {% if first_messages %}
             {% for item in first_messages %}
               <div class="message-row {% if item.is_sent %}sent{% else %}received{% endif %}">
@@ -132,37 +132,38 @@
               <p>No messages yet. Send your first message!</p>
             </div>
           {% endif %}
-        </div>
+        </section>
 
         {% if is_match %}
-          <div class="message-form-container">
+          <footer class="message-form-container">
             <form method="POST" class="message-form" id="message-form">
               {% csrf_token %}
               <input type="hidden" name="receiver_dog_id" id="receiver-dog-id" value="{{ first_receiver_dog.id }}">
               {{ form.content }}
               <button type="submit" class="send-msg btn-secondary">Send</button>
             </form>
-          </div>
+          </footer>
         {% endif %}
-      </div>
+      </section>
     </div>
-  </div>
+  </section>
   {% else %}
-  <div class="no-msg">
-    <p class="no-msg-title">No messages yet</p>
+  <!-- Empty state when no conversations exist -->
+  <section class="no-msg">
+    <h2 class="no-msg-title">No messages yet</h2>
     <p class="no-msg-subtitle">Send a message to a match to arrange a playdate!</p>
-    <img class=" mb-5 mt-5" style="width: 100px; height: 100px;" src="{% static 'images/sad_emoji.png' %}" alt="sad emoji">
+    <img class="empty-state-emoji mb-5 mt-5" src="{% static 'images/sad_emoji.png' %}" alt="Sad face emoji" width="100" height="100">
     <a href="{% url 'browse_dogs' %}" class="btn-hero primary">Back to Discover</a>
-  </div>
+  </section>
   {% endif %}
 
 </div>
 
-<!-- DELETE CONFIRMATION MODAL -->
-<div class="modal-backdrop" id="deleteConfirmModal">
+<!-- Delete conversation confirmation modal -->
+<aside class="modal-backdrop" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteConversationTitle">
   <div class="delete-modal">
     <button class="close" type="button" aria-label="Close" id="closeDeleteModal">×</button>
-    <h2>Delete conversation?</h2>
+    <h2 id="deleteConversationTitle">Delete conversation?</h2>
     <p class="delete-description">This will permanently delete all messages with <span id="deleteDogName"></span>. This
       action cannot be undone.</p>
 
@@ -171,6 +172,6 @@
       <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
     </div>
   </div>
-</div>
+</aside>
 
 {% endblock %}

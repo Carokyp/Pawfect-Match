@@ -12,14 +12,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="form-page-container form-with-image">
-  <div class="auth-card">
+<!-- Registration page content -->
+<section class="form-page-container form-with-image">
+  <article class="auth-card">
     <div class="auth-card-split">
-      <div class="auth-card-form">
+      <section class="auth-card-form">
+        <!-- Registration heading -->
         <h1>Create account</h1>
         <p>Welcome! Create your Pawfect Match account to connect with fellow dog 
           lovers and start your journey. Registration is quick and easy!</p>
 
+        <!-- Registration form -->
         <form method="post" class="auth-form">
         {% csrf_token %}
 
@@ -62,11 +65,13 @@
           </button>
         </div>
         </form>
-      </div>
-      <div class="form-page-image">
-        <img src="{% static 'images/create_form_image.png' %}" alt="Happy couple holding handswith their dog">
-      </div>
+      </section>
+
+      <!-- Supporting image -->
+      <figure class="form-page-image">
+        <img src="{% static 'images/create_form_image.png' %}" alt="Happy couple holding hands with their dog">
+      </figure>
     </div>
-  </div>
-</div>
+  </article>
+</section>
 {% endblock %}
