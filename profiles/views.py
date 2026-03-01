@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
-from connections.models import Connection
 from dogs.forms import DogForm
 from dogs.models import Dog
 
@@ -13,7 +12,44 @@ from .forms import OwnerProfileForm
 from .models import OwnerProfile
 
 
+def get_owner_profile(user):
+    """Return owner profile for a user, or None if missing."""
+    return OwnerProfile.objects.filter(user=user).first()
+
+
+def parse_interests(value):
+    """Parse interests from stored formats into a clean list."""
+    if not value:
+        return []
+    value = str(value).strip()
+    if value.startswith("[") and value.endswith("]"):
+        try:
+            parsed = ast.literal_eval(value)
+        except (ValueError, SyntaxError):
+            parsed = None
+        if isinstance(parsed, (list, tuple)):
+            return [
+                str(item).strip()
+                for item in parsed
+                if str(item).strip()
+            ]
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
 def create_owner_profile(request):
+    """
+    Create an owner profile during user registration.
+
+    Args:
+        request: HttpRequest object with POST/GET method for form submission.
+
+    Returns:
+        HttpResponse with create_owner_profile.html template or redirect to
+        create_dog after successful creation.
+
+    Raises:
+        Redirects to register if registration email session data is missing.
+    """
     # Check if email/password are in session (from register)
     if "registration_email" not in request.session:
         return redirect("register")
@@ -58,8 +94,20 @@ def create_owner_profile(request):
 
 @login_required
 def view_profile(request):
-    """View and edit owner profile and dog profile"""
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    """
+    Display the user's owner and dog profile information.
+
+    Args:
+        request: HttpRequest object.
+
+    Returns:
+        HttpResponse with view_profile.html template displaying owner and
+        dog profiles.
+
+    Raises:
+        Redirects to create_owner_profile if owner profile does not exist.
+    """
+    owner_profile = get_owner_profile(request.user)
 
     if not owner_profile:
         return redirect("create_owner_profile")
@@ -68,23 +116,6 @@ def view_profile(request):
     dog = None
     if hasattr(owner_profile, "dog"):
         dog = owner_profile.dog
-    
-    def parse_interests(value):
-        if not value:
-            return []
-        value = str(value).strip()
-        if value.startswith("[") and value.endswith("]"):
-            try:
-                parsed = ast.literal_eval(value)
-            except (ValueError, SyntaxError):
-                parsed = None
-            if isinstance(parsed, (list, tuple)):
-                return [
-                    str(item).strip()
-                    for item in parsed
-                    if str(item).strip()
-                ]
-        return [item.strip() for item in value.split(",") if item.strip()]
 
     owner_profile.interests_list = parse_interests(
         owner_profile.interests
@@ -99,8 +130,20 @@ def view_profile(request):
 
 @login_required
 def edit_owner_profile(request):
-    """Edit owner profile"""
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    """
+    Edit the user's owner profile information.
+
+    Args:
+        request: HttpRequest object with POST/GET method for form submission.
+
+    Returns:
+        HttpResponse with edit_owner_profile.html template or redirect to
+        view_profile after successful update.
+
+    Raises:
+        Redirects to create_owner_profile if owner profile does not exist.
+    """
+    owner_profile = get_owner_profile(request.user)
 
     if not owner_profile:
         return redirect("create_owner_profile")
@@ -124,8 +167,20 @@ def edit_owner_profile(request):
 
 @login_required
 def edit_dog_profile(request):
-    """Edit dog profile"""
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    """
+    Edit the user's dog profile information.
+
+    Args:
+        request: HttpRequest object with POST/GET method for form submission.
+
+    Returns:
+        HttpResponse with edit_dog_profile.html template or redirect to
+        view_profile after successful update.
+
+    Raises:
+        Redirects to create_owner_profile if owner profile does not exist.
+    """
+    owner_profile = get_owner_profile(request.user)
 
     if not owner_profile:
         return redirect("create_owner_profile")
@@ -157,20 +212,8 @@ def edit_dog_profile(request):
 @login_required
 @require_POST
 def delete_profile(request):
+    """Delete the current user and rely on cascade deletion for
+    related data."""
     user = request.user
-    owner_profile = OwnerProfile.objects.filter(user=user).first()
-    if owner_profile:
-        # Delete associated dog
-        try:
-            dog = owner_profile.dog
-            # Delete all dog connections
-            Connection.objects.filter(from_dog=dog).delete()
-            Connection.objects.filter(to_dog=dog).delete()
-            dog.delete()
-        except Dog.DoesNotExist:
-            pass
-        # Delete the profile
-        owner_profile.delete()
-    # Delete the user
     user.delete()
     return redirect("home")

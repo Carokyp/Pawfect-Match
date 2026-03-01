@@ -1,18 +1,75 @@
-from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
-from django.core.files.base import ContentFile
-from django.conf import settings
-from profiles.models import OwnerProfile
-from dogs.models import Dog
+"""
+Create fake owner and dog profiles for local development.
+
+Run with: python manage.py fake_profiles
+"""
+
 import os
+
 import cloudinary.uploader
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.management.base import BaseCommand
+
+from dogs.models import Dog
+from profiles.models import OwnerProfile
 
 
 class Command(BaseCommand):
+    """
+    Django management command to seed fake profiles.
+
+    Creates users, owner profiles, and dog profiles with optional
+    Cloudinary uploads for seed images.
+    """
     help = "fake dog & owner profiles for prototype"
 
+    def _upload_seed_photo(self, photo_name, folder, media_seeds_path):
+        """
+        Upload a seed photo to Cloudinary if it exists.
+
+        Args:
+            photo_name: Filename under media_seeds_path.
+            folder: Cloudinary folder to upload into.
+            media_seeds_path: Base path for seed images.
+
+        Returns:
+            str | None: Cloudinary public_id if uploaded, None if failed.
+        """
+        photo_path = os.path.join(media_seeds_path, photo_name)
+        if os.path.exists(photo_path):
+            self.stdout.write(f"  Uploading photo: {photo_name}")
+            try:
+                # Extract filename without extension for consistent public_id
+                photo_name_no_ext = photo_name.rsplit(".", 1)[0]
+                public_id = f"{folder}/{photo_name_no_ext}"
+
+                upload_result = cloudinary.uploader.upload(
+                    photo_path,
+                    public_id=public_id,
+                    overwrite=True
+                )
+                photo_id = upload_result.get("public_id")
+                self.stdout.write("  ✓ Photo uploaded")
+                return photo_id
+            except Exception as exc:
+                warning_msg = f"Could not upload {photo_name}: {exc}"
+                self.stdout.write(self.style.WARNING(warning_msg))
+        else:
+            self.stdout.write(
+                self.style.WARNING(f"File not found: {photo_path}")
+            )
+        return None
+
     def handle(self, *args, **kwargs):
-        User.objects.filter(username__endswith='@test.com').delete()
+        """
+        Run the command to create or update fake profiles.
+
+        Args:
+            *args: Positional arguments passed by Django.
+            **kwargs: Keyword arguments passed by Django.
+        """
+        User.objects.filter(username__endswith="@test.com").delete()
 
         media_seeds_path = os.path.join(settings.MEDIA_ROOT, "seeds")
 
@@ -283,11 +340,12 @@ class Command(BaseCommand):
         ]
 
         for data in profiles:
-            self.stdout.write(f"Creating profile for {data['email']}...")
-            
+            email = data["email"]
+            self.stdout.write(f"Creating profile for {email}...")
+
             user, _ = User.objects.get_or_create(
-                username=data["email"],
-                defaults={"email": data["email"]}
+                username=email,
+                defaults={"email": email}
             )
 
             user.set_unusable_password()
@@ -295,39 +353,22 @@ class Command(BaseCommand):
 
             owner_data = data["owner"].copy()
             owner_photo_name = owner_data.pop("profile_photo")
-            
-            # Upload owner photo to Cloudinary BEFORE creating profile
-            owner_photo_path = os.path.join(media_seeds_path, owner_photo_name)
-            owner_photo_id = None
-            if os.path.exists(owner_photo_path):
-                msg = f"  Uploading owner photo: {owner_photo_name}"
-                self.stdout.write(msg)
-                try:
-                    upload_result = cloudinary.uploader.upload(
-                        owner_photo_path,
-                        folder="pawfect_match/owners"
-                    )
-                    owner_photo_id = upload_result.get("public_id")
-                    self.stdout.write(f"  ✓ Owner photo uploaded")
-                except Exception as e:
-                    warning_msg = (
-                        f"Could not upload {owner_photo_name}: {e}"
-                    )
-                    self.stdout.write(self.style.WARNING(warning_msg))
-            else:
-                self.stdout.write(
-                    self.style.WARNING(f"File not found: {owner_photo_path}")
-                )
-            
+
+            owner_photo_id = self._upload_seed_photo(
+                owner_photo_name,
+                "pawfect_match/owners",
+                media_seeds_path,
+            )
+
             # Add photo ID to owner_data before creating
             if owner_photo_id:
                 owner_data["profile_photo"] = owner_photo_id
-            
+
             owner, created = OwnerProfile.objects.get_or_create(
                 user=user,
                 defaults=owner_data
             )
-            
+
             # Update owner data if it already existed
             if not created:
                 for key, value in owner_data.items():
@@ -336,38 +377,22 @@ class Command(BaseCommand):
 
             dog_data = data["dog"].copy()
             dog_photo_name = dog_data.pop("profile_photo")
-            
-            # Upload dog photo to Cloudinary BEFORE creating profile
-            dog_photo_path = os.path.join(media_seeds_path, dog_photo_name)
-            dog_photo_id = None
-            if os.path.exists(dog_photo_path):
-                self.stdout.write(f"  Uploading dog photo: {dog_photo_name}")
-                try:
-                    upload_result = cloudinary.uploader.upload(
-                        dog_photo_path,
-                        folder="pawfect_match/dogs"
-                    )
-                    dog_photo_id = upload_result.get("public_id")
-                    self.stdout.write(f"  ✓ Dog photo uploaded")
-                except Exception as e:
-                    warning_msg = (
-                        f"Could not upload {dog_photo_name}: {e}"
-                    )
-                    self.stdout.write(self.style.WARNING(warning_msg))
-            else:
-                self.stdout.write(
-                    self.style.WARNING(f"File not found: {dog_photo_path}")
-                )
-            
+
+            dog_photo_id = self._upload_seed_photo(
+                dog_photo_name,
+                "pawfect_match/dogs",
+                media_seeds_path,
+            )
+
             # Add photo ID to dog_data before creating
             if dog_photo_id:
                 dog_data["profile_photo"] = dog_photo_id
-            
+
             dog, created = Dog.objects.get_or_create(
                 owner=owner,
                 defaults=dog_data
             )
-            
+
             # Update dog data if it already existed
             if not created:
                 for key, value in dog_data.items():

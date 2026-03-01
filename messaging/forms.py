@@ -3,13 +3,16 @@ from .models import Message
 
 
 class MessageForm(forms.ModelForm):
+    """
+    Form for composing and sending messages between matched dogs.
+    """
     class Meta:
         model = Message
-        fields = ['content']
+        fields = ["content"]
         widgets = {
-            'content': forms.Textarea(attrs={
-                'rows': 4,
-                'placeholder': 'Send a message to arrange a playdate!',
-                'class': 'form-control message-input'
+            "content": forms.Textarea(attrs={
+                "rows": 4,
+                "placeholder": "Send a message to arrange a playdate!",
+                "class": "form-control message-input"
             })
         }

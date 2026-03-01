@@ -4,7 +4,7 @@ from dogs.models import Dog
 
 
 class Message(models.Model):
-    """Simple message model between two dogs"""
+    """Represents a message exchanged between two dog profiles."""
     sender_dog = models.ForeignKey(
         Dog,
         related_name="sent_messages",
@@ -19,7 +19,8 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
     def __str__(self):
+        """Return a readable sender-to-receiver label for admin and logs."""
         return f"{self.sender_dog.name} → {self.receiver_dog.name}"

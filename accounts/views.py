@@ -3,13 +3,24 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
-from dogs.models import Dog
 from profiles.models import OwnerProfile
 
 from .forms import RegisterForm, LoginForm, ForgotPasswordForm
 
+# Auth views
+
 
 def register(request):
+    """
+    Handle user registration and redirect to owner profile creation.
+
+    Args:
+        request: HttpRequest object with POST/GET method for form submission.
+
+    Returns:
+        HttpResponse with register.html template or redirect to
+        create_owner_profile.
+    """
     # Clean up session from previous registration attempt
     if "registration_email" in request.session:
         del request.session["registration_email"]
@@ -46,27 +57,25 @@ def register(request):
 
 
 def login_view(request):
+    """
+    Handle user login and redirect to appropriate page.
+
+    Args:
+        request: HttpRequest object with POST/GET method for form submission.
+
+    Returns:
+        HttpResponse with sign_in.html template or redirect to browse_dogs
+        or next URL if provided in query parameters.
+    """
     if request.method == "POST":
         form = LoginForm(request=request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+
             # Respect ?next= from @login_required
             next_url = request.GET.get("next")
-            if next_url:
-                return redirect(next_url)
-
-            # Otherwise, guide user through onboarding
-            owner = OwnerProfile.objects.filter(user=user).first()
-            if not owner:
-                return redirect("create_owner_profile")
-
-            try:
-                _ = owner.dog
-                # Dog exists; send to browse_dogs
-                return redirect("browse_dogs")
-            except Dog.DoesNotExist:
-                return redirect("create_dog")
+            return redirect(next_url) if next_url else redirect("browse_dogs")
     else:
         form = LoginForm()
 
@@ -74,19 +83,45 @@ def login_view(request):
 
 
 def home(request):
+    """
+    Render the landing page.
+
+    Args:
+        request: HttpRequest object for the home page.
+
+    Returns:
+        HttpResponse with home.html template.
+    """
     return render(request, "accounts/home.html")
 
 
 @login_required
 def logout_view(request):
+    """
+    Handle user logout.
+
+    Args:
+        request: HttpRequest object with POST method.
+
+    Returns:
+        Redirect to home page after logout.
+    """
     if request.method == "POST":
         logout(request)
-        return redirect("home")
     return redirect("home")
 
 
 @login_required
 def delete_profile(request):
+    """
+    Delete the current user's owner profile and log them out.
+
+    Args:
+        request: HttpRequest object with POST method for deletion.
+
+    Returns:
+        Redirect to home after deletion, or view_profile on GET.
+    """
     if request.method == "POST":
         user = request.user
         try:
@@ -97,6 +132,8 @@ def delete_profile(request):
         logout(request)
         return redirect("home")
     return redirect("view_profile")
+
+# Error handlers
 
 
 def handler404(request, exception):
@@ -118,29 +155,51 @@ def handler405(request, exception):
     """Custom 405 error page."""
     return render(request, "errors/405.html", status=405)
 
+# Error preview views (development only)
+
 
 def test_404(request):
-    """Test view for 404 page."""
+    """
+    Preview the 404 error page.
+
+    Development URL: /404-page/
+    """
     return render(request, "errors/404.html")
 
 
 def test_500(request):
-    """Test view for 500 page."""
+    """
+    Preview the 500 error page.
+
+    Development URL: /500-page/
+    """
     return render(request, "errors/500.html")
 
 
 def test_403(request):
-    """Test view for 403 page."""
+    """
+    Preview the 403 error page.
+
+    Development URL: /403-page/
+    """
     return render(request, "errors/403.html")
 
 
 def test_405(request):
-    """Test view for 405 page."""
+    """
+    Preview the 405 error page.
+
+    Development URL: /405-page/
+    """
     return render(request, "errors/405.html")
 
 
 def forgot_password(request):
-    """Simple password reset without email verification."""
+    """
+    Reset a user's password without email verification.
+
+    This is a simplified flow intended for development or demos.
+    """
     if request.method == "POST":
         form = ForgotPasswordForm(request.POST)
         if form.is_valid():

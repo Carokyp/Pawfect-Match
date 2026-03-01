@@ -54,6 +54,7 @@
 
           <div class="upload-box {% if form.instance.profile_photo %}has-image{% endif %}">
             {{ form.profile_photo }}
+            <input type="hidden" name="profile_photo_removed" value="0" class="upload-remove-flag" />
 
             <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
               {% if form.instance.profile_photo %}src="{{ form.instance.profile_photo.url }}"{% endif %} alt="" />

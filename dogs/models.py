@@ -6,6 +6,23 @@ from profiles.models import OwnerProfile
 
 
 class Dog(models.Model):
+    """Represents a dog profile in the matching system."""
+
+    class Size(models.TextChoices):
+        SMALL = "small", "Small"
+        MEDIUM = "medium", "Medium"
+        LARGE = "large", "Large"
+
+    class Gender(models.TextChoices):
+        MALE = "male", "Male"
+        FEMALE = "female", "Female"
+
+    class EnergyLevel(models.TextChoices):
+        COUCH_POTATO = "couch_potato", "🥔 Couch potato"
+        CHILL = "chill", "😌 Chill vibes"
+        PLAYFUL = "playful", "🎾 Playful"
+        ENERGETIC = "energetic", "⚡️ Energetic"
+        ZOOMIES = "zoomies", "🚀 Full zoomies"
     owner = models.OneToOneField(
         OwnerProfile,
         on_delete=models.CASCADE,
@@ -22,40 +39,21 @@ class Dog(models.Model):
     age = models.PositiveIntegerField(null=True, blank=True)
     breed = models.CharField(max_length=100, default="")
 
-    SIZE_CHOICES = [
-        ("small", "Small"),
-        ("medium", "Medium"),
-        ("large", "Large"),
-    ]
-
     size = models.CharField(
         max_length=10,
-        choices=SIZE_CHOICES,
+        choices=Size.choices,
         blank=True
     )
-
-    GENDER_CHOICES = [
-        ("male", "Male"),
-        ("female", "Female"),
-    ]
 
     gender = models.CharField(
         max_length=10,
-        choices=GENDER_CHOICES,
+        choices=Gender.choices,
         blank=True
     )
 
-    ENERGY_LEVEL_CHOICES = [
-        ('couch_potato', '🥔 Couch potato'),
-        ('chill', '😌 Chill vibes'),
-        ('playful', '🎾 Playful'),
-        ('energetic', '⚡️ Energetic'),
-        ('zoomies', '🚀 Full zoomies'),
-    ]
-
     energy_level = models.CharField(
         max_length=20,
-        choices=ENERGY_LEVEL_CHOICES,
+        choices=EnergyLevel.choices,
         blank=True
     )
 
@@ -67,10 +65,28 @@ class Dog(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Dog"
+        verbose_name_plural = "Dogs"
+        ordering = ["-created_at"]
+
     def __str__(self):
+        """
+        Return string representation of dog profile.
+
+        Returns:
+            str: Format "<dog_name> (<owner_name>)".
+        """
         return f"{self.name} ({self.owner.name})"
 
     def get_photo_url(self):
+        """
+        Generate a Cloudinary URL for the dog's profile photo.
+
+        Returns:
+            str | None: Optimized Cloudinary URL for profile photo with
+            width=700, height=700, quality=85, or None if no photo available.
+        """
         if self.profile_photo:
             return self.profile_photo.build_url(
                 width=700,

@@ -11,7 +11,16 @@ from .models import Connection
 
 @login_required
 def matches_list(request):
-    """Display the list of matches (bidirectional connections)"""
+    """
+    Display the list of bidirectional matches (mutual likes).
+
+    Args:
+        request: HttpRequest object.
+
+    Returns:
+        HttpResponse with matches_list.html template showing all matched dogs
+        with owner information.
+    """
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
 
     if not owner_profile or not hasattr(owner_profile, "dog"):
@@ -27,7 +36,7 @@ def matches_list(request):
     # Dogs we liked AND who liked us back
     matches = Connection.objects.filter(
         from_dog=my_dog
-    ).select_related('to_dog', 'to_dog__owner')
+    ).select_related("to_dog", "to_dog__owner")
 
     # Filter to get only REAL bidirectional connections
     matches_list = []
@@ -42,14 +51,14 @@ def matches_list(request):
             owner = connection.to_dog.owner
             if hasattr(owner, 'interests') and owner.interests:
                 owner.interests_list = [
-                    i.strip() for i in owner.interests.split(',') if i.strip()
+                    i.strip() for i in owner.interests.split(",") if i.strip()
                 ]
             else:
                 owner.interests_list = []
             matches_list.append({
-                'dog': connection.to_dog,
-                'owner': owner,
-                'matched_at': connection.created_at
+                "dog": connection.to_dog,
+                "owner": owner,
+                "matched_at": connection.created_at
             })
 
     return render(
@@ -62,8 +71,20 @@ def matches_list(request):
 @login_required
 @require_POST
 def delete_match(request):
-    """Delete the connection between two dogs (match)"""
-    dog_id = request.POST.get('dog_id')
+    """
+    Delete a match between two dogs.
+
+    Args:
+        request: HttpRequest object with POST method containing dog_id.
+
+    Returns:
+        JsonResponse with success status.
+
+    Raises:
+        Returns HttpResponseForbidden if user has no dog profile.
+        Returns JsonResponse with error if dog_id not found.
+    """
+    dog_id = request.POST.get("dog_id")
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
     if not owner_profile or not hasattr(owner_profile, "dog"):
         return HttpResponseForbidden()
@@ -71,8 +92,8 @@ def delete_match(request):
     try:
         other_dog = Dog.objects.get(id=dog_id)
     except Dog.DoesNotExist:
-        return JsonResponse({'success': False, 'error': 'Dog not found'})
+        return JsonResponse({"success": False, "error": "Dog not found"})
     # Delete both directions
     Connection.objects.filter(from_dog=my_dog, to_dog=other_dog).delete()
     Connection.objects.filter(from_dog=other_dog, to_dog=my_dog).delete()
-    return JsonResponse({'success': True})
+    return JsonResponse({"success": True})

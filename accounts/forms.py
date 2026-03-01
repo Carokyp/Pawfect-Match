@@ -9,7 +9,47 @@ from django.core.exceptions import ValidationError
 from profiles.models import OwnerProfile
 
 
+# Constants
+PASSWORD_SPECIAL_CHARS = r'[!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]'
+
+
+def validate_password_strength(password):
+    """
+    Validate password strength requirements.
+
+    Args:
+        password: str. The password to validate.
+
+    Returns:
+        None.
+
+    Raises:
+        ValidationError if password doesn't contain uppercase letter,
+        digit, or special character.
+    """
+    if not re.search(r"[A-Z]", password):
+        raise ValidationError(
+            "Password must contain at least one uppercase letter (A-Z)."
+        )
+
+    if not re.search(r"[0-9]", password):
+        raise ValidationError(
+            "Password must contain at least one digit (0-9)."
+        )
+
+    if not re.search(PASSWORD_SPECIAL_CHARS, password):
+        raise ValidationError(
+            "Password must contain at least one special character (!@#$%^&*)."
+        )
+
+
 class LoginForm(AuthenticationForm):
+    """
+    Form for user login with email and password.
+
+    Customizes error messages for better user experience when
+    authentication fails.
+    """
     username = forms.EmailField(
         label="Email",
         widget=forms.EmailInput(attrs={
@@ -32,6 +72,12 @@ class LoginForm(AuthenticationForm):
 
 
 class ForgotPasswordForm(forms.Form):
+    """
+    Form for password reset without email verification.
+
+    Validates that the email exists and that the new password meets
+    strength requirements before allowing password reset.
+    """
     email = forms.EmailField(
         label="Email",
         widget=forms.EmailInput(attrs={})
@@ -52,12 +98,37 @@ class ForgotPasswordForm(forms.Form):
     )
 
     def clean_email(self):
+        """
+        Validate that the email has an associated user account.
+
+        Args:
+            None.
+
+        Returns:
+            str. The validated email address.
+
+        Raises:
+            ValidationError if no account is found with the email address.
+        """
         email = self.cleaned_data.get("email")
         if not User.objects.filter(username=email).exists():
             raise ValidationError("No account found with this email address.")
         return email
 
     def clean(self):
+        """
+        Validate that passwords match and meet strength requirements.
+
+        Args:
+            None.
+
+        Returns:
+            dict. The cleaned data dictionary.
+
+        Raises:
+            ValidationError if passwords don't match or don't meet strength
+            requirements (uppercase, digit, and special character).
+        """
         cleaned_data = super().clean()
         new_password = cleaned_data.get("new_password")
         new_password_confirm = cleaned_data.get("new_password_confirm")
@@ -73,28 +144,19 @@ class ForgotPasswordForm(forms.Form):
                 raise ValidationError(e.messages)
 
             # Custom validators (match registration requirements)
-            if not re.search(r"[A-Z]", new_password):
-                raise ValidationError(
-                    "Password must contain at least one uppercase "
-                    "letter (A-Z)."
-                )
-
-            if not re.search(r"[0-9]", new_password):
-                raise ValidationError(
-                    "Password must contain at least one digit (0-9)."
-                )
-
-            special_chars = r"[!@#$%^&*()_+\-=\[\]{};:\"\\|,.<>\/?]"
-            if not re.search(special_chars, new_password):
-                raise ValidationError(
-                    "Password must contain at least one special "
-                    "character (!@#$%^&*)."
-                )
+            validate_password_strength(new_password)
 
         return cleaned_data
 
 
 class RegisterForm(forms.Form):
+    """
+    Form for new user registration.
+
+    Validates that email is not already in use and that password meets
+    strength requirements. Allows resuming registration if owner profile
+    exists without a dog profile.
+    """
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={
             "autocomplete": "off"
@@ -114,6 +176,18 @@ class RegisterForm(forms.Form):
     )
 
     def clean_email(self):
+        """
+        Validate that email is not already in use with a complete profile.
+
+        Args:
+            None.
+
+        Returns:
+            str. The validated email address.
+
+        Raises:
+            ValidationError if email is already registered with a dog profile.
+        """
         email = self.cleaned_data["email"]
         existing_user = User.objects.filter(username=email).first()
         if existing_user:
@@ -132,6 +206,19 @@ class RegisterForm(forms.Form):
         return email
 
     def clean_password(self):
+        """
+        Validate password strength requirements.
+
+        Args:
+            None.
+
+        Returns:
+            str. The validated password.
+
+        Raises:
+            ValidationError if password doesn't contain uppercase letter,
+            digit, or special character.
+        """
         password = self.cleaned_data.get("password")
         if password:
             # Django built-in validators
@@ -141,27 +228,26 @@ class RegisterForm(forms.Form):
                 raise forms.ValidationError(e.messages)
 
             # Custom validators
-            if not re.search(r'[A-Z]', password):
-                raise forms.ValidationError(
-                    "Password must contain at least one uppercase "
-                    "letter (A–Z)."
-                )
-
-            if not re.search(r'[0-9]', password):
-                raise forms.ValidationError(
-                    "Password must contain at least one digit (0–9)."
-                )
-            
-            special_chars = r'[!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]'
-            if not re.search(special_chars, password):
-                raise forms.ValidationError(
-                    "Password must contain at least one special "
-                    "character (!@#$%^&*)."
-                )
+            try:
+                validate_password_strength(password)
+            except ValidationError as e:
+                raise forms.ValidationError(str(e))
 
         return password
 
     def clean(self):
+        """
+        Validate that both password fields match.
+
+        Args:
+            None.
+
+        Returns:
+            dict. The cleaned data dictionary.
+
+        Raises:
+            ValidationError if passwords don't match.
+        """
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         password_confirm = cleaned_data.get("password_confirm")

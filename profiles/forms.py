@@ -27,6 +27,12 @@ INTEREST_CHOICES = [
 
 
 class OwnerProfileForm(forms.ModelForm):
+    """
+    Form for creating and editing owner profiles.
+
+    Handles profile photo requirements, interest selection parsing, and
+    form initialization for existing instances.
+    """
     interests = forms.MultipleChoiceField(
         required=False,
         choices=INTEREST_CHOICES,
@@ -34,6 +40,7 @@ class OwnerProfileForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
+        """Initialize form, set required fields, and parse interests."""
         super().__init__(*args, **kwargs)
         required_fields = [
             "profile_photo",
@@ -47,11 +54,6 @@ class OwnerProfileForm(forms.ModelForm):
             if field:
                 field.required = True
                 field.widget.attrs["required"] = "required"
-        if self.instance and self.instance.pk:
-            self.fields["profile_photo"].required = False
-            self.fields["profile_photo"].widget.attrs.pop(
-                "required", None
-            )
 
         if not self.data and self.instance and self.instance.interests:
             self.fields["interests"].initial = self._parse_interests(
@@ -60,6 +62,7 @@ class OwnerProfileForm(forms.ModelForm):
 
     @staticmethod
     def _parse_interests(value):
+        """Parse interests from string/list/tuple into cleaned list format."""
         if not value:
             return []
         if isinstance(value, (list, tuple)):
@@ -97,9 +100,7 @@ class OwnerProfileForm(forms.ModelForm):
             "about_me": forms.Textarea(attrs={
                 "rows": 4,
                 "maxlength": 150,
-                "placeholder": (
-                    "Tell us about yourself, your lifestyle ect..."
-                )
+                "placeholder": "Tell us about yourself, your lifestyle etc..."
             }),
             "occupation": forms.TextInput(attrs={
                 "placeholder": "e.g., Software Engineer"
@@ -117,14 +118,28 @@ class OwnerProfileForm(forms.ModelForm):
         }
 
     def clean_profile_photo(self):
+        """Validate that profile photo is always provided."""
         photo = self.cleaned_data.get("profile_photo")
-        if not photo and self.instance and self.instance.pk:
-            return self.instance.profile_photo
-        if not photo:
+        photo_removed = self.data.get("profile_photo_removed") == "1"
+        existing_photo = (
+            self.instance.profile_photo
+            if self.instance and self.instance.pk
+            else None
+        )
+
+        if photo_removed:
             raise ValidationError("Please select a profile photo.")
-        return photo
+
+        if photo:
+            return photo
+        if existing_photo:
+            return existing_photo
+
+        raise ValidationError("Please select a profile photo.")
 
     def save(self, commit=True):
+        """Save instance and convert interests list to
+        comma-separated string."""
         instance = super().save(commit=False)
         interests = self.cleaned_data.get("interests")
         if isinstance(interests, (list, tuple)):
@@ -134,4 +149,3 @@ class OwnerProfileForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
-

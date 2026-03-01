@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     uploadBoxes.forEach((box) => {
       const input = box.querySelector("input[type='file']");
+      const removeFlagInput = box.querySelector(".upload-remove-flag");
       const preview = box.querySelector(".image-preview");
       const placeholder = box.querySelector(".upload-placeholder");
       const removeBtn = box.querySelector(".upload-remove");
@@ -117,9 +118,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         box.classList.remove("has-image");
         input.value = "";
+        if (removeFlagInput) {
+          removeFlagInput.value = "1";
+        }
       };
 
-      input.addEventListener("change", () => handleImagePreview(input, box));
+      input.addEventListener("change", () => {
+        if (removeFlagInput) {
+          removeFlagInput.value = input.files && input.files.length ? "0" : "1";
+        }
+        handleImagePreview(input, box);
+      });
 
       box.addEventListener("dragover", (event) => {
         event.preventDefault();

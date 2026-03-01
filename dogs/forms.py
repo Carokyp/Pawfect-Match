@@ -5,7 +5,19 @@ from .models import Dog
 
 
 class DogForm(forms.ModelForm):
+    """
+    Form for creating and editing dog profiles.
+
+    Dynamically sets required fields and validates profile photo presence.
+    """
     def __init__(self, *args, **kwargs):
+        """
+        Initialize DogForm and set required field constraints.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments passed to parent form.
+        """
         super().__init__(*args, **kwargs)
         required_fields = [
             "profile_photo",
@@ -63,9 +75,33 @@ class DogForm(forms.ModelForm):
         }
 
     def clean_profile_photo(self):
+        """
+        Validate that a profile photo is provided.
+
+        Args:
+            None.
+
+        Returns:
+            CloudinaryField instance. The validated profile photo.
+
+        Raises:
+            ValidationError if no profile photo is provided and instance
+                is new.
+        """
         photo = self.cleaned_data.get("profile_photo")
-        if not photo and self.instance and self.instance.pk:
-            return self.instance.profile_photo
-        if not photo:
+        photo_removed = self.data.get("profile_photo_removed") == "1"
+        existing_photo = (
+            self.instance.profile_photo
+            if self.instance and self.instance.pk
+            else None
+        )
+
+        if photo_removed:
             raise ValidationError("Please select a profile photo.")
-        return photo
+
+        if photo:
+            return photo
+        if existing_photo:
+            return existing_photo
+
+        raise ValidationError("Please select a profile photo.")
