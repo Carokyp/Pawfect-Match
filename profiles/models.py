@@ -6,18 +6,10 @@ from cloudinary.models import CloudinaryField
 
 class OwnerProfile(models.Model):
     """
-    Represents an owner profile for a user.
+    Owner profile linked one-to-one to a Django user account.
 
-    Attributes:
-        user: OneToOneField to User. The associated Django user.
-        profile_photo: CloudinaryField. Owner's profile picture.
-        name: CharField. Owner's full name.
-        age: PositiveIntegerField. Owner's age.
-        city: CharField. Owner's city of residence.
-        occupation: CharField. Owner's occupation.
-        interests: CharField. Comma-separated list of interests.
-        about_me: TextField. Personal bio or description.
-        created_at: DateTimeField. When profile was created.
+    Stores identity details, profile photo, interests, and a short
+    bio used across profile creation, edit, and display views.
     """
     user = models.OneToOneField(
         User,
@@ -52,28 +44,21 @@ class OwnerProfile(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Owner Profile"
+        verbose_name_plural = "Owner Profiles"
+        ordering = ["-created_at"]
+
     def __str__(self):
-        """
-        Return string representation of owner profile.
-
-        Args:
-            None.
-
-        Returns:
-            str. Format: "<owner_name> (<user_email>)".
-        """
+        """Return a readable label combining owner name and user email."""
         return f"{self.name} ({self.user.email})"
 
     def get_photo_url(self):
         """
-        Generate a Cloudinary URL for the owner's profile photo.
+        Return an optimized Cloudinary URL for the owner's profile photo.
 
-        Args:
-            None.
-
-        Returns:
-            str. Optimized Cloudinary URL for profile photo with width=700,
-            height=700, quality=85, or None if no photo is available.
+        Applies standard transformations (700x700, auto gravity, fill crop,
+        quality=85, auto format). Returns None when no photo exists.
         """
         if self.profile_photo:
             return self.profile_photo.build_url(
