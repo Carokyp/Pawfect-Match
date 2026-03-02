@@ -14,25 +14,29 @@
 <!-- Sign in page content -->
 <section class="form-page-container form-with-image">
   <article class="auth-card">
-    <div class="auth-card-split">
-      <section class="auth-card-form">
+    <div class="auth-card-split d-flex flex-column flex-md-row">
+      <section class="auth-card-form d-flex flex-column justify-content-center align-items-center text-center">
         <!-- Sign in heading -->
         <h1>Sign in</h1>
         <p>Welcome back! Log in to continue.</p>
 
         <!-- Sign in form -->
-        <form method="post" action="{% url 'sign_in' %}" class="auth-form">
+        <form method="post" action="{% url 'sign_in' %}" class="auth-form" novalidate>
           {% csrf_token %}
 
           {{ form.non_field_errors }}
 
           <div class="form-field">
-            {{ form.username.label_tag }}
-            {{ form.username }}
+            <div class="text-start">
+              {{ form.username.label_tag }}
+              {{ form.username }}
+            </div>
           </div>
 
           <div class="form-field">
-            {{ form.password.label_tag }}
+            <div class="text-start">
+              {{ form.password.label_tag }}
+            </div>
             <div class="input-wrapper">
               {{ form.password }}
               <button type="button" class="toggle-password">
@@ -43,13 +47,13 @@
           </div>
 
           <div class="form-sign-in-btn">
-            <button type="submit" class="btn-hero secondary">
+            <button type="submit" class="btn secondary">
               Sign in
             </button>
           </div>
         </form>
 
-        <div class="auth-redirect">
+        <div class="auth-redirect mt-4 mt-md-5">
           <p>Don't have an account? <a href="{% url 'register' %}" class="auth-link">Sign up</a></p>
         </div>
       </section>
