@@ -1,7 +1,6 @@
 import ast
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
@@ -36,54 +35,35 @@ def parse_interests(value):
     return [item.strip() for item in value.split(",") if item.strip()]
 
 
+@login_required
 def create_owner_profile(request):
     """
-    Create an owner profile during user registration.
+    Complete the owner profile during user registration.
 
     Args:
         request: HttpRequest object with POST/GET method for form submission.
 
     Returns:
         HttpResponse with create_owner_profile.html template or redirect to
-        create_dog after successful creation.
-
-    Raises:
-        Redirects to register if registration email session data is missing.
+        create_dog after successful completion.
     """
-    # Check if email/password are in session (from register)
-    if "registration_email" not in request.session:
-        return redirect("register")
+    # Get existing owner profile
+    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    if not owner_profile:
+        # Should not happen, but create if missing
+        owner_profile = OwnerProfile.objects.create(user=request.user)
 
     if request.method == "POST":
-        form = OwnerProfileForm(request.POST, request.FILES)
+        form = OwnerProfileForm(
+            request.POST, request.FILES, instance=owner_profile
+        )
         if form.is_valid():
-            # Store owner profile data in session
-            owner_data = form.cleaned_data.copy()
-            interests = owner_data.get("interests")
-            if isinstance(interests, (list, tuple)):
-                owner_data["interests"] = ", ".join(interests)
-
-            # Create or reuse the user so OwnerProfile has a valid user_id
-            email = request.session.get("registration_email")
-            password = request.session.get("registration_password")
-            user, created = User.objects.get_or_create(
-                username=email,
-                defaults={"email": email}
-            )
-            if password:
-                user.set_password(password)
-                user.save()
-
-            # Create or update OwnerProfile for this user
-            owner_profile, _ = OwnerProfile.objects.update_or_create(
-                user=user,
-                defaults=owner_data,
-            )
-
-            request.session["owner_profile_id"] = owner_profile.id
+            owner_profile = form.save(commit=False)
+            owner_profile.completed = True
+            owner_profile.save()
             return redirect("create_dog")
     else:
-        form = OwnerProfileForm()
+        form = OwnerProfileForm(instance=owner_profile)
 
     return render(
         request,

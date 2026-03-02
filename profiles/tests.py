@@ -5,7 +5,7 @@ from profiles.models import OwnerProfile
 
 class OwnerProfileTestCase(TestCase):
     """Test OwnerProfile model CRUD operations"""
-    
+
     def setUp(self):
         """Create a test user"""
         self.user = User.objects.create_user(
@@ -13,7 +13,7 @@ class OwnerProfileTestCase(TestCase):
             email="test@example.com",
             password="testpass123"
         )
-    
+
     def test_owner_profile_creation(self):
         """Test creating an OwnerProfile"""
         profile = OwnerProfile.objects.create(
@@ -28,7 +28,7 @@ class OwnerProfileTestCase(TestCase):
         self.assertEqual(profile.age, 30)
         self.assertEqual(profile.city, "New York")
         print("✓ Owner Profile Creation Test Passed")
-    
+
     def test_owner_profile_retrieval(self):
         """Test retrieving an OwnerProfile"""
         OwnerProfile.objects.create(
@@ -39,7 +39,7 @@ class OwnerProfileTestCase(TestCase):
         retrieved = OwnerProfile.objects.get(user=self.user)
         self.assertEqual(retrieved.name, "Jane Smith")
         print("✓ Owner Profile Retrieval Test Passed")
-    
+
     def test_owner_profile_update(self):
         """Test updating an OwnerProfile"""
         profile = OwnerProfile.objects.create(
@@ -52,7 +52,7 @@ class OwnerProfileTestCase(TestCase):
         updated = OwnerProfile.objects.get(user=self.user)
         self.assertEqual(updated.age, 25)
         print("✓ Owner Profile Update Test Passed")
-    
+
     def test_owner_profile_deletion(self):
         """Test deleting an OwnerProfile"""
         profile = OwnerProfile.objects.create(
@@ -63,7 +63,7 @@ class OwnerProfileTestCase(TestCase):
         with self.assertRaises(OwnerProfile.DoesNotExist):
             OwnerProfile.objects.get(user=self.user)
         print("✓ Owner Profile Deletion Test Passed")
-    
+
     def test_owner_profile_str(self):
         """Test string representation"""
         profile = OwnerProfile.objects.create(

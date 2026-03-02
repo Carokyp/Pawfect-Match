@@ -63,6 +63,7 @@ class Dog(models.Model):
         help_text="Tell us about your dog's personality"
     )
 
+    completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

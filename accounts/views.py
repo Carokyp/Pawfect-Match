@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 from profiles.models import OwnerProfile
+from dogs.models import Dog
 
 from .forms import RegisterForm, LoginForm, ForgotPasswordForm
 
@@ -21,34 +22,28 @@ def register(request):
         HttpResponse with register.html template or redirect to
         create_owner_profile.
     """
-    # Clean up session from previous registration attempt
-    if "registration_email" in request.session:
-        del request.session["registration_email"]
-    if "registration_password" in request.session:
-        del request.session["registration_password"]
-    if "owner_profile_data" in request.session:
-        del request.session["owner_profile_data"]
-    if "owner_profile_photo" in request.session:
-        del request.session["owner_profile_photo"]
-    if "owner_profile_id" in request.session:
-        # Delete the temp owner profile if it exists
-        owner_id = request.session["owner_profile_id"]
-        try:
-            OwnerProfile.objects.get(id=owner_id).delete()
-        except OwnerProfile.DoesNotExist:
-            pass
-        del request.session["owner_profile_id"]
-
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            # Store email and password in session (don't create User yet)
-            request.session["registration_email"] = (
-                form.cleaned_data["email"]
+            # Create User
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=password
             )
-            request.session["registration_password"] = (
-                form.cleaned_data["password"]
-            )
+
+            # Create empty OwnerProfile (completed=False by default)
+            owner_profile = OwnerProfile.objects.create(user=user)
+
+            # Create empty Dog (completed=False by default)
+            Dog.objects.create(owner=owner_profile)
+
+            # Log in the user immediately
+            login(request, user)
+
+            # Redirect to complete owner profile
             return redirect("create_owner_profile")
     else:
         form = RegisterForm()
@@ -58,14 +53,16 @@ def register(request):
 
 def login_view(request):
     """
-    Handle user login and redirect to appropriate page.
+    Handle user login and redirect to appropriate page based on profile
+    completion status.
 
     Args:
         request: HttpRequest object with POST/GET method for form submission.
 
     Returns:
-        HttpResponse with sign_in.html template or redirect to browse_dogs
-        or next URL if provided in query parameters.
+        HttpResponse with sign_in.html template or redirect to the appropriate
+        page based on completion flags (create_owner_profile, create_dog, or
+        browse_dogs).
     """
     if request.method == "POST":
         form = LoginForm(request=request, data=request.POST)
@@ -73,9 +70,33 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
 
-            # Respect ?next= from @login_required
-            next_url = request.GET.get("next")
-            return redirect(next_url) if next_url else redirect("browse_dogs")
+            # Check profile completion and redirect intelligently
+            try:
+                owner_profile = OwnerProfile.objects.get(user=user)
+
+                # If owner profile not completed, redirect there
+                if not owner_profile.completed:
+                    return redirect("create_owner_profile")
+
+                # If dog profile not completed, redirect there
+                if hasattr(owner_profile, "dog"):
+                    if not owner_profile.dog.completed:
+                        return redirect("create_dog")
+                else:
+                    # No dog profile exists, create and redirect
+                    return redirect("create_dog")
+
+                # All complete, proceed to browse or next URL
+                next_url = request.GET.get("next")
+                if next_url:
+                    return redirect(next_url)
+                return redirect("browse_dogs")
+
+            except OwnerProfile.DoesNotExist:
+                # No owner profile, create empty ones and redirect
+                owner_profile = OwnerProfile.objects.create(user=user)
+                Dog.objects.create(owner=owner_profile)
+                return redirect("create_owner_profile")
     else:
         form = LoginForm()
 

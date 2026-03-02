@@ -1,6 +1,5 @@
 from functools import wraps
 
-from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect
@@ -13,11 +12,7 @@ from profiles.models import OwnerProfile
 from .forms import DogForm
 from .models import Dog
 
-# Session key constants
-SESSION_REGISTRATION_EMAIL = "registration_email"
-SESSION_REGISTRATION_PASSWORD = "registration_password"
-SESSION_OWNER_PROFILE_ID = "owner_profile_id"
-SESSION_OWNER_PROFILE_PHOTO = "owner_profile_photo"
+# Session key constants for match modal
 SESSION_DOG_INDEX = "dog_index"
 SESSION_SHOW_MATCH_MODAL = "show_match_modal"
 SESSION_MATCH_DATA = "match_data"
@@ -41,56 +36,37 @@ def require_dog_profile(view_func):
     return wrapper
 
 
+@login_required
 def create_dog(request):
     """
-    Create a dog profile for the logged-in user during registration.
+    Complete the dog profile for the logged-in user during registration.
 
     Args:
         request: HttpRequest object with POST/GET method for form submission.
 
     Returns:
         HttpResponse with create_dog.html template or redirect to browse_dogs
-        after successful creation and login.
-
-    Raises:
-        Redirects to register if session data is missing.
+        after successful completion.
     """
-    # Check if we have session data from registration
-    if (
-        SESSION_REGISTRATION_EMAIL not in request.session
-        or SESSION_OWNER_PROFILE_ID not in request.session
-    ):
-        return redirect("register")
+    # Get owner profile and existing dog
+    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    if not owner_profile:
+        return redirect("create_owner_profile")
+
+    dog = Dog.objects.filter(owner=owner_profile).first()
+    if not dog:
+        # Should not happen, but create if missing
+        dog = Dog.objects.create(owner=owner_profile)
 
     if request.method == "POST":
-        form = DogForm(request.POST, request.FILES)
+        form = DogForm(request.POST, request.FILES, instance=dog)
         if form.is_valid():
-            # Get session data
-            owner_profile_id = request.session.get(SESSION_OWNER_PROFILE_ID)
-
-            # Use existing owner profile created during owner step
-            owner_profile = OwnerProfile.objects.get(id=owner_profile_id)
-            user = owner_profile.user
-
-            # Create Dog
             dog = form.save(commit=False)
-            dog.owner = owner_profile
+            dog.completed = True
             dog.save()
-
-            # Clean up session
-            del request.session[SESSION_REGISTRATION_EMAIL]
-            del request.session[SESSION_REGISTRATION_PASSWORD]
-            if SESSION_OWNER_PROFILE_ID in request.session:
-                del request.session[SESSION_OWNER_PROFILE_ID]
-            if SESSION_OWNER_PROFILE_PHOTO in request.session:
-                del request.session[SESSION_OWNER_PROFILE_PHOTO]
-
-            # Log in user
-            auth_login(request, user)
-
             return redirect("browse_dogs")
     else:
-        form = DogForm()
+        form = DogForm(instance=dog)
 
     return render(request, "dogs/create_dog.html", {"form": form})
 
