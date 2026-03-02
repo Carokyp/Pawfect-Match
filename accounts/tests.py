@@ -6,7 +6,7 @@ from .forms import RegisterForm, LoginForm, ForgotPasswordForm
 
 class RegisterFormTestCase(TestCase):
     """Test RegisterForm validation."""
-    
+
     def test_registration_valid_form(self):
         """Test valid registration form with proper email and password."""
         form_data = {
@@ -16,7 +16,7 @@ class RegisterFormTestCase(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertTrue(form.is_valid())
-    
+
     def test_registration_invalid_email(self):
         """Test registration form with invalid email format."""
         form_data = {
@@ -26,7 +26,7 @@ class RegisterFormTestCase(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertFalse(form.is_valid())
-    
+
     def test_registration_passwords_dont_match(self):
         """Test registration form with mismatched passwords."""
         form_data = {
@@ -36,7 +36,7 @@ class RegisterFormTestCase(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertFalse(form.is_valid())
-    
+
     def test_registration_weak_password_no_uppercase(self):
         """Test registration form with password missing uppercase letter."""
         form_data = {
@@ -46,7 +46,7 @@ class RegisterFormTestCase(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertFalse(form.is_valid())
-    
+
     def test_registration_weak_password_no_number(self):
         """Test registration form with password missing number."""
         form_data = {
@@ -56,7 +56,7 @@ class RegisterFormTestCase(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertFalse(form.is_valid())
-    
+
     def test_registration_weak_password_no_special_char(self):
         """Test registration form with password missing special character."""
         form_data = {
@@ -66,7 +66,7 @@ class RegisterFormTestCase(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertFalse(form.is_valid())
-    
+
     def test_registration_missing_email(self):
         """Test registration form with missing email."""
         form_data = {
@@ -76,7 +76,7 @@ class RegisterFormTestCase(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertFalse(form.is_valid())
-    
+
     def test_registration_missing_password(self):
         """Test registration form with missing password."""
         form_data = {
@@ -90,7 +90,7 @@ class RegisterFormTestCase(TestCase):
 
 class LoginFormTestCase(TestCase):
     """Test LoginForm validation."""
-    
+
     def setUp(self):
         """Create a test user for login tests."""
         User.objects.create_user(

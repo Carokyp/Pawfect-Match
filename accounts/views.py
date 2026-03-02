@@ -158,13 +158,12 @@ def logout_view(request):
     Handle user logout.
 
     Args:
-        request: HttpRequest object with POST method.
+        request: HttpRequest object with POST or GET method.
 
     Returns:
         Redirect to home page after logout.
     """
-    if request.method == "POST":
-        logout(request)
+    logout(request)
     return redirect("home")
 
 

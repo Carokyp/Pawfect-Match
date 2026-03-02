@@ -23,12 +23,12 @@
 {% block layout %}
   
   <!-- Hero section: primary call-to-action and value proposition -->
-  <section id="home" class="hero-section">
-    <figure class="hero-image-wrapper">
+  <section id="home" class="hero-section text-center d-flex flex-column flex-md-row">
+    <figure>
       <img class="hero-image" src="{% static 'images/couple_1300px.png' %}" alt="Happy couple cuddling with their dog">
     </figure>
-    <div class="hero-content">
-      <h1>Find Love Through Your Pet</h1>
+    <div class="hero-content px-2">
+      <h1 class="mb-3">Find Love Through Your Pet</h1>
       <p>Meet other pet lovers, help your furry friend make friends, and maybe find your perfect match along the way.</p>
       <div class="hero-buttons">
         <a href="{% url 'register' %}" class="btn-hero primary">Get Started</a>
@@ -40,71 +40,67 @@
   <!-- How it works section: step-by-step guide with 4 subsections with different colors -->
   
   <!-- Step 1: Browse and meet pet lovers -->
-  <section id="how-it-works" class="full-section how-it-works-section">
-    <article>
-      <div class="section-content-1">
-        <div class="section-text">
-          <h2>Find love with other pet lovers!</h2>
-          <p>Browse and meet new people where you can arrange a walk in the park or a coffee date</p>
-        </div>
-        <figure class="section-image-wrapper">
-          <img class="section-image" src="{% static 'images/section_1.png' %}" alt="People browsing profiles on their phones">
-        </figure>
+  <section id="how-it-works" class="full-section px-3 d-flex flex-column flex-md-row align-items-center text-center md-mt-3">
+    <div class="section-content mt-3">
+      <div class="section-text">
+        <h2 class="mb-3">Find love with other pet lovers!</h2>
+        <p>Browse and meet new people where you can arrange a walk in the park or a coffee date</p>
       </div>
-    </article>
+    </div>
+    <figure class="section-image-wrapper mt-md-3">
+      <img class="section-image img-size-1" src="{% static 'images/section_1.png' %}" alt="People browsing profiles on their phones">
+    </figure>
   </section>
 
   <!-- Step 2: Your pet is the icebreaker -->
-  <section class="full-section how-it-works-section">
-    <article>
-      <div class="section-content-2">
-        <div class="section-text">
-          <h2>Your Furry Friend Is The Icebreaker!</h2>
-          <p>Your pet's photo is seen first, making connections easier and more authentic. People connect through their shared love of animals.</p>
-        </div>
-        <figure class="section-image-wrapper">
-          <img class="section-image" src="{% static 'images/section_2.png' %}" alt="Dog profile cards showing a golden retriever and samoyed">
-        </figure>
+  <section class="full-section px-3 mt-3 d-flex flex-column text-center flex-md-row md-mt-3">
+    <figure class="section-image-wrapper mt-md-3">
+      <img class="section-image img-size-2" src="{% static 'images/section_2.png' %}"
+        alt="Dog profile cards showing a golden retriever and samoyed">
+    </figure>
+    <div class="section-content-2 my-3">
+      <div class="section-text">
+        <h2 class="mb-3">Your Furry Friend Is The Icebreaker!</h2>
+        <p>Your pet's photo is seen first, making connections easier and more authentic. People connect through their
+          shared love of animals.</p>
       </div>
-    </article>
+    </div>
   </section>
 
   <!-- Step 3: Preview owner profiles -->
-  <section class="full-section how-it-works-section">
-    <article>
-      <div class="section-content-3">
-        <div class="section-text">
-          <h2>Chances Are The Person Is As Likeable As Their Pet!</h2>
-          <p>Preview the owner before you give them a like to see them or keep browsing for more. Give a like when you find someone special!</p>
-        </div>
-        <figure class="section-image-wrapper">
-          <img class="section-image" src="{% static 'images/section_3.png' %}" alt="Owner profile previews showing potential matches">
-        </figure>
+  <section class="full-section px-3 d-flex flex-column text-center flex-md-row md-mt-3">
+    <div class="section-content-3 my-3 my-md-0 py-md-0">
+      <div class="section-text">
+        <h2 class="mb-3">Chances Are The Person Is As Likeable As Their Pet!</h2>
+        <p>Preview the owner before you give them a like to see them or keep browsing for more. Give a like when you find
+          someone special!</p>
       </div>
-    </article>
+    </div>
+    <figure class="section-image-wrapper">
+      <img class="section-image img-size-3" src="{% static 'images/section_3.png' %}"
+        alt="Owner profile previews showing potential matches">
+    </figure>
   </section>
 
   <!-- Step 4: Match and chat -->
-  <section class="full-section how-it-works-section">
-    <article>
-      <div class="section-content-4">
-        <div class="section-text">
-          <h2>See If You're A Match And Chat</h2>
-          <p>You both see possibilities. Chat to arrange your first date! Start your love story today.</p>
-        </div>
-        <figure class="section-image-wrapper">
-          <img class="section-image" src="{% static 'images/section_4.png' %}" alt="Match notification screen and chat interface">
-        </figure>
+  <section class="full-section px-3 my-3 d-flex flex-column align-items-center text-center flex-md-row md-mt-3">
+    <figure class="section-image-wrapper">
+      <img class="section-image img-size-4" src="{% static 'images/section_4.png' %}"
+        alt="Match notification screen and chat interface">
+    </figure>
+    <div class="section-content-4 mt-3">
+      <div class="section-text">
+        <h2 class="mb-3">See If You're A Match And Chat</h2>
+        <p>You both see possibilities. Chat to arrange your first date! Start your love story today.</p>
       </div>
-    </article>
+    </div>
   </section>
 
   <!-- Benefits section: why choose Pawfect Match -->
-  <section id="why" class="why-section">
-    <div class="why-content">
-      
+  <section id="why" class="why-section p-3">
+    <div class="why-content text-center my-3">
       <!-- Section header -->
-      <header class="why-header">
+      <header class="why-header mb-3">
         <h2>Why Pawfect Match?</h2>
         <p>Meet single parents looking for connection and playdates for their dogs</p>
       </header>

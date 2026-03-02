@@ -94,7 +94,7 @@ DATABASES = {
 }
 
 # Authentication
-LOGIN_URL = "/accounts/sign-in/"
+LOGIN_URL = "/sign-in/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
