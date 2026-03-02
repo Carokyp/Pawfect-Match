@@ -549,21 +549,13 @@ a:visited {
   text-decoration: underline;
 }
 
-/* --- Password Reset Success --- */
+/* --- Password Reset Success image--- */
 .success-image img {
   width: 150px;
   height: 150px;
   object-fit: cover;
   box-shadow: var(--shadow);
   border-radius: 50%;
-}
-
-.success-text p{
-  color: var(--text-dark);
-}
-
-.success-text h1{
-  font-size: 1.3rem !important;
 }
 
 /* --- Owner profile form layout --- */
@@ -2155,14 +2147,6 @@ body.modal-open {
   /* Hide mobile success image on tablet+ */
   .success-image {
     display: none;
-  }
-
-  .success-text h1 {
-    font-size: 1.75rem !important;
-  }
-
-  .success-text p {
-    font-size: 1rem;
   }
 
   /* Auth form button typography for tablet */
