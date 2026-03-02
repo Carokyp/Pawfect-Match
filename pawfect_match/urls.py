@@ -20,6 +20,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import (
     home,
+    register,
+    login_view,
     test_404,
     test_500,
     test_403,
@@ -29,6 +31,8 @@ from accounts.views import (
 
 urlpatterns = [
     path("", home, name="home"),
+    path("register/", register, name="register"),
+    path("sign-in/", login_view, name="sign_in"),
     path("404-page/", test_404, name="test_404"),
     path("500-page/", test_500, name="test_500"),
     path("403-page/", test_403, name="test_403"),

@@ -25,26 +25,62 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            # Create User
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
-            user = User.objects.create_user(
-                username=email,
-                email=email,
-                password=password
-            )
 
-            # Create empty OwnerProfile (completed=False by default)
-            owner_profile = OwnerProfile.objects.create(user=user)
+            # Check if user already exists (incomplete registration)
+            existing_user = User.objects.filter(username=email).first()
 
-            # Create empty Dog (completed=False by default)
-            Dog.objects.create(owner=owner_profile)
+            if existing_user:
+                # User exists but didn't complete registration
+                # Just log them in and redirect to appropriate step
+                login(request, existing_user)
 
-            # Log in the user immediately
-            login(request, user)
+                # Check where they left off
+                owner_profile = OwnerProfile.objects.filter(
+                    user=existing_user
+                ).first()
 
-            # Redirect to complete owner profile
-            return redirect("create_owner_profile")
+                if not owner_profile:
+                    # No owner profile, create empty ones
+                    owner_profile = OwnerProfile.objects.create(
+                        user=existing_user
+                    )
+                    Dog.objects.create(owner=owner_profile)
+                    return redirect("create_owner_profile")
+
+                if not owner_profile.completed:
+                    return redirect("create_owner_profile")
+
+                if hasattr(owner_profile, "dog"):
+                    if not owner_profile.dog.completed:
+                        return redirect("create_dog")
+                else:
+                    # No dog, create empty one
+                    Dog.objects.create(owner=owner_profile)
+                    return redirect("create_dog")
+
+                # Everything completed, go to browse
+                return redirect("browse_dogs")
+            else:
+                # New user - create everything
+                user = User.objects.create_user(
+                    username=email,
+                    email=email,
+                    password=password
+                )
+
+                # Create empty OwnerProfile (completed=False by default)
+                owner_profile = OwnerProfile.objects.create(user=user)
+
+                # Create empty Dog (completed=False by default)
+                Dog.objects.create(owner=owner_profile)
+
+                # Log in the user immediately
+                login(request, user)
+
+                # Redirect to complete owner profile
+                return redirect("create_owner_profile")
     else:
         form = RegisterForm()
 

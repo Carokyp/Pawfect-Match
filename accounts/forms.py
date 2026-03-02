@@ -186,23 +186,28 @@ class RegisterForm(forms.Form):
             str. The validated email address.
 
         Raises:
-            ValidationError if email is already registered with a dog profile.
+            ValidationError if email is already registered with completed
+            profiles.
         """
         email = self.cleaned_data["email"]
         existing_user = User.objects.filter(username=email).first()
         if existing_user:
+            # Check if user has completed their registration
             owner_profile = OwnerProfile.objects.filter(
                 user=existing_user
             ).first()
-            has_dog = False
-            if owner_profile:
-                has_dog = hasattr(owner_profile, "dog")
-
-            # Allow resume if owner exists without dog
-            if has_dog:
-                raise forms.ValidationError(
-                    "An account with this email already exists."
-                )
+            
+            # Allow registration if no owner profile exists (shouldn't happen)
+            if not owner_profile:
+                return email
+            
+            # Block registration if both owner and dog profiles are completed
+            if owner_profile.completed:
+                if hasattr(owner_profile, "dog") and owner_profile.dog.completed:
+                    raise forms.ValidationError(
+                        "An account with this email already exists. "
+                        "Please sign in instead."
+                    )
         return email
 
     def clean_password(self):
