@@ -1693,6 +1693,7 @@ body.modal-open {
 .conversations-list {
   display: flex;
   flex-direction: column;
+  overscroll-behavior: contain;
 }
 
 .conversation-item {
@@ -2661,6 +2662,7 @@ body.modal-open {
 
   .messages-inbox-panel {
     overflow-y: auto;
+    overscroll-behavior: contain;
     border-right: 1px solid #e0e0e0;
   }
 
@@ -2685,6 +2687,7 @@ body.modal-open {
   .messages-thread-panel .messages-thread {
     flex: 1;
     overflow-y: auto;
+    overscroll-behavior: contain;
     min-height: 0;
   }
 
