@@ -62,6 +62,60 @@ a:visited {
 
 /* #endregion */
 
+/* #region NAVBAR */
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--orange-100);
+  z-index: 1000;
+}
+
+.navbar .navbar-brand {
+  font-weight: 800;
+  font-size: 1.2rem;
+  background: var(--orange-500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar .nav-link {
+  color: var(--orange-500);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+  margin-left: 0;
+  padding: 0.5rem 0 !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:active,
+.navbar .nav-link:focus,
+.navbar .nav-link.active {
+  color: var(--orange-900);
+}
+
+.navbar .nav-link.active {
+  font-weight: 800;
+}
+
+.navbar .navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.75rem;
+}
+
+.navbar .navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E85D1F' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+/* #endregion */
+
 /* #region HOME PAGE */
 
 /* HERO */
@@ -201,61 +255,6 @@ a:visited {
 
 .auth-content p {
   font-size: 0.8rem;
-}
-
-/* #endregion */
-
-/* #region NAVBAR */
-.navbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: var(--orange-100);
-  z-index: 1000;
-}
-
-.navbar .navbar-brand {
-  font-weight: 800;
-  font-size: 1.2rem;
-  background: var(--orange-500);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.navbar .nav-link {
-  color: var(--orange-500);
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.3s ease;
-  margin-left: 0;
-  padding: 0.5rem 0 !important;
-}
-
-.navbar .nav-link:hover,
-.navbar .nav-link:active,
-.navbar .nav-link:focus,
-.navbar .nav-link.active {
-  color: var(--orange-900);
-}
-
-.navbar .nav-link.active {
-  font-weight: 800;
-}
-
-.navbar .navbar-toggler {
-  border: none;
-  padding: 0.25rem 0.75rem;
-}
-
-.navbar .navbar-toggler:focus {
-  box-shadow: none;
-  outline: none;
-}
-
-.navbar .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E85D1F' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 /* #endregion */
@@ -2584,23 +2583,64 @@ body.modal-open {
 
 /* Extra Large: 1400px+ */
 @media (min-width: 1400px) { 
-  .section-content-4 img {
-    width: 70%;
-    display: block;
-    margin: 0 auto;
+
+  .navbar .nav-link {
+    font-size: 1.5rem;
   }
 
   .hero-section {
-    padding: 5.5rem 1rem 0;
-  }
-  
-  .hero-section img {
-    width: 80%;
-    display: block;
-    margin: 0 auto;
+    padding-top: 5rem;
   }
 
-  /* Increase profile card font sizes on extra large screens */
+  .hero-content h1 {
+    font-size: 3.5rem;
+  }
+
+  .hero-content p {
+    font-size: 1.5rem;
+  }
+
+  .hero-buttons a {
+    font-size: 1.25rem;
+  }
+
+  .section-text h2,
+  .section-text h2,
+  .section-text h2, 
+  .section-text h2, 
+  .why-header h2 {
+    font-size: 2.5rem;
+  }
+
+  .section-text p,
+  .section-text p,
+  .section-text p,
+  .section-text p,
+  .why-header p,
+  .why-card p {
+    font-size: 1.5rem;
+  }
+
+  .full-section {
+    gap: 4rem;
+  }
+
+  .img-size-1 {
+    width: 700px;
+    height: 350px;
+  }
+
+  .img-size-2,
+  .img-size-3{
+    width: 640px;
+    height: 480px;
+  }
+
+  .img-size-4 {
+    width: 580px;
+    height: 560px;
+  }
+
   .profile-card .image-overlay h2 {
     font-size: 2rem;
   }
@@ -2626,36 +2666,6 @@ body.modal-open {
     font-size: 0.9rem;
   }
 
-  .section-content-1 .section-text h2,
-  .section-content-2 .section-text h2,
-  .section-content-3 .section-text h2,
-  .section-content-4 .section-text h2{
-    font-size: 2.2rem;
-  }
-
-  .section-content-1 .section-text p,
-  .section-content-2 .section-text p,
-  .section-content-3 .section-text p,
-  .section-content-4 .section-text p {
-    font-size: 1.5rem;
-  }
-
-  .why-header h2 {
-    font-size: 2.2rem;
-  }
-  .why-header p {
-    font-size: 1.5rem;
-  }
-
-  .why-card h3 {
-    font-size: 1.5rem;
-  }
-
-   .why-card p {
-    font-size: 1.25rem;
-    
-  }
-
   .auth-content.form-page {
     padding-top: 35px;
   }
@@ -2670,6 +2680,26 @@ body.modal-open {
 }
 
 @media (min-width: 1800px) {
+
+  .navbar .nav-link {
+    font-size: 1.9rem;
+  }
+
+  .img-size-1 {
+    width: 760px;
+    height: 380px;
+  }
+
+  .img-size-2,
+  .img-size-3{
+    width: 720px;
+    height: 540px;
+  }
+
+  .img-size-4 {
+    width: 650px;
+    height: 630px;
+  }
 
   .profile-page > .profile-card-view {
     align-self: stretch;
