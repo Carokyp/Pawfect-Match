@@ -1682,10 +1682,12 @@ body.modal-open {
 
 .messages-inbox-panel {
   width: 100%;
+  overflow: hidden;
 }
 
 .messages-thread-panel {
   display: none; /* Hidden on mobile/tablet */
+  overflow: hidden;
 }
 
 .conversations-list {
@@ -1857,10 +1859,10 @@ body.modal-open {
   flex-direction: column;
   gap: 0.75rem;
   padding: 1rem;
-  min-height: 300px;
-  max-height: calc(100vh - 300px);
   overflow-y: auto;
   background: #ffffff;
+  flex: 1;
+  max-height: 100%;
 }
 
 .message-row {
@@ -1945,7 +1947,23 @@ body.modal-open {
 .empty-thread{
   display: flex;
   justify-content: center;
-  color: #999;
+  align-items: center;
+  flex: 1;
+}
+
+.empty-conversations-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.empty-state-text {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin: 0;
+  text-align: center;
 }
 
 .message-input {
@@ -2645,6 +2663,7 @@ body.modal-open {
     flex-direction: column;
     height: 100%;
     background: #fff;
+    overflow: hidden;
   }
 
   .messages-thread-panel .message-header {
@@ -2656,6 +2675,7 @@ body.modal-open {
   .messages-thread-panel .messages-thread {
     flex: 1;
     overflow-y: auto;
+    min-height: 0;
   }
 
   .messages-thread-panel .message-form-container {

@@ -570,6 +570,20 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    // Handle Enter key to send message (Shift+Enter for new line)
+    const messageTextarea = document.querySelector('#message-form textarea');
+    if (messageTextarea) {
+      messageTextarea.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          const form = this.closest('form');
+          if (form) {
+            form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+          }
+        }
+      });
+    }
+
     // Handle message form submission via AJAX on desktop
     const messageForm = document.getElementById('message-form');
     if (messageForm) {
@@ -581,6 +595,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const formData = new FormData(this);
           const receiverDogId = document.getElementById('receiver-dog-id').value;
+          const messagesContainer = document.getElementById('messages-thread');
+          const isFirstMessage = messagesContainer.querySelector('.message-row') === null;
 
           fetch(`/messages/send/${receiverDogId}/`, {
             method: 'POST',
@@ -593,24 +609,28 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(response => response.json())
           .then(data => {
             if (data.success) {
-              // Append new message to thread
-              const messagesContainer = document.getElementById('messages-thread');
-              const messageRow = document.createElement('div');
-              messageRow.className = 'message-row sent';
-
-              messageRow.innerHTML = `
-                <div class="message-bubble">
-                  <p class="message-content">${data.message.content}</p>
-                  <span class="message-time">${data.message.time}</span>
-                </div>
-                <img class="message-avatar" src="${myDogAvatar}" alt="${myDogName}">
-              `;
-
-              messagesContainer.appendChild(messageRow);
-              messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-              // Clear textarea after successful send
-              this.querySelector('textarea').value = '';
+              if (isFirstMessage) {
+                // First message: reload to show conversation in sidebar
+                window.location.reload();
+              } else {
+                // Append message without reload
+                const messageRow = document.createElement('div');
+                messageRow.className = 'message-row sent';
+                messageRow.innerHTML = `
+                  <div class="message-bubble">
+                    <p class="message-content">${data.message.content}</p>
+                    <span class="message-time">${data.message.time}</span>
+                  </div>
+                  <img class="message-avatar" src="${myDogAvatar}" alt="${myDogName}">
+                `;
+                messagesContainer.appendChild(messageRow);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Clear and refocus textarea
+                const textarea = this.querySelector('textarea');
+                textarea.value = '';
+                textarea.focus();
+              }
             }
           });
         }
@@ -620,6 +640,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const firstConversation = document.querySelector('.conversation-item');
     if (firstConversation) {
       firstConversation.classList.add('active');
+    }
+
+    // Auto-scroll to bottom of messages on page load
+    const messagesThread = document.getElementById('messages-thread');
+    if (messagesThread) {
+      messagesThread.scrollTop = messagesThread.scrollHeight;
+    }
+
+    // Auto-focus textarea on page load (desktop only)
+    if (window.innerWidth >= 992 && messageTextarea) {
+      messageTextarea.focus();
     }
   };
 

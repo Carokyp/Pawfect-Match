@@ -44,7 +44,7 @@
     <h1 class="page-title">MESSAGES</h1>
   </header>
 
-  {% if conversations %}
+  {% if conversations or first_receiver_dog %}
   <!-- Messages split layout: inbox list + desktop thread preview -->
   <section class="messages-container-card"
       data-my-dog-name="{{ my_dog.name }}"
@@ -53,6 +53,7 @@
       <!-- Inbox list panel -->
       <section class="messages-inbox-panel" aria-label="Conversations list">
         <div class="conversations-list">
+          {% if conversations %}
           {% for conversation in conversations %}
           <article class="conversation-item" data-dog-id="{{ conversation.dog.id }}">
             <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
@@ -82,10 +83,17 @@
             </a>
           </article>
           {% endfor %}
+          {% else %}
+          <!-- Empty state for conversation list -->
+          <div class="empty-conversations-list">
+            <p class="empty-state-text">Your conversations will appear here</p>
+          </div>
+          {% endif %}
         </div>
       </section>
 
       <!-- Thread preview panel (desktop only) -->
+      {% if first_receiver_dog %}
       <section class="messages-thread-panel" aria-label="Conversation preview">
         <header class="message-header">
           <div class="receiver-avatar">
@@ -129,7 +137,7 @@
             {% endfor %}
           {% else %}
             <div class="empty-thread">
-              <p>No messages yet. Send your first message!</p>
+              <p class="empty-state-text">Start your conversation with {{ first_receiver_dog.name }}! 🐾</p>
             </div>
           {% endif %}
         </section>
@@ -145,6 +153,7 @@
           </footer>
         {% endif %}
       </section>
+      {% endif %}
     </div>
   </section>
   {% else %}

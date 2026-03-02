@@ -209,7 +209,7 @@
       <!-- Match modal actions -->
       <div class="match-actions">
         <a class="btn-hero secondary" href="{% url 'matches_list' %}">View Matches</a>
-        <a class="btn-hero primary" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
+        <a class="btn-hero primary" href="{% url 'messages_inbox_with_dog' match_popup.other_dog_id %}">Send Message</a>
       </div>
     </div>
   </aside>

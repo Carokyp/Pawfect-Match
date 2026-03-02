@@ -27,17 +27,19 @@ def get_user_dog(request, redirect_to="browse_dogs"):
 
 
 @login_required
-def messages_inbox(request):
+def messages_inbox(request, dog_id=None):
     """
     Display the messaging inbox with all conversations.
 
     Args:
         request: HttpRequest object with POST/GET method for message
             submission.
+        dog_id: Optional int. If provided, preselect conversation with
+            this dog.
 
     Returns:
         HttpResponse with inbox.html template showing conversation list and
-        first conversation messages. For POST requests, redirects to
+        selected conversation messages. For POST requests, redirects to
         messages_inbox after sending message.
     """
     my_dog, error = get_user_dog(request)
@@ -82,14 +84,26 @@ def messages_inbox(request):
         reverse=True
     )
 
-    # Load first conversation for desktop split view
+    # Load conversation for desktop split view
+    # If dog_id provided, use that; otherwise use first conversation
     first_receiver_dog = None
     first_messages = []
     form = None
     is_match = False
 
-    if conversations_list:
+    if dog_id:
+        # Find conversation with specific dog
+        for conv in conversations_list:
+            if conv["dog"].id == dog_id:
+                first_receiver_dog = conv["dog"]
+                break
+        # If not in conversations yet, try to get the dog directly
+        if not first_receiver_dog:
+            first_receiver_dog = Dog.objects.filter(id=dog_id).first()
+    elif conversations_list:
         first_receiver_dog = conversations_list[0]["dog"]
+
+    if first_receiver_dog:
 
         # Check if it's a match
         is_match = Connection.objects.filter(
@@ -99,6 +113,8 @@ def messages_inbox(request):
             from_dog=first_receiver_dog,
             to_dog=my_dog
         ).exists()
+
+        form = MessageForm()
 
         # Get messages for first conversation
         messages = Message.objects.filter(
@@ -121,8 +137,6 @@ def messages_inbox(request):
                 "sender_name": msg.sender_dog.name,
             })
 
-        form = MessageForm()
-
     # Handle message sending from inbox
     if request.method == "POST" and first_receiver_dog:
         form = MessageForm(request.POST)
@@ -131,7 +145,10 @@ def messages_inbox(request):
             message.sender_dog = my_dog
             message.receiver_dog = first_receiver_dog
             message.save()
-            return redirect("messages_inbox")
+            return redirect(
+                "messages_inbox_with_dog",
+                dog_id=first_receiver_dog.id
+            )
 
     context = {
         "conversations": conversations_list,
