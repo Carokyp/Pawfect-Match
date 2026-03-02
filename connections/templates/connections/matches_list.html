@@ -156,7 +156,8 @@
         
         <!-- Message button to start conversation -->
         <footer class="message-btn">
-          <a href="{% url 'messages_inbox_with_dog' match.dog.id %}" class="btn-hero primary">Message</a>
+          <a href="{% url 'message_thread' match.dog.id %}" class="btn-hero primary d-lg-none">Message</a>
+          <a href="{% url 'messages_inbox_with_dog' match.dog.id %}" class="btn-hero primary d-none d-lg-block">Message</a>
         </footer>
         
       </article>

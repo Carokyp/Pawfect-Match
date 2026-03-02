@@ -495,9 +495,19 @@ document.addEventListener("DOMContentLoaded", () => {
    * and maintains active conversation state.
    * @returns {void}
    */
+  /**
+   * Setup messaging inbox functionality for desktop split-view.
+   * Handles conversation selection via AJAX, message loading, and form submission.
+   * Only activates on desktop screens (992px+) to avoid conflicts with mobile thread view.
+   * @returns {void}
+   */
   const setupMessagesInbox = () => {
     const inboxCard = document.querySelector('.messages-container-card');
     if (!inboxCard) return;
+
+    // Prevent duplicate listener attachment
+    if (inboxCard._messagesInboxListenerAttached) return;
+    inboxCard._messagesInboxListenerAttached = true;
 
     const myDogAvatar = inboxCard.dataset.myDogAvatar || '';
     const myDogName = inboxCard.dataset.myDogName || 'You';
@@ -572,7 +582,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle Enter key to send message (Shift+Enter for new line)
     const messageTextarea = document.querySelector('#message-form textarea');
-    if (messageTextarea) {
+    if (messageTextarea && !messageTextarea._enterKeyListenerAttached && window.innerWidth >= 992) {
+      messageTextarea._enterKeyListenerAttached = true;
       messageTextarea.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
@@ -586,7 +597,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle message form submission via AJAX on desktop
     const messageForm = document.getElementById('message-form');
-    if (messageForm) {
+    if (messageForm && !messageForm._messagesInboxSubmitListenerAttached && window.innerWidth >= 992) {
+      messageForm._messagesInboxSubmitListenerAttached = true;
       messageForm.addEventListener('submit', function (e) {
         const threadPanel = document.querySelector('.messages-thread-panel');
         // Only use AJAX submission on desktop split-view
@@ -616,12 +628,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Append message without reload
                 const messageRow = document.createElement('div');
                 messageRow.className = 'message-row sent';
+                
+                // Use avatar from response if available, otherwise fall back to stored value
+                const avatarSrc = data.message.avatar || myDogAvatar;
+                
                 messageRow.innerHTML = `
                   <div class="message-bubble">
                     <p class="message-content">${data.message.content}</p>
                     <span class="message-time">${data.message.time}</span>
                   </div>
-                  <img class="message-avatar" src="${myDogAvatar}" alt="${myDogName}">
+                  <img class="message-avatar" src="${avatarSrc}" alt="${myDogName}">
                 `;
                 messagesContainer.appendChild(messageRow);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -650,6 +666,112 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Auto-focus textarea on page load (desktop only)
     if (window.innerWidth >= 992 && messageTextarea) {
+      messageTextarea.focus();
+    }
+  };
+
+  /* ===============================
+     MESSAGE THREAD (Mobile)
+     =============================== */
+
+  /**
+   * Setup message thread functionality for mobile/tablet messaging.
+   * Handles Enter key to send messages, AJAX form submission, and auto-scroll.
+   * Only activates on small screens (below 992px) and when on the thread.html page.
+   * Mutually exclusive with setupMessagesInbox to prevent duplicate message sending.
+   * @returns {void}
+   */
+  const setupMessageThread = () => {
+    const messageForm = document.getElementById('message-form');
+    const receiverDogIdInput = document.getElementById('receiver-dog-id');
+    
+    // Only run on mobile thread page (has receiver-dog-id input) and only on small screens
+    if (!receiverDogIdInput || window.innerWidth >= 992) return;
+
+    // Prevent duplicate listener attachment
+    if (messageForm._messageThreadListenerAttached) return;
+    messageForm._messageThreadListenerAttached = true;
+
+    const messagesContainer = document.getElementById('messages-thread');
+    if (!messagesContainer) return;
+
+    // Get dog info from page data attributes for message display
+    const threadPageEl = document.querySelector('.message-thread-page');
+    const myDogName = threadPageEl?.dataset.myDogName || 'You';
+    const myDogAvatar = threadPageEl?.dataset.myDogAvatar || '';
+
+    // Handle Enter key to send message (Shift+Enter for new line)
+    const messageTextarea = messageForm?.querySelector('textarea');
+    if (messageTextarea) {
+      messageTextarea.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          const form = this.closest('form');
+          if (form) {
+            form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+          }
+        }
+      });
+    }
+
+    // Handle message form submission via AJAX
+    if (messageForm) {
+      messageForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const receiverDogId = receiverDogIdInput.value;
+        const isFirstMessage = messagesContainer.querySelector('.message-row') === null;
+
+        fetch(`/messages/send/${receiverDogId}/`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            if (isFirstMessage) {
+              // First message: reload to show conversation in sidebar
+              window.location.reload();
+            } else {
+              // Append message without reload
+              const messageRow = document.createElement('div');
+              messageRow.className = 'message-row sent';
+              
+              // Use avatar from response if available, otherwise fall back to stored value
+              const avatarSrc = data.message.avatar || myDogAvatar;
+              
+              messageRow.innerHTML = `
+                <div class="message-bubble">
+                  <p class="message-content">${data.message.content}</p>
+                  <span class="message-time">${data.message.time}</span>
+                </div>
+                <img class="message-avatar" src="${avatarSrc}" alt="${myDogName}">
+              `;
+              messagesContainer.appendChild(messageRow);
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+              
+              // Clear and refocus textarea
+              messageTextarea.value = '';
+              messageTextarea.focus();
+            }
+          }
+        })
+        .catch(error => console.error('Error sending message:', error));
+      });
+    }
+
+    // Auto-scroll to bottom of messages on page load
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Auto-focus textarea on page load
+    if (messageTextarea) {
       messageTextarea.focus();
     }
   };
@@ -698,24 +820,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Confirm delete - submit form to backend
+    // Confirm delete - submit via AJAX to backend
     const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
     if (confirmDeleteBtn) {
       confirmDeleteBtn.addEventListener('click', () => {
         if (selectedDogId) {
-          // Create and submit form dynamically
-          const form = document.createElement('form');
-          form.method = 'POST';
-          form.action = `/messages/delete/${selectedDogId}/`;
+          // Get CSRF token
+          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
           
-          // Add CSRF token for security
-          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-          if (csrfToken) {
-            form.appendChild(csrfToken.cloneNode());
-          }
-          
-          document.body.appendChild(form);
-          form.submit();
+          // Submit delete request via fetch
+          fetch(`/messages/delete/${selectedDogId}/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': csrfToken || '',
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              // Redirect to inbox after successful delete
+              window.location.href = '/messages/';
+            }
+          })
+          .catch(error => console.error('Error deleting conversation:', error));
         }
       });
     }
@@ -871,6 +998,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupPillOptions();
     setupResetMatches();
     setupMessagesInbox();
+    setupMessageThread();
     setupDeleteConversation();
     setupDeleteMatch();
     setupDeleteProfile();

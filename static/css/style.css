@@ -1816,6 +1816,14 @@ body.modal-open {
 /* --- Message Thread --- */
 .message-thread-page {
   padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh;
+}
+
+.message-thread-page .page-header {
+  flex-shrink: 0;
 }
 
 .message-header {
@@ -1825,6 +1833,7 @@ body.modal-open {
   padding: 1.5rem;
   background: #f9f9f9;
   border-radius: 0;
+  flex-shrink: 0;
 }
 
 .receiver-avatar {
@@ -1936,6 +1945,7 @@ body.modal-open {
   padding: 1rem;
   background: #f9f9f9;
   border-top: 1px solid #eee;
+  flex-shrink: 0;
 }
 
 .message-form {
@@ -1960,7 +1970,7 @@ body.modal-open {
 
 .empty-state-text {
   color: var(--text-light);
-  font-size: 0.9rem;
+  font-size: 0.9rem !important;
   opacity: 0.7;
   margin: 0;
   text-align: center;

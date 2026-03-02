@@ -276,12 +276,18 @@ def send_message(request, dog_id):
 
         # If AJAX request, return JSON response
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            # Get avatar URL for the sent message
+            avatar_url = None
+            if my_dog.profile_photo:
+                avatar_url = my_dog.get_photo_url()
+            
             return JsonResponse({
                 "success": True,
                 "message": {
                     "content": message.content,
                     "time": message.created_at.strftime("%I:%M %p"),
-                    "is_sent": True
+                    "is_sent": True,
+                    "avatar": avatar_url
                 }
             })
 

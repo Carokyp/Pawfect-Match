@@ -12,7 +12,9 @@
 
 {% block content %}
 
-<div class="discover-page message-thread-page">
+<div class="discover-page message-thread-page"
+    data-my-dog-name="{{ my_dog.name }}"
+    data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
   <!-- Messages page title -->
   <header class="page-header">
     <h1 class="page-title">MESSAGES</h1>
@@ -34,7 +36,7 @@
   </header>
 
   <!-- Conversation messages -->
-  <section class="messages-thread" aria-live="polite">
+  <section class="messages-thread" id="messages-thread" aria-live="polite">
     {% if messages %}
       {% for item in messages %}
         <div class="message-row {% if item.is_sent %}sent{% else %}received{% endif %}">
@@ -62,7 +64,7 @@
       {% endfor %}
     {% else %}
       <div class="empty-thread">
-        <p>No messages yet. Send your first message!</p>
+        <p class="empty-state-text">Start your conversation with {{ receiver_dog.name }}! 🐾</p>
       </div>
     {% endif %}
   </section>
@@ -70,8 +72,9 @@
   <!-- Message composer (only for matched dogs) -->
   {% if is_match %}
     <footer class="message-form-container">
-      <form method="POST" class="message-form">
+      <form method="POST" class="message-form" id="message-form">
         {% csrf_token %}
+        <input type="hidden" id="receiver-dog-id" value="{{ receiver_dog.id }}">
         {{ form.content }}
         <button type="submit" class="send-msg btn-secondary">Send</button>
       </form>
