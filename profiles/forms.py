@@ -133,9 +133,15 @@ class OwnerProfileForm(forms.ModelForm):
 
         if photo:
             # Strict file size validation (9.5 MB to have some buffer)
+            # Some storage backends (e.g., CloudinaryResource) don't expose
+            # a local `.size` attribute, so validate size only when available.
             MAX_FILE_SIZE_BYTES = 9.5 * 1024 * 1024
-            if photo.size > MAX_FILE_SIZE_BYTES:
-                size_mb = photo.size / (1024 * 1024)
+            photo_size = getattr(photo, "size", None)
+            if (
+                isinstance(photo_size, (int, float))
+                and photo_size > MAX_FILE_SIZE_BYTES
+            ):
+                size_mb = photo_size / (1024 * 1024)
                 raise ValidationError(
                     f"File too large ({size_mb:.1f} MB). "
                     "Maximum size is 9.5 MB. "

@@ -510,6 +510,7 @@ a:visited {
 
 .form-page-container {
   color: var(--orange-500);
+  padding: 4rem 0;
 }
 
 .form-page-image {
@@ -782,7 +783,6 @@ textarea {
   margin-top: 0.35rem;
 }
 
-/*CHECK CODE TO CHECK*/
 /* --- Django Error Style --- */
 .errorlist {
   list-style: none;
@@ -790,6 +790,7 @@ textarea {
   margin: 0.75rem 0;
 }
 
+/* Style individual error messages with a red background and border */
 .errorlist li {
   color: #c73636;
   font-size: 0.8rem;

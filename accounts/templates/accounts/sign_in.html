@@ -21,7 +21,7 @@
         <p>Welcome back! Log in to continue.</p>
 
         <!-- Sign in form -->
-        <form method="post" action="{% url 'sign_in' %}" class="auth-form" novalidate>
+        <form method="post" action="{% url 'sign_in' %}" class="auth-form">
           {% csrf_token %}
 
           {{ form.non_field_errors }}

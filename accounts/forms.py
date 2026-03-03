@@ -203,7 +203,9 @@ class RegisterForm(forms.Form):
             
             # Block registration if both owner and dog profiles are completed
             if owner_profile.completed:
-                if hasattr(owner_profile, "dog") and owner_profile.dog.completed:
+                has_dog = hasattr(owner_profile, "dog")
+                dog_completed = has_dog and owner_profile.dog.completed
+                if dog_completed:
                     raise forms.ValidationError(
                         "An account with this email already exists. "
                         "Please sign in instead."
