@@ -226,6 +226,11 @@ a:visited {
   padding: 0 1rem;
 }
 
+.auth-content.create-owner{
+  min-height: 100vh;
+  padding: 5rem 1rem;
+}
+
 .auth-content.discover-page-wrapper {
   text-align: left;
   padding: 0;
@@ -576,33 +581,213 @@ a:visited {
   border-radius: 50%;
 }
 
-/* --- Owner profile form layout --- */
-.owner-profile-form {
-  max-width: 320px;
+/*----CODE TO CHECK--*
+
+/* --- Create Owner and Dog Profile Forms --- */
+
+h1.form-title {
+  font-size: 1.3rem !important;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+/* --- Image Upload Box --- */
+
+/* The upload box is a square area with dashed border, rounded corners, and a hover effect */
+.upload-box {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 2px dashed #ccc;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+/* Hover effect for upload box */
+.upload-box:hover {
+  background: var(--orange-100);
+  border-color: var(--orange-300);
+}
+/* The file input is hidden but covers the entire upload box to capture clicks */
+.upload-box input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
-.owner-profile-split {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.upload-placeholder {
+  color: #999;
+  font-size: 0.9rem;
 }
-
-.owner-profile-photo {
+/* Add a plus icon using a pseudo-element */
+.upload-placeholder::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 40px;
+  color: #999;
+  margin: 0 auto 0.35rem auto;
+  background: center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
+}
+/* Image preview is hidden by default, shown when an image is present */
+.image-preview {
+  display: none;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+/* When an image is present, hide the placeholder and show the preview */
+.upload-box.has-image .upload-placeholder {
+  display: none;
+}
+
+/* Show the image preview when an image is present */
+.upload-box.has-image .image-preview {
+  display: block;
+}
+
+/* Remove button appears when an image is present */
+.upload-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 18px;
+  display: none;
+}
+/* Show the remove button when an image is present */
+.upload-box.has-image .upload-remove {
+  display: inline-flex;
+}
+
+.owner-create-profile{
+  gap: 1.5rem;
 }
 
 .owner-profile-fields {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.75rem;
 }
 
-.owner-profile-interests,
-.owner-profile-about {
+/* --- Interests --- */
+
+/* Pill-style multi-select options for interests */
+.pill-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+/* Each pill option is a label that contains a hidden checkbox and a styled span for the pill appearance */
+.pill-option {
+  position: relative;
+  cursor: pointer;
+}
+/* The checkbox input is hidden but still captures clicks on the label */
+.pill-option input {
+  position: absolute;
+  opacity: 0;
+}
+/* When the checkbox is checked, style the adjacent span to look like a selected pill */
+.pill-option input:checked+span {
+  background: var(--orange-200);
+  border-color: var(--orange-200);
+  color: var(--orange-900);
+}
+/* The span inside the pill option is styled to look like a pill-shaped button */
+.pill-option span {
+  display: block;
   width: 100%;
+  text-align: center;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid #999;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  background: #fff;
+}
+/* Disables non-selected pills when max selection (3) is reached */
+.pill-option.is-disabled span {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Helper text below the pill options */
+.pill-helper {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* --- About me input--- */
+.form-field input,
+.form-field textarea,
+.form-field select {
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  border: 2px solid #999;
+  background: #ffffff;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Custom dropdown arrow for select fields */
+.form-field select,
+.form-field select:focus{
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.25rem center;
+  padding-right: 3rem;
+}
+
+/* Remove default focus outline and background change on focus */
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  outline: none; 
+}
+
+/* Textarea specific styles */
+textarea {
+  resize: none;
+  min-height: 120px;
+}
+
+/* Character counter below textarea */
+.char-counter {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 0.25rem;
+}
+/* Error input message styling */
+.form-error {
+  color: #c73636;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+/*CHECK CODE TO CHECK*/
+/* --- Django Error Style --- */
+.errorlist {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+}
+
+.errorlist li {
+  color: #c73636;
+  font-size: 0.8rem;
+  padding: 0.75rem 1rem;
+  background-color: rgba(199, 54, 54, 0.1);
+  border-left: 3px solid #c73636;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
 }
 
 /* --- Dog profile form layout --- */
@@ -630,239 +815,6 @@ a:visited {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
-}
-
-.pill-option span {
-    padding: 0.45rem 0.4rem !important;
-}
-
-/* Base styles for form fields - matches profile edit styling */
-.form-field input,
-.form-field textarea,
-.form-field select {
-  padding: 0.75rem 1rem;
-  border-radius: 16px;
-  border: 2px solid #999;
-  background: #ffffff;
-  font-size: 1rem;
-  width: 100%;
-  max-width: 100%;
-}
-
-/* --- Form Title --- */
-h1.form-title {
-  font-size: 1.3rem !important;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: 1rem;
-}
-
-/* --- Pill Options (Interests) --- */
-.pill-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
-  gap: 0.5rem;
-}
-
-.pill-option {
-  position: relative;
-  display: block;
-  width: 100%;
-  cursor: pointer;
-}
-
-.pill-option input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.pill-option span {
-  display: block;
-  width: 100%;
-  text-align: center;
-  padding: 0.45rem 0.9rem;
-  border-radius: 999px;
-  border: 2px solid #999;
-  font-size: 0.85rem;
-  transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  background: #fff;
-}
-
-.pill-option input:checked+span {
-  background: var(--orange-200);
-  border-color: var(--orange-200);
-  color: var(--orange-900);
-}
-
-.pill-option.is-disabled span {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pill-helper {
-  margin-top: 0.35rem;
-  font-size: 0.75rem;
-  color: #999;
-}
-
-/* --- From Image -- */
-
-.upload-box {
-  position: relative;
-  width: 100%;
-  /* Maintain a consistent square area while responsive */
-  aspect-ratio: 1 / 1;
-  padding: 0.2rem;
-  height: auto;
-  min-height: 180px;
-  border: 2px dashed #ccc;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.upload-box:hover {
-  background: var(--orange-100);
-  border-color: var(--orange-300);
-}
-
-.upload-box input[type="file"] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.upload-placeholder {
-  text-align: center;
-  color: #999;
-  font-size: 0.9rem;
-}
-
-.upload-placeholder::before {
-  content: '';
-  display: block;
-  width: 40px;
-  height: 40px;
-  color: #999;
-  margin: 0 auto 0.35rem auto;
-  background: center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
-  /* Plus icon */
-}
-
-.image-preview {
-  display: none;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 14px;
-}
-
-.upload-box.has-image .upload-placeholder {
-  display: none;
-}
-
-.upload-box.has-image .image-preview {
-  display: block;
-}
-
-/* Remove button appears when an image is present */
-.upload-remove {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  font-size: 18px;
-  line-height: 1;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.upload-box.has-image .upload-remove {
-  display: inline-flex;
-}
-
-/* --- Create profils -- */
-
-.form-field select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1.25rem center;
-  padding-right: 3rem;
-}
-
-
-.form-field input:focus,
-.form-field textarea:focus,
-.form-field select:focus {
-  outline: none; /* No background color change */
-}
-
-.form-field select:focus {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1.25rem center;
-}
-
-textarea {
-  resize: none;
-  min-height: 120px;
-}
-
-.char-counter {
-  font-size: 0.75rem;
-  color: #999;
-  text-align: right;
-  margin-top: 0.25rem;
-}
-
-.form-error {
-  color: #c73636;
-  font-size: 0.85rem;
-  margin-top: 0.35rem;
-}
-
-/* --- Django Error Style --- */
-.errorlist {
-  list-style: none;
-  padding: 0;
-  margin: 0.75rem 0;
-}
-
-.errorlist li {
-  color: #c73636;
-  font-size: 0.8rem;
-  padding: 0.75rem 1rem;
-  background-color: rgba(199, 54, 54, 0.1);
-  border-left: 3px solid #c73636;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-}
-
-/* Hide number input spinner arrows */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
 }
 
 /* #endregion */
@@ -2049,40 +2001,16 @@ body.modal-open {
 
   /*----------NEED TO CHECK COODE----------*/
 
-  .owner-profile-form {
-    max-width: none;
-  }
-
-  .owner-profile-split {
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .owner-profile-photo {
-    flex: 0 0 240px;
-  }
-
+  /* upload-box sizing */
   .owner-profile-photo .upload-box {
-    min-height: 240px;
+    min-height: 220px;
   }
 
   .owner-profile-fields {
-    flex: 1;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem 1.25rem;
-  }
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 0.5rem;
 
-  .owner-profile-about {
-    margin-top: 1.5rem;
-  }
-
-  .owner-profile-interests {
-    margin-top: 1.25rem;
-  }
-
-  .owner-profile-fields .form-field {
-    margin-bottom: 0;
   }
 
   .auth-content.form-page .dog-profile-card {
@@ -2241,18 +2169,8 @@ body.modal-open {
     height: 55px;
   }
 
-  .hero-section .error-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
   .error-content {
     padding: 0 0.5rem 2rem 0.5rem;
-  }
-
-  .hero-section>div:last-child {
-    text-align: center;
   }
 
   .error-content img {

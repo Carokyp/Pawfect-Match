@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}Create Owner Profile{% endblock %}
-{% block content_class %}form-page{% endblock %}
+{% block content_class %}create-owner{% endblock %}
 
 {% block back_button %}
 <a href="{% url 'register' %}" class="back-button">
@@ -14,9 +14,9 @@
 
 <!-- Owner profile creation card -->
 <section class="form-card owner-profile-card">
-  <header>
-    <h1 class="form-title text-center">CREATE YOUR OWNER PROFILE</h1>
-    <p class="form-subtitle text-center">
+  <header class="text-center">
+    <h1 class="form-title">CREATE YOUR OWNER PROFILE</h1>
+    <p>
       <span class="required">*</span> Required fields
     </p>
   </header>
@@ -26,21 +26,23 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
     
-    <div class="owner-profile-split">
-      <div class="owner-profile-photo">
+    <div class="owner-create-profile d-flex flex-column align-items-center justify-content-center flex-md-row">
+      <div class="owner-profile-photo d-flex flex-column">
         <!-- Profile photo -->
-        <div class="form-field">
-          <label>Profile Photo <span class="required">*</span></label>
+        <div>
+          <p class="mb-1">
+            <span class="required">*</span> Profile Photo 
+          </p>
 
-          <div class="upload-box">
+          <div class="upload-box d-flex flex-column align-items-center justify-content-center">
             {{ form.profile_photo }}
 
-            <img class="image-preview" alt="" />
+            <img class="image-preview" alt="profile image of the user" />
 
-            <span class="upload-placeholder">
+            <span class="upload-placeholder text-center">
               Drop image or click to upload
             </span>
-            <button type="button" class="upload-remove" aria-label="Remove image">×</button>
+            <button type="button" class="upload-remove align-items-center justify-content-center" aria-label="Remove image">×</button>
           </div>
           {% if form.profile_photo.errors %}
             <div class="form-error">{{ form.profile_photo.errors|striptags }}</div>
@@ -48,7 +50,7 @@
         </div>
       </div>
 
-      <div class="owner-profile-fields">
+      <div class="owner-profile-fields align-self-center mb-3">
         <!-- Name -->
         <div class="form-field">
           <label for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="required">*</span></label>
@@ -88,7 +90,7 @@
     </div>
 
     <!-- Interests -->
-    <div class="form-field owner-profile-interests">
+    <div class="form-field owner-profile-interests my-md-3">
       <label>Interests <span class="optional">(optional)</span></label>
       <div class="pill-options" data-max="3">
         {% for checkbox in form.interests %}
@@ -105,10 +107,10 @@
     </div>
 
     <!-- About me -->
-    <div class="form-field owner-profile-about">
+    <div class="form-field owner-profile-about my-md-3">
       <label>About me <span class="optional">(optional)</span></label>
       {{ form.about_me }}
-      <div class="char-counter">0 / 150</div>
+      <div class="char-counter text-end">0 / 150</div>
       {% if form.about_me.errors %}
         <div class="form-error">{{ form.about_me.errors|striptags }}</div>
       {% endif %}
@@ -116,7 +118,7 @@
 
     <!-- Submit actions -->
     <div class="form-actions d-flex justify-content-center gap-3 mt-4">
-      <button type="submit" class="btn-hero secondary">Next</button>
+      <button type="submit" class="btn secondary">Next</button>
     </div>
 
   </form>
