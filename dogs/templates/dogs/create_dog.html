@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}Create Dog Profile{% endblock %}
-{% block content_class %}form-page{% endblock %}
+{% block content_class %}create-owner{% endblock %}
 
 {% block back_button %}
 <a href="{% url 'create_owner_profile' %}" class="back-button">
@@ -14,9 +14,9 @@
 
 <!-- Dog profile creation card -->
 <section class="form-card dog-profile-card">
-  <header>
-    <h1 class="form-title text-center">CREATE YOUR DOG PROFILE</h1>
-    <p class="form-subtitle text-center">
+  <header class="text-center">
+    <h1 class="form-title">CREATE YOUR DOG PROFILE</h1>
+    <p>
       <span class="required">*</span> Required fields
     </p>
   </header>
@@ -26,21 +26,21 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
 
-    <div class="dog-profile-split">
-      <div class="dog-profile-photo">
+    <div class="dog-create-profile d-flex flex-column align-items-center justify-content-center flex-md-row">
+      <div class="dog-profile-photo d-flex flex-column">
         <!-- Profile photo -->
         <div class="form-field">
-          <label>Profile Photo <span class="required">*</span></label>
+          <p class="mb-1">Profile Photo <span class="required">*</span></p>
 
-          <div class="upload-box">
+          <div class="upload-box d-flex flex-column align-items-center justify-content-center">
             {{ form.profile_photo }}
 
             <img class="image-preview" alt="" />
 
-            <span class="upload-placeholder">
+            <span class="upload-placeholder text-center">
               Drop image or click to upload<br>
             </span>
-            <button type="button" class="upload-remove" aria-label="Remove image">×</button>
+            <button type="button" class="upload-remove align-items-center justify-content-center" aria-label="Remove image">×</button>
           </div>
           {% if form.profile_photo.errors %}
           <div class="form-error">{{ form.profile_photo.errors|striptags }}</div>
@@ -49,7 +49,6 @@
       </div>
 
       <div class="dog-profile-fields">
-        <div class="dog-profile-identity">
           <!-- Name -->
           <div class="form-field">
             <label for="{{ form.name.id_for_label }}">{{ form.name.label }} <span class="required">*</span></label>
@@ -104,15 +103,14 @@
             <div class="form-error">{{ form.energy_level.errors|striptags }}</div>
             {% endif %}
           </div>
-        </div>
       </div>
     </div>
 
     <!-- About dog -->
-    <div class="form-field dog-profile-about">
+    <div class="form-field dog-profile-about my-md-3">
       <label>About me <span class="optional">(optional)</span></label>
       {{ form.about_me }}
-      <div class="char-counter">0 / 150</div>
+      <div class="char-counter text-end">0 / 150</div>
       {% if form.about_me.errors %}
       <div class="form-error">{{ form.about_me.errors|striptags }}</div>
       {% endif %}
@@ -120,7 +118,7 @@
 
     <!-- Submit actions -->
     <div class="form-actions d-flex justify-content-center gap-3 mt-4">
-      <button type="submit" class="btn-hero secondary">Complete Profile</button>
+      <button type="submit" class="btn secondary">Complete Profile</button>
     </div>
   </form>
 </section>
