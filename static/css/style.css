@@ -549,6 +549,24 @@ a:visited {
   text-decoration: underline;
 }
 
+/* --- Password Input with Toggle --- */
+.input-wrapper { 
+  position: relative;
+}
+
+.toggle-password { /* Position the toggle button inside the input field, aligned to the right */
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+}
+
+.eye-icon {
+  filter: grayscale(100%); /* Make the icon gray */
+}
+
 /* --- Password Reset Success image--- */
 .success-image img {
   width: 150px;
@@ -686,32 +704,6 @@ h1.form-title {
   margin-top: 0.35rem;
   font-size: 0.75rem;
   color: #999;
-}
-
-/* --- Password Input with Toggle --- */
-.input-wrapper {
-  position: relative;
-}
-
-.input-wrapper input {
-  width: 100%;
-  padding-right: 2.75rem;
-  /* Space reserved for eye icon */
-}
-
-.toggle-password {
-  position: absolute;
-  top: 50%;
-  right: 0.75rem;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.eye-icon {
-  filter: grayscale(100%);
 }
 
 /* --- From Image -- */
@@ -2042,19 +2034,6 @@ body.modal-open {
     font-size: 1.5rem;
   }
 
-  h1.form-title {
-    font-size: 1.5rem !important;
-  }
-
-  .auth-content p {
-    font-size: 1rem;
-    text-align: start !important;
-  }
-
-  .auth-card-form p{
-    text-align: center !important;
-  }
-
   /* forgot password side image */
   .form-page-image {
     flex: 1.2;
@@ -2067,6 +2046,8 @@ body.modal-open {
     height: 100%;
     object-fit: cover;
   }
+
+  /*----------NEED TO CHECK COODE----------*/
 
   .owner-profile-form {
     max-width: none;
@@ -2365,14 +2346,12 @@ body.modal-open {
     font-size: 1.125rem;
   }
 
+  /*------CODE TO CHECK------*/
+
   /* Auth form button typography for laptop */
   .form-create-btn .btn-hero,
   .form-sign-in-btn .btn-hero {
     font-size: 1.125rem;
-  }
-
-  h1.form-title {
-    font-size: 1.5rem !important;
   }
 
   /* Consistent page heading sizes on desktop */
@@ -2544,6 +2523,8 @@ body.modal-open {
     height: 560px;
   }
 
+   /*----CODE TO CHECK----*/
+
   .profile-card .image-overlay h2 {
     font-size: 2rem;
   }
@@ -2599,6 +2580,8 @@ body.modal-open {
     width: 650px;
     height: 630px;
   }
+
+  /*-----CODE TO CHECK-----*/
 
   .profile-page > .profile-card-view {
     align-self: stretch;

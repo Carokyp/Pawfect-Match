@@ -15,8 +15,8 @@
 <!-- Registration page content -->
 <section class="form-page-container form-with-image">
   <article class="auth-card">
-    <div class="auth-card-split">
-      <section class="auth-card-form">
+    <div class="auth-card-split d-flex flex-column flex-md-row">
+      <section class="auth-card-form d-flex flex-column justify-content-center align-items-center text-center">
         <!-- Registration heading -->
         <h1>Create account</h1>
         <p>Welcome! Create your Pawfect Match account to connect with fellow dog 
@@ -32,12 +32,16 @@
         {{ form.password_confirm.errors }}
 
         <div class="form-field">
+          <div class="text-start">
           {{ form.email.label_tag }}
           {{ form.email }}
+          </div>
         </div>
 
-        <div class="form-field password-field">
-          {{ form.password.label_tag }}
+        <div class="form-field">
+          <div class="text-start">
+            {{ form.password.label_tag }}
+          </div>
 
           <div class="input-wrapper">
             {{ form.password }}
@@ -46,7 +50,7 @@
               <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon"/>
             </button>
           </div>
-          <ul style="font-size: 0.75rem; color: var(--text-dark); margin: 0; opacity: 0.7;">
+          <ul class="text-start" style="font-size: 0.75rem; color: var(--text-dark); margin: 0; opacity: 0.7;">
             <li>Minimum 8 characters</li>
             <li>At least one uppercase letter (A–Z)</li>
             <li>At least one digit (0–9)</li>
@@ -55,12 +59,14 @@
         </div>
 
         <div class="form-field">
-          {{ form.password_confirm.label_tag }}
-          {{ form.password_confirm }}
+          <div class="text-start">
+            {{ form.password_confirm.label_tag }}
+            {{ form.password_confirm }}
+          </div>
         </div>
 
         <div class="form-create-btn">
-          <button type="submit" class="btn-hero secondary">
+          <button type="submit" class="btn secondary">
             Create account
           </button>
         </div>
