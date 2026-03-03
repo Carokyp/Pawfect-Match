@@ -581,8 +581,6 @@ a:visited {
   border-radius: 50%;
 }
 
-/*----CODE TO CHECK--*
-
 /* --- Create Owner and Dog Profile Forms --- */
 
 h1.form-title {
@@ -675,6 +673,10 @@ h1.form-title {
 .owner-create-profile,
 .dog-create-profile {
   gap: 1.5rem;
+}
+
+.dog-profile-card {
+  overflow: visible;
 }
 
 .owner-profile-fields,
