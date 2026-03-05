@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block layout %}
+  <!-- Main content wrapper for app pages (discover, matches, messages...) -->
+  <div class="app-content d-flex flex-column align-items-center justify-content-center {% block content_class %}{% endblock %}">
+
+    <!-- Optional top action area (e.g. back button) -->
+    {% block back_button %}
+    {% endblock %}
+
+    <!-- Page-specific content -->
+    {% block content %}
+    {% endblock %}
+
+  </div>
+{% endblock %}

@@ -805,35 +805,84 @@ textarea {
 
 /* #region BROWSE DOG PAGE */
 
-/* --- Image Overlay --- */
+/* Consistent page heading styling */
+.discover-page h1,
+.matches-page h1,
+.messages-page h1,
+.profile-page h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+/* Wrapper for discover page content */
+.discover-page {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  padding: 50px 12px;
+}
+
+/* --- Toggle view visibility (dog/owner) --- */
+.hidden {
+  display: none;
+}
+/* --- Toggle dog and owner views --- */
+.toggle-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  background: #ffefe4;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+/* Active state for toggle buttons */
+.toggle-btn.active {
+  background: var(--orange-200);
+  box-shadow: var(--shadow);
+}
+
+/* --- Dog and Owner Profile Card --- */
+.profile-card {
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  max-height: 1000px;
+}
+
+/* --- Image Profil--- */
 .profile-image {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border-radius: 16px;
   overflow: hidden;
 }
+.profile-image img {
+  width: 100%;
+  object-fit: cover;
+}
 
+/* Overlay at the bottom of the image for name and age ect*/
 .image-overlay {
   position: absolute;
   bottom: 0;
   width: 100%;
   padding: 1rem;
   text-align: left;
-  align-items: flex-start;
   color: white;
   background: linear-gradient(to top, rgb(0 0 0 / 86%), rgba(0, 0, 0, 0));
 }
 
 .image-overlay h2 {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .image-overlay p {
   margin: 0.2rem 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 /* --- Dividers --- */
@@ -843,182 +892,28 @@ textarea {
   margin: 1rem;
 }
 
-.discover-page {
-  width: 100%;
-  max-width: 380px;
-  margin: 0 auto;
-  padding: 50px 12px;
-}
-
-/* --- Page Header --- */
-.page-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 0;
-}
-
-/* Consistent page heading styling */
-.discover-page h1,
-.matches-page h1,
-.messages-page h1,
-.profile-page h1 {
-  font-size: 1.1rem !important;
-  font-weight: 700;
+.profile-about h3,
+.profile-interests h3 {
   color: var(--text-dark);
-  margin: 0;
-  margin-bottom: 0.5rem;
-}
-
-/* --- Hidden Form --- */
-.hidden-form {
-  display: none;
-}
-
-/* --- Card (shared with Profile view) --- */
-.profile-card {
-  background: #fff;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  max-height: 1000px;
-}
-
-.profile-views-grid {
-  display: block;
-}
-
-/* --- Profile card view (profile page only) --- */
-.profile-card-view {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-/* Inline edit button - compact, no extra space */
-.profile-edit-inline {
-  padding: 2rem 1rem 0.5rem;
-  text-align: center;
-}
-
-.profile-edit-inline .btn-edit-profile {
-  display: inline-block;
-  font-size: 0.95rem;
-  width: 180px;
-}
-
-/* --- Toggle --- */
-.profile-toggle {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.toggle-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 0.4rem 1rem;
-  background: #ffefe4;
-  color: var(--text-dark);
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.toggle-btn.active {
-  background: var(--orange-200);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* --- Image --- */
-.profile-image img {
-  width: 100%;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto;
-  border-radius: 16px;
-}
-
-/* --- Info blocks --- */
-.profile-about {
-  color: var(--text-dark);
-  padding: 0 1rem;
-}
-
-.profile-about h3 {
-  color: var(--text-dark);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
-.profile-about.center {
-  text-align: center;
-}
-
-.profile-interests {
-  padding: 0 1rem;
-}
-
-.profile-interests.center {
-  text-align: center;
-}
-
-.profile-interests.left {
-  text-align: left;
-}
-
-.profile-interests h4 {
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--text-dark);
-}
-
-.profile-tags {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0 1rem;
-  flex-wrap: nowrap;
-  justify-content: center;
-}
-
-.profile-tags.center {
-  justify-content: center;
-}
-
-/* --- Energy + Size block --- */
-.profile-meta {
-  display: flex;
-  justify-content: space-around;
-  padding: 0 1.5rem;
-  text-align: center;
-}
+/* --- Energy level + Size block --- */
 
 .meta-block h4 {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 0.6rem;
   color: var(--text-dark);
 }
 
 .tag {
   background: #ffefe4;
-  ;
-  padding: 0.3rem 0.75rem;
   border-radius: 999px;
   font-size: 0.8rem;
 }
 
-/* --- Hidden states --- */
-.hidden {
-  display: none;
-}
-
-/* --- Actions --- */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin: 1.5rem 0;
-}
+/* --- Like and dislike button --- */
 
 .action-btn {
   width: 64px;
@@ -1030,11 +925,8 @@ textarea {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.action-btn:active {
-  transform: scale(0.9);
-}
-
 .action-btn:hover {
+  transform: scale(1.06);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -1046,7 +938,6 @@ textarea {
   background: linear-gradient(135deg, #E85D1F, #FFB07A);
   color: #fff;
 }
-
 /* #endregion */
 
 /* #region MATCH MODAL */
@@ -1249,6 +1140,33 @@ body.modal-open {
 .profile-page {
   min-height: 100vh;
   padding-top: 50px;
+}
+
+/* --- Hidden Form --- */
+.hidden-form {
+  display: none;
+}
+
+.profile-views-grid {
+  display: block;
+}
+
+/* --- Profile card view (profile page only) --- */
+.profile-card-view {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+/* Inline edit button - compact, no extra space */
+.profile-edit-inline {
+  padding: 2rem 1rem 0.5rem;
+  text-align: center;
+}
+
+.profile-edit-inline .btn-edit-profile {
+  display: inline-block;
+  font-size: 0.95rem;
+  width: 180px;
 }
 
 /* #endregion */
@@ -1902,7 +1820,6 @@ body.modal-open {
 /* #endregion */
 
 /* #region RESPONSIVE DESIGN */
-/* Add breakpoints here if needed */
 
 /* Tablet: 768px+ */
 @media (min-width: 768px) {
@@ -2006,45 +1923,36 @@ body.modal-open {
     max-width: 1000px;
   }
 
-  .discover-page.message-thread-page{
-    max-width: 500px;
-    padding: 50px 12px;
-  }
-
-  .discover-page.messages-page{
-    max-width: 600px;
-  }
-
-  .profile-views-grid {
+  .profiles-side-by-side {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    padding: 0 1rem 1rem;
   }
 
+  /* Make hidden profil from borwse dog appear*/
   .profile-card .profile-view.hidden {
     display: block;
   }
 
-  .profile-toggle {
-    pointer-events: none;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    padding: 1rem 0.75rem;
-    justify-items: center;
+  .profile-card .profile-toggle {
+    justify-content: space-around !important;
+    width: 100%;
   }
 
-  .profile-toggle .toggle-btn {
-    width: 40%;
+  .profile-card .profile-toggle .toggle-btn {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    text-align: center;
+    width: 20%;
     background: var(--orange-200);
     color: var(--orange-900);
     box-shadow: none;
   }
 
-  /* Profile cards side-by-side on tablet+ */
+  .profile-about{
+    min-height: 90px;
+  }
+
+  /* View Profile cards side-by-side on tablet+ */
   .profile-page {
     display: grid;
     grid-template-columns: 1fr;
@@ -2102,6 +2010,15 @@ body.modal-open {
     margin-right: auto;
   }
 
+  .discover-page.message-thread-page{
+    max-width: 500px;
+    padding: 50px 12px;
+  }
+
+  .discover-page.messages-page{
+    max-width: 600px;
+  }
+
   .dog-avatar {
     width: 55px;
     height: 55px;
@@ -2120,15 +2037,8 @@ body.modal-open {
     text-align: center;
   }
 
-  /* Consistent page heading sizes on tablet+ */
-  .discover-page h1,
-  .matches-page h1,
-  .messages-page h1,
-  .profile-page h1 {
-    font-size: 1.1rem !important;
-  }
-
 }
+/* #endregion */
 
 /* Desktop: 992px+ */
 @media (min-width: 992px) {
