@@ -1,46 +1,17 @@
-{% extends "base_auth.html" %}
+{% extends "base_app.html" %}
 {% load static %}
 
 {% block title %}Messages{% endblock %}
-{% block content_class %}discover-page-wrapper{% endblock %}
+{% block content_class %}messages-inbox-page{% endblock %}
 
 {% block content %}
 
 {% csrf_token %}
 
 <div class="discover-page messages-page">
-  <!-- Main navigation for authenticated pages -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <span class="navbar-brand">🐾 Pawfect Match</span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
-        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'browse_dogs' %}">Discover</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'messages_inbox' %}">Messages</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'view_profile' %}">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 
   <!-- Messages page title -->
-  <header class="page-header">
+  <header class="page-header d-flex justify-content-center align-items-center py-3">
     <h1 class="page-title">MESSAGES</h1>
   </header>
 
@@ -50,19 +21,24 @@
       data-my-dog-name="{{ my_dog.name }}"
       data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
     <div class="messages-split-container">
+
       <!-- Inbox list panel -->
       <section class="messages-inbox-panel" aria-label="Conversations list">
         <div class="conversations-list">
           {% if conversations %}
           {% for conversation in conversations %}
+
           <article class="conversation-item" data-dog-id="{{ conversation.dog.id }}">
+
             <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
               <img src="{% static 'images/bin.png' %}" alt="Delete">
             </button>
+
             <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card" data-dog-id="{{ conversation.dog.id }}"
                data-name="{{ conversation.dog.name }}"
                data-breed="{{ conversation.dog.breed }}"
                data-photo="{% if conversation.dog.profile_photo %}{{ conversation.dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
+
               <div class="conversation-dog-info">
                 <div class="dog-avatar">
                   {% if conversation.dog.profile_photo %}
@@ -77,17 +53,21 @@
                   <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
                 </div>
               </div>
+
               <div class="conversation-meta">
                 <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
               </div>
+
             </a>
           </article>
           {% endfor %}
           {% else %}
-          <!-- Empty state for conversation list -->
+
+          <!--Conversation list empty-->
           <div class="empty-conversations-list">
             <p class="empty-state-text">Your conversations will appear here</p>
           </div>
+
           {% endif %}
         </div>
       </section>
@@ -157,13 +137,15 @@
     </div>
   </section>
   {% else %}
-  <!-- Empty state when no conversations exist -->
-  <section class="no-msg">
-    <h2 class="no-msg-title">No messages yet</h2>
-    <p class="empty-state-text">Send a message to a match to arrange a playdate!</p>
-    <img class="empty-state-emoji mb-5 mt-5" src="{% static 'images/sad_emoji.png' %}" alt="Sad face emoji" width="100" height="100">
-    <a href="{% url 'browse_dogs' %}" class="btn-hero primary">Back to Discover</a>
+
+  <!-- No message yet-->
+  <section class="no-msg d-flex flex-column justify-content-center align-items-center text-center py-5 px-2">
+    <h1 class="no-msg-title">No messages yet</h1>
+    <img class="empty-state-emoji mb-5 mt-5" src="{% static 'images/sad_emoji.png' %}" alt="Sad face emoji">
+    <p class="no-msg-subtitle mb-5">Send a message to a match to arrange a playdate!</p>
+    <a href="{% url 'browse_dogs' %}" class="btn primary">Back to Discover</a>
   </section>
+
   {% endif %}
 
 </div>

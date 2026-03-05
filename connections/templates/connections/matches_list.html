@@ -1,77 +1,48 @@
-{% extends "base_auth.html" %}
+{% extends "base_app.html" %}
 {% load static %}
 
 {% block title %}My Matches{% endblock %}
-{% block content_class %}discover-page-wrapper{% endblock %}
+{% block content_class %}matches-page{% endblock %}
 
 {% block content %}
-{% csrf_token %}
 
-<!-- Main navigation for authenticated users -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <span class="navbar-brand">🐾 Pawfect Match</span>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
-      aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'browse_dogs' %}">Discover</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'matches_list' %}">Matches</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'messages_inbox' %}">Messages</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'view_profile' %}">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Log out</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<div class="discover-page matches-page">
+<div class="matches-page">
+  {% csrf_token %}
+  
+  <!-- Matches header - always visible -->
+  <header class="matches-header d-flex justify-content-center align-items-center flex-column py-3 gap-2">
+    <h1 class="matches-title">YOUR MATCHES</h1>
+    <p class="matches-count my-0">You have {{ matches|length }} match{{ matches|length|pluralize }}</p>
+  </header>
+  
   {% if matches %}
   
   <!-- Matches container with grid of matched profiles -->
-  <section class="matches-container">
-    
-    <!-- Matches header -->
-    <header class="matches-header">
-      <h1 class="matches-title">YOUR MATCHES</h1>
-      <p class="matches-count">You have {{ matches|length }} match{{ matches|length|pluralize }}</p>
-    </header>
+  <section class="matches-container text-center">
     
     <!-- Grid of matched dog profiles -->
     <div class="matches-grid">
       {% for match in matches %}
       
       <!-- Individual match card with dog and owner information -->
-      <article class="profile-card" data-dog-id="{{ match.dog.id }}">
+      <article class="matches-card" data-dog-id="{{ match.dog.id }}">
         
         <!-- Delete match button -->
-        <div class="delete-match-row">
+        <div class="delete-match-button d-flex justify-content-end align-items-center">
           <button class="btn-delete-match" title="Delete match" aria-label="Delete match with {{ match.dog.name }}"
             data-dog-id="{{ match.dog.id }}">&times;</button>
         </div>
         
         <!-- View toggle: switch between dog and owner information -->
-        <div class="profile-toggle pb-3">
+        <div class="profile-toggle d-flex justify-content-center gap-3 py-3">
           <button class="toggle-btn active" data-view="dog">Dog</button>
           <button class="toggle-btn" data-view="owner">Owner</button>
         </div>
 
-        <div class="profile-views-grid">
+        <div class="matches-side-by-side gap-md-3 px-md-3">
           
           <!-- Dog information view -->
-          <section class="profile-view dog-view">
+          <section class="match-view dog-view">
             
             <!-- Dog profile image with overlay info -->
             <div class="profile-image">
@@ -90,8 +61,8 @@
             
             <hr class="profile-divider">
             
-            <!-- Dog biography -->
-            <div class="profile-about center">
+            <!-- Dog About me -->
+            <div class="profile-about text-center px-2">
               <h3>About me</h3>
               <p>{{ match.dog.about_me }}</p>
             </div>
@@ -99,21 +70,21 @@
             <hr class="profile-divider">
             
             <!-- Dog characteristics -->
-            <div class="profile-meta">
+            <div class="profile-meta d-flex justify-content-around text-center px-4 gap-4">
               <div class="meta-block">
                 <h4>Energy level</h4>
-                <span class="tag">{{ match.dog.get_energy_level_display }}</span>
+                <span class="tag px-3 py-1">{{ match.dog.get_energy_level_display }}</span>
               </div>
               <div class="meta-block">
                 <h4>Size</h4>
-                <span class="tag">{{ match.dog.get_size_display }}</span>
+                <span class="tag px-3 py-1">{{ match.dog.get_size_display }}</span>
               </div>
             </div>
             
           </section>
           
           <!-- Owner information view (hidden by default) -->
-          <section class="profile-view owner-view hidden">
+          <section class="match-view owner-view hidden">
             
             <!-- Owner profile image with overlay info -->
             <div class="profile-image">
@@ -131,8 +102,8 @@
             
             <hr class="profile-divider">
             
-            <!-- Owner biography -->
-            <div class="profile-about center">
+            <!-- Owner about me -->
+            <div class="profile-about text-center px-2">
               <h3>About me</h3>
               <p>{{ match.owner.about_me }}</p>
             </div>
@@ -140,11 +111,11 @@
             <hr class="profile-divider">
             
             <!-- Owner interests -->
-            <div class="profile-interests left">
-              <h4>Interests</h4>
+            <div class="profile-interests text-center px-2">
+              <h3>Interests</h3>
               <div class="profile-tags">
                 {% for interest in match.owner.interests_list %}
-                <span class="tag">{{ interest }}</span>
+                <span class="tag px-3 py-1">{{ interest }}</span>
                 {% endfor %}
               </div>
             </div>
@@ -155,9 +126,9 @@
         <hr class="profile-divider">
         
         <!-- Message button to start conversation -->
-        <footer class="message-btn">
-          <a href="{% url 'message_thread' match.dog.id %}" class="btn-hero primary d-lg-none">Message</a>
-          <a href="{% url 'messages_inbox_with_dog' match.dog.id %}" class="btn-hero primary d-none d-lg-block">Message</a>
+        <footer class="d-flex justify-content-center align-items-center py-3">
+          <a href="{% url 'message_thread' match.dog.id %}" class="btn primary d-lg-none">Message</a>
+          <a href="{% url 'messages_inbox_with_dog' match.dog.id %}" class="btn primary d-none d-lg-block">Message</a>
         </footer>
         
       </article>
@@ -179,25 +150,19 @@
   </section>
   
   {% else %}
-  
+
   <!-- Empty state when user has no matches -->
-  <section class="empty-matches-container">
-    
-    <!-- Page title header -->
-    <header class="page-header">
-      <h1 class="page-title">MATCHES</h1>
-    </header>
-    
-    <!-- Empty state content -->
-    <div class="empty-matches">
-      <h2 class="matches-title">No matches yet</h2>
-      <p class="matches-subtitle">Start liking dogs to find your perfect match!</p>
-      <img class="empty-state-emoji" src="{% static 'images/sad_emoji.png' %}" alt="Sad face emoji">
-      <a href="{% url 'browse_dogs' %}" class="btn-hero primary">Back to Discover</a>
-    </div>
-    
+  <section class="empty-matches d-flex flex-column justify-content-center align-items-center text-center px-3">
+    <img class="empty-state-emoji my-5" src="{% static 'images/sad_emoji.png' %}" alt="Sad face emoji">
+    <p class="empty-matches-subtitle mb-3">
+      You don't have any matches yet.
+    </p>
+    <p class="empty-matches-subtitle mb-5">
+      Start liking dogs to find your perfect match!
+    </p>
+    <a href="{% url 'browse_dogs' %}" class="btn primary">Back to Discover</a>
+
   </section>
-  
   {% endif %}
 </div>
 {% endblock %}

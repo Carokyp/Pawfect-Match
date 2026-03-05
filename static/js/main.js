@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   const setupProfileToggle = () => {
     // For each profile card, setup toggle functionality
-    document.querySelectorAll('.profile-card').forEach((card) => {
+    document.querySelectorAll('.profile-card, .matches-card').forEach((card) => {
       const toggleButtons = card.querySelectorAll('.toggle-btn');
       const dogView = card.querySelector('.dog-view');
       const ownerView = card.querySelector('.owner-view');

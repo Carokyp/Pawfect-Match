@@ -2,43 +2,13 @@
 {% load static %}
 
 {% block title %}Discover{% endblock %}
-{% block content_class %}discover-pager{% endblock %}
+{% block content_class %}discover-page{% endblock %}
 
 {% block content %}
 
 {% csrf_token %}
 
 <div class="discover-page">
-
-  <!-- Main navigation for authenticated users -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <span class="navbar-brand">🐾 Pawfect Match</span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
-        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'browse_dogs' %}">Discover</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'matches_list' %}">Matches</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'messages_inbox' %}">Messages</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'view_profile' %}">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 
   <!-- Page title header -->
   <header class="page-header d-flex justify-content-center align-items-center py-3">
@@ -59,7 +29,7 @@
     <div class="profiles-side-by-side gap-md-3 px-md-3">
       
       <!-- Dog information view -->
-      <section class="profile-view dog-view">
+      <section class="discover-view dog-view">
 
         <!-- Dog profile image with overlay info -->
         <div class="profile-image d-flex align-items-center justify-content-center">
@@ -103,7 +73,7 @@
       </section>
 
       <!-- Owner information view (hidden by default) -->
-      <section class="profile-view owner-view hidden">
+      <section class="discover-view owner-view hidden">
 
         <!-- Owner profile image with overlay info -->
         <div class="profile-image">
@@ -122,7 +92,7 @@
 
         <hr class="profile-divider">
 
-        <!-- Owner biography section -->
+        <!-- Owner about me -->
         <div class="profile-about text-center px-2">
           <h3>About me</h3>
           <p>{{ dog.owner.about_me }}</p>
@@ -165,14 +135,15 @@
   {% else %}
 
   <!-- Empty state when no more dogs to discover -->
-  <section class="empty-dogs">
-    <p class="empty-dogs-title">
+  <section class="empty-dogs d-flex flex-column justify-content-center align-items-center text-center py-5 px-2">
+    <h1 class="empty-dogs-title">
       You've discovered all available pups!
-    </p>
-    <p class="empty-dogs-subtitle">
+    </h1>
+    <img class="empty-state-emoji my-5" src="{% static 'images/sad_emoji.png' %}" alt="Sad face emoji">
+    <p class="empty-dogs-subtitle mb-5">
       New matches may appear soon
     </p>
-    <button type="button" class="btn-hero primary" id="resetMatchesBtn">
+    <button type="button" class="btn primary" id="resetMatchesBtn">
       Reset Matches
     </button>
   </section>

@@ -264,46 +264,20 @@ a:visited {
   border: 3px solid var(--orange-900);
 }
 
-.btn.secondary {
-  background: white;
-  color: var(--orange-900);
-  border: 3px solid var(--orange-900);
-}
-
 .btn.primary:hover {
   color: white;
   background-color: var(--orange-700);
   border: 3px solid var(--orange-700);
 }
 
-.btn.secondary:hover {
-  color: var(--orange-700);
-  border: 3px solid var(--orange-700);
-}
-
-/* --- Edit Profile Button --- */
-.btn-edit-profile {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border-radius: 50px;
-  width: 150px;
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.btn-edit-profile.primary {
-  background: var(--orange-900);
-  color: white;
+.btn.secondary {
+  background: white;
+  color: var(--orange-900);
   border: 3px solid var(--orange-900);
 }
 
-.btn-edit-profile.primary:hover {
-  color: white;
-  background-color: var(--orange-700);
+.btn.secondary:hover {
+  color: var(--orange-700);
   border: 3px solid var(--orange-700);
 }
 
@@ -333,7 +307,7 @@ a:visited {
   font-size: 0.95rem;
 }
 
-/* --- Secondary Button Base --- */
+/* --- Cancel Button --- */
 .btn-secondary {
   background-color: #f0f0f0;
   color: var(--text-dark);
@@ -398,14 +372,6 @@ a:visited {
   width: 20px;
   height: 20px;
   filter: grayscale(100%);
-}
-
-/* --- Message Button Wrapper --- */
-.message-btn {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
 }
 
 /* --- Form Buttons --- */
@@ -809,7 +775,7 @@ textarea {
 .discover-page h1,
 .matches-page h1,
 .messages-page h1,
-.profile-page h1 {
+.view-user-profile-page h1 {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-dark);
@@ -817,11 +783,14 @@ textarea {
 }
 
 /* Wrapper for discover page content */
-.discover-page {
+.discover-page,
+.matches-page,
+.messages-inbox-page,
+.view-user-profile-page {
   width: 100%;
   max-width: 380px;
   margin: 0 auto;
-  padding: 50px 12px;
+  padding: 30px 12px;
 }
 
 /* --- Toggle view visibility (dog/owner) --- */
@@ -844,7 +813,9 @@ textarea {
 }
 
 /* --- Dog and Owner Profile Card --- */
-.profile-card {
+.profile-card,
+.matches-card,
+.view-user-profile-card {
   background: #fff;
   border-radius: 24px;
   overflow: hidden;
@@ -910,7 +881,7 @@ textarea {
 .tag {
   background: #ffefe4;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 /* --- Like and dislike button --- */
@@ -938,9 +909,33 @@ textarea {
   background: linear-gradient(135deg, #E85D1F, #FFB07A);
   color: #fff;
 }
+
+/* --- No more dogs to browse page AND no matches made yet --- */
+
+.empty-dogs-title,
+.no-msg-title,
+.empty-matches-title {
+  font-weight: 400 !important;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.empty-dogs-subtitle,
+.no-msg-subtitle,
+.empty-matches-subtitle{
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.empty-dogs .empty-state-emoji,
+.empty-matches .empty-state-emoji,
+.no-msg .empty-state-emoji {
+  width: 100px;
+  height: 100px;
+}
 /* #endregion */
 
-/* #region MATCH MODAL */
+/* #region IT'S A MATCH MODAL */
 
 .modal-backdrop {
   position: fixed;
@@ -1078,69 +1073,25 @@ body.modal-open {
 /* #endregion */
 
 /* #region MATCHES PAGE */
-.matches-page {
-  min-height: 100vh;
-  padding-top: 65px;
-}
 
-.matches-container {
-  text-align: center;
-}
-
-.matches-count {
-  display: flex !important;
-  justify-content: center !important;
-}
-
-.matches-container h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Matches page header - sizing handled by generic h1 rule */
-
-.matches-grid {
+.matches-grid,
+.view-user-profile-grid{
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
 
-.profile-card {
+.matches-card {
   position: relative;
 }
 
-.delete-match-row {
+.delete-match-button {
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
   height: 40px;
 }
-
-/* Empty matches state */
-.empty-matches-container {
-  text-align: center;
-  padding: 2rem 1rem;
-}
-
-.empty-matches-container .empty-matches {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.empty-matches-container .empty-state-emoji {
-  width: 100px;
-  height: 100px;
-  margin: 3rem 0;
-}
-
 /* #endregion */
 
-/* #region VIEW PROFILE PAGE */
-.profile-page {
-  min-height: 100vh;
-  padding-top: 50px;
-}
+/* #region VIEW USER PROFILE PAGE */
 
 /* --- Hidden Form --- */
 .hidden-form {
@@ -1149,24 +1100,6 @@ body.modal-open {
 
 .profile-views-grid {
   display: block;
-}
-
-/* --- Profile card view (profile page only) --- */
-.profile-card-view {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-/* Inline edit button - compact, no extra space */
-.profile-edit-inline {
-  padding: 2rem 1rem 0.5rem;
-  text-align: center;
-}
-
-.profile-edit-inline .btn-edit-profile {
-  display: inline-block;
-  font-size: 0.95rem;
-  width: 180px;
 }
 
 /* #endregion */
@@ -1179,36 +1112,6 @@ body.modal-open {
   margin-top: 1.25rem;
 }
 
-/* #endregion */
-
-/* #region NO MORE MATCHES*/
-.empty-dogs,
-.no-msg,
-.empty-matches{
-  text-align: center;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 500px;
-}
-
-.empty-dogs-title,
-.no-msg-title,
-.matches-title {
-  font-size: 1.1rem !important;
-  margin-bottom: 1rem;
-  color: var(--text-dark);
-}
-
-.empty-dogs-subtitle,
-.no-msg-subtitle,
-.matches-subtitle{
-  opacity: 0.6;
-  font-size: 0.9rem !important;
-  color: var(--text-dark);
-}
 /* #endregion */
 
 /* #region DANGER ZONE */
@@ -1918,27 +1821,31 @@ body.modal-open {
     display: none;
   }
 
-/*--- CHECK CODE TO CHECK ---*/
-  .discover-page {
+  .discover-page,
+  .matches-page {
     max-width: 1000px;
   }
 
-  .profiles-side-by-side {
+  .profiles-side-by-side,
+  .matches-side-by-side {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  /* Make hidden profil from borwse dog appear*/
-  .profile-card .profile-view.hidden {
+  /* Make hidden views appear on desktop */
+  .profile-card .discover-view.hidden,
+  .matches-card .match-view.hidden {
     display: block;
   }
 
-  .profile-card .profile-toggle {
+  .profile-card .profile-toggle,
+  .matches-card .profile-toggle {
     justify-content: space-around !important;
     width: 100%;
   }
 
-  .profile-card .profile-toggle .toggle-btn {
+  .profile-card .profile-toggle .toggle-btn,
+  .matches-card .profile-toggle .toggle-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1952,7 +1859,7 @@ body.modal-open {
     min-height: 90px;
   }
 
-  /* View Profile cards side-by-side on tablet+ */
+  /* View Profile cards side-by-side */
   .profile-page {
     display: grid;
     grid-template-columns: 1fr;
@@ -1964,9 +1871,7 @@ body.modal-open {
     margin-right: auto;
   }
 
-  .profile-page > .d-flex {
-    grid-column: 1 / -1;
-  }
+ /*--- CHECK CODE TO CHECK ---*/
 
   .profile-page .profile-card-view {
     margin-bottom: 0;
@@ -2204,18 +2109,6 @@ body.modal-open {
 /* Large Desktop: 1200px+ */
 @media (min-width: 1200px) { 
 
-  .navbar .navbar-brand {
-    font-size: 2.2rem;
-  }
-
-  .navbar .nav-link {
-    font-size: 1.2rem;
-  }
-
-  .navbar .navbar-nav {
-    gap: 1rem;
-  }
-
   .message-avatar {
     width: 45px;
     height: 45px;
@@ -2227,7 +2120,7 @@ body.modal-open {
 @media (min-width: 1400px) { 
 
   .navbar .nav-link {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   .hero-section {
@@ -2283,46 +2176,20 @@ body.modal-open {
     height: 560px;
   }
 
-   /*----CODE TO CHECK----*/
-
-  .profile-card .image-overlay h2 {
-    font-size: 2rem;
-  }
-
-  .profile-card .image-overlay p {
-    font-size: 1.5rem;
-  }
-
-  .profile-card .profile-about h3 {
-    font-size: 1.1rem;
-  }
-
-  .profile-card .profile-about p {
-    font-size: 1.05rem;
-  }
-
-  .profile-card .profile-interests h4,
-  .profile-card .meta-block h4 {
-    font-size: 0.85rem;
-  }
-
-  .profile-card .tag {
-    font-size: 0.9rem;
-  }
-
-  .discover-page {
-    padding: 80px 12px;
+  .discover-page{
+    padding: 40px 12px;
   }
 
   .profile-page {
     max-width: 1000px;
   }
+
 }
 
 @media (min-width: 1800px) {
 
   .navbar .nav-link {
-    font-size: 1.9rem;
+    font-size: 1.5rem;
   }
 
   .img-size-1 {
