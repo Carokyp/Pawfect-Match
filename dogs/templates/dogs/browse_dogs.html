@@ -152,14 +152,14 @@
 
   {% if match_popup %}
   
-  <!-- Match notification modal -->
+  <!-- Match modal -->
   <aside class="modal-backdrop is-open" id="matchModal" role="dialog" aria-labelledby="matchModalTitle" aria-modal="true">
-    <div class="match-modal">
+    <div class="match-modal d-flex flex-column align-items-center justify-content-center text-center p-4">
       <button class="close" type="button" aria-label="Close modal" id="closeMatchModal">×</button>
-      <h2 id="matchModalTitle">It's a match with {{ match_popup.other_dog_name }}!</h2>
+      <h2 id="matchModalTitle" class="mt-4">It's a match with {{ match_popup.other_dog_name }}!</h2>
 
       <!-- Matched dogs avatars display -->
-      <div class="match-avatars">
+      <div class="match-avatars d-flex align-items-center justify-content-center gap-3 my-4">
         {% if match_popup.my_dog_photo %}
         <img src="{{ match_popup.my_dog_photo }}" alt="Your dog {{ match_popup.my_dog_name }}">
         {% else %}
@@ -175,13 +175,13 @@
         {% endif %}
       </div>
       
-      <p>{{ match_popup.my_dog_name }} and {{ match_popup.other_dog_name }} found each other</p>
+      <p><span class="match-dog-name">{{ match_popup.my_dog_name }}</span> and <span class="match-dog-name">{{ match_popup.other_dog_name }}</span> found each other</p>
 
       <!-- Match modal actions -->
-      <div class="match-actions">
-        <a class="btn-hero secondary" href="{% url 'matches_list' %}">View Matches</a>
-        <a class="btn-hero primary d-lg-none" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
-        <a class="btn-hero primary d-none d-lg-block" href="{% url 'messages_inbox_with_dog' match_popup.other_dog_id %}">Send Message</a>
+      <div class="match-modal-btn">
+        <a class="btn secondary mb-3" href="{% url 'matches_list' %}">View Matches</a>
+        <a class="btn primary d-lg-none" href="{% url 'message_thread' match_popup.other_dog_id %}">Send Message</a>
+        <a class="btn primary d-none d-lg-block" href="{% url 'messages_inbox_with_dog' match_popup.other_dog_id %}">Send Message</a>
       </div>
     </div>
   </aside>
@@ -190,15 +190,17 @@
 
   <!-- Reset matches confirmation modal -->
   <aside class="modal-backdrop" id="resetConfirmModal" role="dialog" aria-labelledby="resetModalTitle" aria-modal="true">
-    <div class="delete-modal">
-      <button class="close" type="button" aria-label="Close modal" id="closeResetModal">×</button>
+    <div class="delete-modal text-center p-4">
       <h2 id="resetModalTitle">Reset matches?</h2>
-      <p class="delete-description">This will restart your discovery and reset all your likes. Are you sure?</p>
+      <p>
+        This will restart your discovery and reset all your likes.
+        <br> Are you sure?
+      </p>
 
-      <!-- Modal action buttons -->
-      <div class="modal-actions modal-button-group">
-        <button class="btn-secondary" id="cancelResetBtn">Cancel</button>
-        <button class="btn-danger" id="confirmResetBtn">Reset</button>
+      <!-- Modal buttons -->
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button type="button" class="btn-modal btn-cancel" id="cancelResetBtn">Cancel</button>
+        <button type="button" class="btn-modal btn-danger" id="confirmResetBtn">Reset</button>
       </div>
     </div>
   </aside>

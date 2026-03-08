@@ -86,7 +86,10 @@ def browse_dogs(request):
     """
     owner_profile = OwnerProfile.objects.filter(user=request.user).first()
 
-    dogs = Dog.objects.select_related("owner").all()
+    dogs = Dog.objects.select_related("owner").filter(
+        completed=True,
+        owner__completed=True,
+    )
     remaining_dogs_count = 0
     if owner_profile and hasattr(owner_profile, "dog"):
         my_dog = owner_profile.dog

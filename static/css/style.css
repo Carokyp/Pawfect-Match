@@ -44,6 +44,12 @@ body {
   background-color: var(--orange-100);
 }
 
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+  touch-action: none;
+}
+
 /* Main content area - grows to fill available space (sticky footer technique) */
 main {
   flex: 1 0 auto; /* Grow to fill space, don't shrink, auto basis */
@@ -258,6 +264,10 @@ a:visited {
   transition: all 0.3s ease;
 }
 
+.btn.edit{
+  padding: 1rem;
+}
+
 .btn.primary {
   background: var(--orange-900);
   color: white;
@@ -281,65 +291,35 @@ a:visited {
   border: 3px solid var(--orange-700);
 }
 
+/* --- Buttons in warning and delete modal general style --- */
+.btn-modal{
+  padding: 0.75rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
 /* --- Danger/Delete Button --- */
-.btn-danger {
+.btn-danger{
   background-color: #f87575;
   color: #ffffff;
-  border: 2px solid #f87575;
-  padding: 0.75rem 2rem;
-  margin-top: 1rem;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-block;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-danger:hover {
   background-color: #e85555;
-  border-color: #e85555;
-}
-
-/* -- Danger/Delete Profile Button */
-
-.delete-profile-btn {
-  font-size: 0.95rem;
 }
 
 /* --- Cancel Button --- */
-.btn-secondary {
+.btn-cancel {
   background-color: #f0f0f0;
   color: var(--text-dark);
   padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
 }
 
-.btn-secondary:hover {
+.btn-cancel:hover {
   background-color: #e0e0e0;
-}
-
-.modal-button-group .btn-secondary,
-.modal-button-group .btn-danger {
-  width: 120px;
-  max-width: 120px;
-  flex: 0 0 120px;
-  margin-top: 0;
-}
-
-.modal-button-group .btn-danger {
-  background-color: #f87575;
-  color: white;
-  margin: 0;
 }
 
 /* --- Back Button --- */
@@ -381,31 +361,6 @@ a:visited {
   margin: 2rem auto 0;
 }
 
-/* --- Delete Match Button --- */
-.btn-delete-match {
-  background: none;
-  color: #f87575;
-  border: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 5px;
-  margin-top: 10px;
-  transition: background 0.2s, color 0.2s, transform 0.2s;
-}
-
-.btn-delete-match:hover {
-  background: #ffe6e6;
-  color: #e85555;
-  transform: scale(1.08);
-}
-
 /* --- Send Conversationn Button--- */
 
 .send-msg.btn-secondary {
@@ -415,6 +370,7 @@ a:visited {
 
 /* --- Conversation Delete Button --- */
 
+/* Trash bin icon */
 .btn-delete-conversation {
   flex-shrink: 0;
   width: 40px;
@@ -425,15 +381,6 @@ a:visited {
   font-size: 1rem;
   cursor: pointer;
   transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-delete-conversation img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
 }
 
 .btn-delete-conversation:hover {
@@ -767,6 +714,11 @@ textarea {
   margin-bottom: 0.5rem;
 }
 
+/* Edit profile form */
+ .edit-profile-content{
+  padding: 5rem 0.8rem 1rem 0.8rem;
+ }
+
 /* #endregion */
 
 /* #region BROWSE DOG PAGE */
@@ -775,7 +727,9 @@ textarea {
 .discover-page h1,
 .matches-page h1,
 .messages-page h1,
-.view-user-profile-page h1 {
+.view-user-profile-page h1,
+.edit-dog-profile-page h1,
+.edit-owner-profile-page h1 {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-dark);
@@ -786,7 +740,9 @@ textarea {
 .discover-page,
 .matches-page,
 .messages-inbox-page,
-.view-user-profile-page {
+.view-user-profile-page,
+.edit-dog-profile-page,
+.edit-owner-profile-page {
   width: 100%;
   max-width: 380px;
   margin: 0 auto;
@@ -935,46 +891,39 @@ textarea {
 }
 /* #endregion */
 
-/* #region IT'S A MATCH MODAL */
+/* #region MODALS */
 
+/* --- General modal styles --- */
+
+.modal-overlay,
 .modal-backdrop {
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-overlay.is-open,
+.modal-backdrop.is-open {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1000;
-  overflow: hidden;
-  /* No scoll */
 }
 
-.modal-backdrop.is-open {
-  opacity: 1;
-  visibility: visible;
+.modal-content,
+.match-modal,
+.delete-modal,
+.delete-message-modal {
+  background-color: #ffffff;
+  border-radius: var(--border-radius);
+  animation: slideUp 0.3s ease;
 }
 
-/* Block the scoll when modal open*/
-body.modal-open {
-  overflow: hidden;
-}
-
-.match-modal {
-  background: white;
-  border-radius: 24px;
-  padding: 2rem;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  position: relative;
-  animation: slideUp 0.4s ease;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+.modal-content,
+.delete-modal,
+.delete-message-modal {
+  max-width: 300px;
 }
 
 @keyframes slideUp {
@@ -989,7 +938,45 @@ body.modal-open {
   }
 }
 
-.match-modal .close {
+.modal-content h2,
+.match-modal h2,
+.delete-modal h2,
+.delete-message-modal h2 {
+  font-size: 1.3rem;
+  color: var(--text-dark);
+}
+
+/* Delete profile modal */
+
+.modal-list li {
+  color: var(--text-dark);
+}
+
+.modal-list li strong {
+  color: #f87575;
+}
+
+.modal-warning-text{
+  color: #f87575;
+  font-weight: 600;
+}
+
+.text-background {
+  background-color: rgba(248, 117, 117, 0.1);
+  border-radius: 10px;
+  max-width: 280px;
+}
+
+/* Modal it's a match */
+
+.match-modal{
+  max-width: 450px;
+  position: relative;
+}
+
+/* Add a close button to the top right corner of the match modal */
+.match-modal .close,
+.delete-modal .close {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -1001,44 +988,20 @@ body.modal-open {
   transition: all 0.2s ease;
 }
 
-.match-modal .close:hover {
+/* Rotate the close button on hover and change color for better visibility */
+.match-modal .close,
+.delete-modal .close:hover {
   color: #000;
   transform: rotate(90deg);
 }
 
-.match-modal h2 {
-  font-size: 1.6rem;
-  background-color: var(--text-dark);
-  margin-bottom: 1.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.match-modal p {
-  font-size: 1rem;
-  background-color: var(--text-dark);
-  margin-bottom: 1.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.match-avatars {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
+/* Add a heartbeat animation to the heart icon in the match modal */
 .match-heart {
   font-size: 2rem;
   animation: heartBeat 1.2s ease-in-out infinite;
 }
 
 @keyframes heartBeat {
-
   0%,
   100% {
     transform: scale(1);
@@ -1052,7 +1015,7 @@ body.modal-open {
     transform: scale(1);
   }
 }
-
+/* Style the avatars of the matched dogs in the match modal */
 .match-avatars img {
   width: 80px;
   height: 80px;
@@ -1060,17 +1023,15 @@ body.modal-open {
   object-fit: cover;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.30);
 }
-
-.match-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  width: 100%;
+/* Style the button in the match modal to view the match's profile */
+.match-modal-btn {
   max-width: 180px;
-  margin: 0 auto;
 }
-
-/* #endregion */
+/* Style the matched dog's name in the match modal and other delete modal */
+.match-dog-name,
+.delete-msg-dog-name {
+  font-weight: 600;
+}
 
 /* #region MATCHES PAGE */
 
@@ -1091,142 +1052,17 @@ body.modal-open {
 }
 /* #endregion */
 
-/* #region VIEW USER PROFILE PAGE */
-
-/* --- Hidden Form --- */
-.hidden-form {
-  display: none;
-}
-
-.profile-views-grid {
-  display: block;
-}
-
-/* #endregion */
-
-/* #region EDIT PROFILE PAGE */
-
-.form-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-}
-
-/* #endregion */
-
 /* #region DANGER ZONE */
 
 .danger-zone {
-  margin-top: 1rem;
-  padding: 2rem;
   border: 3px solid #f87575;
   border-radius: var(--border-radius);
-  justify-content: center;
   background-color: rgb(255 255 255);
-  text-align: center;
+  max-width: 350px;
 }
 
 .danger-zone p {
   color: #f87575;
-  margin-bottom: 0.25rem;
-}
-
-/* #endregion */
-
-/* #region DELETE MODAL MATCHES */
-
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-overlay.is-open {
-  display: flex;
-}
-
-.modal-content {
-  background-color: #ffffff;
-  border-radius: var(--border-radius);
-  padding: 1.7rem 1rem;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  animation: slideUp 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin: 0 auto;
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.modal-content h2 {
-  margin-bottom: 1.2rem;
-  text-align: center;
-  font-size: 1.3rem;
-  color: var(--text-dark);
-}
-
-.modal-content p {
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.modal-warning {
-  color: #f87575;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.modal-list {
-  list-style: none;
-  padding: 0;
-  text-align: center;
-  margin: 0;
-}
-
-.modal-list li {
-  color: var(--text-dark);
-  margin-bottom: 0.2rem;
-}
-
-.modal-list li strong {
-  color: #f87575;
-}
-
-.modal-danger {
-  color: #f87575;
-  font-weight: 600;
-  margin: 1rem 0 2rem;
-  padding: 1rem;
-  background-color: rgba(248, 117, 117, 0.1);
-  text-align: center;
-  border-radius: 10px;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
 }
 
 /* #endregion */
@@ -1564,72 +1400,6 @@ body.modal-open {
 
 /* #endregion */
 
-/* #region DELETE CONVERSATION MODAL */
-
-/* --- Delete Confirmation Modal --- */
-.delete-modal {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: slideUp 0.3s ease-out;
-  position: relative;
-}
-
-.delete-modal h2 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.delete-description {
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  color: var(--text-light);
-  line-height: 1.5;
-}
-
-.delete-description span {
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.delete-modal .close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--text-light);
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.delete-modal .close:hover {
-  color: var(--text-dark);
-  transform: rotate(90deg);
-}
-
-.modal-actions {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.modal-button-group .btn-danger:hover {
-  background-color: #f05555;
-}
-
-/* #endregion */
-
 /* #region ERROR PAGES */
 .error-content {
   padding: 3rem 1rem;
@@ -1726,6 +1496,9 @@ body.modal-open {
 
 /* Tablet: 768px+ */
 @media (min-width: 768px) {
+
+  /* HERO SECTION */
+
   .hero-section>:first-child {
     order: 2;
     flex: 1.2;
@@ -1822,18 +1595,20 @@ body.modal-open {
   }
 
   .discover-page,
-  .matches-page {
+  .matches-page,
+  .view-user-profile-page {
     max-width: 1000px;
   }
 
   .profiles-side-by-side,
-  .matches-side-by-side {
+  .matches-side-by-side,
+  .view-user-profile-side-by-side {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   /* Make hidden views appear on desktop */
-  .profile-card .discover-view.hidden,
+  .discover-view.hidden,
   .matches-card .match-view.hidden {
     display: block;
   }
@@ -1859,61 +1634,31 @@ body.modal-open {
     min-height: 90px;
   }
 
-  /* View Profile cards side-by-side */
-  .profile-page {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 50px 1rem 1rem;
-    max-width: 800px;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+  /* Modal */
+  .modal-content,
+  .match-modal,
+  .delete-modal,
+  .delete-message-modal {
+    width: 92%;
+  }
+  
+  .modal-content,
+  .match-modal,
+  .delete-modal,
+  .delete-message-modal {
+    max-width: 450px;
+  }
+
+  .match-heart {
+    font-size: 2.3rem;
+  }
+
+  .match-avatars img {
+    width: 110px;
+    height: 110px;
   }
 
  /*--- CHECK CODE TO CHECK ---*/
-
-  .profile-page .profile-card-view {
-    margin-bottom: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .dog-profile,
-  .owner-profile {
-    display: block;
-  }
-
-  /* Push edit button to bottom of card */
-  .profile-page .profile-edit-inline {
-    margin-top: auto;
-  }
-
-  /* Increase button font sizes on tablet+ */
-  .profile-edit-inline .btn-edit-profile,
-  .delete-profile-btn {
-    font-size: 0.8rem;
-  }
-
-  /* Side-by-side layout */
-  .profile-page {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-  }
-  
-  .profile-page .navbar,
-  .profile-page .page-header,
-  .profile-page .profile-views-grid,
-  .profile-page .danger-zone {
-    grid-column: 1 / -1;
-  }
-
-  .profile-page .danger-zone {
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-  }
 
   .discover-page.message-thread-page{
     max-width: 500px;
@@ -1937,13 +1682,7 @@ body.modal-open {
     width: 200px;
     height: 200px;
   }
-
-  .matches-header{
-    text-align: center;
-  }
-
 }
-/* #endregion */
 
 /* Desktop: 992px+ */
 @media (min-width: 992px) {
@@ -2019,14 +1758,6 @@ body.modal-open {
 
   /*------CODE TO CHECK------*/
 
-  /* Consistent page heading sizes on desktop */
-  .discover-page h1,
-  .matches-page h1,
-  .messages-page h1,
-  .profile-page h1 {
-    font-size: 1.1rem !important;
-  }
-
   /* Messages split-screen layout */
   .messages-split-container {
     display: grid;
@@ -2074,21 +1805,10 @@ body.modal-open {
     max-width: 1400px;
     padding: 80px 30px 50px;
   }
-
-  /* Profile buttons sizing for desktop */
-  .profile-edit-inline .btn-edit-profile,
-  .delete-profile-btn {
-    font-size: 0.95rem;
-  }
-
 }
 
 /* Desktop: 1024px+ */
 @media (min-width: 1024px) {
-  
-  .profile-page-title {
-    font-size: 1rem !important;
-  }
 
   .hero-content.error-content img{
     width: 250px;
@@ -2207,21 +1927,6 @@ body.modal-open {
     width: 650px;
     height: 630px;
   }
-
-  /*-----CODE TO CHECK-----*/
-
-  .profile-page > .profile-card-view {
-    align-self: stretch;
-  }
-
-  .profile-page > .d-flex,
-  .profile-page .danger-zone {
-    align-self: center;
-  }
-
-  .profile-page .profile-card-view {
-    height: 100%;
-  }
 }
-
 /* #endregion */
+

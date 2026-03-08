@@ -30,7 +30,7 @@
 
           <article class="conversation-item" data-dog-id="{{ conversation.dog.id }}">
 
-            <button class="btn-delete-conversation" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
+            <button class="btn-delete-conversation d-flex justify-content-center align-items-center" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
               <img src="{% static 'images/bin.png' %}" alt="Delete">
             </button>
 
@@ -152,15 +152,15 @@
 
 <!-- Delete conversation confirmation modal -->
 <aside class="modal-backdrop" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteConversationTitle">
-  <div class="delete-modal">
-    <button class="close" type="button" aria-label="Close" id="closeDeleteModal">×</button>
-    <h2 id="deleteConversationTitle">Delete conversation?</h2>
-    <p class="delete-description">This will permanently delete all messages with <span id="deleteDogName"></span>. This
-      action cannot be undone.</p>
+  <div class="delete-message-modal text-center p-4">
+    <h2 id="deleteConversationTitle" class="delete-message-modal">Delete conversation?</h2>
+    <p>This will permanently delete all messages with <span id="deleteDogName" class="delete-msg-dog-name"></span>. <br>This
+      action cannot be undone.
+    </p>
 
-    <div class="modal-delete-msg modal-button-group d-flex justify-content-center gap-2">
-      <button class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
-      <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <button class="btn-modal btn-cancel" id="cancelDeleteBtn">Cancel</button>
+      <button class="btn-modal btn-danger" id="confirmDeleteBtn">Delete</button>
     </div>
   </div>
 </aside>

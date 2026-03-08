@@ -445,6 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const resetModal = document.getElementById('resetConfirmModal');
       if (resetModal) {
         resetModal.classList.add('is-open');
+        document.body.classList.add('modal-open');
       }
     });
 
@@ -453,6 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeResetModal) {
       closeResetModal.addEventListener('click', () => {
         document.getElementById('resetConfirmModal').classList.remove('is-open');
+        document.body.classList.remove('modal-open');
       });
     }
 
@@ -460,6 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cancelResetBtn) {
       cancelResetBtn.addEventListener('click', () => {
         document.getElementById('resetConfirmModal').classList.remove('is-open');
+        document.body.classList.remove('modal-open');
       });
     }
 
@@ -477,6 +480,7 @@ document.addEventListener("DOMContentLoaded", () => {
       resetConfirmModal.addEventListener('click', (e) => {
         if (e.target.id === 'resetConfirmModal') {
           document.getElementById('resetConfirmModal').classList.remove('is-open');
+          document.body.classList.remove('modal-open');
         }
       });
     }
@@ -802,6 +806,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedDogId = dogId;
         document.getElementById('deleteDogName').textContent = dogName;
         document.getElementById('deleteConfirmModal').classList.add('is-open');
+        document.body.classList.add('modal-open');
       });
     });
 
@@ -810,6 +815,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeDeleteModal) {
       closeDeleteModal.addEventListener('click', () => {
         document.getElementById('deleteConfirmModal').classList.remove('is-open');
+        document.body.classList.remove('modal-open');
       });
     }
 
@@ -817,6 +823,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cancelDeleteBtn) {
       cancelDeleteBtn.addEventListener('click', () => {
         document.getElementById('deleteConfirmModal').classList.remove('is-open');
+        document.body.classList.remove('modal-open');
       });
     }
 
@@ -853,6 +860,7 @@ document.addEventListener("DOMContentLoaded", () => {
       deleteConfirmModal.addEventListener('click', (e) => {
         if (e.target.id === 'deleteConfirmModal') {
           document.getElementById('deleteConfirmModal').classList.remove('is-open');
+          document.body.classList.remove('modal-open');
         }
       });
     }
@@ -880,12 +888,14 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         selectedDogId = btn.dataset.dogId;
-        modal.style.display = 'flex';
+        modal.classList.add('is-open');
+        document.body.classList.add('modal-open');
       });
     });
 
     cancelBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
+      modal.classList.remove('is-open');
+      document.body.classList.remove('modal-open');
       selectedDogId = null;
     });
 
@@ -907,17 +917,18 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(data => {
         if (data.success) {
           // Remove match card from UI
-          const card = document.querySelector(`.profile-card[data-dog-id="${selectedDogId}"]`);
+          const card = document.querySelector(`.matches-card[data-dog-id="${selectedDogId}"]`);
           if (card) card.remove();
 
           // Check if any match cards remain
-          const remainingCards = document.querySelectorAll('.profile-card');
+          const remainingCards = document.querySelectorAll('.matches-card');
           if (remainingCards.length === 0) {
             // Reload page to show "No matches yet" empty state
             window.location.reload();
           }
         }
-        modal.style.display = 'none';
+        modal.classList.remove('is-open');
+        document.body.classList.remove('modal-open');
         selectedDogId = null;
       });
     });
@@ -925,7 +936,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Close modal on backdrop click
     modal.addEventListener('click', (e) => {
       if (e.target.id === 'deleteMatchModal') {
-        modal.style.display = 'none';
+        modal.classList.remove('is-open');
+        document.body.classList.remove('modal-open');
         selectedDogId = null;
       }
     });
@@ -952,6 +964,7 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     window.openDeleteModal = function() {
       deleteModal.classList.add('is-open');
+      document.body.classList.add('modal-open');
     };
 
     /**
@@ -959,12 +972,14 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     window.closeDeleteModal = function() {
       deleteModal.classList.remove('is-open');
+      document.body.classList.remove('modal-open');
     };
 
     /**
      * Submit the delete profile form after confirmation.
      */
     window.confirmDelete = function() {
+      document.body.classList.remove('modal-open');
       document.getElementById('deleteForm').submit();
     };
 

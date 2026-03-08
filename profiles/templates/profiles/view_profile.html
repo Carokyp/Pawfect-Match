@@ -16,7 +16,7 @@
   </header>
 
   <!-- View user profile grid -->
-  <div class="view-user-profile-grid">
+  <div class="view-user-profile-grid view-user-profile-side-by-side gap-md-3 px-md-5">
     {% if dog %}
     <!-- Dog profile card -->
     <article class="view-user-profile-card dog-profile">
@@ -105,27 +105,29 @@
   </div>
   <!-- End profile cards grid -->
 
-  <!-- Profile deletion section -->
-  <section class="danger-zone" aria-label="Delete profile section">
-    <p class="danger-zone-text">Delete your profile and your dog</p>
-    <p class="danger-zone-subtext">
-      This action is permanent and cannot be undone.
-    </p>
+  <!-- Delete profile section -->
+  <div class="d-flex justify-content-center mt-4">
+    <section class="p-4 text-center danger-zone" aria-label="Delete profile section">
+      <p>Delete your profile and your dog</p>
+      <p>
+        This action is permanent and cannot be undone.
+      </p>
 
-    <form method="post" action="{% url 'delete_profile' %}" id="deleteForm">
-      {% csrf_token %}
-      <button type="button" class="btn-danger delete-profile-btn" onclick="openDeleteModal()">
-        Delete My Profile
-      </button>
-    </form>
-  </section>
+      <form method="post" action="{% url 'delete_profile' %}" id="deleteForm">
+        {% csrf_token %}
+        <button type="button" class="btn-modal btn-danger" onclick="openDeleteModal()">
+          Delete My Profile
+        </button>
+      </form>
+    </section>
+  </div>
 
   <!-- Delete profile confirmation modal -->
   <aside class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteProfileTitle">
-    <div class="modal-content">
-      <h2 id="deleteProfileTitle">Are you sure?</h2>
-      <p class="modal-warning">⚠️ This will permanently delete:</p>
-      <ul class="modal-list">
+    <div class="modal-content py-4 px-1">
+      <h2 id="deleteProfileTitle" class="text-center">Are you sure?</h2>
+      <p class="modal-warning-text text-center">⚠️ This will permanently delete:</p>
+      <ul class="modal-list list-unstyled text-center">
         <li>Your profile</li>
         {% if dog %}
         <li>Your dog: <strong>{{ dog.name }}</strong></li>
@@ -133,12 +135,12 @@
         <li>All your matches</li>
         <li>All your conversations</li>
       </ul>
-      <p class="modal-danger">This action cannot be undone.</p>
-      <div class="modal-actions modal-button-group">
-        <button type="button" class="btn-secondary" onclick="closeDeleteModal()">
+      <p class="text-background modal-warning-text text-center p-3 mx-auto">This action cannot be undone.</p>
+      <div class="d-flex justify-content-center gap-3">
+        <button type="button" class="btn-modal btn-cancel" onclick="closeDeleteModal()">
           Cancel
         </button>
-        <button type="button" class="btn-danger" onclick="confirmDelete()">
+        <button type="button" class="btn-modal btn-danger" onclick="confirmDelete()">
           Delete
         </button>
       </div>

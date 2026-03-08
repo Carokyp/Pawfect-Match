@@ -133,21 +133,23 @@
         
       </article>
       {% endfor %}
-
-      <!-- Delete match confirmation modal -->
-      <aside class="modal-overlay" id="deleteMatchModal" role="dialog" aria-labelledby="deleteMatchTitle" aria-modal="true">
-        <div class="modal-content">
-          <h2 id="deleteMatchTitle">Delete Match</h2>
-          <p class="modal-warning">Are you sure you want to delete this match?</p>
-          <div class="modal-actions modal-button-group">
-            <button class="btn-secondary" id="cancelDeleteMatchBtn">Cancel</button>
-            <button class="btn-danger" id="confirmDeleteMatchBtn">Delete</button>
-          </div>
-        </div>
-      </aside>
       
     </div>
   </section>
+
+  <!-- Delete match confirmation modal -->
+  <aside class="modal-backdrop" id="deleteMatchModal" role="dialog" aria-labelledby="deleteMatchTitle" aria-modal="true">
+    <div class="delete-modal text-center p-4">
+      <h2 id="deleteMatchTitle">Delete Match?</h2>
+      <p>Are you sure you want to delete this match?</p>
+      
+      <!-- Modal action buttons -->
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button type="button" class="btn-modal btn-cancel" id="cancelDeleteMatchBtn">Cancel</button>
+        <button type="button" class="btn-modal btn-danger" id="confirmDeleteMatchBtn">Delete</button>
+      </div>
+    </div>
+  </aside>
   
   {% else %}
 
