@@ -26,87 +26,44 @@
 
 /* #region RESET & BASE STYLES */
 
+/* Reset default browser styles for all elements */
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Include padding and border in element's width/height */
 }
 
-html,
+/* Main body layout */
 body {
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  min-height: 100vh;
-  max-width: 1800px;
-  margin: 0 auto;
+  min-height: 100vh; /* Minimum height of viewport, can grow with content */
+  max-width: 1800px; /* Limit maximum width for readability on large screens */
+  margin: 0 auto; /* Center content horizontally */
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack children vertically */
   font-family: 'Roboto Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--orange-100);
 }
 
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* Main content area - grows to fill available space (sticky footer technique) */
 main {
-  flex: 1 0 auto;
+  flex: 1 0 auto; /* Grow to fill space, don't shrink, auto basis */
 }
 
+/* Remove default link styling */
 a {
-  color: inherit;
-  text-decoration: none;
+  color: inherit; /* Use parent element's text color */
+  text-decoration: none; /* Remove underline */
 }
 
+/* Keep consistent color for visited links */
 a:visited {
   color: inherit;
-}
-
-/* #endregion */
-
-/* #region LAYOUT STRUCTURE */
-
-/* --- Auth Wrapper --- */
-
-.auth-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1.5rem;
-  text-align: center;
-}
-
-.auth-content.form-page {
-  text-align: left;
-  min-height: 100vh;
-  padding: 2rem 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 70px;
-}
-
-.auth-content.form-page>*:not(.back-button) {
-  width: 100%;
-  max-width: 320px;
-}
-
-
-.auth-content.discover-page-wrapper {
-  text-align: left;
-  padding: 0;
-  justify-content: flex-start;
-}
-
-.auth-content h1 {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.auth-content p {
-  font-size: 0.8rem;
 }
 
 /* #endregion */
@@ -163,50 +120,33 @@ a:visited {
 .navbar .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E85D1F' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
-
 /* #endregion */
 
 /* #region HOME PAGE */
 
 /* HERO */
-.hero-section {
-  min-height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  overflow-x: hidden;
-  padding-top: 4rem;
-}
 
-.hero-image-wrapper {
-  margin: 0;
-  width: 100%;
+.hero-section{
+  padding-top: 4.5rem;
 }
 
 .hero-image {
   width:100%;
-  margin-bottom: 1.5rem;
   display: block;
 }
 
 .hero-content {
-  max-width: 700px;
-  padding: 0 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .hero-content h1 {
   font-size: 1.8rem;
-  margin-bottom: 1.5rem;
   font-weight: 900;
   color: var(--orange-500);
 }
 
 .hero-content p {
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
   color: var(--text-dark);
 }
 
@@ -214,104 +154,48 @@ a:visited {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .hero-buttons a {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
 }
 
-/* HOW IT WORKS SECTION */
-.how-it-works-section {
-  position: relative;
-}
-
-/* FULL SCREEN SECTIONS */
-.full-section {
-  display: flex;
-  justify-content: center;
-  padding: 0 1.5rem;
-  background: var(--orange-200);
-}
+/* SECTIONS */
 
 /* Alternate background colors for sections */
 .full-section:nth-of-type(2) {
-  background: var(--orange-200) !important;
-}
-
-.full-section:nth-of-type(3) {
-  background: var(--orange-100) !important;
+  background: var(--orange-200);
 }
 
 .full-section:nth-of-type(4) {
-  background: var(--orange-200) !important;
+  background: var(--orange-200);
 }
 
-.full-section:nth-of-type(5) {
-  background: var(--orange-100) !important;
-}
-
-
-.section-content-1,
-.section-content-2,
-.section-content-3,
-.section-content-4 {
-  width: 100%;
-  text-align: center;
-  margin: 1.5rem 0rem;
-  max-width: 1800px;
-}
-
-.section-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.section-text h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
+.section-text h2,
+.why-header h2 {
   font-weight: 700;
   color: var(--orange-500);
-  justify-content: center;
 }
 
-.section-text p {
-  font-size: 1.05rem;
+.section-text p,
+.why-header p,
+.why-card p {
+  font-size: 0.9rem;
   color: var(--text-dark);
 }
 
-.section-image-wrapper {
+.why-card p{
   margin: 0;
-  width: 100%;
 }
 
 .section-image {
   width: 100%;
   display: block;
-  object-fit: cover;
 }
 
 /* WHY SECTION */
 .why-section {
-  padding: 2.5rem 1.5rem;
-  background: var(--orange-200) !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.why-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.why-header h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  color: var(--orange-500);
+  background: var(--orange-200);
 }
 
 .why-grid {
@@ -322,186 +206,120 @@ a:visited {
 
 .why-card {
   background: white;
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow);
   text-align: center;
 }
 
 .why-card h3 {
   font-size: 1rem;
-  margin-bottom: 0.75rem;
   color: var(--orange-500);
   font-weight: 700;
 }
-
-.why-card p {
-  color: var(--text-dark);
-  font-size: 0.95rem;
-  margin: 0;
-}
-
 /* #endregion */
 
-/* #region ERROR PAGES */
-.error-content {
-  padding: 3rem 1rem;
+/* #region AUTH FORM */
+
+.auth-content {
+  position: relative;
+  z-index: 2;
+  padding: 1.5rem;
 }
 
-.error-content h1 {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  color: var(--text-dark);
+.auth-content.form-page {
+  min-height: 100vh;
+  padding: 0 1rem;
 }
 
-.error-content h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  color: var(--text-dark);
+.auth-content.create-owner{
+  min-height: 100vh;
+  padding: 5rem 1rem;
 }
 
-.error-content p {
-  margin-bottom: 2rem;
-  max-width: 400px;
-  color: var(--text-dark);
+.auth-content.discover-page-wrapper {
+  text-align: left;
+  padding: 0;
+  justify-content: flex-start;
 }
 
-.error-content img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  margin-bottom: 2rem;
-  box-shadow: var(--shadow);
-  border-radius: 50%;
+.auth-content h1 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.auth-content p {
+  font-size: 0.8rem;
 }
 
 /* #endregion */
 
 /* #region BUTTONS & INTERACTIVE ELEMENTS */
 
-/* --- Primary/Secondary Hero Buttons --- */
-.btn-hero {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* --- Primary/Secondary Buttons --- */
+.btn {
   padding: 0.75rem 1.75rem;
   border-radius: 50px;
-  font-size: 1rem;
   font-weight: 700;
-  text-decoration: none;
   transition: all 0.3s ease;
 }
 
-.btn-hero.primary {
+.btn.edit{
+  padding: 1rem;
+}
+
+.btn.primary {
   background: var(--orange-900);
   color: white;
   border: 3px solid var(--orange-900);
 }
 
-.btn-hero.secondary {
+.btn.primary:hover {
+  color: white;
+  background-color: var(--orange-700);
+  border: 3px solid var(--orange-700);
+}
+
+.btn.secondary {
   background: white;
   color: var(--orange-900);
   border: 3px solid var(--orange-900);
 }
 
-.btn-hero.primary:hover {
-  color: white;
-  background-color: var(--orange-700);
-  border: 3px solid var(--orange-700);
-  transform: translateY(-3px);
-}
-
-.btn-hero.secondary:hover {
+.btn.secondary:hover {
   color: var(--orange-700);
   border: 3px solid var(--orange-700);
-  transform: translateY(-3px);
 }
 
-/* --- Edit Profile Button --- */
-.btn-edit-profile {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border-radius: 50px;
-  width: 150px;
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.3s ease;
+/* --- General style for buttons in warning and delete modals --- */
+.btn-modal{
+  padding: 0.75rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.btn-edit-profile.primary {
-  background: var(--orange-900);
-  color: white;
-  border: 3px solid var(--orange-900);
-}
-
-.btn-edit-profile.primary:hover {
-  color: white;
-  background-color: var(--orange-700);
-  border: 3px solid var(--orange-700);
-}
-
-/* --- Danger/Delete Button --- */
-.btn-danger {
+/* --- Delete Button --- */
+.btn-danger{
   background-color: #f87575;
   color: #ffffff;
-  border: 2px solid #f87575;
-  padding: 0.75rem 2rem;
-  margin-top: 1rem;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-block;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-danger:hover {
   background-color: #e85555;
-  border-color: #e85555;
 }
 
-/* -- Danger/Delete Profile Button */
-
-.delete-profile-btn {
-  font-size: 0.95rem;
-}
-
-/* --- Secondary Button Base --- */
-.btn-secondary {
+/* --- Cancel Button --- */
+.btn-cancel {
   background-color: #f0f0f0;
   color: var(--text-dark);
   padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
 }
 
-.btn-secondary:hover {
+.btn-cancel:hover {
   background-color: #e0e0e0;
-}
-
-.modal-button-group .btn-secondary,
-.modal-button-group .btn-danger {
-  width: 120px;
-  max-width: 120px;
-  flex: 0 0 120px;
-  margin-top: 0;
-}
-
-.modal-button-group .btn-danger {
-  background-color: #f87575;
-  color: white;
-  margin: 0;
 }
 
 /* --- Back Button --- */
@@ -536,47 +354,6 @@ a:visited {
   filter: grayscale(100%);
 }
 
-/* --- Message Button Wrapper --- */
-.message-btn {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-}
-
-/* --- Form Buttons --- */
-.form-create-btn,
-.form-sign-in-btn {
-  display: flex;
-  justify-content: center;
-  margin: 2rem auto 0;
-}
-
-/* --- Delete Match Button --- */
-.btn-delete-match {
-  background: none;
-  color: #f87575;
-  border: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 5px;
-  margin-top: 10px;
-  transition: background 0.2s, color 0.2s, transform 0.2s;
-}
-
-.btn-delete-match:hover {
-  background: #ffe6e6;
-  color: #e85555;
-  transform: scale(1.08);
-}
-
 /* --- Send Conversationn Button--- */
 
 .send-msg.btn-secondary {
@@ -586,6 +363,7 @@ a:visited {
 
 /* --- Conversation Delete Button --- */
 
+/* Trash bin icon */
 .btn-delete-conversation {
   flex-shrink: 0;
   width: 40px;
@@ -596,15 +374,6 @@ a:visited {
   font-size: 1rem;
   cursor: pointer;
   transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-delete-conversation img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
 }
 
 .btn-delete-conversation:hover {
@@ -618,16 +387,21 @@ a:visited {
 
 /* #region FORMS & INPUTS */
 
-/* --- Form Container --- */
-.auth-form {
-  width: 100%;
-  max-width: 320px;
+/* Custom auth-card */
+.auth-card {
+  max-width: 420px;
+  margin: 0 auto;
 }
 
 .auth-card-form h1 {
   font-size: 1.5rem;
 }
 
+.auth-card p {
+  color: var(--text-dark);
+}
+
+/* Shared styles for auth forms and profile edit cards */
 .form-card,
 .auth-card {
   background: white;
@@ -636,91 +410,11 @@ a:visited {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Auth-specific tweaks */
-.auth-card {
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-.auth-card p {
-  color: var(--text-dark);
-}
-
-/* --- Owner profile form layout --- */
-.owner-profile-form {
-  max-width: 320px;
-}
-
-.owner-profile-split {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.owner-profile-photo {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.owner-profile-fields {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-}
-
-.owner-profile-interests,
-.owner-profile-about {
-  width: 100%;
-}
-
-/* --- Dog profile form layout --- */
-.dog-profile-form {
-  max-width: 320px;
-}
-
-.dog-profile-split {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.dog-profile-photo {
-  width: 100%;
-}
-
-.dog-profile-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.dog-profile-identity {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-}
-
-.pill-option span {
-    padding: 0.45rem 0.4rem !important;
-}
-
 /* --- Form Fields --- */
 
-/* Registration form container color */
 .form-page-container {
   color: var(--orange-500);
-}
-
-.auth-card-split {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.auth-card-form {
-  width: 100%;
+  padding: 4rem 0;
 }
 
 .form-page-image {
@@ -728,44 +422,16 @@ a:visited {
 }
 
 .form-field {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .form-field label {
   font-weight: 500;
-  font-size: 1rem;
-  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
   color: var(--text-dark);
-}
-
-/* Base styles for form fields - matches profile edit styling */
-.form-field input,
-.form-field textarea,
-.form-field select {
-  padding: 0.75rem 1rem;
-  border-radius: 16px;
-  border: 2px solid #999;
-  background: #ffffff;
-  font-size: 1rem;
-  width: 100%;
-  max-width: 100%;
-}
-
-/* --- Form Title --- */
-h1.form-title {
-  font-size: 1.3rem !important;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: 1rem;
 }
 
 /* --- Sign up link --- */
-.auth-redirect {
-  text-align: center;
-  margin-top: 1.5rem;
-}
 
 .auth-redirect p {
   font-size: 0.9rem;
@@ -774,13 +440,11 @@ h1.form-title {
 
 .auth-link,
 .forgot-password-link {
-  color: var(--orange-500);
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-/* --- Forgot Password Link --- */
 .forgot-password-link {
   display: block;
   text-align: right;
@@ -795,11 +459,25 @@ h1.form-title {
   text-decoration: underline;
 }
 
-.auth-card-form .reset-title {
-  font-size: 1.3rem;
+/* --- Password Input with Toggle --- */
+.input-wrapper { 
+  position: relative;
 }
 
-/* --- Password Reset Success --- */
+.toggle-password { /* Position the toggle button inside the input field, aligned to the right */
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+}
+
+.eye-icon {
+  filter: grayscale(100%); /* Make the icon gray */
+}
+
+/* --- Password Reset Success image--- */
 .success-image img {
   width: 150px;
   height: 150px;
@@ -808,113 +486,30 @@ h1.form-title {
   border-radius: 50%;
 }
 
-.success-text p{
+/* --- Create Owner and Dog Profile Forms --- */
+
+h1.form-title {
+  font-size: 1.3rem !important;
+  font-weight: 700;
   color: var(--text-dark);
 }
+/* --- Image Upload Box --- */
 
-.success-text h1{
-  font-size: 1.3rem !important;
-}
-
-/* --- Pill Options (Interests) --- */
-.pill-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
-  gap: 0.5rem;
-}
-
-.pill-option {
-  position: relative;
-  display: block;
-  width: 100%;
-  cursor: pointer;
-}
-
-.pill-option input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.pill-option span {
-  display: block;
-  width: 100%;
-  text-align: center;
-  padding: 0.45rem 0.9rem;
-  border-radius: 999px;
-  border: 2px solid #999;
-  font-size: 0.85rem;
-  transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  background: #fff;
-}
-
-.pill-option input:checked+span {
-  background: var(--orange-200);
-  border-color: var(--orange-200);
-  color: var(--orange-900);
-}
-
-.pill-option.is-disabled span {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pill-helper {
-  margin-top: 0.35rem;
-  font-size: 0.75rem;
-  color: #999;
-}
-
-/* --- Password Input with Toggle --- */
-.input-wrapper {
-  position: relative;
-}
-
-.input-wrapper input {
-  width: 100%;
-  padding-right: 2.75rem;
-  /* Space reserved for eye icon */
-}
-
-.toggle-password {
-  position: absolute;
-  top: 50%;
-  right: 0.75rem;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.eye-icon {
-  filter: grayscale(100%);
-}
-
-/* --- From Image -- */
-
+/* The upload box is a square area with dashed border, rounded corners, and a hover effect */
 .upload-box {
   position: relative;
-  width: 100%;
-  /* Maintain a consistent square area while responsive */
   aspect-ratio: 1 / 1;
-  padding: 0.2rem;
-  height: auto;
-  min-height: 180px;
   border: 2px dashed #ccc;
   border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   transition: var(--transition);
 }
-
+/* Hover effect for upload box */
 .upload-box:hover {
   background: var(--orange-100);
   border-color: var(--orange-300);
 }
-
+/* The file input is hidden but covers the entire upload box to capture clicks */
 .upload-box input[type="file"] {
   position: absolute;
   inset: 0;
@@ -923,11 +518,10 @@ h1.form-title {
 }
 
 .upload-placeholder {
-  text-align: center;
   color: #999;
   font-size: 0.9rem;
 }
-
+/* Add a plus icon using a pseudo-element */
 .upload-placeholder::before {
   content: '';
   display: block;
@@ -936,9 +530,8 @@ h1.form-title {
   color: #999;
   margin: 0 auto 0.35rem auto;
   background: center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
-  /* Plus icon */
 }
-
+/* Image preview is hidden by default, shown when an image is present */
 .image-preview {
   display: none;
   width: 100%;
@@ -947,10 +540,12 @@ h1.form-title {
   border-radius: 14px;
 }
 
+/* When an image is present, hide the placeholder and show the preview */
 .upload-box.has-image .upload-placeholder {
   display: none;
 }
 
+/* Show the image preview when an image is present */
 .upload-box.has-image .image-preview {
   display: block;
 }
@@ -967,55 +562,125 @@ h1.form-title {
   background: rgba(0, 0, 0, 0.5);
   color: #fff;
   font-size: 18px;
-  line-height: 1;
   display: none;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
 }
-
+/* Show the remove button when an image is present */
 .upload-box.has-image .upload-remove {
   display: inline-flex;
 }
 
-/* --- Create profils -- */
+.owner-profile-photo,
+.dog-profile-photo {
+  width: 100%;
+  max-width: 250px;
+}
 
+.owner-create-profile,
+.dog-create-profile {
+  gap: 1.5rem;
+}
+
+.dog-profile-card {
+  overflow: visible;
+}
+
+.owner-profile-fields,
+.dog-profile-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* --- Interests --- */
+
+/* Pill-style multi-select options for interests */
+.pill-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+/* Each pill option is a label that contains a hidden checkbox and a styled span for the pill appearance */
+.pill-option {
+  position: relative;
+  cursor: pointer;
+}
+/* The checkbox input is hidden but still captures clicks on the label */
+.pill-option input {
+  position: absolute;
+  opacity: 0;
+}
+/* When the checkbox is checked, style the adjacent span to look like a selected pill */
+.pill-option input:checked+span {
+  background: var(--orange-200);
+  border-color: var(--orange-200);
+  color: var(--orange-900);
+}
+/* The span inside the pill option is styled to look like a pill-shaped button */
+.pill-option span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid #999;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  background: #fff;
+}
+/* Disables non-selected pills when max selection (3) is reached */
+.pill-option.is-disabled span {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Helper text below the pill options */
+.pill-helper {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* --- About me input--- */
+.form-field input,
+.form-field textarea,
 .form-field select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  border: 2px solid #999;
+  background: #ffffff;
+  font-size: 0.9rem;
+  width: 100%;
+  max-width: 100%;
+}
 
+/* Custom dropdown arrow for select fields */
+.form-field select,
+.form-field select:focus{
+  appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1.25rem center;
   padding-right: 3rem;
 }
 
-
+/* Remove default focus outline and background change on focus */
 .form-field input:focus,
 .form-field textarea:focus,
 .form-field select:focus {
-  outline: none; /* No background color change */
+  outline: none; 
 }
 
-.form-field select:focus {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1.25rem center;
-}
-
+/* Textarea specific styles */
 textarea {
   resize: none;
   min-height: 120px;
 }
 
+/* Character counter below textarea */
 .char-counter {
   font-size: 0.75rem;
   color: #999;
-  text-align: right;
   margin-top: 0.25rem;
 }
-
+/* Error input message styling */
 .form-error {
   color: #c73636;
   font-size: 0.85rem;
@@ -1029,6 +694,7 @@ textarea {
   margin: 0.75rem 0;
 }
 
+/* Style individual error messages with a red background and border */
 .errorlist li {
   color: #c73636;
   font-size: 0.8rem;
@@ -1039,50 +705,102 @@ textarea {
   margin-bottom: 0.5rem;
 }
 
-/* Hide number input spinner arrows */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
+/* Edit profile form */
+ .edit-profile-content{
+  padding: 5rem 0.8rem 1rem 0.8rem;
+ }
 
 /* #endregion */
 
 /* #region BROWSE DOG PAGE */
 
-/* --- Image Overlay --- */
+/* Consistent page heading styling */
+.discover-page h1,
+.matches-page h1,
+.messages-page h1,
+.view-user-profile-page h1,
+.edit-dog-profile-page h1,
+.edit-owner-profile-page h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+/* Wrapper for discover page content */
+.discover-page,
+.matches-page,
+.messages-inbox-page,
+.view-user-profile-page,
+.edit-dog-profile-page,
+.edit-owner-profile-page {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  padding: 30px 12px;
+}
+
+/* --- Toggle view visibility (dog/owner) --- */
+.hidden {
+  display: none;
+}
+/* --- Toggle dog and owner views --- */
+.toggle-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  background: #ffefe4;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+/* Active state for toggle buttons */
+.toggle-btn.active {
+  background: var(--orange-200);
+  box-shadow: var(--shadow);
+}
+
+/* --- Dog and Owner Profile Card --- */
+.profile-card,
+.matches-card,
+.view-user-profile-card {
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  max-height: 1000px;
+}
+
+/* --- Image Profil--- */
 .profile-image {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border-radius: 16px;
   overflow: hidden;
 }
+.profile-image img {
+  width: 100%;
+  object-fit: cover;
+}
 
+/* Overlay at the bottom of the image for name and age ect*/
 .image-overlay {
   position: absolute;
   bottom: 0;
   width: 100%;
   padding: 1rem;
   text-align: left;
-  align-items: flex-start;
   color: white;
   background: linear-gradient(to top, rgb(0 0 0 / 86%), rgba(0, 0, 0, 0));
 }
 
 .image-overlay h2 {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .image-overlay p {
   margin: 0.2rem 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 /* --- Dividers --- */
@@ -1092,182 +810,28 @@ input[type="number"] {
   margin: 1rem;
 }
 
-.discover-page {
-  width: 100%;
-  max-width: 380px;
-  margin: 0 auto;
-  padding: 50px 12px;
-}
-
-/* --- Page Header --- */
-.page-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 0;
-}
-
-/* Consistent page heading styling */
-.discover-page h1,
-.matches-page h1,
-.messages-page h1,
-.profile-page h1 {
-  font-size: 1.1rem !important;
-  font-weight: 700;
+.profile-about h3,
+.profile-interests h3 {
   color: var(--text-dark);
-  margin: 0;
-  margin-bottom: 0.5rem;
-}
-
-/* --- Hidden Form --- */
-.hidden-form {
-  display: none;
-}
-
-/* --- Card (shared with Profile view) --- */
-.profile-card {
-  background: #fff;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  max-height: 1000px;
-}
-
-.profile-views-grid {
-  display: block;
-}
-
-/* --- Profile card view (profile page only) --- */
-.profile-card-view {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-/* Inline edit button - compact, no extra space */
-.profile-edit-inline {
-  padding: 2rem 1rem 0.5rem;
-  text-align: center;
-}
-
-.profile-edit-inline .btn-edit-profile {
-  display: inline-block;
-  font-size: 0.95rem;
-  width: 180px;
-}
-
-/* --- Toggle --- */
-.profile-toggle {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.toggle-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 0.4rem 1rem;
-  background: #ffefe4;
-  color: var(--text-dark);
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.toggle-btn.active {
-  background: var(--orange-200);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* --- Image --- */
-.profile-image img {
-  width: 100%;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto;
-  border-radius: 16px;
-}
-
-/* --- Info blocks --- */
-.profile-about {
-  color: var(--text-dark);
-  padding: 0 1rem;
-}
-
-.profile-about h3 {
-  color: var(--text-dark);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
-.profile-about.center {
-  text-align: center;
-}
-
-.profile-interests {
-  padding: 0 1rem;
-}
-
-.profile-interests.center {
-  text-align: center;
-}
-
-.profile-interests.left {
-  text-align: left;
-}
-
-.profile-interests h4 {
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--text-dark);
-}
-
-.profile-tags {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0 1rem;
-  flex-wrap: nowrap;
-  justify-content: center;
-}
-
-.profile-tags.center {
-  justify-content: center;
-}
-
-/* --- Energy + Size block --- */
-.profile-meta {
-  display: flex;
-  justify-content: space-around;
-  padding: 0 1.5rem;
-  text-align: center;
-}
+/* --- Energy level + Size block --- */
 
 .meta-block h4 {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 0.6rem;
   color: var(--text-dark);
 }
 
 .tag {
   background: #ffefe4;
-  ;
-  padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
-/* --- Hidden states --- */
-.hidden {
-  display: none;
-}
-
-/* --- Actions --- */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin: 1.5rem 0;
-}
+/* --- Like and dislike button --- */
 
 .action-btn {
   width: 64px;
@@ -1279,11 +843,8 @@ input[type="number"] {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.action-btn:active {
-  transform: scale(0.9);
-}
-
 .action-btn:hover {
+  transform: scale(1.06);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -1296,48 +857,64 @@ input[type="number"] {
   color: #fff;
 }
 
+/* --- No more dogs to browse page AND no matches made yet --- */
+
+.empty-dogs-title,
+.no-msg-title,
+.empty-matches-title {
+  font-weight: 400 !important;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.empty-dogs-subtitle,
+.no-msg-subtitle,
+.empty-matches-subtitle{
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.empty-dogs .empty-state-emoji,
+.empty-matches .empty-state-emoji,
+.no-msg .empty-state-emoji {
+  width: 100px;
+  height: 100px;
+}
 /* #endregion */
 
-/* #region MATCH MODAL */
+/* #region MODALS */
 
+/* --- General modal styles --- */
+
+.modal-overlay,
 .modal-backdrop {
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-overlay.is-open,
+.modal-backdrop.is-open {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1000;
-  overflow: hidden;
-  /* No scoll */
 }
 
-.modal-backdrop.is-open {
-  opacity: 1;
-  visibility: visible;
+.modal-content,
+.match-modal,
+.delete-modal,
+.delete-message-modal {
+  background-color: #ffffff;
+  border-radius: var(--border-radius);
+  animation: slideUp 0.3s ease;
 }
 
-/* Block the scoll when modal open*/
-body.modal-open {
-  overflow: hidden;
-}
-
-.match-modal {
-  background: white;
-  border-radius: 24px;
-  padding: 2rem;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  position: relative;
-  animation: slideUp 0.4s ease;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+.modal-content,
+.delete-modal,
+.delete-message-modal {
+  max-width: 300px;
 }
 
 @keyframes slideUp {
@@ -1352,7 +929,45 @@ body.modal-open {
   }
 }
 
-.match-modal .close {
+.modal-content h2,
+.match-modal h2,
+.delete-modal h2,
+.delete-message-modal h2 {
+  font-size: 1.3rem;
+  color: var(--text-dark);
+}
+
+/* Delete profile modal */
+
+.modal-list li {
+  color: var(--text-dark);
+}
+
+.modal-list li strong {
+  color: #f87575;
+}
+
+.modal-warning-text {
+  color: #f87575;
+  font-weight: 600;
+}
+
+.text-background {
+  background-color: rgba(248, 117, 117, 0.1);
+  border-radius: 10px;
+  max-width: 280px;
+}
+
+/* Modal it's a match */
+
+.match-modal {
+  max-width: 450px;
+  position: relative;
+}
+
+/* Add a close button to the top right corner of the match modal */
+.match-modal .close,
+.delete-modal .close {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -1364,37 +979,14 @@ body.modal-open {
   transition: all 0.2s ease;
 }
 
-.match-modal .close:hover {
+/* Rotate the close button on hover and change color for better visibility */
+.match-modal .close,
+.delete-modal .close:hover {
   color: #000;
   transform: rotate(90deg);
 }
 
-.match-modal h2 {
-  font-size: 1.6rem;
-  background-color: var(--text-dark);
-  margin-bottom: 1.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.match-modal p {
-  font-size: 1rem;
-  background-color: var(--text-dark);
-  margin-bottom: 1.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.match-avatars {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
+/* Add a heartbeat animation to the heart icon in the match modal */
 .match-heart {
   font-size: 2rem;
   animation: heartBeat 1.2s ease-in-out infinite;
@@ -1416,6 +1008,7 @@ body.modal-open {
   }
 }
 
+/* Style the avatars of the matched dogs in the match modal */
 .match-avatars img {
   width: 80px;
   height: 80px;
@@ -1424,237 +1017,50 @@ body.modal-open {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.30);
 }
 
-.match-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  width: 100%;
+/* Style the button in the match modal to view the match's profile */
+.match-modal-btn {
   max-width: 180px;
-  margin: 0 auto;
+}
+
+/* Style the matched dog's name in the match modal and other delete modal */
+.match-dog-name,
+.delete-msg-dog-name {
+  font-weight: 600;
 }
 
 /* #endregion */
 
 /* #region MATCHES PAGE */
-.matches-page {
-  min-height: 100vh;
-  padding-top: 65px;
-}
 
-.matches-container {
-  text-align: center;
-}
-
-.matches-count {
-  display: flex !important;
-  justify-content: center !important;
-}
-
-.matches-container h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Matches page header - sizing handled by generic h1 rule */
-
-.matches-grid {
+.matches-grid,
+.view-user-profile-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
 
-.profile-card {
+.matches-card {
   position: relative;
 }
 
-.delete-match-row {
+.delete-match-button {
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
   height: 40px;
 }
 
-/* Empty matches state */
-.empty-matches-container {
-  text-align: center;
-  padding: 2rem 1rem;
-}
-
-.empty-matches-container .empty-matches {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.empty-matches-container .empty-state-emoji {
-  width: 100px;
-  height: 100px;
-  margin: 3rem 0;
-}
-
-/* #endregion */
-
-/* #region VIEW PROFILE PAGE */
-.profile-page {
-  min-height: 100vh;
-  padding-top: 50px;
-}
-
-/* #endregion */
-
-/* #region EDIT PROFILE PAGE */
-
-.form-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-}
-
-/* #endregion */
-
-/* #region NO MORE MATCHES*/
-.empty-dogs,
-.no-msg,
-.empty-matches{
-  text-align: center;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 500px;
-}
-
-.empty-dogs-title,
-.no-msg-title,
-.matches-title {
-  font-size: 1.1rem !important;
-  margin-bottom: 1rem;
-  color: var(--text-dark);
-}
-
-.empty-dogs-subtitle,
-.no-msg-subtitle,
-.matches-subtitle{
-  opacity: 0.6;
-  font-size: 0.9rem !important;
-  color: var(--text-dark);
-}
 /* #endregion */
 
 /* #region DANGER ZONE */
 
 .danger-zone {
-  margin-top: 1rem;
-  padding: 2rem;
   border: 3px solid #f87575;
   border-radius: var(--border-radius);
-  justify-content: center;
   background-color: rgb(255 255 255);
-  text-align: center;
+  max-width: 350px;
 }
 
 .danger-zone p {
   color: #f87575;
-  margin-bottom: 0.25rem;
-}
-
-/* #endregion */
-
-/* #region DELETE MODAL MATCHES */
-
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-overlay.is-open {
-  display: flex;
-}
-
-.modal-content {
-  background-color: #ffffff;
-  border-radius: var(--border-radius);
-  padding: 1.7rem 1rem;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  animation: slideUp 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin: 0 auto;
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.modal-content h2 {
-  margin-bottom: 1.2rem;
-  text-align: center;
-  font-size: 1.3rem;
-  color: var(--text-dark);
-}
-
-.modal-content p {
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.modal-warning {
-  color: #f87575;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.modal-list {
-  list-style: none;
-  padding: 0;
-  text-align: center;
-  margin: 0;
-}
-
-.modal-list li {
-  color: var(--text-dark);
-  margin-bottom: 0.2rem;
-}
-
-.modal-list li strong {
-  color: #f87575;
-}
-
-.modal-danger {
-  color: #f87575;
-  font-weight: 600;
-  margin: 1rem 0 2rem;
-  padding: 1rem;
-  background-color: rgba(248, 117, 117, 0.1);
-  text-align: center;
-  border-radius: 10px;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
 }
 
 /* #endregion */
@@ -1992,68 +1398,36 @@ body.modal-open {
 
 /* #endregion */
 
-/* #region DELETE CONVERSATION MODAL */
-
-/* --- Delete Confirmation Modal --- */
-.delete-modal {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: slideUp 0.3s ease-out;
-  position: relative;
+/* #region ERROR PAGES */
+.error-content {
+  padding: 3rem 1rem;
 }
 
-.delete-modal h2 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.delete-description {
+.error-content h1 {
+  font-size: 4rem;
   margin-bottom: 1rem;
-  font-size: 0.9rem;
-  color: var(--text-light);
-  line-height: 1.5;
-}
-
-.delete-description span {
-  font-weight: 600;
   color: var(--text-dark);
 }
 
-.delete-modal .close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent;
+.error-content h2 {
   font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--text-light);
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.delete-modal .close:hover {
+  margin-bottom: 1.5rem;
   color: var(--text-dark);
-  transform: rotate(90deg);
 }
 
-.modal-actions {
-  display: flex;
-  gap: 0.75rem;
+.error-content p {
+  margin-bottom: 2rem;
+  max-width: 400px;
+  color: var(--text-dark);
 }
 
-.modal-button-group .btn-danger:hover {
-  background-color: #f05555;
+.error-content img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+  border-radius: 50%;
 }
 
 /* #endregion */
@@ -2117,21 +1491,59 @@ body.modal-open {
 /* #endregion */
 
 /* #region RESPONSIVE DESIGN */
-/* Add breakpoints here if needed */
 
 /* Tablet: 768px+ */
 @media (min-width: 768px) {
-  .auth-content.form-page .form-page-container.form-with-image {
-    max-width: 1100px;
+
+  /* HERO SECTION */
+
+  .hero-section>:first-child {
+    order: 2;
+    flex: 1.2;
+    margin: 0;
+  }
+
+  .hero-section>:last-child {
+    order: 1;
+    flex: 1;
+    align-content: center;
+  }
+
+  /* SECTIONS */
+  .full-section{
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .img-size-1{
+    width: 380px;
+    height: 190px;
+  }
+
+  .img-size-2,
+  .img-size-3{
+    width: 400px;
+    height: 300px;
+  }
+
+  .img-size-4{
+    width: 350px;
+    height: 350px;
+  }
+
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .form-page-container.form-with-image .auth-card {
-    max-width: 1100px;
+    max-width: 900px;
+  }
+
+  .auth-card-form {
+    flex: 1;
   }
 
   .auth-card-split {
-    flex-direction: row;
-    align-items: stretch;
     gap: 2.5rem;
   }
 
@@ -2141,99 +1553,18 @@ body.modal-open {
     gap: 2.5rem;
   }
 
-  .auth-card-form {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
   .auth-content.form-page .owner-profile-card {
     max-width: 900px;
   }
 
-  .owner-profile-form {
-    max-width: none;
+  .auth-content h1 {
+    font-size: 1.5rem;
   }
 
-  .owner-profile-split {
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .owner-profile-photo {
-    flex: 0 0 240px;
-  }
-
-  .owner-profile-photo .upload-box {
-    min-height: 240px;
-  }
-
-  .owner-profile-fields {
-    flex: 1;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem 1.25rem;
-  }
-
-  .owner-profile-about {
-    margin-top: 1.5rem;
-  }
-
-  .owner-profile-interests {
-    margin-top: 1.25rem;
-  }
-
-  .owner-profile-fields .form-field {
-    margin-bottom: 0;
-  }
-
-  .auth-content.form-page .dog-profile-card {
-    max-width: 900px;
-  }
-
-  .dog-profile-form {
-    max-width: none;
-  }
-
-  .dog-profile-split {
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .dog-profile-photo {
-    flex: 0 0 240px;
-  }
-
-  .dog-profile-photo .upload-box {
-    min-height: 240px;
-  }
-
-  .dog-profile-fields {
-    flex: 1;
-    gap: 1.25rem;
-  }
-
-  .dog-profile-identity {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .dog-profile-about {
-    margin-top: 1.5rem;
-  }
-
-  .dog-profile-fields .form-field {
-    margin-bottom: 0;
-  }
-
+  /* forgot password side image */
   .form-page-image {
     flex: 1.2;
-    max-width: 520px;
     display: block;
-    overflow: hidden;
   }
 
   .form-page-image img {
@@ -2243,162 +1574,89 @@ body.modal-open {
     object-fit: cover;
   }
 
+  /* upload-box sizing */
+  .owner-profile-photo .upload-box,
+  .dog-profile-photo .upload-box {
+    min-height: 220px;
+  }
+
+  .owner-profile-fields,
+  .dog-profile-fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 0.5rem;
+  }
+
   /* Hide mobile success image on tablet+ */
   .success-image {
     display: none;
   }
 
-  /* Auth page typography for tablet */
-  .auth-content h1 {
-    font-size: 2rem;
-  }
-
-  h1.form-title {
-    font-size: 1.5rem !important;
-  }
-
-  .auth-content p {
-    font-size: 1rem;
-    text-align: start !important;
-  }
-
-  .auth-card-form p{
-    font-size: 1rem;
-    text-align: center !important;
-  }
-
-  .success-text h1 {
-    font-size: 1.75rem !important;
-  }
-
-  .success-text p {
-    font-size: 1rem;
-  }
-
-  /* Auth form button typography for tablet */
-  .form-create-btn .btn-hero,
-  .form-sign-in-btn .btn-hero {
-    font-size: 1rem;
-  }
-
-  .hero-section {
-    flex-direction: row;
-    text-align: left;
-    align-items: flex-end;
-    padding: 4.5rem 1rem 0;
-  }
-
-  .hero-section>:first-child {
-    order: 2;
-    flex: 1.2;
-  }
-
-  .hero-section>:last-child {
-    order: 1;
-    flex: 1;
-    text-align: left;
-  }
-
-  .hero-content {
-    text-align: left;
-  }
-
-  .hero-buttons {
-    justify-content: center;
-  }
-
-  .hero-buttons a {
-    font-size: 0.8rem;
-  }
-
-  .hero-image {
-    margin-bottom: 0;
-  }
-
-  .full-section {
-    margin-top: 0;
-  }
-
-  /* Sections: Like hero, change to row layout */
-  .full-section .section-content-1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-    padding: 1rem 0 1rem;
-  }
-
-  .full-section .section-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .full-section .section-content-1>:last-child {
-    flex: 1;
-  }
-
-  .full-section .section-content-2 {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    gap: 2rem;
-    padding: 1rem 0 1rem;
-  }
-
-  .full-section .section-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .full-section .section-content-2>:last-child {
-    flex: 1;
-  }
-
-  .full-section .section-content-3 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-    padding: 1rem 0 1rem;
-  }
-
-  .full-section .section-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .full-section .section-content-3>:last-child {
-    flex: 1;
-  }
-
-  .full-section .section-content-4 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-    padding: 1rem 0 1rem;
-  }
-
-  .full-section .section-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .full-section .section-content-4>:last-child {
-    flex: 1;
-  }
-
-  .why-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .discover-page {
+  .discover-page,
+  .matches-page,
+  .view-user-profile-page {
     max-width: 1000px;
   }
+
+  .profiles-side-by-side,
+  .matches-side-by-side,
+  .view-user-profile-side-by-side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Make hidden views appear on desktop */
+  .discover-view.hidden,
+  .matches-card .match-view.hidden {
+    display: block;
+  }
+
+  .profile-card .profile-toggle,
+  .matches-card .profile-toggle {
+    justify-content: space-around !important;
+    width: 100%;
+  }
+
+  .profile-card .profile-toggle .toggle-btn,
+  .matches-card .profile-toggle .toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    background: var(--orange-200);
+    color: var(--orange-900);
+    box-shadow: none;
+  }
+
+  .profile-about{
+    min-height: 90px;
+  }
+
+  /* Modal */
+  .modal-content,
+  .match-modal,
+  .delete-modal,
+  .delete-message-modal {
+    width: 92%;
+  }
+  
+  .modal-content,
+  .match-modal,
+  .delete-modal,
+  .delete-message-modal {
+    max-width: 450px;
+  }
+
+  .match-heart {
+    font-size: 2.3rem;
+  }
+
+  .match-avatars img {
+    width: 110px;
+    height: 110px;
+  }
+
+ /*--- CHECK CODE TO CHECK ---*/
 
   .discover-page.message-thread-page{
     max-width: 500px;
@@ -2409,129 +1667,19 @@ body.modal-open {
     max-width: 600px;
   }
 
-  .profile-views-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    padding: 0 1rem 1rem;
-  }
-
-  .profile-card .profile-view.hidden {
-    display: block;
-  }
-
-  .profile-toggle {
-    pointer-events: none;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    padding: 1rem 0.75rem;
-    justify-items: center;
-  }
-
-  .profile-toggle .toggle-btn {
-    width: 40%;
-    justify-content: center;
-    text-align: center;
-    background: var(--orange-200);
-    color: var(--orange-900);
-    box-shadow: none;
-  }
-
-  /* Profile cards side-by-side on tablet+ */
-  .profile-page {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 50px 1rem 1rem;
-    max-width: 800px;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .profile-page > .d-flex {
-    grid-column: 1 / -1;
-  }
-
-  .profile-page .profile-card-view {
-    margin-bottom: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .dog-profile,
-  .owner-profile {
-    display: block;
-  }
-
-  /* Push edit button to bottom of card */
-  .profile-page .profile-edit-inline {
-    margin-top: auto;
-  }
-
-  /* Increase button font sizes on tablet+ */
-  .profile-edit-inline .btn-edit-profile,
-  .delete-profile-btn {
-    font-size: 0.8rem;
-  }
-
-  /* Side-by-side layout */
-  .profile-page {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-  }
-  
-  .profile-page .navbar,
-  .profile-page .page-header,
-  .profile-page .profile-views-grid,
-  .profile-page .danger-zone {
-    grid-column: 1 / -1;
-  }
-
-  .profile-page .danger-zone {
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .dog-avatar {
     width: 55px;
     height: 55px;
-  }
-
-  .hero-section .error-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
   .error-content {
     padding: 0 0.5rem 2rem 0.5rem;
   }
 
-  .hero-section>div:last-child {
-    text-align: center;
-  }
-
   .error-content img {
     width: 200px;
     height: 200px;
   }
-
-  .matches-header{
-    text-align: center;
-  }
-
-  /* Consistent page heading sizes on tablet+ */
-  .discover-page h1,
-  .matches-page h1,
-  .messages-page h1,
-  .profile-page h1 {
-    font-size: 1.1rem !important;
-  }
-
 }
 
 /* Desktop: 992px+ */
@@ -2560,67 +1708,42 @@ body.modal-open {
   }
 
   .hero-content h1{
-      font-size: 3rem;
+      font-size: 2.8rem;
   }
   .hero-content p{
-      font-size: 1.25rem;
+      font-size: 1rem;
   }
   .hero-buttons a {
       font-size: 1rem;
   }
-
-  .section-content-1 .section-text h2,
-  .section-content-2 .section-text h2,
-  .section-content-3 .section-text h2,
-  .section-content-4 .section-text h2 {
-    font-size: 2rem;
+  
+  .hero-buttons {
+    gap: 2rem;
   }
 
-  .section-content-1 .section-text p,
-  .section-content-2 .section-text p,
-  .section-content-3 .section-text p,
-  .section-content-4 .section-text p {
-    font-size: 1.25rem;
-  }
-
-  .section-content-4 img {
-    width: 85%;
-  }
-
+  .section-text h2,
+  .section-text h2,
+  .section-text h2,
+  .section-text h2,
   .why-header h2 {
     font-size: 2rem;
   }
-  .why-header p {
-    font-size: 1.25rem;
+
+  .section-text p,
+  .section-text p,
+  .section-text p,
+  .section-text p,
+  .why-header p,
+  .why-card p  {
+    font-size: 1rem;
   }
 
   .why-card h3 {
     font-size: 1.1rem;
   }
 
-   .why-card p {
-    font-size: 0.95rem;
-  }
-
-  .auth-card-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .auth-card-form p{
-    text-align: center;
-    max-width: 450px;
-  }
-
-  /* Auth page typography for laptop */
-  .auth-content h1 {
-    font-size: 2.25rem;
-  }
-
-  .auth-content p {
-    font-size: 1.125rem;
+  .auth-content.form-page {
+    padding-top: 30px;
   }
 
   .success-text h1 {
@@ -2631,27 +1754,7 @@ body.modal-open {
     font-size: 1.125rem;
   }
 
-  /* Auth form button typography for laptop */
-  .form-create-btn .btn-hero,
-  .form-sign-in-btn .btn-hero {
-    font-size: 1.125rem;
-  }
-
-  h1.form-title {
-    font-size: 1.5rem !important;
-  }
-  
-  .auth-content.form-page {
-    padding-top: 90px;
-  }
-
-  /* Consistent page heading sizes on desktop */
-  .discover-page h1,
-  .matches-page h1,
-  .messages-page h1,
-  .profile-page h1 {
-    font-size: 1.1rem !important;
-  }
+  /*------CODE TO CHECK------*/
 
   /* Messages split-screen layout */
   .messages-split-container {
@@ -2700,25 +1803,10 @@ body.modal-open {
     max-width: 1400px;
     padding: 80px 30px 50px;
   }
-
-  /* Profile buttons sizing for desktop */
-  .profile-edit-inline .btn-edit-profile,
-  .delete-profile-btn {
-    font-size: 0.95rem;
-  }
-
-  .hero-content h1 {
-    font-size: 3rem;
-  }
-
 }
 
 /* Desktop: 1024px+ */
 @media (min-width: 1024px) {
-  
-  .profile-page-title {
-    font-size: 1rem !important;
-  }
 
   .hero-content.error-content img{
     width: 250px;
@@ -2739,18 +1827,6 @@ body.modal-open {
 /* Large Desktop: 1200px+ */
 @media (min-width: 1200px) { 
 
-  .navbar .navbar-brand {
-    font-size: 2.2rem;
-  }
-
-  .navbar .nav-link {
-    font-size: 1.2rem;
-  }
-
-  .navbar .navbar-nav {
-    gap: 1rem;
-  }
-
   .message-avatar {
     width: 45px;
     height: 45px;
@@ -2760,105 +1836,95 @@ body.modal-open {
 
 /* Extra Large: 1400px+ */
 @media (min-width: 1400px) { 
-  .section-content-4 img {
-    width: 70%;
-    display: block;
-    margin: 0 auto;
+
+  .navbar .nav-link {
+    font-size: 1.2rem;
   }
 
   .hero-section {
-    padding: 5.5rem 1rem 0;
-  }
-  
-  .hero-section img {
-    width: 80%;
-    display: block;
-    margin: 0 auto;
+    padding-top: 5rem;
   }
 
-  /* Increase profile card font sizes on extra large screens */
-  .profile-card .image-overlay h2 {
-    font-size: 2rem;
+  .hero-content h1 {
+    font-size: 3.5rem;
   }
 
-  .profile-card .image-overlay p {
+  .hero-content p {
     font-size: 1.5rem;
   }
 
-  .profile-card .profile-about h3 {
-    font-size: 1.1rem;
-  }
-
-  .profile-card .profile-about p {
-    font-size: 1.05rem;
-  }
-
-  .profile-card .profile-interests h4,
-  .profile-card .meta-block h4 {
-    font-size: 0.85rem;
-  }
-
-  .profile-card .tag {
-    font-size: 0.9rem;
-  }
-
-  .section-content-1 .section-text h2,
-  .section-content-2 .section-text h2,
-  .section-content-3 .section-text h2,
-  .section-content-4 .section-text h2{
-    font-size: 2.2rem;
-  }
-
-  .section-content-1 .section-text p,
-  .section-content-2 .section-text p,
-  .section-content-3 .section-text p,
-  .section-content-4 .section-text p {
-    font-size: 1.5rem;
-  }
-
-  .why-header h2 {
-    font-size: 2.2rem;
-  }
-  .why-header p {
-    font-size: 1.5rem;
-  }
-
-  .why-card h3 {
-    font-size: 1.5rem;
-  }
-
-   .why-card p {
+  .hero-buttons a {
     font-size: 1.25rem;
-    
   }
 
-  .auth-content.form-page {
-    padding-top: 35px;
+  .section-text h2,
+  .section-text h2,
+  .section-text h2, 
+  .section-text h2, 
+  .why-header h2 {
+    font-size: 2.5rem;
   }
 
-  .discover-page {
-    padding: 80px 12px;
+  .section-text p,
+  .section-text p,
+  .section-text p,
+  .section-text p,
+  .why-header p,
+  .why-card p {
+    font-size: 1.5rem;
+  }
+
+  .full-section {
+    gap: 4rem;
+  }
+
+  .img-size-1 {
+    width: 700px;
+    height: 350px;
+  }
+
+  .img-size-2,
+  .img-size-3{
+    width: 640px;
+    height: 480px;
+  }
+
+  .img-size-4 {
+    width: 580px;
+    height: 560px;
+  }
+
+  .discover-page{
+    padding: 40px 12px;
   }
 
   .profile-page {
     max-width: 1000px;
   }
+
 }
 
 @media (min-width: 1800px) {
 
-  .profile-page > .profile-card-view {
-    align-self: stretch;
+  .navbar .nav-link {
+    font-size: 1.5rem;
   }
 
-  .profile-page > .d-flex,
-  .profile-page .danger-zone {
-    align-self: center;
+  .img-size-1 {
+    width: 760px;
+    height: 380px;
   }
 
-  .profile-page .profile-card-view {
-    height: 100%;
+  .img-size-2,
+  .img-size-3{
+    width: 720px;
+    height: 540px;
+  }
+
+  .img-size-4 {
+    width: 650px;
+    height: 630px;
   }
 }
-
 /* #endregion */
+
