@@ -11,17 +11,15 @@
 
 {% block content %}
 
-<div id="message-thread-page" class="message-thread-page"
-    data-my-dog-name="{{ my_dog.name }}"
-    data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
+<div id="message-thread-page" class="message-thread-page" data-my-dog-name="{{ my_dog.name }}" data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
   
-    <!-- Messages page title -->
+  <!-- Messages page title -->
   <header class="page-header d-flex justify-content-center align-items-center py-3">
     <h1 class="page-title">MESSAGES</h1>
   </header>
 
   <!-- Conversation -->
-  <header class="message-header">
+  <header class="message-header d-flex align-items-center gap-3 px-3 py-3">
     <div class="receiver-avatar">
       {% if receiver_dog.profile_photo %}
         <img src="{{ receiver_dog.get_photo_url }}" alt="{{ receiver_dog.name }}">
@@ -29,17 +27,17 @@
         <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ receiver_dog.name }}">
       {% endif %}
     </div>
-    <div class="receiver-info">
+    <div class="receiver-info m-0">
       <h2>{{ receiver_dog.name }}</h2>
       <p>{{ receiver_dog.breed }}</p>
     </div>
   </header>
 
   <!-- Conversation messages -->
-  <section class="messages-thread" id="messages-thread" aria-live="polite">
+  <section class="messages-thread d-flex flex-column gap-3 p-3 bg-white" id="messages-thread" aria-live="polite" style="max-height: 60vh; overflow-y: auto;">
     {% if messages %}
       {% for item in messages %}
-        <div class="message-row {% if item.is_sent %}sent{% else %}received{% endif %}">
+        <div class="message-row d-flex align-items-end gap-2 {% if item.is_sent %}justify-content-end{% else %}justify-content-start{% endif %} {% if item.is_sent %}sent{% else %}received{% endif %}">
           {% if not item.is_sent %}
             {% if item.sender_avatar %}
               <img class="message-avatar" src="{{ item.sender_avatar }}" alt="{{ item.sender_name }}" title="{{ item.sender_name }}">
