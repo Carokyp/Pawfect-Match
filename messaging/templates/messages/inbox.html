@@ -16,11 +16,9 @@
 
   {% if conversations or first_receiver_dog %}
   <!-- Messages split layout: inbox list + desktop thread preview -->
-  <section class="messages-container-card"
-      data-my-dog-name="{{ my_dog.name }}"
-      data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
+  <section class="messages-container-card" data-my-dog-name="{{ my_dog.name }}" data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
+    
     <div class="messages-split-container">
-
       <!-- Inbox list panel -->
       <section class="messages-inbox-panel" aria-label="Conversations list">
         <div class="conversations-list">
