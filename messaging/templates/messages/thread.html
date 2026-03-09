@@ -1,8 +1,7 @@
 {% extends "base_app.html" %}
 {% load static %}
 
-{% block title %}{{ receiver_dog.name }} - Messages{% endblock %}
-{% block content_class %}discover-page-wrapper{% endblock %}
+{% block title %}{{ receiver_dog.name }} Messages {% endblock %}
 
 {% block back_button %}
 <a href="{% url 'messages_inbox' %}" class="back-button-messages">
@@ -12,15 +11,16 @@
 
 {% block content %}
 
-<div class="discover-page message-thread-page"
+<div id="message-thread-page" class="message-thread-page"
     data-my-dog-name="{{ my_dog.name }}"
     data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
-  <!-- Messages page title -->
-  <header class="page-header">
+  
+    <!-- Messages page title -->
+  <header class="page-header d-flex justify-content-center align-items-center py-3">
     <h1 class="page-title">MESSAGES</h1>
   </header>
 
-  <!-- Active conversation recipient -->
+  <!-- Conversation -->
   <header class="message-header">
     <div class="receiver-avatar">
       {% if receiver_dog.profile_photo %}

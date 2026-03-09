@@ -727,6 +727,8 @@ textarea {
 /* Wrapper for discover page content */
 .discover-page,
 .matches-page,
+.messages-inbox-page,
+.message-thread-page,
 .view-user-profile-page,
 .edit-dog-profile-page,
 .edit-owner-profile-page {
@@ -1065,14 +1067,7 @@ textarea {
 
 /* --- Messages Inbox --- */
 
-
 /* -- Messages container --- */
-
-.message-thread-page,
-.messages-inbox-page {
-  padding: 4.5rem 0.5rem;
-}
-
 
 .messages-container-card {
   background: #fff;
@@ -1222,6 +1217,13 @@ textarea {
 }
 
 /* --- Message Thread --- */
+.message-thread-page {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  padding: 2rem 0.5rem;
+}
+
 .message-thread-page .page-header {
   flex-shrink: 0;
 }

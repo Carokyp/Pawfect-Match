@@ -700,7 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!messagesContainer) return;
 
     // Get dog info from page data attributes for message display
-    const threadPageEl = document.querySelector('.message-thread-page');
+    const threadPageEl = document.getElementById('message-thread-page') || document.querySelector('.message-thread-page');
     const myDogName = threadPageEl?.dataset.myDogName || 'You';
     const myDogAvatar = threadPageEl?.dataset.myDogAvatar || '';
 

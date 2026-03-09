@@ -338,27 +338,14 @@ a:visited {
   justify-content: center;
 }
 
-.back-button:hover {
+.back-button,
+.back-button-messages:hover {
   background: var(--orange-200);
   transform: translateX(-2px);
 }
 
-.back-button-messages:hover {
-  background: rgb(243, 243, 243);
-  transform: translateX(-2px);
-}
-
-.back-button-messages img {
-  width: 20px;
-  height: 20px;
-  filter: grayscale(100%);
-}
-
-/* --- Send Conversationn Button--- */
-
-.send-msg.btn-secondary {
-  align-self: flex-end;
-  width: 100px;
+.back-button-messages {
+  top: 4rem;
 }
 
 /* --- Conversation Delete Button --- */
@@ -383,6 +370,14 @@ a:visited {
 .btn-delete-conversation:active {
   transform: scale(0.95);
 }
+
+/* --- Send Conversationn Button--- */
+
+.send-msg.btn-secondary {
+  align-self: flex-end;
+  width: 100px;
+}
+
 /* #endregion */
 
 /* #region FORMS & INPUTS */
@@ -717,10 +712,12 @@ textarea {
 /* Consistent page heading styling */
 .discover-page h1,
 .matches-page h1,
-.messages-page h1,
+.messages-inbox-page h1,
+.message-thread-page h1,
 .view-user-profile-page h1,
 .edit-dog-profile-page h1,
-.edit-owner-profile-page h1 {
+.edit-owner-profile-page h1,
+.page-title {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-dark);
@@ -730,7 +727,6 @@ textarea {
 /* Wrapper for discover page content */
 .discover-page,
 .matches-page,
-.messages-inbox-page,
 .view-user-profile-page,
 .edit-dog-profile-page,
 .edit-owner-profile-page {
@@ -1068,10 +1064,15 @@ textarea {
 /* #region MESSAGING */
 
 /* --- Messages Inbox --- */
-.messages-page {
-  padding-top: 70px;
-  padding-bottom: 80px;
+
+
+/* -- Messages container --- */
+
+.message-thread-page,
+.messages-inbox-page {
+  padding: 4.5rem 0.5rem;
 }
+
 
 .messages-container-card {
   background: #fff;
@@ -1221,14 +1222,6 @@ textarea {
 }
 
 /* --- Message Thread --- */
-.message-thread-page {
-  padding-top: 20px;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  height: 100vh;
-}
-
 .message-thread-page .page-header {
   flex-shrink: 0;
 }
@@ -1658,12 +1651,12 @@ textarea {
 
  /*--- CHECK CODE TO CHECK ---*/
 
-  .discover-page.message-thread-page{
+  .message-thread-page {
     max-width: 500px;
     padding: 50px 12px;
   }
 
-  .discover-page.messages-page{
+  .messages-inbox-page {
     max-width: 600px;
   }
 
@@ -1799,7 +1792,7 @@ textarea {
     border-top: 1px solid #e0e0e0;
   }
 
-  .discover-page.messages-page {
+  .messages-inbox-page {
     max-width: 1400px;
     padding: 80px 30px 50px;
   }
