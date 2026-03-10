@@ -546,7 +546,7 @@ document.addEventListener("DOMContentLoaded", () => {
               if (data.messages && data.messages.length > 0) {
                 data.messages.forEach(msg => {
                   const messageRow = document.createElement('div');
-                  messageRow.className = `message-row ${msg.is_sent ? 'sent' : 'received'}`;
+                  messageRow.className = `message-row d-flex align-items-end gap-2 ${msg.is_sent ? 'justify-content-end sent' : 'justify-content-start received'}`;
 
                   const avatar = msg.is_sent ? myDogAvatar : dogPhoto;
                   const avatarAlt = msg.is_sent ? myDogName : dogName;
@@ -556,8 +556,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   }
 
                   messageRow.innerHTML += `
-                    <div class="message-bubble">
-                      <p class="message-content">${msg.content}</p>
+                    <div class="message-bubble d-flex flex-column gap-1 px-3 py-2">
+                      <p class="message-content m-0">${msg.content}</p>
                       <span class="message-time">${msg.time}</span>
                     </div>
                   `;
@@ -631,14 +631,14 @@ document.addEventListener("DOMContentLoaded", () => {
               } else {
                 // Append message without reload
                 const messageRow = document.createElement('div');
-                messageRow.className = 'message-row sent';
+                messageRow.className = 'message-row d-flex align-items-end gap-2 justify-content-end sent';
                 
                 // Use avatar from response if available, otherwise fall back to stored value
                 const avatarSrc = data.message.avatar || myDogAvatar;
                 
                 messageRow.innerHTML = `
-                  <div class="message-bubble">
-                    <p class="message-content">${data.message.content}</p>
+                  <div class="message-bubble d-flex flex-column gap-1 px-3 py-2">
+                    <p class="message-content m-0">${data.message.content}</p>
                     <span class="message-time">${data.message.time}</span>
                   </div>
                   <img class="message-avatar" src="${avatarSrc}" alt="${myDogName}">

@@ -1104,6 +1104,9 @@ textarea {
 /* Clickable conversation row: adds a divider, and smooths hover transitions */
 .conversation-item {
   position: relative;
+  display: grid;
+  padding: 0.4rem 0 ;
+  grid-template-columns: minmax(0, 1fr) auto;
   border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.2s;
 }
@@ -1112,9 +1115,6 @@ textarea {
   background-color: #f9f9f9;
 }
 
-.conversation-card {
-  flex: 1;
-}
 
 .conversation-dog-info {
   flex: 1;
@@ -1157,12 +1157,14 @@ textarea {
 .last-message {
   margin: 0;
   color: var(--text-light);
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .conversation-date {
   margin-left: 0.5rem;
+  flex-shrink: 0;
 }
 
 .last-time {
@@ -1569,8 +1571,6 @@ textarea {
     height: 110px;
   }
 
- /*--- CHECK CODE TO CHECK ---*/
-
   .dog-avatar {
     width: 55px;
     height: 55px;
@@ -1658,8 +1658,6 @@ textarea {
     font-size: 1.125rem;
   }
 
-  /*------CODE TO CHECK------*/
-
   /* Messages split-screen layout */
   .messages-split-container {
     display: grid;
@@ -1672,35 +1670,11 @@ textarea {
     overscroll-behavior: contain;
     border-right: 1px solid #e0e0e0;
   }
-
-  .conversation-item {
-    flex-direction: row;
-  }
-
   .messages-thread-panel {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    border-radius: 16px;
     background: #fff;
-    overflow: hidden;
-  }
-
-  .messages-thread-panel .message-header {
-    flex-shrink: 0;
-    border-bottom: 1px solid #e0e0e0;
-    border-radius: 0;
-  }
-
-  .messages-thread-panel .messages-thread {
-    flex: 1;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    min-height: 0;
-  }
-
-  .messages-thread-panel .message-form-container {
-    flex-shrink: 0;
-    border-top: 1px solid #e0e0e0;
   }
 
   .messages-inbox-page {

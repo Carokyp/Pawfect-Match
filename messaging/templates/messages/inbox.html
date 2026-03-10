@@ -19,27 +19,26 @@
   
   <!-- Inbox -->
 
-  <section class="messages-container-card" data-my-dog-name="{{ my_dog.name }}" data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
-    
+  <section class="messages-container-card" data-my-dog-name="{{ my_dog.name }}"
+    data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
+  
     <div class="messages-split-container">
-
+  
       <!-- Inbox list panel for mobile and tablet only-->
       <section class="messages-inbox-panel" aria-label="Conversations list">
         <div class="conversations-list d-flex flex-column">
           {% if conversations %}
           {% for conversation in conversations %}
-
-          <article class="conversation-item d-flex flex-row-reverse align-items-center gap-2 px-1 py-1" data-dog-id="{{ conversation.dog.id }}">
-
-            <button class="btn-delete-conversation d-flex justify-content-center align-items-center" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
-              <img src="{% static 'images/bin.png' %}" alt="Delete">
-            </button>
-
-            <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card d-flex align-items-center p-2" data-dog-id="{{ conversation.dog.id }}"
-               data-name="{{ conversation.dog.name }}"
-               data-breed="{{ conversation.dog.breed }}"
-               data-photo="{% if conversation.dog.profile_photo %}{{ conversation.dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
-
+  
+          <article class="conversation-item align-items-center gap-2 px-1"
+            data-dog-id="{{ conversation.dog.id }}">
+  
+            <a href="{% url 'message_thread' conversation.dog.id %}"
+              class="conversation-card d-flex align-items-center justify-content-between p-2"
+              data-dog-id="{{ conversation.dog.id }}" data-name="{{ conversation.dog.name }}"
+              data-breed="{{ conversation.dog.breed }}"
+              data-photo="{% if conversation.dog.profile_photo %}{{ conversation.dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
+  
               <div class="conversation-dog-info d-flex align-items-center gap-3">
                 <div class="dog-avatar">
                   {% if conversation.dog.profile_photo %}
@@ -54,12 +53,16 @@
                   <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
                 </div>
               </div>
-
+  
               <div class="conversation-date">
                 <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
               </div>
-
+  
             </a>
+            <button class="btn-delete-conversation d-flex justify-content-center align-items-center"
+              data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
+              <img src="{% static 'images/bin.png' %}" alt="Delete">
+            </button>
           </article>
           {% endfor %}
           {% endif %}
@@ -69,7 +72,7 @@
       <!-- Conversation and chat preview (only for desktop)-->
       {% if first_receiver_dog %}
       <section class="messages-thread-panel" aria-label="Conversation preview">
-        <header class="message-header">
+        <header class="message-header d-flex align-items-center gap-3 px-3 py-3">
           <div class="receiver-avatar">
             {% if first_receiver_dog.profile_photo %}
               <img src="{{ first_receiver_dog.get_photo_url }}" alt="{{ first_receiver_dog.name }}" id="thread-avatar">
@@ -83,10 +86,10 @@
           </div>
         </header>
 
-        <section class="messages-thread" id="messages-thread" aria-live="polite">
+        <section class="messages-thread d-flex flex-column gap-3 p-3" id="messages-thread" aria-live="polite">
           {% if first_messages %}
             {% for item in first_messages %}
-              <div class="message-row {% if item.is_sent %}sent{% else %}received{% endif %}">
+              <div class="message-row d-flex align-items-end gap-2 {% if item.is_sent %}justify-content-end sent{% else %}justify-content-start received{% endif %}">
                 {% if not item.is_sent %}
                   {% if item.sender_avatar %}
                     <img class="message-avatar" src="{{ item.sender_avatar }}" alt="{{ item.sender_name }}">
@@ -95,8 +98,8 @@
                   {% endif %}
                 {% endif %}
                 
-                <div class="message-bubble">
-                  <p class="message-content">{{ item.message.content }}</p>
+                <div class="message-bubble d-flex flex-column gap-1 px-3 py-2">
+                  <p class="message-content m-0">{{ item.message.content }}</p>
                   <span class="message-time">{{ item.message.created_at|date:"H:i" }}</span>
                 </div>
                 
@@ -118,11 +121,11 @@
 
         {% if is_match %}
           <footer class="message-form-container p-3">
-            <form method="POST" class="message-form" id="message-form">
+            <form method="POST" class="message-form d-flex flex-column gap-2" id="message-form">
               {% csrf_token %}
               <input type="hidden" name="receiver_dog_id" id="receiver-dog-id" value="{{ first_receiver_dog.id }}">
               {{ form.content }}
-              <button type="submit" class="send-msg btn-secondary">Send</button>
+              <button type="submit" class="btn-modal send-msg align-self-end">Send</button>
             </form>
           </footer>
         {% endif %}
