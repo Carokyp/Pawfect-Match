@@ -30,7 +30,6 @@
 /* Reset default browser styles for all elements */
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box; /* Include padding and border in element's width/height */
 }
 
@@ -1163,7 +1162,7 @@ textarea {
 }
 
 .conversation-date {
-  margin-left: 0.5rem;
+  margin-left: 1rem;
   flex-shrink: 0;
 }
 
@@ -1670,6 +1669,23 @@ textarea {
     overscroll-behavior: contain;
     border-right: 1px solid #e0e0e0;
   }
+
+  /* On desktop, use flex order for stable left-button/avatar alignment */
+  .conversation-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .conversation-item .btn-delete-conversation {
+    order: 1;
+  }
+
+  .conversation-item .conversation-card {
+    order: 2;
+    flex: 1;
+  }
+
   .messages-thread-panel {
     display: flex;
     flex-direction: column;
