@@ -25,22 +25,22 @@
 
       <!-- Inbox list panel for mobile and tablet only-->
       <section class="messages-inbox-panel" aria-label="Conversations list">
-        <div class="conversations-list">
+        <div class="conversations-list d-flex flex-column">
           {% if conversations %}
           {% for conversation in conversations %}
 
-          <article class="conversation-item" data-dog-id="{{ conversation.dog.id }}">
+          <article class="conversation-item d-flex flex-row-reverse align-items-center gap-2 px-1 py-1" data-dog-id="{{ conversation.dog.id }}">
 
             <button class="btn-delete-conversation d-flex justify-content-center align-items-center" data-dog-id="{{ conversation.dog.id }}" aria-label="Delete conversation">
               <img src="{% static 'images/bin.png' %}" alt="Delete">
             </button>
 
-            <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card" data-dog-id="{{ conversation.dog.id }}"
+            <a href="{% url 'message_thread' conversation.dog.id %}" class="conversation-card d-flex align-items-center p-2" data-dog-id="{{ conversation.dog.id }}"
                data-name="{{ conversation.dog.name }}"
                data-breed="{{ conversation.dog.breed }}"
                data-photo="{% if conversation.dog.profile_photo %}{{ conversation.dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
 
-              <div class="conversation-dog-info">
+              <div class="conversation-dog-info d-flex align-items-center gap-3">
                 <div class="dog-avatar">
                   {% if conversation.dog.profile_photo %}
                   <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
@@ -48,14 +48,14 @@
                   <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
                   {% endif %}
                 </div>
-                <div class="dog-details">
+                <div class="dog-details d-flex flex-column gap-1">
                   <h3>{{ conversation.dog.name }}</h3>
                   <p class="dog-breed">{{ conversation.dog.breed }}</p>
                   <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
                 </div>
               </div>
 
-              <div class="conversation-meta">
+              <div class="conversation-date">
                 <span class="last-time">{{ conversation.last_message.created_at|date:"M d" }}</span>
               </div>
 
@@ -110,14 +110,14 @@
               </div>
             {% endfor %}
           {% else %}
-            <div class="empty-thread">
+            <div class="empty-thread d-flex flex-column align-items-center justify-content-center gap-3 py-5">
               <p class="empty-state-text">Start your conversation with {{ first_receiver_dog.name }}! 🐾</p>
             </div>
           {% endif %}
         </section>
 
         {% if is_match %}
-          <footer class="message-form-container">
+          <footer class="message-form-container p-3">
             <form method="POST" class="message-form" id="message-form">
               {% csrf_token %}
               <input type="hidden" name="receiver_dog_id" id="receiver-dog-id" value="{{ first_receiver_dog.id }}">

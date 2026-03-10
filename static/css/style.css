@@ -17,6 +17,7 @@
   --orange-900: #6B2A0A;
   /* dark / text on light */
   --text-dark: #441c06;
+  --text-light: #807e7e;
   --border-radius: 30px;
   --transition: all 0.3s ease;
   --shadow: 0 4px 12px rgba(63, 28, 3, 0.15);
@@ -42,7 +43,6 @@ body {
   flex-direction: column; /* Stack children vertically */
   font-family: 'Roboto Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--orange-100);
-  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Prevent body scroll when modal is open */
@@ -1082,44 +1082,29 @@ textarea {
 
 /* --- Messages Inbox --- */
 
+/* Container for the entire messages inbox page */
 .messages-container-card {
   background: #fff;
   border-radius: 16px;
-  overflow: hidden;
   box-shadow: var(--shadow);
-  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
 }
 
+/* Split container for conversations list and message thread */
 .messages-split-container {
   display: block;
 }
 
-.messages-inbox-panel {
-  width: 100%;
-  overflow: hidden;
-}
-
+/* Conversations list on the left */
 .messages-thread-panel {
   display: none; /* Hidden on mobile/tablet */
   overflow: hidden;
 }
 
-.conversations-list {
-  display: flex;
-  flex-direction: column;
-  overscroll-behavior: contain;
-}
-
+/* Clickable conversation row: adds a divider, and smooths hover transitions */
 .conversation-item {
   position: relative;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  gap: 0.5rem;
   border-bottom: 1px solid #e0e0e0;
-  padding: 0.15rem 0.4rem;
   transition: background-color 0.2s;
 }
 
@@ -1129,27 +1114,14 @@ textarea {
 
 .conversation-card {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 0;
-  padding: 0.75rem 0.5rem;
-  text-decoration: none;
-  color: inherit;
-  transition: none;
-  background: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
 }
 
 .conversation-dog-info {
-  display: flex;
-  gap: 1rem;
   flex: 1;
-  align-items: center;
   min-width: 0;
 }
 
+/* Avatar for the dog in the conversation list */
 .dog-avatar {
   width: 40px;
   height: 40px;
@@ -1164,10 +1136,8 @@ textarea {
   object-fit: cover;
 }
 
+/* Dog's detail in the conversation list */
 .dog-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
   min-width: 0;
 }
 
@@ -1175,99 +1145,40 @@ textarea {
   margin: 0;
   font-size: 0.9rem;
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .dog-breed {
   margin: 0;
+  font-size: 0.8rem;
   font-weight: 600 !important;
-  color: var(--text-light);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
+/* Last message preview in the conversation list */
 .last-message {
   margin: 0;
   color: var(--text-light);
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
 }
 
-.conversation-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.25rem;
-  margin-left: 0.6rem;
+.conversation-date {
+  margin-left: 0.5rem;
 }
 
 .last-time {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   color: var(--text-light);
-}
-
-/* --- Message Form --- */
-.message-form-container {
-  padding: 1rem;
-  background: #f9f9f9;
-  border-top: 1px solid #eee;
-  flex-shrink: 0;
-}
-
-.message-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.empty-thread{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-}
-
-.empty-conversations-list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 1rem;
-}
-
-.empty-state-text {
-  color: var(--text-light);
-  font-size: 0.9rem !important;
-  opacity: 0.7;
-  margin: 0;
-  text-align: center;
-}
-
-.message-input {
-  resize: none;
-  border: 2px solid #ddd;
-  padding: 0.75rem 1rem;
-  font-family: inherit;
-  font-size: 0.85rem;
-  max-height: 100px;
-  overflow-y: auto;
-}
-
-.message-input::placeholder {
-  color: #999;
 }
 
 /* -- Messages Thread --- */
 
-.message-thread-page,
-.messages-inbox-page {
+.message-thread-page{
   position: relative;
   padding: 4.5rem 1rem;
-  overflow-x: hidden;
+}
+
+.messages-inbox-page{
+  padding: 4.5rem 1rem;
 }
 
 /* Chat container */
@@ -1367,6 +1278,37 @@ textarea {
     transform: translateY(0);
   }
 }
+
+/* --- Message Input --- */
+.message-form-container {
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+.empty-thread{
+  flex: 1;
+}
+
+.empty-state-text {
+  color: var(--text-light);
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+/* Message input area with a text area */
+.message-input {
+  resize: none;
+  border: 2px solid #ddd;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.message-input::placeholder {
+  color: #999;
+}
+
 /* #endregion */
 
 /* #region ERROR PAGES */

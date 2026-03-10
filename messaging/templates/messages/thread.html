@@ -60,7 +60,7 @@
           </div>
         {% endfor %}
       {% else %}
-        <div class="empty-thread">
+        <div class="empty-thread d-flex flex-column align-items-center justify-content-center gap-3 py-5">
           <p class="empty-state-text">Start your conversation with {{ receiver_dog.name }}! 🐾</p>
         </div>
       {% endif %}
@@ -68,8 +68,8 @@
 
     <!-- Message composer (only for matched dogs) -->
     {% if is_match %}
-      <footer class="message-form-container">
-        <form method="POST" class="message-form" id="message-form">
+      <footer class="message-form-container p-3">
+        <form method="POST" class="message-form d-flex flex-column gap-2" id="message-form">
           {% csrf_token %}
           <input type="hidden" id="receiver-dog-id" value="{{ receiver_dog.id }}">
           {{ form.content }}
