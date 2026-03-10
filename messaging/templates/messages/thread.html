@@ -3,12 +3,6 @@
 
 {% block title %}{{ receiver_dog.name }} Messages {% endblock %}
 
-{% block back_button %}
-<a href="{% url 'messages_inbox' %}" class="back-button-messages">
-  <i class="fa-solid fa-arrow-left"></i>
-</a>
-{% endblock %}
-
 {% block content %}
 
 <div id="message-thread-page" class="message-thread-page" data-my-dog-name="{{ my_dog.name }}" data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
@@ -18,66 +12,72 @@
     <h1 class="page-title">MESSAGES</h1>
   </header>
 
-  <!-- Conversation -->
-  <header class="message-header d-flex align-items-center gap-3 px-3 py-3">
-    <div class="receiver-avatar">
-      {% if receiver_dog.profile_photo %}
-        <img src="{{ receiver_dog.get_photo_url }}" alt="{{ receiver_dog.name }}">
-      {% else %}
-        <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ receiver_dog.name }}">
-      {% endif %}
-    </div>
-    <div class="receiver-info m-0">
-      <h2>{{ receiver_dog.name }}</h2>
-      <p>{{ receiver_dog.breed }}</p>
-    </div>
-  </header>
+  <a href="{% url 'messages_inbox' %}" class="back-button-messages">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
 
-  <!-- Conversation messages -->
-  <section class="messages-thread d-flex flex-column gap-3 p-3 bg-white" id="messages-thread" aria-live="polite" style="max-height: 60vh; overflow-y: auto;">
-    {% if messages %}
-      {% for item in messages %}
-        <div class="message-row d-flex align-items-end gap-2 {% if item.is_sent %}justify-content-end{% else %}justify-content-start{% endif %} {% if item.is_sent %}sent{% else %}received{% endif %}">
-          {% if not item.is_sent %}
-            {% if item.sender_avatar %}
-              <img class="message-avatar" src="{{ item.sender_avatar }}" alt="{{ item.sender_name }}" title="{{ item.sender_name }}">
-            {% else %}
-              <img class="message-avatar" src="{% static 'images/dog_placeholder.png' %}" alt="{{ item.sender_name }}" title="{{ item.sender_name }}">
-            {% endif %}
-          {% endif %}
-          
-          <div class="message-bubble">
-            <p class="message-content">{{ item.message.content }}</p>
-            <span class="message-time">{{ item.message.created_at|date:"H:i" }}</span>
-          </div>
-          
-          {% if item.is_sent %}
-            {% if my_dog.profile_photo %}
-              <img class="message-avatar" src="{{ my_dog.get_photo_url }}" alt="{{ my_dog.name }}" title="{{ my_dog.name }}">
-            {% else %}
-              <img class="message-avatar" src="{% static 'images/dog_placeholder.png' %}" alt="{{ my_dog.name }}" title="{{ my_dog.name }}">
-            {% endif %}
-          {% endif %}
-        </div>
-      {% endfor %}
-    {% else %}
-      <div class="empty-thread">
-        <p class="empty-state-text">Start your conversation with {{ receiver_dog.name }}! 🐾</p>
+  <div class="thread-chat-container d-flex flex-column">
+    <!-- Conversation -->
+    <header class="message-header d-flex align-items-center gap-3 px-3 py-3">
+      <div class="receiver-avatar">
+        {% if receiver_dog.profile_photo %}
+          <img src="{{ receiver_dog.get_photo_url }}" alt="{{ receiver_dog.name }}">
+        {% else %}
+          <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ receiver_dog.name }}">
+        {% endif %}
       </div>
-    {% endif %}
-  </section>
+      <div class="receiver-info m-0">
+        <h2>{{ receiver_dog.name }}</h2>
+        <p>{{ receiver_dog.breed }}</p>
+      </div>
+    </header>
 
-  <!-- Message composer (only for matched dogs) -->
-  {% if is_match %}
-    <footer class="message-form-container">
-      <form method="POST" class="message-form" id="message-form">
-        {% csrf_token %}
-        <input type="hidden" id="receiver-dog-id" value="{{ receiver_dog.id }}">
-        {{ form.content }}
-        <button type="submit" class="send-msg btn-secondary">Send</button>
-      </form>
-    </footer>
-  {% endif %}
+    <!-- Conversation messages -->
+    <section class="messages-thread d-flex flex-column gap-3 p-3" id="messages-thread" aria-live="polite">
+      {% if messages %}
+        {% for item in messages %}
+          <div class="message-row d-flex align-items-end gap-2 {% if item.is_sent %}justify-content-end{% else %}justify-content-start{% endif %} {% if item.is_sent %}sent{% else %}received{% endif %}">
+            {% if not item.is_sent %}
+              {% if item.sender_avatar %}
+                <img class="message-avatar" src="{{ item.sender_avatar }}" alt="{{ item.sender_name }}" title="{{ item.sender_name }}">
+              {% else %}
+                <img class="message-avatar" src="{% static 'images/dog_placeholder.png' %}" alt="{{ item.sender_name }}" title="{{ item.sender_name }}">
+              {% endif %}
+            {% endif %}
+
+            <div class="message-bubble d-flex flex-column gap-1 px-3 py-2">
+              <p class="message-content m-0">{{ item.message.content }}</p>
+              <span class="message-time">{{ item.message.created_at|date:"H:i" }}</span>
+            </div>
+
+            {% if item.is_sent %}
+              {% if my_dog.profile_photo %}
+                <img class="message-avatar" src="{{ my_dog.get_photo_url }}" alt="{{ my_dog.name }}" title="{{ my_dog.name }}">
+              {% else %}
+                <img class="message-avatar" src="{% static 'images/dog_placeholder.png' %}" alt="{{ my_dog.name }}" title="{{ my_dog.name }}">
+              {% endif %}
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-thread">
+          <p class="empty-state-text">Start your conversation with {{ receiver_dog.name }}! 🐾</p>
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- Message composer (only for matched dogs) -->
+    {% if is_match %}
+      <footer class="message-form-container">
+        <form method="POST" class="message-form" id="message-form">
+          {% csrf_token %}
+          <input type="hidden" id="receiver-dog-id" value="{{ receiver_dog.id }}">
+          {{ form.content }}
+          <button type="submit" class="btn-modal send-msg align-self-end">Send</button>
+        </form>
+      </footer>
+    {% endif %}
+  </div>
 
 </div>
 {% endblock %}
