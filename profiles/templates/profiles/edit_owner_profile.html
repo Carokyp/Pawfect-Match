@@ -4,6 +4,38 @@
 {% block title %}Edit My Profile{% endblock %}
 {% block content_class %}edit-owner-profile{% endblock %}
 
+{% block header %}
+  <!-- Navigation for authenticated users -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <span class="navbar-brand">🐾 Pawfect Match</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'browse_dogs' %}active{% endif %}" href="{% url 'browse_dogs' %}">Discover</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'matches_list' %}active{% endif %}" href="{% url 'matches_list' %}">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'messages_inbox' or request.resolver_match.url_name == 'message_thread' or request.resolver_match.url_name == 'messages_inbox_with_dog' %}active{% endif %}" href="{% url 'messages_inbox' %}">Messages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'profile' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'view_profile' %}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
 {% block content %}
 
 <!-- Owner profile edit card -->

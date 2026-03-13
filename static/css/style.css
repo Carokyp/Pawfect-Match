@@ -1314,8 +1314,16 @@ textarea {
 /* #endregion */
 
 /* #region ERROR PAGES */
+
+/* Section and article must fill main's height for vertical centering to work */
+.error-content {
+  min-height: 100vh;
+  padding: 5rem 1rem;
+}
+
 .error-content h1 {
   font-size: 4rem;
+  font-weight: 700;
   margin-bottom: 1rem;
   color: var(--text-dark);
 }
@@ -1470,7 +1478,7 @@ textarea {
   /* upload-box sizing */
   .owner-profile-photo .upload-box,
   .dog-profile-photo .upload-box {
-    min-height: 220px;
+    min-height: 250px;
   }
 
   .owner-profile-fields,
