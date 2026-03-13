@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  /* ===============================
-     NAVBAR AUTO-COLLAPSE
-     =============================== */
+  /* NAVBAR AUTO-COLLAPSE */
 
   /**
    * Initializes the mobile Bootstrap navbar behaviour.
@@ -59,9 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  /* ===============================
-     AUTH UI
-     =============================== */
+  /* AUTH UI */
 
   /**
    * Toggle password visibility for inputs with an eye icon.
@@ -80,9 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  /* ===============================
-     IMAGE UPLOADS
-     =============================== */
+  /* IMAGE UPLOADS */
 
   /**
    * Reads the selected file from an input and displays a preview image.
@@ -248,122 +242,63 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  /* ===============================
-     TEXT HELPERS
-     =============================== */
+  /* TEXT HELPERS */
 
   /**
    * Display a live character counter for textareas with maxlength attribute.
    * Updates the counter on every input event to show current length vs maximum.
-   * Requires a sibling element with class "char-counter" to display the count.
+   * Requires a child element with class "char-counter" inside the textarea's parent.
    * @returns {void}
    */
   const setupCharacterCounters = () => {
+    // Select all textareas that have a character limit defined
     const textareas = document.querySelectorAll("textarea[maxlength]");
     textareas.forEach((textarea) => {
       const counter = textarea.parentElement.querySelector(".char-counter");
+
+      // If no counter element found in the parent, skip this textarea
       if (!counter) return;
 
       const maxLength = textarea.getAttribute("maxlength");
+
+      // Update the counter text with current length vs maximum
       const updateCounter = () => {
         counter.textContent = `${textarea.value.length} / ${maxLength}`;
       };
 
+      // Listen for input changes and initialize the counter on load
       textarea.addEventListener("input", updateCounter);
       updateCounter();
     });
   };
 
-  /* ===============================
-   PROFILE TOGGLE
-   =============================== */
-
-  /**
-   * Switch between dog and owner views on profile cards.
-   * Manages the visibility of dog/owner information sections within each profile card.
-   * Handles button states and view transitions.
-   * @returns {void}
-   */
-  const setupProfileToggle = () => {
-    // Cards can be either profile cards or match cards, both need the toggle
-    document.querySelectorAll(".profile-card, .matches-card").forEach((card) => {
-      const toggleButtons = card.querySelectorAll(".toggle-btn");
-      const dogView = card.querySelector(".dog-view");
-      const ownerView = card.querySelector(".owner-view");
-
-      // If any required element is missing, skip this card
-      if (!dogView || !ownerView || !toggleButtons.length) return;
-
-      toggleButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          // Reset all buttons then activate only the clicked one
-          toggleButtons.forEach((btn) => btn.classList.remove("active"));
-          button.classList.add("active");
-
-          // Show the selected view and hide the other
-          if (button.dataset.view === "dog") {
-            dogView.classList.remove("hidden");
-            ownerView.classList.add("hidden");
-          }
-          else {
-            ownerView.classList.remove("hidden");
-            dogView.classList.add("hidden");
-          }
-        });
-      });
-    });
-  };
-
-  /* ===============================
-     MODALS
-     =============================== */
-
-  /**
-   * Handle the match modal open/close and body scroll lock.
-   * Prevents body scrolling when modal is open by adding "modal-open" class.
-   * Sets up close button event handler.
-   * @returns {void}
-   */
-  const setupMatchModal = () => {
-    const modal = document.getElementById("matchModal");
-    if (!modal) return;
-
-    const closeBtn = document.getElementById("closeMatchModal");
-    const close = () => {
-      modal.classList.remove("is-open");
-      document.body.classList.remove("modal-open");
-    };
-
-    if (modal.classList.contains("is-open")) {
-      document.body.classList.add("modal-open");
-    }
-
-    if (closeBtn) {
-      closeBtn.addEventListener("click", close);
-    }
-  };
-
-  /* ===============================
-     FORM CACHE
-     =============================== */
+  /* FORM CACHE */
 
   /**
    * Cache form inputs in sessionStorage to preserve user progress.
    * Automatically saves and restores form field values including text inputs, textareas,
    * selects, and checkbox groups. Excludes file inputs for security reasons.
+   *
    * @param {string} formType - Data attribute value identifying the form (e.g., "owner", "dog").
    * @returns {void}
    */
   const setupFormCache = (formType) => {
     const form = document.querySelector(`form[data-form-type="${formType}"]`);
+
+    // If no form found with this type, stop here
     if (!form) return;
 
     const inputs = form.querySelectorAll("input, textarea, select");
+
+    // Track which checkbox groups have already been handled to avoid duplicates
     const handledCheckboxGroups = new Set();
+
+    // Build a unique storage key per field using the form type as prefix
     const cacheKey = (name) => `${formType}_${name}`;
 
     /**
      * Get all checkboxes with the specified name.
+     *
      * @param {string} name - The name attribute of checkbox inputs.
      * @returns {Array<HTMLInputElement>} Array of checkbox elements.
      */
@@ -376,21 +311,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /**
      * Restore checkbox group selections from sessionStorage.
+     *
      * @param {string} name - The name attribute of checkbox group.
+     * @returns {void}
      */
     const restoreCheckboxGroup = (name) => {
       const checkboxes = getCheckboxGroup(name);
       const savedValue = sessionStorage.getItem(cacheKey(name));
+
+      // Nothing saved yet, nothing to restore
       if (!savedValue) return;
 
       let values = [];
       try {
         values = JSON.parse(savedValue);
       } catch (error) {
-        // If JSON parsing fails, reset to empty array
+        // If JSON parsing fails, reset to empty array to avoid crash
         values = [];
       }
 
+      // Check each checkbox if its value was previously selected
       checkboxes.forEach((cb) => {
         cb.checked = values.includes(cb.value);
       });
@@ -398,10 +338,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /**
      * Save checkbox group selections to sessionStorage.
+     *
      * @param {string} name - The name attribute of checkbox group.
+     * @returns {void}
      */
     const saveCheckboxGroup = (name) => {
       const checkboxes = getCheckboxGroup(name);
+
+      // Keep only checked values and save them as JSON array
       const values = checkboxes
         .filter((cb) => cb.checked)
         .map((cb) => cb.value);
@@ -409,20 +353,25 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     inputs.forEach((input) => {
+      // Skip inputs without a name or file inputs (security reasons)
       if (!input.name || input.type === "file") return;
 
       if (input.type === "checkbox") {
+        // Skip if this checkbox group was already handled
         if (handledCheckboxGroups.has(input.name)) return;
         handledCheckboxGroups.add(input.name);
 
         restoreCheckboxGroup(input.name);
         const checkboxes = getCheckboxGroup(input.name);
+
+        // Save the whole group on every change
         checkboxes.forEach((cb) => {
           cb.addEventListener("change", () => saveCheckboxGroup(input.name));
         });
         return;
       }
 
+      // Restore saved value for text inputs, textareas and selects
       const key = cacheKey(input.name);
       const savedValue = sessionStorage.getItem(key);
       if (savedValue !== null) {
@@ -433,28 +382,29 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.setItem(key, input.value);
       };
 
+      // Listen on both events: "input" for typing, "change" for selects
       input.addEventListener("input", save);
       input.addEventListener("change", save);
     });
   };
 
-  /* ===============================
-     PILL OPTIONS
-     =============================== */
+  /* INTERESTS OPTIONS */
 
   /**
    * Enforce maximum selection limits on pill-style checkbox groups.
    * Disables unchecked options when the limit is reached and updates helper text.
    * Reads the max limit from the data-max attribute on the container.
+   *
    * @returns {void}
    */
   const setupPillOptions = () => {
-    const groups = document.querySelectorAll(".pill-options[data-max]");
-    groups.forEach((group) => {
+    document.querySelectorAll(".pill-options[data-max]").forEach((group) => {
       const max = parseInt(group.dataset.max || "0", 10);
       const checkboxes = Array.from(
         group.querySelectorAll("input[type='checkbox']"),
       );
+
+      // If no checkboxes found or no max defined, skip this group
       if (!checkboxes.length || !max) return;
 
       const helper = group.parentElement.querySelector(".pill-helper");
@@ -462,6 +412,8 @@ document.addEventListener("DOMContentLoaded", () => {
       /**
        * Update UI state based on current selections.
        * Disables checkboxes when limit is reached and updates counter text.
+       *
+       * @returns {void}
        */
       const update = () => {
         const selected = checkboxes.filter((cb) => cb.checked);
@@ -474,77 +426,150 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // Update helper text with current selection count
-        if (helper) {
+        if (helper)
           helper.textContent = `Select up to ${max} (${selected.length}/${max})`;
-        }
       };
 
+      // Listen for changes and initialize state on load
       checkboxes.forEach((cb) => cb.addEventListener("change", update));
       update();
     });
   };
 
-  /* ===============================
-     RESET MATCHES
-     =============================== */
+  /* PROFILE TOGGLE */
+
+  /**
+   * Switch between dog and owner views on profile cards.
+   * Manages the visibility of dog/owner information sections within each profile card.
+   * Handles button states and view transitions.
+   * @returns {void}
+   */
+  const setupProfileToggle = () => {
+    // Cards can be either profile cards or match cards, both need the toggle
+    document
+      .querySelectorAll(".profile-card, .matches-card")
+      .forEach((card) => {
+        const toggleButtons = card.querySelectorAll(".toggle-btn");
+        const dogView = card.querySelector(".dog-view");
+        const ownerView = card.querySelector(".owner-view");
+
+        // If any required element is missing, skip this card
+        if (!dogView || !ownerView || !toggleButtons.length) return;
+
+        toggleButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            // Reset all buttons then activate only the clicked one
+            toggleButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Show the selected view and hide the other
+            if (button.dataset.view === "dog") {
+              dogView.classList.remove("hidden");
+              ownerView.classList.add("hidden");
+            } else {
+              ownerView.classList.remove("hidden");
+              dogView.classList.add("hidden");
+            }
+          });
+        });
+      });
+  };
+
+  /* MODAL HELPERS */
+
+  /**
+   * Open a modal by adding "is-open" class and locking body scroll.
+   *
+   * @param {HTMLElement} modal - The modal element to open.
+   * @returns {void}
+   */
+  const openModal = (modal) => {
+    if (!modal) return;
+    modal.classList.add("is-open");
+    document.body.classList.add("modal-open");
+  };
+
+  /**
+   * Close a modal by removing "is-open" class and unlocking body scroll.
+   *
+   * @param {HTMLElement} modal - The modal element to close.
+   * @returns {void}
+   */
+  const closeModal = (modal) => {
+    if (!modal) return;
+    modal.classList.remove("is-open");
+    document.body.classList.remove("modal-open");
+  };
+
+  /**
+   * Close any modal when clicking on its backdrop.
+   * Attaches click listeners to all modal-backdrop elements.
+   *
+   * @returns {void}
+   */
+  const setupModalBackdropClose = () => {
+    document.querySelectorAll(".modal-backdrop").forEach((modal) => {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal(modal);
+      });
+    });
+  };
+
+/* MODALS */
+
+/** 
+ * Handle the match modal close and body scroll lock.
+ * Modal is opened server-side by Django when a match is detected.
+ * Prevents body scrolling when modal is open by adding "modal-open" class.
+ * Sets up close button event handler.
+ *
+ * @returns {void}
+ */
+const setupMatchModal = () => {
+  const modal = document.getElementById("matchModal");
+
+  // If modal doesn't exist on this page, stop here
+  if (!modal) return;
+
+  // Close modal via the close button
+  const closeBtn = document.getElementById("closeMatchModal");
+  if (closeBtn) closeBtn.addEventListener("click", () => closeModal(modal));
+
+  // If modal is already open on page load, lock the scroll immediately
+  if (modal.classList.contains("is-open")) {
+    document.body.classList.add("modal-open");
+  }
+};
+
+  /* RESET MATCHES */
 
   /**
    * Setup reset matches modal and functionality.
    * Allows users to clear all their match history with a confirmation modal.
    * Handles modal open/close and form submission.
+   *
    * @returns {void}
    */
   const setupResetMatches = () => {
     const resetBtn = document.getElementById("resetMatchesBtn");
+
+    // If no reset button on this page, stop here
     if (!resetBtn) return;
 
-    resetBtn.addEventListener("click", () => {
-      const resetModal = document.getElementById("resetConfirmModal");
-      if (resetModal) {
-        resetModal.classList.add("is-open");
-        document.body.classList.add("modal-open");
-      }
-    });
+    const resetModal = document.getElementById("resetConfirmModal");
 
-    // Close modal
-    const closeResetModal = document.getElementById("closeResetModal");
-    if (closeResetModal) {
-      closeResetModal.addEventListener("click", () => {
-        document
-          .getElementById("resetConfirmModal")
-          .classList.remove("is-open");
-        document.body.classList.remove("modal-open");
-      });
-    }
+    // Open the confirmation modal on reset button click
+    resetBtn.addEventListener("click", () => openModal(resetModal));
 
-    const cancelResetBtn = document.getElementById("cancelResetBtn");
-    if (cancelResetBtn) {
-      cancelResetBtn.addEventListener("click", () => {
-        document
-          .getElementById("resetConfirmModal")
-          .classList.remove("is-open");
-        document.body.classList.remove("modal-open");
-      });
-    }
+    // Close modal via the cancel button
+    const cancelBtn = document.getElementById("cancelResetBtn");
+    if (cancelBtn) cancelBtn.addEventListener("click", () => closeModal(resetModal));
 
-    // Confirm reset
-    const confirmResetBtn = document.getElementById("confirmResetBtn");
-    if (confirmResetBtn) {
-      confirmResetBtn.addEventListener("click", () => {
+    // Submit the reset form on confirmation
+    const confirmBtn = document.getElementById("confirmResetBtn");
+    if (confirmBtn) {
+      confirmBtn.addEventListener("click", () => {
         document.getElementById("resetMatchesForm").submit();
-      });
-    }
-
-    // Close modal on backdrop click
-    const resetConfirmModal = document.getElementById("resetConfirmModal");
-    if (resetConfirmModal) {
-      resetConfirmModal.addEventListener("click", (e) => {
-        if (e.target.id === "resetConfirmModal") {
-          document
-            .getElementById("resetConfirmModal")
-            .classList.remove("is-open");
-          document.body.classList.remove("modal-open");
-        }
       });
     }
   };
@@ -1113,6 +1138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupProfileToggle();
     setupImageUploads();
     setupCharacterCounters();
+    setupModalBackdropClose()
     setupMatchModal();
     setupFormCache("owner");
     setupFormCache("dog");
