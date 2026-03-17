@@ -9,23 +9,19 @@ from django.core.exceptions import ValidationError
 from profiles.models import OwnerProfile
 
 
-# Constants
+# Regex pattern for allowed special characters in passwords
 PASSWORD_SPECIAL_CHARS = r'[!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]'
 
 
 def validate_password_strength(password):
     """
-    Validate password strength requirements.
+    Validate that a password meets strength requirements.
 
-    Args:
-        password: str. The password to validate.
-
-    Returns:
-        None.
+    Checks for at least one uppercase letter, one digit,
+    and one special character.
 
     Raises:
-        ValidationError if password doesn't contain uppercase letter,
-        digit, or special character.
+        ValidationError: If any strength requirement is not met.
     """
     if not re.search(r"[A-Z]", password):
         raise ValidationError(
@@ -45,26 +41,23 @@ def validate_password_strength(password):
 
 class LoginForm(AuthenticationForm):
     """
-    Form for user login with email and password.
+    Login form using email instead of username.
 
-    Customizes error messages for better user experience when
-    authentication fails.
+    Customizes the default Django authentication form
+    with a friendlier error message on failed login.
     """
+
     username = forms.EmailField(
         label="Email",
-        widget=forms.EmailInput(attrs={
-            "autocomplete": "username"
-        })
+        widget=forms.EmailInput(attrs={"autocomplete": "username"})
     )
 
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            "autocomplete": "current-password"
-        })
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"})
     )
 
     error_messages = {
-        'invalid_login': (
+        "invalid_login": (
             "We couldn't find an account. "
             "Please check your email and password."
         )
@@ -73,61 +66,47 @@ class LoginForm(AuthenticationForm):
 
 class ForgotPasswordForm(forms.Form):
     """
-    Form for password reset without email verification.
+    Password reset form without email verification.
 
-    Validates that the email exists and that the new password meets
-    strength requirements before allowing password reset.
+    Validates that the email exists in the database and that
+    the new password meets all strength requirements.
     """
+
     email = forms.EmailField(
         label="Email",
-        widget=forms.EmailInput(attrs={})
+        widget=forms.EmailInput()
     )
 
     new_password = forms.CharField(
         label="New Password",
-        widget=forms.PasswordInput(attrs={
-            "autocomplete": "new-password"
-        })
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"})
     )
 
     new_password_confirm = forms.CharField(
         label="Confirm New Password",
-        widget=forms.PasswordInput(attrs={
-            "autocomplete": "new-password"
-        })
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"})
     )
 
     def clean_email(self):
         """
-        Validate that the email has an associated user account.
-
-        Args:
-            None.
-
-        Returns:
-            str. The validated email address.
+        Check that the email belongs to an existing account.
 
         Raises:
-            ValidationError if no account is found with the email address.
+            ValidationError: If no account is found with this email.
         """
         email = self.cleaned_data.get("email")
+
         if not User.objects.filter(username=email).exists():
             raise ValidationError("No account found with this email address.")
+
         return email
 
     def clean(self):
         """
-        Validate that passwords match and meet strength requirements.
-
-        Args:
-            None.
-
-        Returns:
-            dict. The cleaned data dictionary.
+        Check that passwords match and meet strength requirements.
 
         Raises:
-            ValidationError if passwords don't match or don't meet strength
-            requirements (uppercase, digit, and special character).
+            ValidationError: If passwords don't match or are too weak.
         """
         cleaned_data = super().clean()
         new_password = cleaned_data.get("new_password")
@@ -137,13 +116,13 @@ class ForgotPasswordForm(forms.Form):
             if new_password != new_password_confirm:
                 raise ValidationError("The two password fields must match.")
 
-            # Validate password strength
+            # Run Django's built-in password validators
             try:
                 validate_password(new_password)
             except ValidationError as e:
                 raise ValidationError(e.messages)
 
-            # Custom validators (match registration requirements)
+            # Run custom strength validators
             validate_password_strength(new_password)
 
         return cleaned_data
@@ -151,90 +130,81 @@ class ForgotPasswordForm(forms.Form):
 
 class RegisterForm(forms.Form):
     """
-    Form for new user registration.
+    Registration form for new users.
 
-    Validates that email is not already in use and that password meets
-    strength requirements. Allows resuming registration if owner profile
-    exists without a dog profile.
+    Validates that the email is not already in use and that
+    the password meets strength requirements.
+
+    Allows resuming an incomplete registration if the owner
+    profile exists but the dog profile is not yet completed.
     """
+
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={
-            "autocomplete": "off"
-        })
+        widget=forms.EmailInput(attrs={"autocomplete": "off"})
     )
 
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            "autocomplete": "new-password"
-        })
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"})
     )
 
     password_confirm = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            "autocomplete": "new-password"
-        })
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"})
     )
 
     def clean_email(self):
         """
-        Validate that email is not already in use with a complete profile.
+        Check that the email is not already used by a complete account.
 
-        Args:
-            None.
-
-        Returns:
-            str. The validated email address.
+        Allows re-registration if the user never finished
+        setting up their dog profile.
 
         Raises:
-            ValidationError if email is already registered with completed
-            profiles.
+            ValidationError: If a complete account already exists.
         """
         email = self.cleaned_data["email"]
         existing_user = User.objects.filter(username=email).first()
-        if existing_user:
-            # Check if user has completed their registration
-            owner_profile = OwnerProfile.objects.filter(
-                user=existing_user
-            ).first()
-            
-            # Allow registration if no owner profile exists (shouldn't happen)
-            if not owner_profile:
-                return email
-            
-            # Block registration if both owner and dog profiles are completed
-            if owner_profile.completed:
-                has_dog = hasattr(owner_profile, "dog")
-                dog_completed = has_dog and owner_profile.dog.completed
-                if dog_completed:
-                    raise forms.ValidationError(
-                        "An account with this email already exists. "
-                        "Please sign in instead."
-                    )
+
+        if not existing_user:
+            return email
+
+        owner_profile = OwnerProfile.objects.filter(
+            user=existing_user
+        ).first()
+
+        # No owner profile means registration was never started
+        if not owner_profile:
+            return email
+
+        # Block only if both owner and dog profiles are complete
+        if owner_profile.completed:
+            has_dog = hasattr(owner_profile, "dog")
+            dog_completed = has_dog and owner_profile.dog.completed
+
+            if dog_completed:
+                raise forms.ValidationError(
+                    "An account with this email already exists. "
+                    "Please sign in instead."
+                )
+
         return email
 
     def clean_password(self):
         """
-        Validate password strength requirements.
-
-        Args:
-            None.
-
-        Returns:
-            str. The validated password.
+        Validate password strength using Django and custom validators.
 
         Raises:
-            ValidationError if password doesn't contain uppercase letter,
-            digit, or special character.
+            ValidationError: If the password is too weak.
         """
         password = self.cleaned_data.get("password")
+
         if password:
-            # Django built-in validators
+            # Run Django's built-in password validators
             try:
                 validate_password(password)
             except ValidationError as e:
                 raise forms.ValidationError(e.messages)
 
-            # Custom validators
+            # Run custom strength validators
             try:
                 validate_password_strength(password)
             except ValidationError as e:
@@ -244,16 +214,10 @@ class RegisterForm(forms.Form):
 
     def clean(self):
         """
-        Validate that both password fields match.
-
-        Args:
-            None.
-
-        Returns:
-            dict. The cleaned data dictionary.
+        Check that both password fields match.
 
         Raises:
-            ValidationError if passwords don't match.
+            ValidationError: If passwords don't match.
         """
         cleaned_data = super().clean()
         password = cleaned_data.get("password")

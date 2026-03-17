@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  "use strict";
-
   /* NAVBAR AUTO-COLLAPSE */
 
   /**
@@ -515,31 +513,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-/* MODALS */
+  /* MODALS */
 
-/** 
- * Handle the match modal close and body scroll lock.
- * Modal is opened server-side by Django when a match is detected.
- * Prevents body scrolling when modal is open by adding "modal-open" class.
- * Sets up close button event handler.
- *
- * @returns {void}
- */
-const setupMatchModal = () => {
-  const modal = document.getElementById("matchModal");
+  /**
+   * Handle the match modal close and body scroll lock.
+   * Modal is opened server-side by Django when a match is detected.
+   * Prevents body scrolling when modal is open by adding "modal-open" class.
+   * Sets up close button event handler.
+   *
+   * @returns {void}
+   */
+  const setupMatchModal = () => {
+    const modal = document.getElementById("matchModal");
 
-  // If modal doesn't exist on this page, stop here
-  if (!modal) return;
+    // If modal doesn't exist on this page, stop here
+    if (!modal) return;
 
-  // Close modal via the close button
-  const closeBtn = document.getElementById("closeMatchModal");
-  if (closeBtn) closeBtn.addEventListener("click", () => closeModal(modal));
+    // Close modal via the close button
+    const closeBtn = document.getElementById("closeMatchModal");
+    if (closeBtn) closeBtn.addEventListener("click", () => closeModal(modal));
 
-  // If modal is already open on page load, lock the scroll immediately
-  if (modal.classList.contains("is-open")) {
-    document.body.classList.add("modal-open");
-  }
-};
+    // If modal is already open on page load, lock the scroll immediately
+    if (modal.classList.contains("is-open")) {
+      document.body.classList.add("modal-open");
+    }
+  };
 
   /* RESET MATCHES */
 
@@ -563,7 +561,8 @@ const setupMatchModal = () => {
 
     // Close modal via the cancel button
     const cancelBtn = document.getElementById("cancelResetBtn");
-    if (cancelBtn) cancelBtn.addEventListener("click", () => closeModal(resetModal));
+    if (cancelBtn)
+      cancelBtn.addEventListener("click", () => closeModal(resetModal));
 
     // Submit the reset form on confirmation
     const confirmBtn = document.getElementById("confirmResetBtn");
@@ -574,233 +573,57 @@ const setupMatchModal = () => {
     }
   };
 
-  /* ===============================
-     MESSAGES INBOX
-     =============================== */
+  /* MESSAGES HELPERS */
 
   /**
-   * Setup inbox interactions for split-view messaging.
-   * Implements a two-panel messaging interface on desktop (>=992px):
-   * - Left panel: conversation list
-   * - Right panel: message thread
-   * Fetches and displays messages via AJAX, handles message sending,
-   * and maintains active conversation state.
-   * @returns {void}
+   * Create a message row element for the thread panel.
+   *
+   * @param {string} content - The message text content.
+   * @param {string} time - The formatted time string.
+   * @param {boolean} isSent - Whether the message was sent by the current user.
+   * @param {string} avatar - The avatar image URL.
+   * @param {string} avatarAlt - The avatar image alt text.
+   * @returns {HTMLElement} The constructed message row element.
    */
-  /**
-   * Setup messaging inbox functionality for desktop split-view.
-   * Handles conversation selection via AJAX, message loading, and form submission.
-   * Only activates on desktop screens (992px+) to avoid conflicts with mobile thread view.
-   * @returns {void}
-   */
-  const setupMessagesInbox = () => {
-    const inboxCard = document.querySelector(".messages-container-card");
-    if (!inboxCard) return;
+  const createMessageRow = (content, time, isSent, avatar, avatarAlt) => {
+    const row = document.createElement("div");
+    row.className = `message-row d-flex align-items-end gap-2 ${isSent ? "justify-content-end sent" : "justify-content-start received"}`;
 
-    // Prevent duplicate listener attachment
-    if (inboxCard._messagesInboxListenerAttached) return;
-    inboxCard._messagesInboxListenerAttached = true;
-
-    const myDogAvatar = inboxCard.dataset.myDogAvatar || "";
-    const myDogName = inboxCard.dataset.myDogName || "You";
-
-    const conversationCards = document.querySelectorAll(".conversation-card");
-    conversationCards.forEach((card) => {
-      card.addEventListener("click", function (e) {
-        const threadPanel = document.querySelector(".messages-thread-panel");
-        // Only use split-view behavior on desktop screens
-        if (
-          window.innerWidth >= 992 &&
-          threadPanel &&
-          getComputedStyle(threadPanel).display !== "none"
-        ) {
-          e.preventDefault();
-
-          // Extract conversation details from card data attributes
-          const dogId = this.dataset.dogId;
-          const dogName = this.dataset.name;
-          const dogBreed = this.dataset.breed;
-          const dogPhoto = this.dataset.photo;
-
-          document.getElementById("thread-name").textContent = dogName;
-          document.getElementById("thread-breed").textContent = dogBreed;
-          document.getElementById("thread-avatar").src = dogPhoto;
-          document.getElementById("receiver-dog-id").value = dogId;
-
-          // Fetch message thread via API
-          fetch(`/messages/api/${dogId}/`)
-            .then((response) => response.json())
-            .then((data) => {
-              const messagesContainer =
-                document.getElementById("messages-thread");
-              messagesContainer.innerHTML = "";
-
-              // Render messages if available
-              if (data.messages && data.messages.length > 0) {
-                data.messages.forEach((msg) => {
-                  const messageRow = document.createElement("div");
-                  messageRow.className = `message-row d-flex align-items-end gap-2 ${msg.is_sent ? "justify-content-end sent" : "justify-content-start received"}`;
-
-                  const avatar = msg.is_sent ? myDogAvatar : dogPhoto;
-                  const avatarAlt = msg.is_sent ? myDogName : dogName;
-
-                  if (!msg.is_sent) {
-                    messageRow.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
-                  }
-
-                  messageRow.innerHTML += `
-                    <div class="message-bubble d-flex flex-column gap-1 px-3 py-2">
-                      <p class="message-content m-0">${msg.content}</p>
-                      <span class="message-time">${msg.time}</span>
-                    </div>
-                  `;
-
-                  if (msg.is_sent) {
-                    messageRow.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
-                  }
-
-                  messagesContainer.appendChild(messageRow);
-                });
-              } else {
-                messagesContainer.innerHTML =
-                  '<div class="empty-thread"><p>No messages yet. Send your first message!</p></div>';
-              }
-
-              // Auto-scroll to bottom to show latest message
-              messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            });
-
-          document.querySelectorAll(".conversation-item").forEach((item) => {
-            item.classList.remove("active");
-          });
-          this.closest(".conversation-item").classList.add("active");
-        }
-      });
-    });
-
-    // Handle Enter key to send message (Shift+Enter for new line)
-    const messageTextarea = document.querySelector("#message-form textarea");
-    if (
-      messageTextarea &&
-      !messageTextarea._enterKeyListenerAttached &&
-      window.innerWidth >= 992
-    ) {
-      messageTextarea._enterKeyListenerAttached = true;
-      messageTextarea.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" && !e.shiftKey) {
-          e.preventDefault();
-          const form = this.closest("form");
-          if (form) {
-            form.dispatchEvent(
-              new Event("submit", { bubbles: true, cancelable: true }),
-            );
-          }
-        }
-      });
+    // Show avatar on the left for received messages
+    if (!isSent) {
+      row.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
     }
 
-    // Handle message form submission via AJAX on desktop
-    const messageForm = document.getElementById("message-form");
-    if (
-      messageForm &&
-      !messageForm._messagesInboxSubmitListenerAttached &&
-      window.innerWidth >= 992
-    ) {
-      messageForm._messagesInboxSubmitListenerAttached = true;
-      messageForm.addEventListener("submit", function (e) {
-        const threadPanel = document.querySelector(".messages-thread-panel");
-        // Only use AJAX submission on desktop split-view
-        if (
-          window.innerWidth >= 992 &&
-          threadPanel &&
-          getComputedStyle(threadPanel).display !== "none"
-        ) {
-          e.preventDefault();
+    row.innerHTML += `
+    <div class="message-bubble d-flex flex-column gap-1 px-3 py-2">
+      <p class="message-content m-0">${content}</p>
+      <span class="message-time">${time}</span>
+    </div>
+  `;
 
-          const formData = new FormData(this);
-          const receiverDogId =
-            document.getElementById("receiver-dog-id").value;
-          const messagesContainer = document.getElementById("messages-thread");
-          const isFirstMessage =
-            messagesContainer.querySelector(".message-row") === null;
-
-          fetch(`/messages/send/${receiverDogId}/`, {
-            method: "POST",
-            body: formData,
-            headers: {
-              "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
-              "X-Requested-With": "XMLHttpRequest",
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                if (isFirstMessage) {
-                  // First message: reload to show conversation in sidebar
-                  window.location.reload();
-                } else {
-                  // Append message without reload
-                  const messageRow = document.createElement("div");
-                  messageRow.className =
-                    "message-row d-flex align-items-end gap-2 justify-content-end sent";
-
-                  // Use avatar from response if available, otherwise fall back to stored value
-                  const avatarSrc = data.message.avatar || myDogAvatar;
-
-                  messageRow.innerHTML = `
-                  <div class="message-bubble d-flex flex-column gap-1 px-3 py-2">
-                    <p class="message-content m-0">${data.message.content}</p>
-                    <span class="message-time">${data.message.time}</span>
-                  </div>
-                  <img class="message-avatar" src="${avatarSrc}" alt="${myDogName}">
-                `;
-                  messagesContainer.appendChild(messageRow);
-                  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-                  // Clear and refocus textarea
-                  const textarea = this.querySelector("textarea");
-                  textarea.value = "";
-                  textarea.focus();
-                }
-              }
-            });
-        }
-      });
+    // Show avatar on the right for sent messages
+    if (isSent) {
+      row.innerHTML += `<img class="message-avatar" src="${avatar}" alt="${avatarAlt}">`;
     }
 
-    const firstConversation = document.querySelector(".conversation-item");
-    if (firstConversation) {
-      firstConversation.classList.add("active");
-    }
-
-    // Auto-scroll to bottom of messages on page load
-    const messagesThread = document.getElementById("messages-thread");
-    if (messagesThread) {
-      messagesThread.scrollTop = messagesThread.scrollHeight;
-    }
-
-    // Auto-focus textarea on page load (desktop only)
-    if (window.innerWidth >= 992 && messageTextarea) {
-      messageTextarea.focus();
-    }
+    return row;
   };
 
-  /* ===============================
-     MESSAGE THREAD (Mobile)
-     =============================== */
+  /* MESSAGES SYSTEM MOBILE */
 
   /**
    * Setup message thread functionality for mobile/tablet messaging.
    * Handles Enter key to send messages, AJAX form submission, and auto-scroll.
    * Only activates on small screens (below 992px) and when on the thread.html page.
    * Mutually exclusive with setupMessagesInbox to prevent duplicate message sending.
+   *
    * @returns {void}
    */
   const setupMessageThread = () => {
     const messageForm = document.getElementById("message-form");
     const receiverDogIdInput = document.getElementById("receiver-dog-id");
 
-    // Only run on mobile thread page (has receiver-dog-id input) and only on small screens
+    // Only run on mobile thread page and only on small screens
     if (!receiverDogIdInput || window.innerWidth >= 992) return;
 
     // Prevent duplicate listener attachment
@@ -858,22 +681,17 @@ const setupMatchModal = () => {
                 // First message: reload to show conversation in sidebar
                 window.location.reload();
               } else {
-                // Append message without reload
-                const messageRow = document.createElement("div");
-                messageRow.className =
-                  "message-row d-flex align-items-end gap-2 justify-content-end sent";
-
-                // Use avatar from response if available, otherwise fall back to stored value
+                // Append message using shared helper
                 const avatarSrc = data.message.avatar || myDogAvatar;
-
-                messageRow.innerHTML = `
-                <div class="message-bubble d-flex flex-column gap-1 px-3 py-2">
-                  <p class="message-content m-0">${data.message.content}</p>
-                  <span class="message-time">${data.message.time}</span>
-                </div>
-                <img class="message-avatar" src="${avatarSrc}" alt="${myDogName}">
-              `;
-                messagesContainer.appendChild(messageRow);
+                messagesContainer.appendChild(
+                  createMessageRow(
+                    data.message.content,
+                    data.message.time,
+                    true,
+                    avatarSrc,
+                    myDogName,
+                  ),
+                );
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
                 // Clear and refocus textarea
@@ -897,258 +715,399 @@ const setupMatchModal = () => {
     }
   };
 
-  /* ===============================
-     DELETE CONVERSATION
-     =============================== */
+  /* MESSAGES SYSTEM DESKTOP */
+
+  /**
+   * Setup messaging inbox functionality for desktop split-view.
+   * Handles conversation selection via AJAX, message loading, and form submission.
+   * Only activates on desktop screens (992px+) to avoid conflicts with mobile thread view.
+   *
+   * @returns {void}
+   */
+  const setupMessagesInbox = () => {
+    const inboxCard = document.querySelector(".messages-container-card");
+    if (!inboxCard) return;
+
+    // Prevent duplicate listener attachment
+    if (inboxCard._messagesInboxListenerAttached) return;
+    inboxCard._messagesInboxListenerAttached = true;
+
+    const myDogAvatar = inboxCard.dataset.myDogAvatar || "";
+    const myDogName = inboxCard.dataset.myDogName || "You";
+
+    // Check if we are on desktop split-view
+    const isDesktopSplitView = () => {
+      const threadPanel = document.querySelector(".messages-thread-panel");
+      return (
+        window.innerWidth >= 992 &&
+        threadPanel &&
+        getComputedStyle(threadPanel).display !== "none"
+      );
+    };
+
+    // Handle conversation card clicks
+    document.querySelectorAll(".conversation-card").forEach((card) => {
+      card.addEventListener("click", function (e) {
+        if (!isDesktopSplitView()) return;
+        e.preventDefault();
+
+        // Extract conversation details from card data attributes
+        const dogId = this.dataset.dogId;
+        const dogName = this.dataset.name;
+        const dogBreed = this.dataset.breed;
+        const dogPhoto = this.dataset.photo;
+
+        // Update thread panel header with contact info
+        document.getElementById("thread-name").textContent = dogName;
+        document.getElementById("thread-breed").textContent = dogBreed;
+        document.getElementById("thread-avatar").src = dogPhoto;
+        document.getElementById("receiver-dog-id").value = dogId;
+
+        // Fetch message thread via API
+        fetch(`/messages/api/${dogId}/`)
+          .then((response) => response.json())
+          .then((data) => {
+            const messagesContainer =
+              document.getElementById("messages-thread");
+            messagesContainer.innerHTML = "";
+
+            // Render messages or empty state
+            if (data.messages && data.messages.length > 0) {
+              data.messages.forEach((msg) => {
+                const avatar = msg.is_sent ? myDogAvatar : dogPhoto;
+                const avatarAlt = msg.is_sent ? myDogName : dogName;
+                messagesContainer.appendChild(
+                  createMessageRow(
+                    msg.content,
+                    msg.time,
+                    msg.is_sent,
+                    avatar,
+                    avatarAlt,
+                  ),
+                );
+              });
+            } else {
+              messagesContainer.innerHTML =
+                '<div class="empty-thread"><p>No messages yet. Send your first message!</p></div>';
+            }
+
+            // Auto-scroll to bottom to show latest message
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          })
+          .catch((error) => console.error("Error loading messages:", error));
+
+        // Update active conversation state
+        document.querySelectorAll(".conversation-item").forEach((item) => {
+          item.classList.remove("active");
+        });
+        this.closest(".conversation-item").classList.add("active");
+      });
+    });
+
+    // Handle Enter key to send message (Shift+Enter for new line)
+    const messageTextarea = document.querySelector("#message-form textarea");
+    if (
+      messageTextarea &&
+      !messageTextarea._enterKeyListenerAttached &&
+      window.innerWidth >= 992
+    ) {
+      messageTextarea._enterKeyListenerAttached = true;
+      messageTextarea.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          const form = this.closest("form");
+          if (form)
+            form.dispatchEvent(
+              new Event("submit", { bubbles: true, cancelable: true }),
+            );
+        }
+      });
+    }
+
+    // Handle message form submission via AJAX on desktop
+    const messageForm = document.getElementById("message-form");
+    if (
+      messageForm &&
+      !messageForm._messagesInboxSubmitListenerAttached &&
+      window.innerWidth >= 992
+    ) {
+      messageForm._messagesInboxSubmitListenerAttached = true;
+      messageForm.addEventListener("submit", function (e) {
+        if (!isDesktopSplitView()) return;
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const receiverDogId = document.getElementById("receiver-dog-id").value;
+        const messagesContainer = document.getElementById("messages-thread");
+        const isFirstMessage =
+          messagesContainer.querySelector(".message-row") === null;
+
+        fetch(`/messages/send/${receiverDogId}/`, {
+          method: "POST",
+          body: formData,
+          headers: {
+            "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              if (isFirstMessage) {
+                // First message: reload to show conversation in sidebar
+                window.location.reload();
+              } else {
+                // Append new message directly without reload
+                const avatarSrc = data.message.avatar || myDogAvatar;
+                messagesContainer.appendChild(
+                  createMessageRow(
+                    data.message.content,
+                    data.message.time,
+                    true,
+                    avatarSrc,
+                    myDogName,
+                  ),
+                );
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                // Clear and refocus textarea
+                const textarea = this.querySelector("textarea");
+                textarea.value = "";
+                textarea.focus();
+              }
+            }
+          })
+          .catch((error) => console.error("Error sending message:", error));
+      });
+    }
+
+    // Set first conversation as active on load
+    const firstConversation = document.querySelector(".conversation-item");
+    if (firstConversation) firstConversation.classList.add("active");
+
+    // Auto-scroll to bottom of messages on page load
+    const messagesThread = document.getElementById("messages-thread");
+    if (messagesThread) messagesThread.scrollTop = messagesThread.scrollHeight;
+
+    // Auto-focus textarea on desktop
+    if (window.innerWidth >= 992 && messageTextarea) messageTextarea.focus();
+  };
+
+  /* DELETE CONVERSATION */
 
   /**
    * Setup delete conversation modal and functionality.
    * Allows users to delete an entire conversation thread with confirmation.
    * Handles modal display, close actions, and form submission to backend.
+   *
    * @returns {void}
    */
   const setupDeleteConversation = () => {
     const deleteButtons = document.querySelectorAll(".btn-delete-conversation");
+
+    // If no delete buttons on this page, stop here
     if (deleteButtons.length === 0) return;
 
+    const deleteModal = document.getElementById("deleteConfirmModal");
+
+    // Track which conversation is selected for deletion
     let selectedDogId = null;
 
+    // Open modal and store selected dog when delete button is clicked
     deleteButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent conversation card click
-        const dogId = btn.dataset.dogId;
-        const dogName = btn
+        // Prevent conversation card click from triggering
+        e.stopPropagation();
+
+        selectedDogId = btn.dataset.dogId;
+        document.getElementById("deleteDogName").textContent = btn
           .closest(".conversation-item")
           .querySelector(".dog-details h3").textContent;
 
-        // Store selected conversation and show confirmation modal
-        selectedDogId = dogId;
-        document.getElementById("deleteDogName").textContent = dogName;
-        document.getElementById("deleteConfirmModal").classList.add("is-open");
-        document.body.classList.add("modal-open");
+        openModal(deleteModal);
       });
     });
 
-    // Close modal
-    const closeDeleteModal = document.getElementById("closeDeleteModal");
-    if (closeDeleteModal) {
-      closeDeleteModal.addEventListener("click", () => {
-        document
-          .getElementById("deleteConfirmModal")
-          .classList.remove("is-open");
-        document.body.classList.remove("modal-open");
-      });
-    }
+    // Close modal via cancel button
+    const cancelBtn = document.getElementById("cancelDeleteBtn");
+    if (cancelBtn)
+      cancelBtn.addEventListener("click", () => closeModal(deleteModal));
 
-    const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
-    if (cancelDeleteBtn) {
-      cancelDeleteBtn.addEventListener("click", () => {
-        document
-          .getElementById("deleteConfirmModal")
-          .classList.remove("is-open");
-        document.body.classList.remove("modal-open");
-      });
-    }
+    // Submit delete request on confirmation
+    const confirmBtn = document.getElementById("confirmDeleteBtn");
+    if (confirmBtn) {
+      confirmBtn.addEventListener("click", () => {
+        if (!selectedDogId) return;
 
-    // Confirm delete - submit via AJAX to backend
-    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
-    if (confirmDeleteBtn) {
-      confirmDeleteBtn.addEventListener("click", () => {
-        if (selectedDogId) {
-          // Get CSRF token
-          const csrfToken = document.querySelector(
-            "[name=csrfmiddlewaretoken]",
-          )?.value;
+        // Get CSRF token for Django security check
+        const csrfToken = document.querySelector(
+          "[name=csrfmiddlewaretoken]",
+        )?.value;
 
-          // Submit delete request via fetch
-          fetch(`/messages/delete/${selectedDogId}/`, {
-            method: "POST",
-            headers: {
-              "X-CSRFToken": csrfToken || "",
-              "Content-Type": "application/json",
-            },
+        fetch(`/messages/delete/${selectedDogId}/`, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": csrfToken || "",
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            // Redirect to inbox after successful delete
+            if (response.ok) window.location.href = "/messages/";
           })
-            .then((response) => {
-              if (response.ok) {
-                // Redirect to inbox after successful delete
-                window.location.href = "/messages/";
-              }
-            })
-            .catch((error) =>
-              console.error("Error deleting conversation:", error),
-            );
-        }
-      });
-    }
-
-    // Close modal on backdrop click
-    const deleteConfirmModal = document.getElementById("deleteConfirmModal");
-    if (deleteConfirmModal) {
-      deleteConfirmModal.addEventListener("click", (e) => {
-        if (e.target.id === "deleteConfirmModal") {
-          document
-            .getElementById("deleteConfirmModal")
-            .classList.remove("is-open");
-          document.body.classList.remove("modal-open");
-        }
+          .catch((error) =>
+            console.error("Error deleting conversation:", error),
+          );
       });
     }
   };
 
-  /* ===============================
-     DELETE MATCH
-     =============================== */
+  /* DELETE MATCH */
 
   /**
    * Setup delete match modal and functionality.
    * Allows users to unmatch with another dog profile via a confirmation modal.
    * Makes an AJAX request to delete the match and removes the card from UI.
+   *
    * @returns {void}
    */
   const setupDeleteMatch = () => {
-    let selectedDogId = null;
     const deleteButtons = document.querySelectorAll(".btn-delete-match");
     const modal = document.getElementById("deleteMatchModal");
-    const cancelBtn = document.getElementById("cancelDeleteMatchBtn");
-    const confirmBtn = document.getElementById("confirmDeleteMatchBtn");
+
+    // If no delete buttons or modal on this page, stop here
     if (!deleteButtons.length || !modal) return;
 
+    const cancelBtn = document.getElementById("cancelDeleteMatchBtn");
+    const confirmBtn = document.getElementById("confirmDeleteMatchBtn");
+
+    // Track which match is selected for deletion
+    let selectedDogId = null;
+
+    // Open modal and store selected dog when delete button is clicked
     deleteButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => {
+        // Prevent match card click from triggering
         e.stopPropagation();
         selectedDogId = btn.dataset.dogId;
-        modal.classList.add("is-open");
-        document.body.classList.add("modal-open");
+        openModal(modal);
       });
     });
 
-    cancelBtn.addEventListener("click", () => {
-      modal.classList.remove("is-open");
-      document.body.classList.remove("modal-open");
-      selectedDogId = null;
-    });
-
-    confirmBtn.addEventListener("click", () => {
-      if (!selectedDogId) return;
-
-      // Get CSRF token for secure POST request
-      const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]");
-
-      fetch("/connections/delete_match/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-CSRFToken": csrfToken ? csrfToken.value : "",
-        },
-        body: `dog_id=${selectedDogId}`,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            // Remove match card from UI
-            const card = document.querySelector(
-              `.matches-card[data-dog-id="${selectedDogId}"]`,
-            );
-            if (card) card.remove();
-
-            // Check if any match cards remain
-            const remainingCards = document.querySelectorAll(".matches-card");
-            if (remainingCards.length === 0) {
-              // Reload page to show "No matches yet" empty state
-              window.location.reload();
-            }
-          }
-          modal.classList.remove("is-open");
-          document.body.classList.remove("modal-open");
-          selectedDogId = null;
-        });
-    });
-
-    // Close modal on backdrop click
-    modal.addEventListener("click", (e) => {
-      if (e.target.id === "deleteMatchModal") {
-        modal.classList.remove("is-open");
-        document.body.classList.remove("modal-open");
+    // Close modal and reset selection via cancel button
+    if (cancelBtn)
+      cancelBtn.addEventListener("click", () => {
+        closeModal(modal);
         selectedDogId = null;
-      }
-    });
+      });
+
+    // Submit delete request on confirmation
+    if (confirmBtn) {
+      confirmBtn.addEventListener("click", () => {
+        if (!selectedDogId) return;
+
+        // Get CSRF token for Django security check
+        const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]");
+
+        fetch("/connections/delete_match/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": csrfToken ? csrfToken.value : "",
+          },
+          body: `dog_id=${selectedDogId}`,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              // Remove match card from UI without reload
+              const card = document.querySelector(
+                `.matches-card[data-dog-id="${selectedDogId}"]`,
+              );
+              if (card) card.remove();
+
+              // If no matches left, reload to show empty state
+              if (document.querySelectorAll(".matches-card").length === 0) {
+                window.location.reload();
+              }
+            }
+
+            // Close modal and reset selection for next use
+            closeModal(modal);
+            selectedDogId = null;
+          })
+          .catch((error) => console.error("Error deleting match:", error));
+      });
+    }
   };
 
-  /* ===============================
-     DELETE PROFILE
-     =============================== */
+  /* DELETE PROFILE */
 
   /**
    * Setup delete profile modal and functionality.
    * Handles the critical action of permanently deleting a user profile.
-   * Exposes global functions for modal control (open/close/confirm).
+   *
    * @returns {void}
    */
   const setupDeleteProfile = () => {
     const deleteModal = document.getElementById("deleteModal");
+
+    // If modal doesn't exist on this page, stop here
     if (!deleteModal) return;
 
-    // Expose global functions for template onclick handlers
+    // Open modal via delete button
+    const deleteBtn = document.getElementById("deleteProfileBtn");
+    if (deleteBtn)
+      deleteBtn.addEventListener("click", () => openModal(deleteModal));
 
-    /**
-     * Open the delete profile confirmation modal.
-     */
-    window.openDeleteModal = function () {
-      deleteModal.classList.add("is-open");
-      document.body.classList.add("modal-open");
-    };
+    // Close modal via cancel button
+    const cancelBtn = deleteModal.querySelector(".btn-cancel");
+    if (cancelBtn)
+      cancelBtn.addEventListener("click", () => closeModal(deleteModal));
 
-    /**
-     * Close the delete profile confirmation modal.
-     */
-    window.closeDeleteModal = function () {
-      deleteModal.classList.remove("is-open");
-      document.body.classList.remove("modal-open");
-    };
-
-    /**
-     * Submit the delete profile form after confirmation.
-     */
-    window.confirmDelete = function () {
-      document.body.classList.remove("modal-open");
-      document.getElementById("deleteForm").submit();
-    };
-
-    // Close modal on backdrop click
-    deleteModal.addEventListener("click", function (e) {
-      if (e.target === this) {
-        window.closeDeleteModal();
-      }
-    });
+    // Submit delete form on confirmation
+    const confirmBtn = deleteModal.querySelector(".btn-danger");
+    if (confirmBtn) {
+      confirmBtn.addEventListener("click", () => {
+        closeModal(deleteModal);
+        document.getElementById("deleteForm").submit();
+      });
+    }
   };
 
-  /* ===============================
-     INITIALIZATION
-     =============================== */
+  /* INITIALIZATION */
 
   /**
    * Initialize all UI components and behaviors.
    * Called automatically when DOM is fully loaded.
    * Sets up all event listeners and interactive features for the application.
+   *
    * @returns {void}
    */
   const init = () => {
+    // UI helpers
     setupNavbarCollapse();
     setupPasswordToggle();
-    setupProfileToggle();
-    setupImageUploads();
     setupCharacterCounters();
-    setupModalBackdropClose()
-    setupMatchModal();
-    setupFormCache("owner");
-    setupFormCache("dog");
+    setupImageUploads();
     setupPillOptions();
+    setupProfileToggle();
+
+    // Modals
+    setupModalBackdropClose();
+    setupMatchModal();
     setupResetMatches();
-    setupMessagesInbox();
-    setupMessageThread();
     setupDeleteConversation();
     setupDeleteMatch();
     setupDeleteProfile();
+
+    // Forms
+    setupFormCache("owner");
+    setupFormCache("dog");
+
+    // Messages
+    setupMessageThread();
+    setupMessagesInbox();
   };
 
   // Start initialization

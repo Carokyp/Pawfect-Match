@@ -115,7 +115,7 @@
 
       <form method="post" action="{% url 'delete_profile' %}" id="deleteForm">
         {% csrf_token %}
-        <button type="button" class="btn-modal btn-danger" onclick="openDeleteModal()">
+        <button type="button" class="btn-modal btn-danger">
           Delete My Profile
         </button>
       </form>
@@ -137,10 +137,10 @@
       </ul>
       <p class="text-background modal-warning-text text-center p-3 mx-auto">This action cannot be undone.</p>
       <div class="d-flex justify-content-center gap-3">
-        <button type="button" class="btn-modal btn-cancel" onclick="closeDeleteModal()">
+        <button type="button" class="btn-modal btn-cancel">
           Cancel
         </button>
-        <button type="button" class="btn-modal btn-danger" onclick="confirmDelete()">
+        <button type="button" class="btn-modal btn-danger">
           Delete
         </button>
       </div>
