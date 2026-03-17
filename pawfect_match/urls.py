@@ -22,10 +22,6 @@ from accounts.views import (
     home,
     register,
     login_view,
-    test_404,
-    test_500,
-    test_403,
-    test_405,
     forgot_password,
 )
 
@@ -33,10 +29,6 @@ urlpatterns = [
     path("", home, name="home"),
     path("register/", register, name="register"),
     path("sign-in/", login_view, name="sign_in"),
-    path("404-page/", test_404, name="test_404"),
-    path("500-page/", test_500, name="test_500"),
-    path("403-page/", test_403, name="test_403"),
-    path("405-page/", test_405, name="test_405"),
     path("accounts/", include("accounts.urls")),
     path("admin/", admin.site.urls),
     path("connections/", include("connections.urls")),

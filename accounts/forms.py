@@ -51,7 +51,7 @@ class LoginForm(AuthenticationForm):
         label="Email",
         widget=forms.EmailInput(attrs={"autocomplete": "username"})
     )
-
+    # Redefined only to add autocomplete attribute for better UX
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"autocomplete": "current-password"})
     )
@@ -73,8 +73,7 @@ class ForgotPasswordForm(forms.Form):
     """
 
     email = forms.EmailField(
-        label="Email",
-        widget=forms.EmailInput()
+        label="Email"
     )
 
     new_password = forms.CharField(

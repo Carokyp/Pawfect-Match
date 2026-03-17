@@ -211,44 +211,6 @@ def handler405(request, exception):
     """Custom 405 error page."""
     return render(request, "errors/405.html", status=405)
 
-# Error preview views (development only)
-
-
-def test_404(request):
-    """
-    Preview the 404 error page.
-
-    Development URL: /404-page/
-    """
-    return render(request, "errors/404.html")
-
-
-def test_500(request):
-    """
-    Preview the 500 error page.
-
-    Development URL: /500-page/
-    """
-    return render(request, "errors/500.html")
-
-
-def test_403(request):
-    """
-    Preview the 403 error page.
-
-    Development URL: /403-page/
-    """
-    return render(request, "errors/403.html")
-
-
-def test_405(request):
-    """
-    Preview the 405 error page.
-
-    Development URL: /405-page/
-    """
-    return render(request, "errors/405.html")
-
 
 def forgot_password(request):
     """
