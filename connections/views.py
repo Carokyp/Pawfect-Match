@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 from dogs.models import Dog
 from profiles.models import OwnerProfile
 
-from .models import Connection
+from .models import Like
 
 
 @login_required
@@ -34,7 +34,7 @@ def matches_list(request):
 
     # Get all matches (bidirectional connections)
     # Dogs we liked AND who liked us back
-    matches = Connection.objects.filter(
+    matches = Like.objects.filter(
         from_dog=my_dog
     ).select_related("to_dog", "to_dog__owner")
 
@@ -42,7 +42,7 @@ def matches_list(request):
     matches_list = []
     for connection in matches:
         # Check if the other dog also created a connection to us
-        reverse_connection = Connection.objects.filter(
+        reverse_connection = Like.objects.filter(
             from_dog=connection.to_dog,
             to_dog=my_dog
         ).exists()
@@ -94,6 +94,6 @@ def delete_match(request):
     except Dog.DoesNotExist:
         return JsonResponse({"success": False, "error": "Dog not found"})
     # Delete both directions
-    Connection.objects.filter(from_dog=my_dog, to_dog=other_dog).delete()
-    Connection.objects.filter(from_dog=other_dog, to_dog=my_dog).delete()
+    Like.objects.filter(from_dog=my_dog, to_dog=other_dog).delete()
+    Like.objects.filter(from_dog=other_dog, to_dog=my_dog).delete()
     return JsonResponse({"success": True})

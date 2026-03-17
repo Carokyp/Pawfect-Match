@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
-from connections.models import Connection
+from connections.models import Like
 from dogs.models import Dog
 from profiles.models import OwnerProfile
 
@@ -106,10 +106,10 @@ def messages_inbox(request, dog_id=None):
     if first_receiver_dog:
 
         # Check if it's a match
-        is_match = Connection.objects.filter(
+        is_match = Like.objects.filter(
             from_dog=my_dog,
             to_dog=first_receiver_dog
-        ).exists() and Connection.objects.filter(
+        ).exists() and Like.objects.filter(
             from_dog=first_receiver_dog,
             to_dog=my_dog
         ).exists()
@@ -181,10 +181,10 @@ def message_thread(request, dog_id):
     receiver_dog = get_object_or_404(Dog, id=dog_id)
 
     # Check if it's a match
-    is_match = Connection.objects.filter(
+    is_match = Like.objects.filter(
         from_dog=my_dog,
         to_dog=receiver_dog
-    ).exists() and Connection.objects.filter(
+    ).exists() and Like.objects.filter(
         from_dog=receiver_dog,
         to_dog=my_dog
     ).exists()
@@ -256,10 +256,10 @@ def send_message(request, dog_id):
     receiver_dog = get_object_or_404(Dog, id=dog_id)
 
     # Check if it's a match
-    is_match = Connection.objects.filter(
+    is_match = Like.objects.filter(
         from_dog=my_dog,
         to_dog=receiver_dog
-    ).exists() and Connection.objects.filter(
+    ).exists() and Like.objects.filter(
         from_dog=receiver_dog,
         to_dog=my_dog
     ).exists()
@@ -280,7 +280,7 @@ def send_message(request, dog_id):
             avatar_url = None
             if my_dog.profile_photo:
                 avatar_url = my_dog.get_photo_url()
-            
+
             return JsonResponse({
                 "success": True,
                 "message": {

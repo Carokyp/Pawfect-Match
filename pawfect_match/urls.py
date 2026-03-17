@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
 from accounts.views import (
     home,
     register,
@@ -16,6 +17,11 @@ urlpatterns = [
     path("register/", register, name="register"),
     path("sign-in/", login_view, name="sign_in"),
     path("accounts/", include("accounts.urls")),
+    path(
+        "admin/connections/connection/",
+        RedirectView.as_view(url="/admin/connections/like/", permanent=False),
+        name="admin_connection_legacy_redirect",
+    ),
     path("admin/", admin.site.urls),
     path("connections/", include("connections.urls")),
     path("dogs/", include("dogs.urls")),

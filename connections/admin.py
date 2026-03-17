@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Connection
+from .models import Like, Dislike
 
 
-admin.site.register(Connection)
+admin.site.register(Like)
+admin.site.register(Dislike)

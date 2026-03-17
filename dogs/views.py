@@ -5,7 +5,7 @@ from django.db import transaction
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 
-from connections.models import Connection, Dislike
+from connections.models import Like, Dislike
 from messaging.models import Message
 from profiles.models import OwnerProfile
 from profiles.views import get_owner_profile, parse_interests
@@ -90,7 +90,7 @@ def browse_dogs(request):
     remaining_dogs_count = 0
     if owner_profile and hasattr(owner_profile, "dog"):
         my_dog = owner_profile.dog
-        liked_dog_ids = Connection.objects.filter(
+        liked_dog_ids = Like.objects.filter(
             from_dog=my_dog,
         ).values_list("to_dog_id", flat=True)
         disliked_dog_ids = Dislike.objects.filter(
@@ -179,15 +179,21 @@ def like_dog(request, dog_id):
     if not liked_dog:
         return redirect("browse_dogs")
 
-    Connection.objects.get_or_create(from_dog=my_dog, to_dog=liked_dog)
-    Connection.objects.get_or_create(from_dog=liked_dog, to_dog=my_dog)
+    Like.objects.get_or_create(from_dog=my_dog, to_dog=liked_dog)
+    Like.objects.get_or_create(from_dog=liked_dog, to_dog=my_dog)
 
     index = request.session.get(SESSION_DOG_INDEX, 0)
     request.session[SESSION_DOG_INDEX] = index + 1
     request.session[SESSION_SHOW_MATCH_MODAL] = True
     request.session[SESSION_MATCH_DATA] = {
-        "my_dog_photo": my_dog.get_photo_url() if my_dog.profile_photo else None,
-        "other_dog_photo": liked_dog.get_photo_url() if liked_dog.profile_photo else None,
+        "my_dog_photo": (
+            my_dog.get_photo_url() if my_dog.profile_photo else None
+        ),
+        "other_dog_photo": (
+            liked_dog.get_photo_url()
+            if liked_dog.profile_photo
+            else None
+        ),
         "my_dog_name": my_dog.name,
         "other_dog_name": liked_dog.name,
         "other_dog_id": liked_dog.id,
@@ -227,7 +233,7 @@ def dislike_dog(request, dog_id):
 def reset_matches(request):
     """Clear all matches for the logged-in user's dog and restart discovery."""
     my_dog = get_owner_profile(request.user).dog
-    Connection.objects.filter(from_dog=my_dog).delete()
+    Like.objects.filter(from_dog=my_dog).delete()
     Dislike.objects.filter(from_dog=my_dog).delete()
     Message.objects.filter(sender_dog=my_dog).delete()
     Message.objects.filter(receiver_dog=my_dog).delete()
