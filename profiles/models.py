@@ -11,37 +11,19 @@ class OwnerProfile(models.Model):
     Stores identity details, profile photo, interests, and a short
     bio used across profile creation, edit, and display views.
     """
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         related_name="owner_profile"
     )
-
-    profile_photo = CloudinaryField(
-        "profile photo",
-        blank=True,
-        null=True
-    )
-
+    profile_photo = CloudinaryField("profile photo", blank=True, null=True)
     name = models.CharField(max_length=100, default="")
     age = models.PositiveIntegerField(null=True, blank=True)
     city = models.CharField(max_length=100, default="")
-
-    occupation = models.CharField(
-        max_length=100,
-        blank=True
-    )
-
-    interests = models.CharField(
-        max_length=255,
-        blank=True,
-    )
-
-    about_me = models.TextField(
-        max_length=150,
-        blank=True
-    )
-
+    occupation = models.CharField(max_length=100, blank=True)
+    interests = models.CharField(max_length=255, blank=True)
+    about_me = models.TextField(max_length=150, blank=True)
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

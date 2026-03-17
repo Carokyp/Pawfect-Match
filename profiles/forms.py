@@ -6,6 +6,9 @@ from django.core.exceptions import ValidationError
 from .models import OwnerProfile
 
 
+# Maximum allowed photo upload size
+MAX_PHOTO_SIZE_BYTES = 9.5 * 1024 * 1024
+
 INTEREST_CHOICES = [
     ("Hiking", "Hiking"),
     ("Coffee", "Coffee"),
@@ -30,9 +33,10 @@ class OwnerProfileForm(forms.ModelForm):
     """
     Form for creating and editing owner profiles.
 
-    Handles profile photo requirements, interest selection parsing, and
-    form initialization for existing instances.
+    Handles profile photo requirements, interest selection parsing,
+    and form initialization for existing instances.
     """
+
     interests = forms.MultipleChoiceField(
         required=False,
         choices=INTEREST_CHOICES,
@@ -40,8 +44,10 @@ class OwnerProfileForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
-        """Initialize form, set required fields, and parse interests."""
+        """Initialize form, set required fields, and parse existing
+        interests."""
         super().__init__(*args, **kwargs)
+
         required_fields = [
             "profile_photo",
             "name",
@@ -49,12 +55,14 @@ class OwnerProfileForm(forms.ModelForm):
             "city",
             "occupation",
         ]
+
         for field_name in required_fields:
             field = self.fields.get(field_name)
             if field:
                 field.required = True
                 field.widget.attrs["required"] = "required"
 
+        # Pre-fill interests checkboxes when editing an existing profile
         if not self.data and self.instance and self.instance.interests:
             self.fields["interests"].initial = self._parse_interests(
                 self.instance.interests
@@ -62,23 +70,37 @@ class OwnerProfileForm(forms.ModelForm):
 
     @staticmethod
     def _parse_interests(value):
-        """Parse interests from string/list/tuple into cleaned list format."""
+        """
+        Parse interests from string, list, or tuple into a cleaned list.
+
+        Handles comma-separated strings and Python list literals.
+
+        Returns:
+            list: Cleaned list of interest strings.
+        """
         if not value:
             return []
+
         if isinstance(value, (list, tuple)):
             return [str(item).strip() for item in value if str(item).strip()]
+
         value = str(value).strip()
+
+        # Handle Python list literal strings like "['Hiking', 'Coffee']"
         if value.startswith("[") and value.endswith("]"):
             try:
                 parsed = ast.literal_eval(value)
             except (ValueError, SyntaxError):
                 parsed = None
+
             if isinstance(parsed, (list, tuple)):
                 return [
                     str(item).strip()
                     for item in parsed
                     if str(item).strip()
                 ]
+
+        # Handle comma-separated strings like "Hiking, Coffee"
         return [item.strip() for item in value.split(",") if item.strip()]
 
     class Meta:
@@ -92,11 +114,8 @@ class OwnerProfileForm(forms.ModelForm):
             "interests",
             "about_me",
         ]
-
         widgets = {
-            "profile_photo": forms.FileInput(attrs={
-                "accept": "image/*"
-            }),
+            "profile_photo": forms.FileInput(attrs={"accept": "image/*"}),
             "about_me": forms.Textarea(attrs={
                 "rows": 4,
                 "maxlength": 150,
@@ -118,8 +137,12 @@ class OwnerProfileForm(forms.ModelForm):
         }
 
     def clean_profile_photo(self):
-        """Validate that profile photo is always provided and
-        file size is within limits."""
+        """
+        Validate that a profile photo is provided and within size limits.
+
+        Raises:
+            ValidationError: If photo is missing or exceeds 9.5 MB.
+        """
         photo = self.cleaned_data.get("profile_photo")
         photo_removed = self.data.get("profile_photo_removed") == "1"
         existing_photo = (
@@ -132,14 +155,12 @@ class OwnerProfileForm(forms.ModelForm):
             raise ValidationError("Please select a profile photo.")
 
         if photo:
-            # Strict file size validation (9.5 MB to have some buffer)
-            # Some storage backends (e.g., CloudinaryResource) don't expose
-            # a local `.size` attribute, so validate size only when available.
-            MAX_FILE_SIZE_BYTES = 9.5 * 1024 * 1024
+            # Validate size only when available — some Cloudinary backends
+            # don't expose a local .size attribute
             photo_size = getattr(photo, "size", None)
             if (
                 isinstance(photo_size, (int, float))
-                and photo_size > MAX_FILE_SIZE_BYTES
+                and photo_size > MAX_PHOTO_SIZE_BYTES
             ):
                 size_mb = photo_size / (1024 * 1024)
                 raise ValidationError(
@@ -148,20 +169,27 @@ class OwnerProfileForm(forms.ModelForm):
                     "Please use a smaller or compressed image."
                 )
             return photo
+
         if existing_photo:
             return existing_photo
 
         raise ValidationError("Please select a profile photo.")
 
     def save(self, commit=True):
-        """Save instance and convert interests list to
-        comma-separated string."""
+        """
+        Save the form instance and convert interests list to
+        a comma-separated string for database storage.
+        """
         instance = super().save(commit=False)
         interests = self.cleaned_data.get("interests")
+
+        # Convert list to comma-separated string for CharField storage
         if isinstance(interests, (list, tuple)):
             instance.interests = ", ".join(interests)
         elif interests is None:
             instance.interests = ""
+
         if commit:
             instance.save()
+
         return instance

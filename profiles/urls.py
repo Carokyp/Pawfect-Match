@@ -1,5 +1,11 @@
 from django.urls import path
-from .views import create_owner_profile, view_profile, edit_owner_profile, edit_dog_profile, delete_profile
+from .views import (
+    create_owner_profile,
+    view_profile,
+    edit_owner_profile,
+    edit_dog_profile,
+    delete_profile,
+)
 
 urlpatterns = [
     path("create/", create_owner_profile, name="create_owner_profile"),

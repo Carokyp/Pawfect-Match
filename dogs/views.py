@@ -2,17 +2,18 @@ from functools import wraps
 
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 
 from connections.models import Connection, Dislike
 from messaging.models import Message
 from profiles.models import OwnerProfile
+from profiles.views import get_owner_profile, parse_interests
 
 from .forms import DogForm
 from .models import Dog
 
-# Session key constants for match modal
+
 SESSION_DOG_INDEX = "dog_index"
 SESSION_SHOW_MATCH_MODAL = "show_match_modal"
 SESSION_MATCH_DATA = "match_data"
@@ -48,15 +49,11 @@ def create_dog(request):
         HttpResponse with create_dog.html template or redirect to browse_dogs
         after successful completion.
     """
-    # Get owner profile and existing dog
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    owner_profile = get_owner_profile(request.user)
     if not owner_profile:
         return redirect("create_owner_profile")
 
-    dog = Dog.objects.filter(owner=owner_profile).first()
-    if not dog:
-        # Should not happen, but create if missing
-        dog = Dog.objects.create(owner=owner_profile)
+    dog, _ = Dog.objects.get_or_create(owner=owner_profile)
 
     if request.method == "POST":
         form = DogForm(request.POST, request.FILES, instance=dog)
@@ -84,7 +81,7 @@ def browse_dogs(request):
         HttpResponse with browse_dogs.html template showing next available dog
         or empty state if no more dogs available.
     """
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    owner_profile = get_owner_profile(request.user)
 
     dogs = Dog.objects.select_related("owner").filter(
         completed=True,
@@ -93,12 +90,12 @@ def browse_dogs(request):
     remaining_dogs_count = 0
     if owner_profile and hasattr(owner_profile, "dog"):
         my_dog = owner_profile.dog
-        liked_dog_ids = Connection.objects.filter(from_dog=my_dog).values_list(
-            "to_dog_id", flat=True
-        )
-        disliked_dog_ids = Dislike.objects.filter(from_dog=my_dog).values_list(
-            "to_dog_id", flat=True
-        )
+        liked_dog_ids = Connection.objects.filter(
+            from_dog=my_dog,
+        ).values_list("to_dog_id", flat=True)
+        disliked_dog_ids = Dislike.objects.filter(
+            from_dog=my_dog,
+        ).values_list("to_dog_id", flat=True)
         dogs = (
             dogs.exclude(owner=owner_profile)
             .exclude(id__in=liked_dog_ids)
@@ -108,7 +105,6 @@ def browse_dogs(request):
 
     dogs = list(dogs)
 
-    # Check if a match modal should be displayed
     match_popup = None
     if request.session.get(SESSION_SHOW_MATCH_MODAL, False):
         match_popup = request.session.pop(SESSION_MATCH_DATA, None)
@@ -132,14 +128,7 @@ def browse_dogs(request):
         request.session[SESSION_DOG_INDEX] = 0
 
     dog = dogs[current_index]
-
-    if dog.owner.interests:
-        dog.owner.interests_list = [
-            interest.strip()
-            for interest in dog.owner.interests.split(",")
-        ]
-    else:
-        dog.owner.interests_list = []
+    dog.owner.interests_list = parse_interests(dog.owner.interests)
 
     return render(
         request,
@@ -184,32 +173,21 @@ def like_dog(request, dog_id):
     Returns:
         Redirect to browse_dogs with match modal data in session.
     """
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    owner_profile = get_owner_profile(request.user)
     my_dog = owner_profile.dog
     liked_dog = Dog.objects.filter(id=dog_id).first()
     if not liked_dog:
         return redirect("browse_dogs")
 
-    # Create both connections (automatic match)
     Connection.objects.get_or_create(from_dog=my_dog, to_dog=liked_dog)
     Connection.objects.get_or_create(from_dog=liked_dog, to_dog=my_dog)
 
-    # It's always a match now!
     index = request.session.get(SESSION_DOG_INDEX, 0)
     request.session[SESSION_DOG_INDEX] = index + 1
-
-    # Display the match modal
     request.session[SESSION_SHOW_MATCH_MODAL] = True
-
-    # Get photo URLs or None if no photo
-    my_dog_photo = my_dog.get_photo_url() if my_dog.profile_photo else None
-    other_dog_photo = (
-        liked_dog.get_photo_url() if liked_dog.profile_photo else None
-    )
-
     request.session[SESSION_MATCH_DATA] = {
-        "my_dog_photo": my_dog_photo,
-        "other_dog_photo": other_dog_photo,
+        "my_dog_photo": my_dog.get_photo_url() if my_dog.profile_photo else None,
+        "other_dog_photo": liked_dog.get_photo_url() if liked_dog.profile_photo else None,
         "my_dog_name": my_dog.name,
         "other_dog_name": liked_dog.name,
         "other_dog_id": liked_dog.id,
@@ -232,13 +210,12 @@ def dislike_dog(request, dog_id):
     Returns:
         Redirect to browse_dogs.
     """
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    owner_profile = get_owner_profile(request.user)
     my_dog = owner_profile.dog
     disliked_dog = Dog.objects.filter(id=dog_id).first()
     if not disliked_dog:
         return redirect("browse_dogs")
 
-    # Record the dislike
     Dislike.objects.get_or_create(from_dog=my_dog, to_dog=disliked_dog)
 
     return redirect("browse_dogs")
@@ -249,14 +226,10 @@ def dislike_dog(request, dog_id):
 @require_dog_profile
 def reset_matches(request):
     """Clear all matches for the logged-in user's dog and restart discovery."""
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
-    my_dog = owner_profile.dog
+    my_dog = get_owner_profile(request.user).dog
     Connection.objects.filter(from_dog=my_dog).delete()
     Dislike.objects.filter(from_dog=my_dog).delete()
     Message.objects.filter(sender_dog=my_dog).delete()
     Message.objects.filter(receiver_dog=my_dog).delete()
-
-    # Reset browsing index to start fresh
     request.session[SESSION_DOG_INDEX] = 0
-
     return redirect("browse_dogs")

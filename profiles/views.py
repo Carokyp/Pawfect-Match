@@ -47,11 +47,7 @@ def create_owner_profile(request):
         HttpResponse with create_owner_profile.html template or redirect to
         create_dog after successful completion.
     """
-    # Get existing owner profile
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
-    if not owner_profile:
-        # Should not happen, but create if missing
-        owner_profile = OwnerProfile.objects.create(user=request.user)
+    owner_profile, _ = OwnerProfile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
         form = OwnerProfileForm(
@@ -92,10 +88,7 @@ def view_profile(request):
     if not owner_profile:
         return redirect("create_owner_profile")
 
-    # Get or None for dog
-    dog = None
-    if hasattr(owner_profile, "dog"):
-        dog = owner_profile.dog
+    dog = getattr(owner_profile, "dog", None)
 
     owner_profile.interests_list = parse_interests(
         owner_profile.interests
@@ -165,7 +158,6 @@ def edit_dog_profile(request):
     if not owner_profile:
         return redirect("create_owner_profile")
 
-    # Get or create dog
     try:
         dog = owner_profile.dog
     except Dog.DoesNotExist:
@@ -188,12 +180,10 @@ def edit_dog_profile(request):
     )
 
 
-# Delete profile, dog, and user
 @login_required
 @require_POST
 def delete_profile(request):
     """Delete the current user and rely on cascade deletion for
     related data."""
-    user = request.user
-    user.delete()
+    request.user.delete()
     return redirect("home")

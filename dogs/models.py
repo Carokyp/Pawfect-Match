@@ -23,16 +23,17 @@ class Dog(models.Model):
         PLAYFUL = "playful", "🎾 Playful"
         ENERGETIC = "energetic", "⚡️ Energetic"
         ZOOMIES = "zoomies", "🚀 Full zoomies"
+
     owner = models.OneToOneField(
         OwnerProfile,
         on_delete=models.CASCADE,
-        related_name="dog"
+        related_name="dog",
     )
 
     profile_photo = CloudinaryField(
         "dog profile photo",
         blank=True,
-        null=True
+        null=True,
     )
 
     name = models.CharField(max_length=100, default="")
@@ -42,25 +43,25 @@ class Dog(models.Model):
     size = models.CharField(
         max_length=10,
         choices=Size.choices,
-        blank=True
+        blank=True,
     )
 
     gender = models.CharField(
         max_length=10,
         choices=Gender.choices,
-        blank=True
+        blank=True,
     )
 
     energy_level = models.CharField(
         max_length=20,
         choices=EnergyLevel.choices,
-        blank=True
+        blank=True,
     )
 
     about_me = models.TextField(
         max_length=150,
         blank=True,
-        help_text="Tell us about your dog's personality"
+        help_text="Tell us about your dog's personality",
     )
 
     completed = models.BooleanField(default=False)
@@ -72,12 +73,7 @@ class Dog(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        """
-        Return string representation of dog profile.
-
-        Returns:
-            str: Format "<dog_name> (<owner_name>)".
-        """
+        """Return string representation of dog profile."""
         return f"{self.name} ({self.owner.name})"
 
     def get_photo_url(self):
