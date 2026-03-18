@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
 from dogs.models import Dog
-from profiles.models import OwnerProfile
+from profiles.views import get_owner_profile, parse_interests
 
 from .models import Like
 
@@ -21,50 +21,39 @@ def matches_list(request):
         HttpResponse with matches_list.html template showing all matched dogs
         with owner information.
     """
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    owner_profile = get_owner_profile(request.user)
 
     if not owner_profile or not hasattr(owner_profile, "dog"):
         return render(
             request,
             "connections/matches_list.html",
-            {"matches": []}
+            {"matches": []},
         )
 
     my_dog = owner_profile.dog
-
-    # Get all matches (bidirectional connections)
-    # Dogs we liked AND who liked us back
-    matches = Like.objects.filter(
-        from_dog=my_dog
+    liked = Like.objects.filter(
+        from_dog=my_dog,
     ).select_related("to_dog", "to_dog__owner")
+    liked_back_ids = Like.objects.filter(
+        to_dog=my_dog,
+    ).values_list("from_dog_id", flat=True)
 
-    # Filter to get only REAL bidirectional connections
-    matches_list = []
-    for connection in matches:
-        # Check if the other dog also created a connection to us
-        reverse_connection = Like.objects.filter(
-            from_dog=connection.to_dog,
-            to_dog=my_dog
-        ).exists()
-
-        if reverse_connection:
-            owner = connection.to_dog.owner
-            if hasattr(owner, 'interests') and owner.interests:
-                owner.interests_list = [
-                    i.strip() for i in owner.interests.split(",") if i.strip()
-                ]
-            else:
-                owner.interests_list = []
-            matches_list.append({
-                "dog": connection.to_dog,
-                "owner": owner,
-                "matched_at": connection.created_at
-            })
+    matches = []
+    for connection in liked:
+        if connection.to_dog_id not in liked_back_ids:
+            continue
+        owner = connection.to_dog.owner
+        owner.interests_list = parse_interests(owner.interests)
+        matches.append({
+            "dog": connection.to_dog,
+            "owner": owner,
+            "matched_at": connection.created_at,
+        })
 
     return render(
         request,
         "connections/matches_list.html",
-        {"matches": matches_list}
+        {"matches": matches},
     )
 
 
@@ -84,16 +73,19 @@ def delete_match(request):
         Returns HttpResponseForbidden if user has no dog profile.
         Returns JsonResponse with error if dog_id not found.
     """
-    dog_id = request.POST.get("dog_id")
-    owner_profile = OwnerProfile.objects.filter(user=request.user).first()
+    owner_profile = get_owner_profile(request.user)
     if not owner_profile or not hasattr(owner_profile, "dog"):
         return HttpResponseForbidden()
+
+    dog_id = request.POST.get("dog_id")
     my_dog = owner_profile.dog
+
     try:
         other_dog = Dog.objects.get(id=dog_id)
     except Dog.DoesNotExist:
         return JsonResponse({"success": False, "error": "Dog not found"})
-    # Delete both directions
+
     Like.objects.filter(from_dog=my_dog, to_dog=other_dog).delete()
     Like.objects.filter(from_dog=other_dog, to_dog=my_dog).delete()
+
     return JsonResponse({"success": True})

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from connections.models import Like
@@ -26,6 +26,48 @@ def get_user_dog(request, redirect_to="browse_dogs"):
     return owner_profile.dog, None
 
 
+def is_match(dog_a, dog_b):
+    """Return True if dog_a and dog_b have mutually liked each other."""
+    return (
+        Like.objects.filter(from_dog=dog_a, to_dog=dog_b).exists()
+        and Like.objects.filter(from_dog=dog_b, to_dog=dog_a).exists()
+    )
+
+
+def prepare_messages(messages, my_dog):
+    """
+    Prepare messages with sender info for template rendering.
+
+    Returns:
+        List of dicts with message, is_sent, sender_avatar, sender_name.
+    """
+    result = []
+    for msg in messages:
+        result.append({
+            "message": msg,
+            "is_sent": msg.sender_dog_id == my_dog.id,
+            "sender_avatar": (
+                msg.sender_dog.profile_photo.url
+                if msg.sender_dog.profile_photo
+                else None
+            ),
+            "sender_name": msg.sender_dog.name,
+        })
+    return result
+
+
+def get_thread_messages(dog_a, dog_b):
+    """Return all messages between two dogs ordered by creation time."""
+    return (
+        Message.objects.filter(
+            Q(sender_dog=dog_a, receiver_dog=dog_b)
+            | Q(sender_dog=dog_b, receiver_dog=dog_a)
+        )
+        .select_related("sender_dog", "receiver_dog")
+        .order_by("created_at")
+    )
+
+
 @login_required
 def messages_inbox(request, dog_id=None):
     """
@@ -44,23 +86,20 @@ def messages_inbox(request, dog_id=None):
     """
     my_dog, error = get_user_dog(request)
     if error:
-        return render(
-            request,
-            "messages/inbox.html",
-            {"conversations": []}
-        )
+        return render(request, "messages/inbox.html", {"conversations": []})
 
-    # Get all messages involving current dog
-    conversation_messages = Message.objects.filter(
-        Q(sender_dog=my_dog) | Q(receiver_dog=my_dog)
-    ).select_related(
-        "sender_dog",
-        "sender_dog__owner",
-        "receiver_dog",
-        "receiver_dog__owner",
+    conversation_messages = (
+        Message.objects.filter(
+            Q(sender_dog=my_dog) | Q(receiver_dog=my_dog)
+        )
+        .select_related(
+            "sender_dog",
+            "sender_dog__owner",
+            "receiver_dog",
+            "receiver_dog__owner",
+        )
     )
 
-    # Group by other dog (get latest message per conversation)
     conversations = {}
     for msg in conversation_messages:
         other_dog = (
@@ -68,76 +107,42 @@ def messages_inbox(request, dog_id=None):
             if msg.sender_dog_id == my_dog.id
             else msg.sender_dog
         )
-        other_dog_id = other_dog.id
-
-        if other_dog_id not in conversations:
-            conversations[other_dog_id] = {
+        if other_dog.id not in conversations:
+            conversations[other_dog.id] = {
                 "dog": other_dog,
                 "owner": other_dog.owner,
                 "last_message": msg,
             }
 
-    # Sort by latest message first
     conversations_list = sorted(
         conversations.values(),
         key=lambda x: x["last_message"].created_at,
-        reverse=True
+        reverse=True,
     )
 
-    # Load conversation for desktop split view
-    # If dog_id provided, use that; otherwise use first conversation
     first_receiver_dog = None
     first_messages = []
     form = None
-    is_match = False
+    matched = False
 
     if dog_id:
-        # Find conversation with specific dog
         for conv in conversations_list:
             if conv["dog"].id == dog_id:
                 first_receiver_dog = conv["dog"]
                 break
-        # If not in conversations yet, try to get the dog directly
         if not first_receiver_dog:
             first_receiver_dog = Dog.objects.filter(id=dog_id).first()
     elif conversations_list:
         first_receiver_dog = conversations_list[0]["dog"]
 
     if first_receiver_dog:
-
-        # Check if it's a match
-        is_match = Like.objects.filter(
-            from_dog=my_dog,
-            to_dog=first_receiver_dog
-        ).exists() and Like.objects.filter(
-            from_dog=first_receiver_dog,
-            to_dog=my_dog
-        ).exists()
-
+        matched = is_match(my_dog, first_receiver_dog)
         form = MessageForm()
+        first_messages = prepare_messages(
+            get_thread_messages(my_dog, first_receiver_dog),
+            my_dog,
+        )
 
-        # Get messages for first conversation
-        messages = Message.objects.filter(
-            (
-                Q(sender_dog=my_dog, receiver_dog=first_receiver_dog)
-                | Q(sender_dog=first_receiver_dog, receiver_dog=my_dog)
-            )
-        ).select_related("sender_dog", "receiver_dog").order_by("created_at")
-
-        for msg in messages:
-            sender_avatar = (
-                msg.sender_dog.profile_photo.url
-                if msg.sender_dog.profile_photo
-                else None
-            )
-            first_messages.append({
-                "message": msg,
-                "is_sent": msg.sender_dog.id == my_dog.id,
-                "sender_avatar": sender_avatar,
-                "sender_name": msg.sender_dog.name,
-            })
-
-    # Handle message sending from inbox
     if request.method == "POST" and first_receiver_dog:
         form = MessageForm(request.POST)
         if form.is_valid():
@@ -147,19 +152,21 @@ def messages_inbox(request, dog_id=None):
             message.save()
             return redirect(
                 "messages_inbox_with_dog",
-                dog_id=first_receiver_dog.id
+                dog_id=first_receiver_dog.id,
             )
 
-    context = {
-        "conversations": conversations_list,
-        "first_receiver_dog": first_receiver_dog,
-        "first_messages": first_messages,
-        "form": form,
-        "my_dog": my_dog,
-        "is_match": is_match,
-    }
-
-    return render(request, "messages/inbox.html", context)
+    return render(
+        request,
+        "messages/inbox.html",
+        {
+            "conversations": conversations_list,
+            "first_receiver_dog": first_receiver_dog,
+            "first_messages": first_messages,
+            "form": form,
+            "my_dog": my_dog,
+            "is_match": matched,
+        },
+    )
 
 
 @login_required
@@ -178,42 +185,11 @@ def message_thread(request, dog_id):
     my_dog, error = get_user_dog(request)
     if error:
         return error
+
     receiver_dog = get_object_or_404(Dog, id=dog_id)
 
-    # Check if it's a match
-    is_match = Like.objects.filter(
-        from_dog=my_dog,
-        to_dog=receiver_dog
-    ).exists() and Like.objects.filter(
-        from_dog=receiver_dog,
-        to_dog=my_dog
-    ).exists()
-
-    if not is_match:
+    if not is_match(my_dog, receiver_dog):
         return redirect("matches_list")
-
-    # Get all messages in this conversation
-    messages = Message.objects.filter(
-        (
-            Q(sender_dog=my_dog, receiver_dog=receiver_dog)
-            | Q(sender_dog=receiver_dog, receiver_dog=my_dog)
-        )
-    ).select_related("sender_dog", "receiver_dog").order_by("created_at")
-
-    # Prepare messages with sender info for template
-    messages_with_sender = []
-    for msg in messages:
-        sender_avatar = (
-            msg.sender_dog.profile_photo.url
-            if msg.sender_dog.profile_photo
-            else None
-        )
-        messages_with_sender.append({
-            "message": msg,
-            "is_sent": msg.sender_dog.id == my_dog.id,
-            "sender_avatar": sender_avatar,
-            "sender_name": msg.sender_dog.name,
-        })
 
     if request.method == "POST":
         form = MessageForm(request.POST)
@@ -226,15 +202,20 @@ def message_thread(request, dog_id):
     else:
         form = MessageForm()
 
-    context = {
-        "receiver_dog": receiver_dog,
-        "my_dog": my_dog,
-        "messages": messages_with_sender,
-        "form": form,
-        "is_match": is_match
-    }
-
-    return render(request, "messages/thread.html", context)
+    return render(
+        request,
+        "messages/thread.html",
+        {
+            "receiver_dog": receiver_dog,
+            "my_dog": my_dog,
+            "messages": prepare_messages(
+                get_thread_messages(my_dog, receiver_dog),
+                my_dog,
+            ),
+            "form": form,
+            "is_match": True,
+        },
+    )
 
 
 @login_required
@@ -253,18 +234,10 @@ def send_message(request, dog_id):
     my_dog, error = get_user_dog(request)
     if error:
         return error
+
     receiver_dog = get_object_or_404(Dog, id=dog_id)
 
-    # Check if it's a match
-    is_match = Like.objects.filter(
-        from_dog=my_dog,
-        to_dog=receiver_dog
-    ).exists() and Like.objects.filter(
-        from_dog=receiver_dog,
-        to_dog=my_dog
-    ).exists()
-
-    if not is_match:
+    if not is_match(my_dog, receiver_dog):
         return redirect("matches_list")
 
     form = MessageForm(request.POST)
@@ -274,21 +247,19 @@ def send_message(request, dog_id):
         message.receiver_dog = receiver_dog
         message.save()
 
-        # If AJAX request, return JSON response
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-            # Get avatar URL for the sent message
-            avatar_url = None
-            if my_dog.profile_photo:
-                avatar_url = my_dog.get_photo_url()
-
             return JsonResponse({
                 "success": True,
                 "message": {
                     "content": message.content,
                     "time": message.created_at.strftime("%I:%M %p"),
                     "is_sent": True,
-                    "avatar": avatar_url
-                }
+                    "avatar": (
+                        my_dog.get_photo_url()
+                        if my_dog.profile_photo
+                        else None
+                    ),
+                },
             })
 
     return redirect("message_thread", dog_id=dog_id)
@@ -310,15 +281,9 @@ def delete_conversation(request, dog_id):
     my_dog, error = get_user_dog(request)
     if error:
         return error
-    receiver_dog = get_object_or_404(Dog, id=dog_id)
 
-    # Delete all messages between these two dogs (both directions)
-    Message.objects.filter(
-        (
-            Q(sender_dog=my_dog, receiver_dog=receiver_dog)
-            | Q(sender_dog=receiver_dog, receiver_dog=my_dog)
-        )
-    ).delete()
+    receiver_dog = get_object_or_404(Dog, id=dog_id)
+    get_thread_messages(my_dog, receiver_dog).delete()
 
     return redirect("messages_inbox")
 
@@ -339,22 +304,16 @@ def get_conversation_messages(request, dog_id):
     my_dog, error = get_user_dog(request, redirect_to=None)
     if error:
         return JsonResponse({"error": "No dog profile"}, status=400)
+
     receiver_dog = get_object_or_404(Dog, id=dog_id)
 
-    # Get all messages in this conversation
-    messages = Message.objects.filter(
-        (
-            Q(sender_dog=my_dog, receiver_dog=receiver_dog)
-            | Q(sender_dog=receiver_dog, receiver_dog=my_dog)
-        )
-    ).select_related("sender_dog", "receiver_dog").order_by("created_at")
-
-    messages_data = []
-    for msg in messages:
-        messages_data.append({
+    messages_data = [
+        {
             "content": msg.content,
             "time": msg.created_at.strftime("%H:%M"),
-            "is_sent": msg.sender_dog.id == my_dog.id,
-        })
+            "is_sent": msg.sender_dog_id == my_dog.id,
+        }
+        for msg in get_thread_messages(my_dog, receiver_dog)
+    ]
 
     return JsonResponse({"messages": messages_data})
