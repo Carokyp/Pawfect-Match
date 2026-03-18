@@ -999,7 +999,7 @@ textarea {
 }
 
 /* Rotate the close button on hover and change color for better visibility */
-.match-modal .close,
+.match-modal .close:hover,
 .delete-modal .close:hover {
   color: #000;
   transform: rotate(90deg);

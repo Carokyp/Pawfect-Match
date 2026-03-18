@@ -700,7 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
               }
             }
           })
-          .catch((error) => console.error("Error sending message:", error));
+          .catch(() => {});
       });
     }
 
@@ -794,7 +794,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Auto-scroll to bottom to show latest message
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
           })
-          .catch((error) => console.error("Error loading messages:", error));
+          .catch(() => {});
 
         // Update active conversation state
         document.querySelectorAll(".conversation-item").forEach((item) => {
@@ -877,7 +877,7 @@ document.addEventListener("DOMContentLoaded", () => {
               }
             }
           })
-          .catch((error) => console.error("Error sending message:", error));
+          .catch(() => {});
       });
     }
 
@@ -955,9 +955,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Redirect to inbox after successful delete
             if (response.ok) window.location.href = "/messages/";
           })
-          .catch((error) =>
-            console.error("Error deleting conversation:", error),
-          );
+          .catch(() => {});
       });
     }
   };
@@ -1036,7 +1034,7 @@ document.addEventListener("DOMContentLoaded", () => {
             closeModal(modal);
             selectedDogId = null;
           })
-          .catch((error) => console.error("Error deleting match:", error));
+          .catch(() => {});
       });
     }
   };
