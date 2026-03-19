@@ -1088,7 +1088,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setupPasswordToggle();
     setupCharacterCounters();
     setupImageUploads();
-    setupPillOptions();
     setupProfileToggle();
 
     // Modals
@@ -1102,6 +1101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Forms
     setupFormCache("owner");
     setupFormCache("dog");
+    setupPillOptions();
 
     // Messages
     setupMessageThread();
