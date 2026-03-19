@@ -85,7 +85,7 @@ class Dog(models.Model):
             width=700, height=700, quality=85, or None if no photo available.
         """
         if self.profile_photo:
-            return self.profile_photo.build_url(
+            url = self.profile_photo.build_url(
                 width=700,
                 height=700,
                 crop="fill",
@@ -93,4 +93,5 @@ class Dog(models.Model):
                 quality=85,
                 fetch_format="auto",
             )
+            return url.replace("http://", "https://")
         return None

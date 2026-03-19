@@ -38,13 +38,14 @@ class OwnerProfile(models.Model):
 
     def get_photo_url(self):
         """
-        Return an optimized Cloudinary URL for the owner's profile photo.
+        Generate a Cloudinary URL for the dog's profile photo.
 
-        Applies standard transformations (700x700, auto gravity, fill crop,
-        quality=85, auto format). Returns None when no photo exists.
+        Returns:
+            str | None: Optimized Cloudinary URL for profile photo with
+            width=700, height=700, quality=85, or None if no photo available.
         """
         if self.profile_photo:
-            return self.profile_photo.build_url(
+            url = self.profile_photo.build_url(
                 width=700,
                 height=700,
                 crop="fill",
@@ -52,4 +53,5 @@ class OwnerProfile(models.Model):
                 quality=85,
                 fetch_format="auto",
             )
+            return url.replace("http://", "https://")
         return None
