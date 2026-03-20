@@ -1,6 +1,8 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from django.shortcuts import render, redirect
 
 from profiles.models import OwnerProfile
@@ -209,3 +211,16 @@ def handler403(request, exception):
 def handler405(request, exception):
     """Render custom 405 error page."""
     return render(request, "errors/405.html", status=405)
+
+
+def trigger_error(request, code):
+    """Trigger custom error pages for manual production testing."""
+    if code == 403:
+        raise PermissionDenied("Manual 403 test")
+    if code == 404:
+        raise Http404("Manual 404 test")
+    if code == 405:
+        return render(request, "errors/405.html", status=405)
+    if code == 500:
+        raise Exception("Manual 500 test")
+    raise Http404("Unknown error code")

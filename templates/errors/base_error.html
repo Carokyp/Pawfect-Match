@@ -11,11 +11,12 @@
       <p>{% block error_message %}{% endblock %}</p>
       <img class="d-block mx-auto mb-5" src="{% static 'images/sad_dog.png' %}" alt="Sad dog illustration">
       <footer class="d-flex gap-4">
+        {% url 'browse_dogs' as browse_url %}
         <a href="{% url 'home' %}" class="btn error-btn primary">Back to Home</a>
         {% if user.is_authenticated %}
-          <a href="{% url 'browse_dogs' %}" class="btn error-btn secondary">Browse Dogs</a>
+          <a href="{{ browse_url }}" class="btn error-btn secondary">Browse Dogs</a>
         {% else %}
-          <a href="{% url 'register' %}" class="btn error-btn secondary">Get Started</a>
+          <a href="{% url 'sign_in' %}?next={{ browse_url }}" class="btn error-btn secondary">Browse Dogs</a>
         {% endif %}
       </footer>
     </article>

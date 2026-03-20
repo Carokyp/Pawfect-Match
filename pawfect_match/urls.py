@@ -10,6 +10,7 @@ from accounts.views import (
     register,
     login_view,
     forgot_password,
+    trigger_error,
 )
 
 urlpatterns = [
@@ -28,6 +29,10 @@ urlpatterns = [
     path("messages/", include("messaging.urls")),
     path("password-reset/", forgot_password, name="password_reset"),
     path("profiles/", include("profiles.urls")),
+    path("errors/403/", trigger_error, {"code": 403}, name="trigger_403"),
+    path("errors/404/", trigger_error, {"code": 404}, name="trigger_404"),
+    path("errors/405/", trigger_error, {"code": 405}, name="trigger_405"),
+    path("errors/500/", trigger_error, {"code": 500}, name="trigger_500"),
 ]
 
 if settings.DEBUG:

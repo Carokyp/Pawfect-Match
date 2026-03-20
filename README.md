@@ -777,12 +777,11 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 | Navbar Brand (Guest) | Click "Pawfect Match" logo from public pages | Redirects to homepage | PASS |
 | Navbar Brand (User) | Click "Pawfect Match" logo from authenticated pages | Redirects to Discover page | PASS |
 | Public Auth Links | As guest, click "Home", "Sign In", and "Sign Up" in navbar | Each link opens the correct public/auth page | PASS |
-| Authenticated User Navbar Links | As authenticated user, click "Discover", "Matches", "Messages", "Profile", and "Log out" | Each link opens the correct page; log out ends session and returns to homepage | |
-| Active Nav State | Navigate between public and authenticated main pages | Current page link is visually highlighted |  |
-| Mobile Menu Behavior | On mobile, open menu then click hamburger and links | Menu expands/collapses and auto-closes after link click | |
-| Footer Social Links | Click each social icon in footer | Opens correct social page in a new tab | |
-| Error Pages (404/403/500) | Trigger each error condition | Correct branded error page is shown with recovery navigation | |
-| Feedback Messages | Submit invalid then valid forms | Inline validation errors appear; success redirects/message shown | |
+| Authenticated User Navbar Links | As authenticated user, click "Discover", "Matches", "Messages", "Profile", and "Log out" | Each link opens the correct page, log out ends session and returns to homepage | PASS |
+| Active Nav State | Navigate between public and authenticated main pages | Current page link is visually highlighted | PASS  |
+| Mobile Menu Behavior | On mobile, open menu then click hamburger and links | Menu expands/collapses and auto-closes after link click | PASS |
+| Footer Social Links | Click each social icon in footer | Opens correct social page in a new tab | PASS |
+| Error Pages (404/403/500/405) | Trigger each error condition | Correct branded error page is shown with recovery navigation, "Back to Home" redirects to Home, "Browse Dogs" redirects authenticated users to Discover and unauthenticated users to Sign In | |
 
 ### Delete Account
 
