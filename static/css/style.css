@@ -30,16 +30,21 @@
 /* Reset default browser styles for all elements */
 * {
   margin: 0;
-  box-sizing: border-box; /* Include padding and border in element's width/height */
+  box-sizing: border-box;
+  /* Include padding and border in element's width/height */
 }
 
 /* Main body layout */
 body {
-  min-height: 100vh; /* Minimum height of viewport, can grow with content */
-  max-width: 1800px; /* Limit maximum width for readability on large screens */
-  margin: 0 auto; /* Center content horizontally */
+  min-height: 100vh;
+  /* Minimum height of viewport, can grow with content */
+  max-width: 1800px;
+  /* Limit maximum width for readability on large screens */
+  margin: 0 auto;
+  /* Center content horizontally */
   display: flex;
-  flex-direction: column; /* Stack children vertically */
+  flex-direction: column;
+  /* Stack children vertically */
   font-family: 'Roboto Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--orange-100);
 }
@@ -52,13 +57,16 @@ body.modal-open {
 
 /* Main content area - grows to fill available space (sticky footer technique) */
 main {
-  flex: 1 0 auto; /* Grow to fill space, don't shrink, auto basis */
+  flex: 1 0 auto;
+  /* Grow to fill space, don't shrink, auto basis */
 }
 
 /* Remove default link styling */
 a {
-  color: inherit; /* Use parent element's text color */
-  text-decoration: none; /* Remove underline */
+  color: inherit;
+  /* Use parent element's text color */
+  text-decoration: none;
+  /* Remove underline */
 }
 
 /* Keep consistent color for visited links */
@@ -120,6 +128,7 @@ a:visited {
 .navbar .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23E85D1F' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
+
 /* #endregion */
 
 /* #region HOME PAGE */
@@ -233,7 +242,7 @@ a:visited {
   padding: 0 1rem;
 }
 
-.auth-content.create-owner{
+.auth-content.create-owner {
   min-height: 100vh;
   padding: 7rem 1rem;
 }
@@ -265,7 +274,7 @@ a:visited {
   transition: all 0.3s ease;
 }
 
-.btn.edit{
+.btn.edit {
   padding: 1rem;
 }
 
@@ -293,7 +302,7 @@ a:visited {
 }
 
 /* --- General style for buttons in warning and delete modals --- */
-.btn-modal{
+.btn-modal {
   padding: 0.75rem 2rem;
   border-radius: 12px;
   font-weight: 600;
@@ -303,7 +312,7 @@ a:visited {
 }
 
 /* --- Modals Delete Button --- */
-.btn-danger{
+.btn-danger {
   background-color: #f87575;
   color: #ffffff;
 }
@@ -478,11 +487,12 @@ a:visited {
 }
 
 /* --- Password Input with Toggle --- */
-.input-wrapper { 
+.input-wrapper {
   position: relative;
 }
 
-.toggle-password { /* Position the toggle button inside the input field, aligned to the right */
+.toggle-password {
+  /* Position the toggle button inside the input field, aligned to the right */
   position: absolute;
   top: 50%;
   right: 0.75rem;
@@ -492,7 +502,8 @@ a:visited {
 }
 
 .eye-icon {
-  filter: grayscale(100%); /* Make the icon gray */
+  filter: grayscale(100%);
+  /* Make the icon gray */
 }
 
 /* --- Password Reset Success image--- */
@@ -511,6 +522,7 @@ h1.form-title {
   font-weight: 700;
   color: var(--text-dark);
 }
+
 /* --- Image Upload Box --- */
 
 /* The upload box is a square area with dashed border, rounded corners, and a hover effect */
@@ -522,11 +534,13 @@ h1.form-title {
   cursor: pointer;
   transition: var(--transition);
 }
+
 /* Hover effect for upload box */
 .upload-box:hover {
   background: var(--orange-100);
   border-color: var(--orange-300);
 }
+
 /* The file input is hidden but covers the entire upload box to capture clicks */
 .upload-box input[type="file"] {
   position: absolute;
@@ -539,6 +553,7 @@ h1.form-title {
   color: #999;
   font-size: 0.9rem;
 }
+
 /* Add a plus icon using a pseudo-element */
 .upload-placeholder::before {
   content: '';
@@ -549,6 +564,7 @@ h1.form-title {
   margin: 0 auto 0.35rem auto;
   background: center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
 }
+
 /* Image preview is hidden by default, shown when an image is present */
 .image-preview {
   display: none;
@@ -582,6 +598,7 @@ h1.form-title {
   font-size: 18px;
   display: none;
 }
+
 /* Show the remove button when an image is present */
 .upload-box.has-image .upload-remove {
   display: inline-flex;
@@ -616,22 +633,26 @@ h1.form-title {
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 0.5rem;
 }
+
 /* Each pill option is a label that contains a hidden checkbox and a styled span for the pill appearance */
 .pill-option {
   position: relative;
   cursor: pointer;
 }
+
 /* The checkbox input is hidden but still captures clicks on the label */
 .pill-option input {
   position: absolute;
   opacity: 0;
 }
+
 /* When the checkbox is checked, style the adjacent span to look like a selected pill */
 .pill-option input:checked+span {
   background: var(--orange-200);
   border-color: var(--orange-200);
   color: var(--orange-900);
 }
+
 /* The span inside the pill option is styled to look like a pill-shaped button */
 .pill-option span {
   display: block;
@@ -644,11 +665,13 @@ h1.form-title {
   transition: var(--transition);
   background: #fff;
 }
+
 /* Disables non-selected pills when max selection (3) is reached */
 .pill-option.is-disabled span {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 /* Helper text below the pill options */
 .pill-helper {
   margin-top: 0.35rem;
@@ -671,7 +694,7 @@ h1.form-title {
 
 /* Custom dropdown arrow for select fields */
 .form-field select,
-.form-field select:focus{
+.form-field select:focus {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -683,7 +706,7 @@ h1.form-title {
 .form-field input:focus,
 .form-field textarea:focus,
 .form-field select:focus {
-  outline: none; 
+  outline: none;
 }
 
 /* Textarea specific styles */
@@ -698,6 +721,7 @@ textarea {
   color: #999;
   margin-top: 0.25rem;
 }
+
 /* Error input message styling */
 .form-error {
   color: #c73636;
@@ -724,9 +748,9 @@ textarea {
 }
 
 /* Edit profile form */
- .edit-profile-content{
+.edit-profile-content {
   padding: 5rem 0.8rem 1rem 0.8rem;
- }
+}
 
 /* #endregion */
 
@@ -763,6 +787,7 @@ textarea {
 .hidden {
   display: none;
 }
+
 /* --- Toggle dog and owner views --- */
 .toggle-btn {
   border: none;
@@ -772,6 +797,7 @@ textarea {
   color: var(--text-dark);
   font-weight: 600;
 }
+
 /* Active state for toggle buttons */
 .toggle-btn.active {
   background: var(--orange-200);
@@ -795,6 +821,7 @@ textarea {
   border-radius: 16px;
   overflow: hidden;
 }
+
 .profile-image img {
   width: 100%;
   object-fit: cover;
@@ -888,7 +915,7 @@ textarea {
 
 .empty-dogs-subtitle,
 .no-msg-subtitle,
-.empty-matches-subtitle{
+.empty-matches-subtitle {
   font-size: 0.9rem;
   color: var(--text-dark);
 }
@@ -899,6 +926,7 @@ textarea {
   width: 100px;
   height: 100px;
 }
+
 /* #endregion */
 
 /* #region MODALS */
@@ -1061,6 +1089,7 @@ textarea {
 .matches-card {
   position: relative;
 }
+
 /* #endregion */
 
 /* #region DANGER ZONE */
@@ -1097,7 +1126,8 @@ textarea {
 
 /* Thread preview stays hidden on mobile/tablet, opens on desktop thread page */
 .messages-thread-panel {
-  display: none; /* Hidden on mobile/tablet */
+  display: none;
+  /* Hidden on mobile/tablet */
   overflow: hidden;
 }
 
@@ -1105,7 +1135,7 @@ textarea {
 .conversation-item {
   position: relative;
   display: grid;
-  padding: 0.4rem 0 ;
+  padding: 0.4rem 0;
   grid-template-columns: minmax(0, 1fr) auto;
   border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.2s;
@@ -1174,12 +1204,12 @@ textarea {
 
 /* -- Messages Thread --- */
 
-.message-thread-page{
+.message-thread-page {
   position: relative;
   padding: 4.5rem 1rem;
 }
 
-.messages-inbox-page{
+.messages-inbox-page {
   padding: 4.5rem 1rem;
 }
 
@@ -1259,6 +1289,7 @@ textarea {
   font-size: 0.95rem;
   line-height: 1.4;
 }
+
 /* Animation for each message */
 .message-time {
   font-size: 0.7rem;
@@ -1287,7 +1318,7 @@ textarea {
   border-top: 1px solid #eee;
 }
 
-.empty-thread{
+.empty-thread {
   flex: 1;
 }
 
@@ -1296,6 +1327,7 @@ textarea {
   font-size: 0.8rem;
   opacity: 0.7;
 }
+
 /* Message input area with a text area */
 .message-input {
   resize: none;
@@ -1411,23 +1443,23 @@ textarea {
   }
 
   /* SECTIONS */
-  .full-section{
+  .full-section {
     align-items: center;
     gap: 2rem;
   }
 
-  .img-size-1{
+  .img-size-1 {
     width: 380px;
     height: 190px;
   }
 
   .img-size-2,
-  .img-size-3{
+  .img-size-3 {
     width: 400px;
     height: 300px;
   }
 
-  .img-size-4{
+  .img-size-4 {
     width: 350px;
     height: 350px;
   }
@@ -1529,7 +1561,7 @@ textarea {
     box-shadow: none;
   }
 
-  .profile-about{
+  .profile-about {
     min-height: 90px;
   }
 
@@ -1540,7 +1572,7 @@ textarea {
   .delete-message-modal {
     width: 92%;
   }
-  
+
   .modal-content,
   .match-modal,
   .delete-modal,
@@ -1593,16 +1625,18 @@ textarea {
     padding: 0.5rem 0.25rem !important;
   }
 
-  .hero-content h1{
+  .hero-content h1 {
     font-size: 2.8rem;
   }
-  .hero-content p{
+
+  .hero-content p {
     font-size: 1rem;
   }
+
   .hero-buttons a {
     font-size: 1rem;
   }
-  
+
   .hero-buttons {
     gap: 2rem;
   }
@@ -1620,7 +1654,7 @@ textarea {
   .section-text p,
   .section-text p,
   .why-header p,
-  .why-card p  {
+  .why-card p {
     font-size: 1rem;
   }
 
@@ -1683,12 +1717,10 @@ textarea {
 }
 
 /* Desktop: 1024px+ */
-@media (min-width: 1024px) {
-
-}
+@media (min-width: 1024px) {}
 
 /* Large Desktop: 1200px+ */
-@media (min-width: 1200px) { 
+@media (min-width: 1200px) {
 
   .message-avatar {
     width: 45px;
@@ -1698,7 +1730,7 @@ textarea {
 }
 
 /* Extra Large: 1400px+ */
-@media (min-width: 1400px) { 
+@media (min-width: 1400px) {
 
   .navbar .nav-link {
     font-size: 1.2rem;
@@ -1722,8 +1754,8 @@ textarea {
 
   .section-text h2,
   .section-text h2,
-  .section-text h2, 
-  .section-text h2, 
+  .section-text h2,
+  .section-text h2,
   .why-header h2 {
     font-size: 2.5rem;
   }
@@ -1747,7 +1779,7 @@ textarea {
   }
 
   .img-size-2,
-  .img-size-3{
+  .img-size-3 {
     width: 640px;
     height: 480px;
   }
@@ -1757,7 +1789,13 @@ textarea {
     height: 560px;
   }
 
-  .discover-page{
+  /* --- Back Button --- */
+  .back-button,
+  .back-button-messages {
+    top: 70px;
+  }
+
+  .discover-page {
     padding: 40px 12px;
   }
 
@@ -1779,7 +1817,7 @@ textarea {
   }
 
   .img-size-2,
-  .img-size-3{
+  .img-size-3 {
     width: 720px;
     height: 540px;
   }
@@ -1789,5 +1827,5 @@ textarea {
     height: 630px;
   }
 }
-/* #endregion */
 
+/* #endregion */
