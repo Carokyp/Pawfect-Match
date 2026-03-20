@@ -774,15 +774,15 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 
 | Test Label | Test Action | Expected Outcome | Test Outcome |
 |------------|-------------|------------------|--------------|
-| Navbar Brand | Click "🐾 Pawfect Match" logo | Redirects to homepage (unauthenticated) or stays on current page (authenticated) | |
-| Active Link Highlight | Navigate between pages | Current page link highlighted in navbar | |
-| Mobile Menu Toggle | Click hamburger icon on mobile | Navigation menu expands/collapses | |
-| Footer Social Links | Click social media icons | Links open in new tab | |
-| Error Pages - 404 | Navigate to non-existent URL | Custom 404 page displayed with navigation options | |
-| Error Pages - 403 | Try to access restricted content | Custom 403 page displayed | |
-| Error Pages - 500 | Simulate server error | Custom 500 page displayed | |
-| Form Validation Feedback | Submit form with errors | Red error messages display below relevant fields | |
-| Success Feedback | Complete successful action | User redirected or shown success message | |
+| Navbar Brand (Guest) | Click "Pawfect Match" logo from public pages | Redirects to homepage | PASS |
+| Navbar Brand (User) | Click "Pawfect Match" logo from authenticated pages | Redirects to Discover page | PASS |
+| Public Auth Links | As guest, click "Home", "Sign In", and "Sign Up" in navbar | Each link opens the correct public/auth page | PASS |
+| Authenticated User Navbar Links | As authenticated user, click "Discover", "Matches", "Messages", "Profile", and "Log out" | Each link opens the correct page; log out ends session and returns to homepage | |
+| Active Nav State | Navigate between public and authenticated main pages | Current page link is visually highlighted |  |
+| Mobile Menu Behavior | On mobile, open menu then click hamburger and links | Menu expands/collapses and auto-closes after link click | |
+| Footer Social Links | Click each social icon in footer | Opens correct social page in a new tab | |
+| Error Pages (404/403/500) | Trigger each error condition | Correct branded error page is shown with recovery navigation | |
+| Feedback Messages | Submit invalid then valid forms | Inline validation errors appear; success redirects/message shown | |
 
 ### Delete Account
 
