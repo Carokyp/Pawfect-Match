@@ -719,6 +719,7 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 | Edit Owner Profile | Navigate to Profile → Click "Edit Owner Profile" → Modify fields → Save | Changes saved, profile updated, redirected to profile view | |
 | Edit Dog Profile | Navigate to Profile → Click "Edit Dog Profile" → Modify fields → Save | Changes saved, dog profile updated, redirected to profile view | |
 | Photo Upload | Select image file (JPG/PNG) → Upload | Image previewed before submission, saved correctly | |
+| Photo Size | Try to submit an image file (JPG/PNG) bigger then 10mb| Form shows image size restriction error | |
 | Photo Removal | Click remove (×) button on uploaded photo | Photo removed, placeholder shown | |
 | Character Counter | Type in "About me" textarea | Character count updates in real-time (0/150) | |
 | Back Button Navigation | Click back arrow on form pages | Returns to previous page without saving | |
