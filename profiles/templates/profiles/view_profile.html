@@ -115,7 +115,7 @@
 
       <form method="post" action="{% url 'delete_profile' %}" id="deleteForm">
         {% csrf_token %}
-        <button type="button" class="btn-modal btn-danger">
+        <button type="button" class="btn-modal btn-danger" id="deleteProfileBtn">
           Delete My Profile
         </button>
       </form>
