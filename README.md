@@ -781,7 +781,7 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 | Active Nav State | Navigate between public and authenticated main pages | Current page link is visually highlighted | PASS  |
 | Mobile Menu Behavior | On mobile, open menu then click hamburger and links | Menu expands/collapses and auto-closes after link click | PASS |
 | Footer Social Links | Click each social icon in footer | Opens correct social page in a new tab | PASS |
-| Error Pages (404/403/500/405) | Trigger each error condition | Correct branded error page is shown with recovery navigation, "Back to Home" redirects to Home, "Browse Dogs" redirects authenticated users to Discover and unauthenticated users to Sign In | |
+| Error Pages (404/403/500/405) | Trigger each error condition | Correct branded error page is shown with recovery navigation, "Back to Home" redirects to Home, "Browse Dogs" redirects authenticated users to Discover and unauthenticated users to Sign In | PASS |
 
 ### Delete Account
 
