@@ -699,14 +699,14 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 
 | Test Label | Test Action | Expected Outcome | Test Outcome |
 |------------|-------------|------------------|--------------|
-| User Registration | Navigate to homepage → Click "Get Started" → Enter valid email and password → Submit form | User account created, redirected to create owner profile page | |
-| Registration Validation | Try to register with invalid email format | Form shows validation error, prevents submission | |
-| Password Requirements | Try to register with weak password (less than 8 chars) | Form shows password requirements error | |
-| User Sign In | Click "Sign In" → Enter valid credentials → Submit | User logged in, redirected to browse dogs page | |
-| Invalid Sign In | Enter incorrect email/password → Submit | Error message displayed, user remains on sign in page | |
-| Password Reset | Click "Forgot password?" → Enter registered email → Submit | Success message displayed, user redirected to success page | |
-| Sign Out | Click "Log out" in navigation | User signed out, redirected to homepage | |
-| Authenticated Access | Try to access browse page without login | Redirected to sign in page | |
+| User Registration | Navigate to homepage → Click "Get Started" → Enter valid email and password → Submit form | User account created, redirected to create owner profile page | PASS |
+| Registration Validation | Try to register with invalid email format | Form shows validation error, prevents submission | PASS |
+| Password Requirements | Try to register with password with less then 8 characters, no uppercase letter (A–Z), no digit (0–9) and no special character (!@#$%^&*...) | Form shows password requirements errors | PASS |
+| User Sign In | Click "Sign In" → Enter valid identifiant → Submit | User logged in, redirected to browse dogs page |PASS|
+| Invalid Sign In | Enter incorrect email/password → Submit | Error message displayed, user remains on sign in page | PASS |
+| Password Reset | Click "Forgot password?" → Enter registered email → Submit | Success message displayed, user redirected to success page | PASS |
+| Sign Out | Click "Log out" in navigation | User signed out, redirected to homepage | PASS |
+| Authenticated Access | Try to access browse page without login | Redirected to sign in page | PASS |
 
 ### Profile Creation and Management
 

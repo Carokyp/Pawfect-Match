@@ -207,7 +207,7 @@ class RegisterForm(forms.Form):
             try:
                 validate_password_strength(password)
             except ValidationError as e:
-                raise forms.ValidationError(str(e))
+                raise forms.ValidationError(e.messages)
 
         return password
 
