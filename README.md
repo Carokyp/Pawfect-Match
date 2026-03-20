@@ -768,7 +768,7 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 | Empty Messages State | Delete all conversations | "No conversations" message with emoji displayed | PASS |
 | Desktop Split View | View messages on desktop (992px+) | Inbox on left, thread preview on right | PASS |
 | Mobile Single View | View messages on mobile (<992px) | Inbox only, thread opens on separate page | PASS |
-| Message non-matched dog | Navigate directly to /message/{dog_id} without match | Redirected to matches list | |
+| Message non-matched dog | Navigate directly to /message/{dog_id} without match | Redirected to matches list | PASS |
 
 ### Navigation and UI
 

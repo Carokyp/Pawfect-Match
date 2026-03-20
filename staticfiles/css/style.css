@@ -1707,7 +1707,8 @@ textarea {
   .messages-thread-panel {
     display: flex;
     flex-direction: column;
-    border-radius: 16px;
+    border-radius: 0 16px 16px 0;
+    overflow: hidden;
     background: #fff;
   }
 
