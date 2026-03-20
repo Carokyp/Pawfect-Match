@@ -704,7 +704,8 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 | Password Requirements | Try to register with password with less then 8 characters, no uppercase letter (A–Z), no digit (0–9) and no special character (!@#$%^&*...) | Form shows password requirements errors | PASS |
 | User Sign In | Click "Sign In" → Enter valid identifiant → Submit | User logged in, redirected to browse dogs page |PASS|
 | Invalid Sign In | Enter incorrect email/password → Submit | Error message displayed, user remains on sign in page | PASS |
-| Password Reset | Click "Forgot password?" → Enter registered email → Submit | Success message displayed, user redirected to success page | PASS |
+| Password Reset | Click "Forgot password?" → Enter registered email → change password → Submit | Success message displayed, user redirected to success page | PASS |
+| Invalid Password Reset | Click "Forgot password?" → Enter no registered email → try to change password → Submit | Form shows validation error, prevents submission | PASS |
 | Sign Out | Click "Log out" in navigation | User signed out, redirected to homepage | PASS |
 | Authenticated Access | Try to access browse page without login | Redirected to sign in page | PASS |
 
@@ -712,62 +713,62 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 
 | Test Label | Test Action | Expected Outcome | Test Outcome |
 |------------|-------------|------------------|--------------|
-| Create Owner Profile | Upload photo → Fill all required fields (name, age, city) → Submit | Owner profile created, redirected to create dog profile | |
-| Owner Profile Validation | Try to submit without photo or required field | Form shows validation errors | |
-| Create Dog Profile | Upload photo → Fill all required fields (name, age, breed, gender, size, energy) → Submit | Dog profile created, redirected to browse dogs page | |
-| Dog Profile Validation | Try to submit without required fields | Form shows validation errors | |
-| Edit Owner Profile | Navigate to Profile → Click "Edit Owner Profile" → Modify fields → Save | Changes saved, profile updated, redirected to profile view | |
-| Edit Dog Profile | Navigate to Profile → Click "Edit Dog Profile" → Modify fields → Save | Changes saved, dog profile updated, redirected to profile view | |
-| Photo Upload | Select image file (JPG/PNG) → Upload | Image previewed before submission, saved correctly | |
-| Photo Size | Try to submit an image file (JPG/PNG) bigger then 10mb| Form shows image size restriction error | |
-| Photo Removal | Click remove (×) button on uploaded photo | Photo removed, placeholder shown | |
-| Character Counter | Type in "About me" textarea | Character count updates in real-time (0/150) | |
-| Back Button Navigation | Click back arrow on form pages | Returns to previous page without saving | |
+| Create Owner Profile | Upload photo → Fill all required fields (name, age, city) → Submit | Owner profile created, redirected to create dog profile | PASS |
+| Owner Profile Validation | Try to submit without photo or required field | Form shows validation errors | PASS |
+| Create Dog Profile | Upload photo → Fill all required fields (name, age, breed, gender, size, energy) → Submit | Dog profile created, redirected to browse dogs page | PASS |
+| Dog Profile Validation | Try to submit without required fields | Form shows validation errors | PASS |
+| Edit Owner Profile | Navigate to Profile → Click "Edit Owner Profile" → Modify fields → Save | Changes saved, profile updated, redirected to profile view | PASS |
+| Edit Dog Profile | Navigate to Profile → Click "Edit Dog Profile" → Modify fields → Save | Changes saved, dog profile updated, redirected to profile view | PASS |
+| Photo Upload | Select image file (JPG/PNG) → Upload | Image previewed before submission, saved correctly | PASS |
+| Photo Size | Try to submit an image file (JPG/PNG) bigger then 10mb| Form shows image size restriction error | PASS |
+| Photo Removal | Click remove (×) button on uploaded photo | Photo removed, placeholder shown | PASS |
+| Character Counter | Type in "About me" textarea | Character count updates in real-time (0/150) | PASS |
+| Back Button Navigation | Click back arrow on form pages | Returns to previous page without saving | PASS |
 
 ### Browse and Matching System
 
 | Test Label | Test Action | Expected Outcome | Test Outcome |
 |------------|-------------|------------------|--------------|
-| Browse Dogs | Navigate to Discover page | Dog profiles displayed with toggle between dog/owner views | |
-| Profile Toggle | Click "Owner" button on browse card | View switches to owner information | |
-| Like Action | Click heart icon on dog profile | Profile liked, next profile shown | |
-| Dislike Action | Click X icon on dog profile | Profile disliked, next profile shown | |
-| Match Modal | Like a dog that already liked you | "It's a Match!" modal appears with both dog photos | |
-| Match Modal Actions | Click "Send a message" in match modal | Redirected to message thread with matched dog | |
-| Match Modal Close | Click "Keep swiping" or close (×) button | Modal closes, next profile shown | |
-| No More Dogs | Swipe through all available dogs | "No more matches" message with reset button displayed | |
-| Reset Functionality | Click "Reset" button when no dogs available | All matches, dislikes, and messages deleted, browsing restarted | |
+| Browse Dogs | Navigate to Discover page | Dog profiles displayed with toggle between dog/owner views on mobile and side by side on bigger screen| PASS|
+| Profile Toggle (mobile) | Click "Owner" button on browse card | View switches to owner information | PASS |
+| Like Action | Click heart icon on dog profile | Profile liked, modal showing the match is shown, next profile shown | PASS |
+| Dislike Action | Click X icon on dog profile | Profile disliked, next profile shown | PASS |
+| Match Modal | Like a dog that already liked you | "It's a Match!" modal appears with both dog photos | PASS |
+| Match Modal Actions | Click "Send a message" in match modal | Redirected to message thread with matched dog | PASS |
+| Match Modal Close | Click on close (×) button | Modal closes, next profile shown | PASS |
+| No More Dogs | Swipe through all available dogs | "No more matches" message with reset button displayed | PASS |
+| Reset Functionality | Click "Reset" button when no dogs available | All matches, dislikes, and messages deleted, browsing restarted | PASS |
 
 ### Matches Management
 
 | Test Label | Test Action | Expected Outcome | Test Outcome |
 |------------|-------------|------------------|--------------|
-| View Matches | Navigate to Matches page | Grid of matched dogs displayed with toggle functionality | |
-| Match Count | Check matches header | Correct count displayed (e.g., "You have 3 matches") | |
-| Delete Match Button | Hover over match card | Delete (×) button visible in top-right corner | |
-| Delete Match Modal | Click delete (×) button | Confirmation modal appears with warning message | |
-| Confirm Delete Match | Click "Yes, delete" in modal | Match removed, conversation deleted, page updated | |
-| Cancel Delete Match | Click "Cancel" in delete modal | Modal closes, match remains | |
-| Empty Matches State | Delete all matches | "No matches yet" message with emoji displayed | |
-| Message from Matches | Click "Send a message" button on match card | Redirected to message thread with selected match | |
+| View Matches | Navigate to Matches page | Grid of matched dogs displayed with toggle functionality | PASS |
+| Match Count | Check matches header | Correct count displayed (e.g., "You have 3 matches") | PASS |
+| Delete Match Button | Hover over match card | Delete (×) button visible in top-right corner | PASS |
+| Delete Match Modal | Click delete (×) button | Confirmation modal appears with warning message | PASS |
+| Confirm Delete Match | Click "Yes, delete" in modal | Match removed, conversation deleted, page updated | PASS |
+| Cancel Delete Match | Click "Cancel" in delete modal | Modal closes, match remains | PASS |
+| Empty Matches State | Delete all matches | "No matches yet" message with emoji displayed | PASS |
+| Message from Matches | Click "Send a message" button on match card | Redirected to message thread with selected match | PASS |
 
 ### Messaging System
 
 | Test Label | Test Action | Expected Outcome | Test Outcome |
 |------------|-------------|------------------|--------------|
-| View Inbox | Navigate to Messages page | List of conversations displayed with last message preview | |
-| Conversation Preview | Check conversation item | Shows dog avatar, name, breed, and last message snippet | |
-| Open Thread | Click on conversation in inbox | Message thread opens with full conversation history | |
-| Send Message | Type message in textarea → Click "Send" | Message sent, appears in thread, textarea cleared | |
-| Empty Message | Try to send empty message | Submit button disabled or no action | |
-| Message Display | Check sent vs received messages | Different alignment (sent: right, received: left) with avatars | |
-| Message Timestamp | Check message time display | Timestamp shown in format "Jan 15" | |
-| Delete Conversation Button | Hover over conversation in inbox | Delete bin icon visible | |
-| Delete Conversation Modal | Click delete bin icon | Confirmation modal appears | |
-| Confirm Delete Conversation | Click "Yes, delete" in modal | Entire conversation deleted from both users | |
-| Empty Messages State | Delete all conversations | "No conversations" message with emoji displayed | |
-| Desktop Split View | View messages on desktop (992px+) | Inbox on left, thread preview on right | |
-| Mobile Single View | View messages on mobile (<992px) | Inbox only, thread opens on separate page | |
+| View Inbox | Navigate to Messages page | List of conversations displayed with last message preview | PASS |
+| Conversation Preview | Check conversation item | Shows dog avatar, name, breed, and last message snippet | PASS |
+| Open Thread | Click on conversation in inbox | Message thread opens with full conversation history | PASS |
+| Send Message | Type message in textarea → Click "Send" | Message sent, appears in thread, textarea cleared | PASS |
+| Empty Message | Try to send empty message | Submit button disabled or no action | PASS |
+| Message Timestamp | Check message time display | Timestamp shown in format "Jan 15" | PASS |
+| Delete Conversation Button | Hover over conversation in inbox | Delete bin icon visible | PASS |
+| Delete Conversation Modal | Click delete bin icon | Confirmation modal appears | PASS |
+| Confirm Delete Conversation | Click "Yes, delete" in modal | Entire conversation deleted from both users | PASS |
+| Empty Messages State | Delete all conversations | "No conversations" message with emoji displayed | PASS |
+| Desktop Split View | View messages on desktop (992px+) | Inbox on left, thread preview on right | PASS |
+| Mobile Single View | View messages on mobile (<992px) | Inbox only, thread opens on separate page | PASS |
+| Message non-matched dog | Navigate directly to /message/{dog_id} without match | Redirected to matches list | |
 
 ### Navigation and UI
 
@@ -792,6 +793,12 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 | Confirm Delete Account | Type confirmation → Click "Yes, delete my account" | Account and all data deleted, user logged out, redirected to homepage | |
 | Cancel Delete Account | Click "Cancel" in delete modal | Modal closes, account remains active | |
 | Data Deletion Verification | Delete account → Try to sign in with same credentials | Account no longer exists, cannot sign in | |
+
+### SECURITY
+
+| Test Label | Test Action | Expected Outcome | Test Outcome |
+|------------|-------------|------------------|--------------|
+
 
 ### Browser Compatibility Testing
 

@@ -1115,6 +1115,7 @@ textarea {
 .messages-container-card {
   background: #fff;
   border-radius: 16px;
+  overflow: hidden;
   box-shadow: var(--shadow);
   max-width: 1200px;
 }
