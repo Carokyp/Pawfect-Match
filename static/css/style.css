@@ -357,7 +357,7 @@ a:visited {
   z-index: 10;
 }
 
-.back-button,
+.back-button:hover,
 .back-button-messages:hover {
   background: var(--orange-200);
   transform: translateX(-2px);
