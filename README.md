@@ -747,7 +747,7 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 | Match Count | Check matches header | Correct count displayed (e.g., "You have 3 matches") | PASS |
 | Delete Match Button | Hover over match card | Delete (×) button visible in top-right corner | PASS |
 | Delete Match Modal | Click delete (×) button | Confirmation modal appears with warning message | PASS |
-| Confirm Delete Match | Click "Yes, delete" in modal | Match removed, conversation deleted, page updated | PASS |
+| Confirm Delete Match | Click "Delete" in modal | Match removed, conversation deleted, page updated | PASS |
 | Cancel Delete Match | Click "Cancel" in delete modal | Modal closes, match remains | PASS |
 | Empty Matches State | Delete all matches | "No matches yet" message with emoji displayed | PASS |
 | Message from Matches | Click "Send a message" button on match card | Redirected to message thread with selected match | PASS |
@@ -759,12 +759,12 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 | View Inbox | Navigate to Messages page | List of conversations displayed with last message preview | PASS |
 | Conversation Preview | Check conversation item | Shows dog avatar, name, breed, and last message snippet | PASS |
 | Open Thread | Click on conversation in inbox | Message thread opens with full conversation history | PASS |
-| Send Message | Type message in textarea → Click "Send" | Message sent, appears in thread, textarea cleared | PASS |
+| Send Message | Type message in textarea → Click "Send" / or the Enter key | Message sent, appears in thread, textarea cleared | PASS |
 | Empty Message | Try to send empty message | Submit button disabled or no action | PASS |
 | Message Timestamp | Check message time display | Timestamp shown in format "Jan 15" | PASS |
 | Delete Conversation Button | Hover over conversation in inbox | Delete bin icon visible | PASS |
 | Delete Conversation Modal | Click delete bin icon | Confirmation modal appears | PASS |
-| Confirm Delete Conversation | Click "Yes, delete" in modal | Entire conversation deleted from both users | PASS |
+| Confirm Delete Conversation | Click "Delete" in modal | Entire conversation deleted from both users | PASS |
 | Empty Messages State | Delete all conversations | "No conversations" message with emoji displayed | PASS |
 | Desktop Split View | View messages on desktop (992px+) | Inbox on left, thread preview on right | PASS |
 | Mobile Single View | View messages on mobile (<992px) | Inbox only, thread opens on separate page | PASS |
@@ -787,35 +787,21 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 
 | Test Label | Test Action | Expected Outcome | Test Outcome |
 |------------|-------------|------------------|--------------|
-| Access Danger Zone | Navigate to Profile page → Scroll to bottom | "Danger zone" section visible with delete button | |
-| Delete Account Modal | Click "Delete my profile" button | Warning modal appears with consequences listed | |
-| Confirm Delete Account | Type confirmation → Click "Yes, delete my account" | Account and all data deleted, user logged out, redirected to homepage | |
-| Cancel Delete Account | Click "Cancel" in delete modal | Modal closes, account remains active | |
-| Data Deletion Verification | Delete account → Try to sign in with same credentials | Account no longer exists, cannot sign in | |
-
-### SECURITY
-
-| Test Label | Test Action | Expected Outcome | Test Outcome |
-|------------|-------------|------------------|--------------|
+| Access Danger Zone | Navigate to Profile page → Scroll to bottom | "Danger zone" section visible with delete button | PASS |
+| Delete Account Modal | Click "Delete my profile" button | Warning modal appears with consequences listed | PASS |
+| Confirm Delete Account | Type confirmation → Click "Yes, delete my account" | Account and all data deleted, user logged out, redirected to homepage | PASS |
+| Cancel Delete Account | Click "Cancel" in delete modal | Modal closes, account remains active | PASS |
+| Data Deletion Verification | Delete account → Try to sign in with same credentials | Account no longer exists, cannot sign in | PASS |
 
 
 ### Browser Compatibility Testing
 
 | Browser | Version | Test Result | Notes |
 |---------|---------|-------------|-------|
-| Google Chrome | 122.0+ | | |
-| Mozilla Firefox | 123.0+ | | |
+| Google Chrome | 122.0+ | PASS | |
+| Mozilla Firefox | 123.0+ | PASS | Minor UI glitch: when an invalid email format is entered, Firefox "Manage Passwords" prompt can overlap the native invalid email alert. |
 | Microsoft Edge | 122.0+ | | |
 | Safari (macOS) | 17.0+ | | |
-
-**Testing Method:** Each browser was tested with:
-- User registration and authentication
-- Profile creation and editing
-- Browse and matching functionality
-- Messaging system
-- All navigation and modal interactions
-- Image uploads and previews
-- Form validation and submission
 
 ### Responsive Design Testing
 
