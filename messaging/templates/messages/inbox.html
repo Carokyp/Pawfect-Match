@@ -15,7 +15,7 @@
     <h1 class="page-title">MESSAGES</h1>
   </header>
 
-  <a href="{% url 'browse_dogs' %}" class="back-button-messages">
+  <a href="{% url 'browse_dogs' %}" class="back-button-messages" aria-label="Back to discover">
     <i class="fa-solid fa-arrow-left"></i>
   </a>
 
@@ -129,6 +129,7 @@
             <form method="POST" class="message-form d-flex flex-column gap-2" id="message-form">
               {% csrf_token %}
               <input type="hidden" name="receiver_dog_id" id="receiver-dog-id" value="{{ first_receiver_dog.id }}">
+              <label for="{{ form.content.id_for_label }}" class="visually-hidden">Message</label>
               {{ form.content }}
               <button type="submit" class="btn-modal send-msg align-self-end">Send</button>
             </form>

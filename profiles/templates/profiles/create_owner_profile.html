@@ -7,7 +7,7 @@
 {% block navbar %}{% endblock %}
 
 {% block back_button %}
-<a href="{% url 'register' %}" class="back-button">
+<a href="{% url 'register' %}" class="back-button" aria-label="Back to create account">
   <i class="fa-solid fa-arrow-left"></i>
 </a>
 {% endblock %}
@@ -32,9 +32,9 @@
       <div class="owner-profile-photo d-flex flex-column">
         <!-- Profile photo -->
         <div>
-          <p class="mb-1">
+          <label for="{{ form.profile_photo.id_for_label }}" class="mb-1 d-block">
             <span class="required">*</span> Profile Photo 
-          </p>
+          </label>
 
           <div class="upload-box d-flex flex-column align-items-center justify-content-center">
             {{ form.profile_photo }}
@@ -94,7 +94,7 @@
 
     <!-- Interests -->
     <div class="form-field owner-profile-interests my-md-3">
-      <label>Interests <span class="optional">(optional)</span></label>
+      <p class="mb-2">Interests <span class="optional">(optional)</span></p>
       <div class="pill-options" data-max="3">
         {% for checkbox in form.interests %}
           <label class="pill-option">
@@ -111,7 +111,7 @@
 
     <!-- About me -->
     <div class="form-field owner-profile-about my-md-3">
-      <label>About me <span class="optional">(optional)</span></label>
+      <label for="{{ form.about_me.id_for_label }}">About me <span class="optional">(optional)</span></label>
       {{ form.about_me }}
       <div class="char-counter text-end">0 / 150</div>
       {% if form.about_me.errors %}
