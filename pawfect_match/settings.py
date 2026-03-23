@@ -27,6 +27,7 @@ if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
         cloud_name=CLOUDINARY_CLOUD_NAME,
         api_key=CLOUDINARY_API_KEY,
         api_secret=CLOUDINARY_API_SECRET,
+        secure=True,
     )
 
 
@@ -145,6 +146,10 @@ WHITENOISE_MANIFEST_STRICT = False
 # Database & File Storage
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+CLOUDINARY_STORAGE = {
+    "SECURE": True,
+}
 
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

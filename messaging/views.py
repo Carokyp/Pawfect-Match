@@ -47,7 +47,7 @@ def prepare_messages(messages, my_dog):
             "message": msg,
             "is_sent": msg.sender_dog_id == my_dog.id,
             "sender_avatar": (
-                msg.sender_dog.profile_photo.url
+                msg.sender_dog.get_photo_url()
                 if msg.sender_dog.profile_photo
                 else None
             ),
