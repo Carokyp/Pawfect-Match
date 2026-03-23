@@ -32,7 +32,7 @@
       <div class="dog-profile-photo d-flex flex-column">
         <!-- Profile photo -->
         <div class="form-field">
-          <p class="mb-1">Profile Photo <span class="required">*</span></p>
+          <label for="{{ form.profile_photo.id_for_label }}" class="mb-1 d-block">Profile Photo <span class="required">*</span></label>
 
           <div class="upload-box d-flex flex-column align-items-center justify-content-center">
             {{ form.profile_photo }}
@@ -110,7 +110,7 @@
 
     <!-- About dog -->
     <div class="form-field dog-profile-about my-md-3">
-      <label>About me <span class="optional">(optional)</span></label>
+      <label for="{{ form.about_me.id_for_label }}">About me <span class="optional">(optional)</span></label>
       {{ form.about_me }}
       <div class="char-counter text-end">0 / 150</div>
       {% if form.about_me.errors %}

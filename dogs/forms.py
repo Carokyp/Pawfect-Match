@@ -47,7 +47,10 @@ class DogForm(forms.ModelForm):
             "about_me",
         ]
         widgets = {
-            "profile_photo": forms.FileInput(attrs={"accept": "image/*"}),
+            "profile_photo": forms.FileInput(attrs={
+                "accept": "image/*",
+                "aria-label": "Dog profile photo",
+            }),
             "about_me": forms.Textarea(attrs={
                 "rows": 4,
                 "maxlength": 150,
