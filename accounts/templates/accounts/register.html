@@ -13,12 +13,13 @@
 
 {% block content %}
 <!-- Registration page content -->
-<section class="form-page-container form-with-image">
+<div class="form-page-container form-with-image">
   <article class="auth-card">
+    <h2 class="visually-hidden">Create account card</h2>
     <div class="auth-card-split d-flex flex-column flex-md-row">
       <section class="auth-card-form d-flex flex-column justify-content-center align-items-center text-center">
         <!-- Registration heading -->
-        <h1>Create account</h1>
+        <h2>Create account</h2>
         <p>Welcome! Create your Pawfect Match account to connect with fellow dog 
           lovers and start your journey. Registration is quick and easy!</p>
 
@@ -47,7 +48,7 @@
             {{ form.password }}
 
             <button type="button" class="toggle-password">
-              <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon"/>
+              <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon">
             </button>
           </div>
           <ul class="text-start" style="font-size: 0.75rem; color: var(--text-dark); margin: 0; opacity: 0.7;">
@@ -79,5 +80,5 @@
       </figure>
     </div>
   </article>
-</section>
+</div>
 {% endblock %}
