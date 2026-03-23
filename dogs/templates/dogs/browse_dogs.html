@@ -19,6 +19,7 @@
 
   <!-- Dog profile card with toggle between dog and owner views -->
   <article class="profile-card">
+    <h2 class="visually-hidden">Discover dog profile</h2>
 
     <!-- View toggle: switch between dog and owner information -->
     <div class="profile-toggle d-flex justify-content-center gap-3 py-3">
@@ -153,7 +154,7 @@
   {% if match_popup %}
   
   <!-- Match modal -->
-  <aside class="modal-backdrop is-open" id="matchModal" role="dialog" aria-labelledby="matchModalTitle" aria-modal="true">
+  <div class="modal-backdrop is-open" id="matchModal" role="dialog" aria-labelledby="matchModalTitle" aria-modal="true">
     <div class="match-modal d-flex flex-column align-items-center justify-content-center text-center p-4">
       <button class="close" type="button" aria-label="Close modal" id="closeMatchModal">×</button>
       <h2 id="matchModalTitle" class="mt-4">It's a match with {{ match_popup.other_dog_name }}!</h2>
@@ -184,12 +185,12 @@
         <a class="btn primary d-none d-lg-block" href="{% url 'messages_inbox_with_dog' match_popup.other_dog_id %}">Send Message</a>
       </div>
     </div>
-  </aside>
+  </div>
   
   {% endif %}
 
   <!-- Reset matches confirmation modal -->
-  <aside class="modal-backdrop" id="resetConfirmModal" role="dialog" aria-labelledby="resetModalTitle" aria-modal="true">
+  <div class="modal-backdrop" id="resetConfirmModal" role="dialog" aria-labelledby="resetModalTitle" aria-modal="true">
     <div class="delete-modal text-center p-4">
       <h2 id="resetModalTitle">Reset matches?</h2>
       <p>
@@ -203,7 +204,7 @@
         <button type="button" class="btn-modal btn-danger" id="confirmResetBtn">Reset</button>
       </div>
     </div>
-  </aside>
+  </div>
 
   <!-- Hidden form for reset matches submission -->
   <form id="resetMatchesForm" method="post" action="{% url 'reset_matches' %}" class="hidden-form">

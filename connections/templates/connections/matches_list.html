@@ -19,6 +19,7 @@
   
   <!-- Matches container with grid of matched profiles -->
   <section class="matches-container text-center">
+    <h2 class="visually-hidden">Matched profiles list</h2>
     
     <!-- Grid of matched dog profiles -->
     <div class="matches-grid">
@@ -26,6 +27,7 @@
       
       <!-- Individual match card with dog and owner information -->
       <article class="matches-card" data-dog-id="{{ match.dog.id }}">
+        <h3 class="visually-hidden">Match with {{ match.dog.name }}</h3>
         
         <!-- Delete match button -->
         <div class="delete-match-button d-flex justify-content-end align-items-center">
@@ -138,7 +140,7 @@
   </section>
 
   <!-- Delete match confirmation modal -->
-  <aside class="modal-backdrop" id="deleteMatchModal" role="dialog" aria-labelledby="deleteMatchTitle" aria-modal="true">
+  <div class="modal-backdrop" id="deleteMatchModal" role="dialog" aria-labelledby="deleteMatchTitle" aria-modal="true">
     <div class="delete-modal text-center p-4">
       <h2 id="deleteMatchTitle">Delete Match?</h2>
       <p>Are you sure you want to delete this match?</p>
@@ -149,7 +151,7 @@
         <button type="button" class="btn-modal btn-danger" id="confirmDeleteMatchBtn">Delete</button>
       </div>
     </div>
-  </aside>
+  </div>
   
   {% else %}
 

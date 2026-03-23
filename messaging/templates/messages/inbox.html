@@ -23,7 +23,7 @@
   
   <!-- Inbox -->
 
-  <section class="messages-container-card" data-my-dog-name="{{ my_dog.name }}"
+  <div class="messages-container-card" data-my-dog-name="{{ my_dog.name }}"
     data-my-dog-avatar="{% if my_dog.profile_photo %}{{ my_dog.get_photo_url }}{% else %}{% static 'images/dog_placeholder.png' %}{% endif %}">
   
     <div class="messages-split-container">
@@ -52,7 +52,7 @@
                   {% endif %}
                 </div>
                 <div class="dog-details d-flex flex-column gap-1">
-                  <h3>{{ conversation.dog.name }}</h3>
+                  <h2>{{ conversation.dog.name }}</h2>
                   <p class="dog-breed">{{ conversation.dog.breed }}</p>
                   <p class="last-message">{{ conversation.last_message.content|truncatewords:10 }}</p>
                 </div>
@@ -91,6 +91,7 @@
         </header>
 
         <section class="messages-thread d-flex flex-column gap-3 p-3" id="messages-thread" aria-live="polite">
+          <h3 class="visually-hidden">Conversation messages</h3>
           {% if first_messages %}
             {% for item in first_messages %}
               <div class="message-row d-flex align-items-end gap-2 {% if item.is_sent %}justify-content-end sent{% else %}justify-content-start received{% endif %}">
@@ -136,7 +137,7 @@
       </section>
       {% endif %}
     </div>
-  </section>
+  </div>
   {% else %}
 
   <!-- No message yet-->
@@ -152,7 +153,7 @@
 </div>
 
 <!-- Delete conversation confirmation modal -->
-<aside class="modal-backdrop" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteConversationTitle">
+<div class="modal-backdrop" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteConversationTitle">
   <div class="delete-message-modal text-center p-4">
     <h2 id="deleteConversationTitle" class="delete-message-modal">Delete conversation?</h2>
     <p>This will permanently delete all messages with <span id="deleteDogName" class="delete-msg-dog-name"></span>. <br>This
@@ -164,6 +165,6 @@
       <button class="btn-modal btn-danger" id="confirmDeleteBtn">Delete</button>
     </div>
   </div>
-</aside>
+</div>
 
 {% endblock %}

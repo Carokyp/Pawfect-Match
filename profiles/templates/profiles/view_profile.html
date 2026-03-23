@@ -20,12 +20,13 @@
     {% if dog %}
     <!-- Dog profile card -->
     <article class="view-user-profile-card dog-profile">
+      <h2 class="visually-hidden">Dog profile details</h2>
 
       <div class="profile-image d-flex align-items-center justify-content-center">
         {% if dog.profile_photo %}
-        <img src="{{ dog.get_photo_url }}" alt="{{ dog.name }} profile photo" fetchpriority="high" />
+        <img src="{{ dog.get_photo_url }}" alt="{{ dog.name }} profile photo" fetchpriority="high">
         {% else %}
-        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder" />
+        <img src="{% static 'images/dog_placeholder.png' %}" alt="Dog placeholder">
         {% endif %}
 
         <div class="image-overlay">
@@ -36,7 +37,7 @@
         </div>
       </div>
 
-      <hr class="profile-divider" />
+      <hr class="profile-divider">
 
       <!-- Dog About me section -->
       <div class="profile-about text-center px-2">
@@ -44,7 +45,7 @@
         <p>{{ dog.about_me }}</p>
       </div>
 
-      <hr class="profile-divider" />
+      <hr class="profile-divider">
 
       <div class="profile-meta d-flex justify-content-around text-center px-4 gap-4">
         <div class="meta-block">
@@ -66,11 +67,12 @@
 
     <!-- Owner profile card -->
     <article class="view-user-profile-card dog-profile owner-profile">
+      <h2 class="visually-hidden">Owner profile details</h2>
       <div class="profile-image d-flex align-items-center justify-content-center">
         {% if owner.profile_photo %}
-        <img src="{{ owner.get_photo_url }}" alt="{{ owner.name }} profile photo" fetchpriority="high" />
+        <img src="{{ owner.get_photo_url }}" alt="{{ owner.name }} profile photo" fetchpriority="high">
         {% else %}
-        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder" />
+        <img src="{% static 'images/owner_placeholder.png' %}" alt="Owner placeholder">
         {% endif %}
 
         <div class="image-overlay">
@@ -80,14 +82,14 @@
         </div>
       </div>
 
-      <hr class="profile-divider" />
+      <hr class="profile-divider">
 
       <div class="profile-about text-center px-2">
         <h3>About me</h3>
         <p>{{ owner.about_me }}</p>
       </div>
 
-      <hr class="profile-divider" />
+      <hr class="profile-divider">
 
       <div class="profile-interests text-center px-2">
         <h3>Interests</h3>
@@ -123,7 +125,7 @@
   </div>
 
   <!-- Delete profile confirmation modal -->
-  <aside class="modal-backdrop" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteProfileTitle">
+  <div class="modal-backdrop" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteProfileTitle">
     <div class="modal-content py-4 px-1">
       <h2 id="deleteProfileTitle" class="text-center">Are you sure?</h2>
       <p class="modal-warning-text text-center">⚠️ This will permanently delete:</p>
@@ -145,6 +147,8 @@
         </button>
       </div>
     </div>
-  </aside>
+  </div>
+
+</div>
 
 {% endblock %}

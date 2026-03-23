@@ -63,11 +63,11 @@
           <div
             class="upload-box d-flex flex-column align-items-center justify-content-center {% if form.instance.profile_photo %}has-image{% endif %}">
             {{ form.profile_photo }}
-            <input type="hidden" name="profile_photo_removed" value="0" class="upload-remove-flag" />
+            <input type="hidden" name="profile_photo_removed" value="0" class="upload-remove-flag">
 
             <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}" 
             {% if form.instance.profile_photo %}src="{{ form.instance.profile_photo.url }}" {% endif %}
-              alt="Profile photo" fetchpriority="high" />
+              alt="Profile photo" fetchpriority="high">
 
             <span class="upload-placeholder text-center">Change photo</span>
             <button type="button" class="upload-remove align-items-center justify-content-center"

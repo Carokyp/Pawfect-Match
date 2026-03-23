@@ -34,6 +34,7 @@
 
     <!-- Conversation messages -->
     <section class="messages-thread d-flex flex-column gap-3 p-3" id="messages-thread" aria-live="polite">
+      <h3 class="visually-hidden">Conversation messages</h3>
       {% if messages %}
         {% for item in messages %}
           <div class="message-row d-flex align-items-end gap-2 {% if item.is_sent %}justify-content-end{% else %}justify-content-start{% endif %} {% if item.is_sent %}sent{% else %}received{% endif %}">
