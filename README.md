@@ -663,23 +663,13 @@ __Frameworks, Libraries & Programs Used__
 * [Visual Studio Git Source Control](https://learn.microsoft.com/en-us/visualstudio/version-control/git-with-visual-studio?view=vs-2022): was used to commit and push or pull changes to GitHub 
 * [Figma](): was used to create the wireframes during the design process.
 * [ChatGPT](https://openai.com/chatgpt): was used to assist with grammar correction, code structure improvements, and README documentation organization
-* [Copilot in VS Code](https://code.visualstudio.com/docs/copilot/overview): was used to help with code completion, debugging, and suggesting best practices for JavaScript implementation
+* [Copilot in VS Code](https://code.visualstudio.com/docs/copilot/overview): was used to help with code completion, debugging, and suggesting best practices for JavaScript and python implementation
 * [WAVE](https://wave.webaim.org/) & [Lighthouse](https://developer.chrome.com/docs/lighthouse): Used for accessibility testing to ensure that all content is readable and accessible to every user.
 * [HTML Validator](https://validator.w3.org/#validate_by_input): Confirmed the HTML code is valid, with no errors detected.
 * [CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input): Verified the CSS code, with no errors detected.
 * [JS-Beautify](https://beautifier.io/): Checked the formatting and structure of the HTML and CSS for consistency and readability.
 
 ## Testing 
-
-Pawfect Match has undergone comprehensive testing across multiple dimensions to ensure a reliable, accessible, and seamless user experience. All tests passed successfully across different browsers, devices, and screen sizes.
-
-**Testing Overview:**
-- ✅ **86 Functionality Tests** - All core features working as intended
-- ✅ **6 Browser Platforms** - Chrome, Firefox, Edge, Safari (macOS & iOS), Chrome Android
-- ✅ **9 Screen Sizes** - From 320px mobile to 3440px ultra-wide displays
-- ✅ **5 Breakpoint Ranges** - Fully responsive across all device categories
-- ✅ **HTML, CSS, JavaScript Validation** - Code quality verified
-- ✅ **Performance Testing** - Desktop and mobile optimization confirmed
 
 ### Validator Testing
 
@@ -800,22 +790,21 @@ Pawfect Match has undergone comprehensive testing across multiple dimensions to 
 |---------|---------|-------------|-------|
 | Google Chrome | 122.0+ | PASS | |
 | Mozilla Firefox | 123.0+ | PASS | Minor UI glitch: when an invalid email format is entered, Firefox "Manage Passwords" prompt can overlap the native invalid email alert. |
-| Microsoft Edge | 122.0+ | | |
-| Safari (macOS) | 17.0+ | | |
+| Microsoft Edge | 122.0+ | PASS | |
+| Safari (macOS) | 17.0+ | PASS | Minor UI issue: Safari Keychain/AutoFill suggestion popup can overlap the password field area on Sign in. No functional impact (login still works). |
 
 ### Responsive Design Testing
 
 | Device Category | Screen Size | Test Result | Notes |
 |----------------|-------------|-------------|-------|
-| **Mobile - Small** | 320px × 568px | | |
-| **Mobile - Standard** | 375px × 667px | | |
-| **Mobile - Large** | 414px × 896px | | |
-| **Tablet - Portrait** | 768px × 1024px | | |
-| **Tablet - Landscape** | 1024px × 768px | | |
-| **Laptop** | 1366px × 768px | | |
-| **Desktop - Standard** | 1920px × 1080px | | |
-| **Desktop - Large** | 2560px × 1440px | | |
-| **Ultra-wide** | 3440px × 1440px | | |
+| **Mobile - Small** | 320px × 568px | PASS | |
+| **Mobile - Standard** | 375px × 667px | PASS | |
+| **Mobile - Large** | 425px × 896px | PASS | |
+| **Tablet - Portrait** | 768px × 1024px | PASS | |
+| **Tablet - Landscape** | 1024px × 768px | PASS | |
+| **Laptop** | 1440px × 768px | PASS | |
+| **Desktop - Standard** | 1920px × 1080px | PASS | |
+| **Desktop - Large** | 2560px × 1440px | PASS | |
 
 ### Performance
 

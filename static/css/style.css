@@ -415,11 +415,6 @@ a:visited {
 /* #region FORMS & INPUTS */
 
 /* Custom auth-card */
-.auth-card {
-  max-width: 420px;
-  margin: 0 auto;
-}
-
 .auth-card-form h1 {
   font-size: 1.5rem;
 }
@@ -442,6 +437,14 @@ a:visited {
 .form-page-container {
   color: var(--orange-500);
   padding: 4rem 0;
+}
+
+/* Ensure auth form pages use full available width inside centered flex parent */
+.auth-content.form-page .form-page-container.form-with-image {
+  align-self: stretch;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .form-page-image {
@@ -1507,11 +1510,7 @@ textarea {
   .why-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .form-page-container.form-with-image .auth-card {
-    max-width: 900px;
-  }
-
+  
   .auth-card-form {
     flex: 1;
   }
@@ -1866,4 +1865,52 @@ textarea {
   }
 }
 
+/* Landscape mobile: 480px+ */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  /* Modals */
+  .match-modal,
+  .modal-content,
+  .delete-modal,
+  .delete-message-modal {
+    max-height: calc(100vh - 1rem); /* Ensure modal doesn't exceed viewport height on landscape mobile */
+    max-width: 300px;
+  }
+
+  .match-modal h2,
+  .modal-content h2,
+  .delete-modal h2,
+  .delete-message-modal h2 {
+    font-size: 0.9rem;
+  }
+
+  .match-avatars img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .match-heart {
+    font-size: 1.5rem;
+  }
+
+  .match-modal>p,
+  .modal-content p,
+  .delete-modal p,
+  .delete-message-modal p,
+  .modal-list li {
+    font-size: 0.8rem;
+  }
+
+  .match-modal-btn .btn,
+  .btn-modal {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  /* Message thread */
+
+  .thread-chat-container {
+    height: 500px;
+  }
+}
 /* #endregion */

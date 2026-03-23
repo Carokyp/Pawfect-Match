@@ -9,7 +9,7 @@
         <h2>{% block error_title %}{% endblock %}</h2>
       </header>
       <p>{% block error_message %}{% endblock %}</p>
-      <img class="d-block mx-auto mb-5" src="{% static 'images/sad_dog.png' %}" alt="Sad dog illustration">
+      <img class="d-block mx-auto mb-5" src="{% static 'images/sad_dog.webp' %}" alt="Sad dog illustration">
       <footer class="d-flex gap-4">
         {% url 'browse_dogs' as browse_url %}
         <a href="{% url 'home' %}" class="btn error-btn primary">Back to Home</a>

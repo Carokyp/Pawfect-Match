@@ -67,7 +67,7 @@
 
             <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}" 
             {% if form.instance.profile_photo %}src="{{ form.instance.profile_photo.url }}" {% endif %}
-              alt="Profile photo" />
+              alt="Profile photo" fetchpriority="high" />
 
             <span class="upload-placeholder text-center">Change photo</span>
             <button type="button" class="upload-remove align-items-center justify-content-center"

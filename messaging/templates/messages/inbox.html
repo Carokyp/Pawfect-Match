@@ -15,6 +15,10 @@
     <h1 class="page-title">MESSAGES</h1>
   </header>
 
+  <a href="{% url 'browse_dogs' %}" class="back-button-messages">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+
   {% if conversations or first_receiver_dog %}
   
   <!-- Inbox -->
@@ -42,7 +46,7 @@
               <div class="conversation-dog-info d-flex align-items-center gap-3">
                 <div class="dog-avatar">
                   {% if conversation.dog.profile_photo %}
-                  <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}">
+                  <img src="{{ conversation.dog.get_photo_url }}" alt="{{ conversation.dog.name }}" fetchpriority="high">
                   {% else %}
                   <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ conversation.dog.name }}">
                   {% endif %}
@@ -75,7 +79,7 @@
         <header class="message-header d-flex align-items-center gap-3 px-3 py-3">
           <div class="receiver-avatar">
             {% if first_receiver_dog.profile_photo %}
-              <img src="{{ first_receiver_dog.get_photo_url }}" alt="{{ first_receiver_dog.name }}" id="thread-avatar">
+              <img src="{{ first_receiver_dog.get_photo_url }}" alt="{{ first_receiver_dog.name }}" id="thread-avatar" fetchpriority="high">
             {% else %}
               <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ first_receiver_dog.name }}" id="thread-avatar">
             {% endif %}
@@ -138,7 +142,7 @@
   <!-- No message yet-->
   <section class="no-msg d-flex flex-column justify-content-center align-items-center text-center py-5 px-2">
     <h1 class="no-msg-title">No messages yet</h1>
-    <img class="empty-state-emoji mb-5 mt-5" src="{% static 'images/sad_emoji.png' %}" alt="Sad face emoji">
+    <img class="empty-state-emoji mb-5 mt-5" src="{% static 'images/sad_emoji.webp' %}" alt="Sad face emoji">
     <p class="no-msg-subtitle mb-5">Send a message to a match to arrange a playdate!</p>
     <a href="{% url 'browse_dogs' %}" class="btn primary">Back to Discover</a>
   </section>

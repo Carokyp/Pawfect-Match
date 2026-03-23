@@ -21,7 +21,7 @@
     <header class="message-header d-flex align-items-center gap-3 px-3 py-3">
       <div class="receiver-avatar">
         {% if receiver_dog.profile_photo %}
-          <img src="{{ receiver_dog.get_photo_url }}" alt="{{ receiver_dog.name }}">
+          <img src="{{ receiver_dog.get_photo_url }}" alt="{{ receiver_dog.name }}" fetchpriority="high">
         {% else %}
           <img src="{% static 'images/dog_placeholder.png' %}" alt="{{ receiver_dog.name }}">
         {% endif %}
