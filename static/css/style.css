@@ -11,8 +11,6 @@
   --orange-300: #FFB07A;
   /* PRIMARY brand color */
   --orange-700: #B84312;
-  /* hover / strong accent */
-  --orange-900: #6B2A0A;
   /* dark / text on light */
   --text-dark: #441c06;
   --text-light: #807e7e;
@@ -87,14 +85,14 @@ a:visited {
 .navbar .navbar-brand {
   font-weight: 800;
   font-size: 1.2rem;
-  background: var(--orange-900);
+  background: var(--text-dark);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .navbar .nav-link {
-  color: var(--orange-900);
+  color: var(--text-dark);
   font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.3s ease;
@@ -149,7 +147,7 @@ a:visited {
 .hero-content h1 {
   font-size: 1.8rem;
   font-weight: 900;
-  color: var(--orange-900);
+  color: var(--text-dark);
 }
 
 .hero-content p {
@@ -181,7 +179,7 @@ a:visited {
 .section-text h2,
 .why-header h2 {
   font-weight: 700;
-  color: var(--orange-900);
+  color: var(--text-dark);
 }
 
 .section-text p,
@@ -221,7 +219,7 @@ a:visited {
 
 .why-card h3 {
   font-size: 1rem;
-  color: var(--orange-900);
+  color: var(--text-dark);
   font-weight: 700;
 }
 
@@ -277,9 +275,9 @@ a:visited {
 }
 
 .btn.primary {
-  background: var(--orange-900);
+  background: var(--text-dark);
   color: white;
-  border: 3px solid var(--orange-900);
+  border: 3px solid var(--text-dark);
 }
 
 .btn.primary:hover {
@@ -290,8 +288,8 @@ a:visited {
 
 .btn.secondary {
   background: white;
-  color: var(--orange-900);
-  border: 3px solid var(--orange-900);
+  color: var(--text-dark);
+  border: 3px solid var(--text-dark);
 }
 
 .btn.secondary:hover {
@@ -433,7 +431,7 @@ a:visited {
 /* --- Form Fields --- */
 
 .form-page-container {
-  color: var(--orange-900);
+  color: var(--text-dark);
   padding: 4rem 0;
 }
 
@@ -651,7 +649,7 @@ h1.form-title {
 .pill-option input:checked+span {
   background: var(--orange-200);
   border-color: var(--orange-200);
-  color: var(--orange-900);
+  color: var(--text-dark);
 }
 
 /* The span inside the pill option is styled to look like a pill-shaped button */
@@ -1428,7 +1426,7 @@ textarea {
 
 /* #region FOOTER */
 .site-footer {
-  background: var(--orange-900);
+  background: var(--text-dark);
   color: #fff;
 }
 
@@ -1594,7 +1592,7 @@ textarea {
     justify-content: center;
     width: 20%;
     background: var(--orange-200);
-    color: var(--orange-900);
+    color: var(--text-dark);
     box-shadow: none;
   }
 
