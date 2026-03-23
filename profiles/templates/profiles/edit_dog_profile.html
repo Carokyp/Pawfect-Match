@@ -62,7 +62,7 @@
             <input type="hidden" name="profile_photo_removed" value="0" class="upload-remove-flag">
 
             <img class="image-preview{% if form.instance.profile_photo %} is-visible{% endif %}"
-              {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}"{% endif %} alt="" fetchpriority="high">
+              {% if form.instance.profile_photo %}src="{{ form.instance.get_photo_url }}"{% endif %} alt="Dog profile photo preview" fetchpriority="high">
 
             <span class="upload-placeholder text-center">Change photo</span>
             <button type="button" class="upload-remove align-items-center justify-content-center" aria-label="Remove image">×</button>
