@@ -9,8 +9,6 @@
   --orange-200: #FFD0B3;
   /* light background */
   --orange-300: #FFB07A;
-  /* surface / accent */
-  --orange-500: #8f2d00;
   /* PRIMARY brand color */
   --orange-700: #B84312;
   /* hover / strong accent */
@@ -89,14 +87,14 @@ a:visited {
 .navbar .navbar-brand {
   font-weight: 800;
   font-size: 1.2rem;
-  background: var(--orange-500);
+  background: var(--orange-900);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .navbar .nav-link {
-  color: var(--orange-500);
+  color: var(--orange-900);
   font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.3s ease;
@@ -108,7 +106,7 @@ a:visited {
 .navbar .nav-link:active,
 .navbar .nav-link:focus,
 .navbar .nav-link.active {
-  color: var(--orange-900);
+  color: var(--orange-700);
 }
 
 .navbar .nav-link.active {
@@ -151,7 +149,7 @@ a:visited {
 .hero-content h1 {
   font-size: 1.8rem;
   font-weight: 900;
-  color: var(--orange-500);
+  color: var(--orange-900);
 }
 
 .hero-content p {
@@ -183,7 +181,7 @@ a:visited {
 .section-text h2,
 .why-header h2 {
   font-weight: 700;
-  color: var(--orange-500);
+  color: var(--orange-900);
 }
 
 .section-text p,
@@ -223,7 +221,7 @@ a:visited {
 
 .why-card h3 {
   font-size: 1rem;
-  color: var(--orange-500);
+  color: var(--orange-900);
   font-weight: 700;
 }
 
@@ -254,7 +252,7 @@ a:visited {
 }
 
 .auth-content h2 {
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
@@ -435,7 +433,7 @@ a:visited {
 /* --- Form Fields --- */
 
 .form-page-container {
-  color: var(--orange-500);
+  color: var(--orange-900);
   padding: 4rem 0;
 }
 
