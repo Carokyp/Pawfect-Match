@@ -1180,9 +1180,9 @@ textarea {
   min-width: 0;
 }
 
-.dog-details h3 {
+.dog-details h2 {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;

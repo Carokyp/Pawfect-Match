@@ -131,7 +131,13 @@ def messages_inbox(request, dog_id=None):
                 first_receiver_dog = conv["dog"]
                 break
         if not first_receiver_dog:
-            first_receiver_dog = Dog.objects.filter(id=dog_id).first()
+            # Verify dog exists but don't allow access unless they're matched
+            other_dog = Dog.objects.filter(id=dog_id).first()
+            if other_dog and is_match(my_dog, other_dog):
+                first_receiver_dog = other_dog
+            else:
+                # Redirect to matches if not matched
+                return redirect("matches_list")
     elif conversations_list:
         first_receiver_dog = conversations_list[0]["dog"]
 
@@ -276,13 +282,18 @@ def delete_conversation(request, dog_id):
         dog_id: ID of the other dog in the conversation.
 
     Returns:
-        Redirect to messages_inbox.
+        Redirect to messages_inbox, or redirect to matches_list if not matched.
     """
     my_dog, error = get_user_dog(request)
     if error:
         return error
 
     receiver_dog = get_object_or_404(Dog, id=dog_id)
+    
+    # Verify user is matched before allowing deletion
+    if not is_match(my_dog, receiver_dog):
+        return redirect("matches_list")
+    
     get_thread_messages(my_dog, receiver_dog).delete()
 
     return redirect("messages_inbox")
@@ -299,13 +310,17 @@ def get_conversation_messages(request, dog_id):
 
     Returns:
         JsonResponse containing serialized message data, or error JSON if the
-        user has no dog profile.
+        user has no dog profile or is not matched.
     """
     my_dog, error = get_user_dog(request, redirect_to=None)
     if error:
         return JsonResponse({"error": "No dog profile"}, status=400)
 
     receiver_dog = get_object_or_404(Dog, id=dog_id)
+    
+    # Verify user is matched before allowing message fetch
+    if not is_match(my_dog, receiver_dog):
+        return JsonResponse({"error": "Unauthorized access"}, status=403)
 
     messages_data = [
         {

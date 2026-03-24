@@ -922,7 +922,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedDogId = btn.dataset.dogId;
         document.getElementById("deleteDogName").textContent = btn
           .closest(".conversation-item")
-          .querySelector(".dog-details h3").textContent;
+          .querySelector(".dog-details h2").textContent;
 
         openModal(deleteModal);
       });
