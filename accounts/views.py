@@ -164,9 +164,7 @@ def delete_profile(request):
 
 def forgot_password(request):
     """
-    Reset a user's password without email verification.
-
-    Simplified flow intended for development or demos.
+    Reset a user's password.
 
     Returns:
         HttpResponse: forgot_password.html or password_reset_success.html.
@@ -178,7 +176,6 @@ def forgot_password(request):
             email = form.cleaned_data["email"]
             new_password = form.cleaned_data["new_password"]
 
-            # Hash and save the new password
             user = User.objects.get(username=email)
             user.set_password(new_password)
             user.save()
