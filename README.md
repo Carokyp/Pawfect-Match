@@ -1,7 +1,7 @@
 # Pawfect-Match
 
 <p align="center">
-
+  <img src="docs/images/readme-preview.png" alt="Pawfect Match responsive preview" width="100%">
 </p>
 
 **[View Live Application](https://pawfect-match-app-b1b08454d777.herokuapp.com/)**
@@ -78,17 +78,17 @@ With **Pawfect-Match**, I wanted to give dog owners a fun and safe way to connec
  - Owner profile creation and editing with photo upload.
  - Dog profile creation and editing with photo upload.
  - Browse and discover dogs page.
- - Toggle between dog and owner profile to view their profiles while browsing.
+ - Toggle between dog and owner profile to view their profiles while browsing (on mobile).
  - View other users complete profiles (dog + owner details).
  - Like and dislike actions to find matches.
- - Automatic bidirectional matching system.
+ - Automatic bidirectional matching system to simulate activity from other users and keep the prototype experience fluid.
  - "It's a match!" modal popup with dogs photos.
  - Match list management (view and delete individual matches).
  - Reset all matches, dislikes, and messages to restart (available when no more dogs to browse).
  - Messaging between matched users.
  - Delete entire conversation threads.
  - Account deletion (removes all associated data).
- - Password reset via email verification form (validates account email without sending email).
+ - Password reset with an email check (confirms the email exists, without sending an email).
 
 #### Out of scope Features:
  - Real-time chat or live notifications.
@@ -135,7 +135,7 @@ Key sections and navigation flow:
 
 The Django admin interface provides full management capabilities for all models:
 
-**User Management:**
+**User:**
 - View all registered users
 - Edit user details (username, first name, last name, email)
 - Change user password via dedicated form
