@@ -37,6 +37,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = False
 
 ALLOWED_HOSTS = [".herokuapp.com", "127.0.0.1", "localhost"]
+
+ALLOW_IFRAME_EMBED = (
+    os.environ.get("ALLOW_IFRAME_EMBED", "false").lower() == "true"
+)
+if ALLOW_IFRAME_EMBED:
+    # Allow external preview tools to render the site in an iframe.
+    X_FRAME_OPTIONS = "ALLOWALL"
 # Application definition
 
 INSTALLED_APPS = [
