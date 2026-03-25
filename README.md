@@ -32,11 +32,11 @@
 
 ### Strategy
 
-With **Pawfect-Match** I wanted to give dog owners a fun and safe way to connect with other dog owners. By blending the best ideas from modern dating apps into one web experience, the platform helps dogs find playmates and gives humans a chance to find love through their pets.
+With **Pawfect-Match**, I wanted to give dog owners a fun and safe way to connect with other dog owners. By blending the best ideas from modern dating apps into one web experience, the platform helps dogs find playmates and gives humans a chance to find love through their pets.
 
 #### Business goals of the website
 - Provide a friendly platform for dog owners to discover compatible companions.
-- Encourage sign-ups and profile completion to improve matching quality.
+- Encourage sign-ups and profile completion to help users match with other dogs and owners.
 - Build engagement through likes, matches, and messaging.
 
 #### Customer goals of the website
@@ -50,19 +50,19 @@ With **Pawfect-Match** I wanted to give dog owners a fun and safe way to connect
 **New User**
 - As a new user, I want to understand what the site is about, so I can decide if it's right for me.
 - As a new user, I want to register easily, so I can start quickly.
-- As a new user, I want to add my dog's details, so I can begin browsing matches.
+- As a new user, I want to add my details and my dog's details, so I can begin browsing matches.
 
 **Existing User**
-- As an existing user, I want to sign in and out easily, so I can access my account securely.
+- As an existing user, I want to sign in and out easily, so I can access my account.
 - As an existing user, I want to create and edit my owner profile, so I can manage my information.
 - As an existing user, I want to create and edit my dog profile, so I can keep it updated.
-- As an existing user, I want to like or dislike dogs after viewing both dog and owner profiles, so I can find the best matches for my dog.
+- As an existing user, I want to like or dislike dogs after viewing both dog and owner profiles, so I can find the best matches for myself and my dog.
 - As an existing user, I want to see my matches and remove a match if I change my mind, so I can manage my connections.
 - As an existing user, I want to reset my password, so I can regain access if needed.
 
 **All Users**
 - As a user, I want to message other profiles after matching, so I can communicate with my matches.
-- As a user, I want to edit or delete my own information and images, so I have control over my data.
+- As a user, I want to edit or delete my profile, so I have control over my data.
 
 #### Reasons for the website
 - Playmate finding
