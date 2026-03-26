@@ -434,108 +434,37 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 
 ## Features
 
-### Universal Features Across the Site
-
-#### **Responsiveness**
-- Fully responsive layout from mobile to desktop across public, auth, and app pages
-- Mobile-first styling with Bootstrap utilities plus custom media queries (including 768px, 992px, 1200px, 1400px, and 1800px breakpoints)
-- Collapsible navigation on smaller screens with hamburger toggles in both public and authenticated navbars
-- JavaScript auto-collapse behavior on mobile nav (closes on nav-link click and outside click)
-- Flexible image/card sizing using fluid widths and max-width rules
-
-#### **Accessibility**
-- ARIA attributes are implemented on key interactive UI elements (navigation toggles, action buttons, back buttons, and modal dialogs)
-- Descriptive `alt` text is provided throughout templates for profile photos, placeholders, and illustrations
-- Messaging UI includes an `aria-live="polite"` region so conversation updates are announced to assistive technologies
-- Custom focus styling is applied on several components (for example nav links and form controls)
-
 #### **Navigation**
 - **Public Homepage Navigation**:
   - Home
   - How it works 
   - Why Pawfect Match 
+
+<p align="center">
+  <img src="docs/images/NavBar_Public.png" alt="Public homepage navigation" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+
 - **Public Auth Navigation (register/sign in pages)**:
   - Home
   - Sign In
   - Sign Up
+
+<p align="center">
+  <img src="docs/images/NavBar_Auth.png" alt="Public authentication navigation" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+
 - **Authenticated Navigation**:
   - Discover
   - Matches
   - Messages
   - Profile
   - Log out
+
+<p align="center">
+  <img src="docs/images/NavBar_User.png" alt="Authenticated user navigation" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+  
 - Auto-collapse behavior is enabled for mobile nav menus via JavaScript
-- Shared navbar styling remains consistent across app pages
-
-#### **Footer**
-- Social media links (Twitter, Instagram, Facebook) opening in new tabs
-- Copyright information (2026 Pawfect Match)
-- Use of Font Awesome icons for social platforms
-- Consistent placement on all pages
-- ARIA labels are present on social links for screen-reader support
-
-#### **Input Fields & Forms**
-- Custom form styling with CSS for consistent appearance across all forms
-- Django form validation with server-side error display (errors shown after form submission)
-- Required field indicators with asterisk (*) labels
-- Password visibility toggle with eye icon on password inputs
-- Image upload preview before form submission
-- Drag-and-drop support for photo uploads
-- Placeholder text for guidance
-- Live character counters for textareas using
-
-#### **Base Templates**
-- **base.html**: Core layout with header, main, footer structure
-- **base_auth.html**: Layout used by public authentication pages (Home/Sign In/Sign Up navbar)
-- **base_app.html**: Layout used by authenticated app pages (Discover/Matches/Messages/Profile navbar)
-- Meta tags for SEO (description, viewport)
-- Favicon integration
-- Centralized loading of Bootstrap 5, Font Awesome, and custom assets
-- Django template blocks for flexible page-specific content
-
-### Error Pages
-
-#### **404 - Page Not Found**
-- Custom-designed error page matching site branding
-- Playful "Page isn't a match" messaging aligned with dating theme
-- Sad dog illustration for emotional connection
-- Clear navigation options:
-  - "Back to Home" button for all users
-  - "Browse Dogs" button for all users
-  - If user is not authenticated, clicking "Browse Dogs" redirects to Sign In first, then returns to Browse Dogs after login
-- Maintains site header/footer for consistent user experience
-- Prevents user frustration with friendly, helpful design
-
-#### **403 - Forbidden (Access Denied)**
-- Custom-designed error page matching site branding
-- Error title: "Access Forbidden"
-- Message shown: "Sorry, you don't have permission to access this page."
-- Navigation options:
-  - "Back to Home" button
-  - "Browse Dogs" button (unauthenticated users are redirected to Sign)
-- Shares the same branded error layout and illustration as other custom error pages
-
-#### **405 - Method Not Allowed**
-- Custom-designed error page matching site branding
-- Error title: "Method Not Allowed"
-- Message shown: "Sorry, this request method is not allowed for this page."
-- Indicates that the HTTP method used is not allowed for the requested route
-- Navigation options:
-  - "Back to Home" button
-  - "Browse Dogs" button (with Sign In redirect for unauthenticated users)
-- Maintains the same shared error layout for consistency
-
-#### **500 - Internal Server Error**
-- Custom-designed error page matching site branding
-- Concerned/apologetic dog illustration
-- Error title: "Server Error"
-- Message shown: "Oops! Something went wrong on our end. We're working on fixing it!"
-- Navigation options:
-  - "Back to Home" and "Browse Dogs" actions (same behavior as other custom error pages)
-- Maintains the shared branded error layout for consistency
-- Prevents sensitive error details from being displayed to users
-
-### Features Specific to Pages
 
 #### **Homepage (Public)**
 - **Hero Section**:
@@ -543,6 +472,10 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
   - Clear value proposition: "Find Love Through Your Pet"
   - Dual CTA buttons: "Get Started" (register) and "Sign In"
   - Mobile-optimized layout with stacked content
+
+<p align="center">
+  <img src="docs/images/Hero.png" alt="Hero section with couple and dog" style="width: 60%; max-width: 900px; height: auto;">
+</p>
   
 - **How It Works Steps**:
   - Step 1: Find love with other pet lovers
@@ -551,11 +484,19 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
   - Step 4: Match and start chatting
   - Visual illustrations supporting each step
   - Scroll-friendly full-screen sections
+
+<p align="center">
+  <img src="docs/images/How_it_Work.png" alt="How it works steps" style="width: 60%; max-width: 900px; height: auto;">
+</p>
   
 - **Why Pawfect Match**:
   - Section header with tagline
   - Grid of 4 feature cards (Pet-First Approach, Authentic Connections, Safe & Friendly, Easy Communication)
   - Concise descriptions for each card
+
+<p align="center">
+  <img src="docs/images/Why_Pawfect_Match.png" alt="Why Pawfect Match feature cards" style="width: 60%; max-width: 900px; height: auto;">
+</p>
 
 #### **Authentication Pages**
 
@@ -568,6 +509,10 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Session-based data persistence: profile details (name, age, city, etc.) stored in session during onboarding, allowing users to return and edit before completion (images only stored after final submission)
 - Form validation with Django messages
 
+<p align="center">
+  <img src="docs/images/Create_Account.png" alt="Registration page" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+
 **Sign In**
 - Email and password authentication
 - "Forgot Password" link
@@ -575,13 +520,31 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Auto-redirect to browse dogs after successful login
 - Error messages for invalid credentials
 
-**Forgot Password / Change Password**
+<p align="center">
+  <img src="docs/images/Sign_in.png" alt="Sign in page" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+
+**Forgot Password**
 - Email verification form (checks if account exists)
 - No email sent (demo/prototype mode)
 - Direct password reset after email validation
 - Password confirmation field
 - Success page with "Go to Sign In" button
 - Validation prevents password resets for non-existent accounts
+
+<p align="center">
+  <img src="docs/images/Forgot_Password.png" alt="Forgot password page" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+
+#### **Input Fields & Forms**
+- Custom form styling with CSS for consistent appearance across all forms
+- Django form validation with server-side error display (errors shown after form submission)
+- Required field indicators with asterisk (*) labels
+- Password visibility toggle with eye icon on password inputs
+- Image upload preview before form submission
+- Drag-and-drop support for photo uploads
+- Placeholder text for guidance
+- Live character counters for textareas using `maxlength` attributes (for example: `0 / 150`)
 
 #### **Profile Creation & Editing**
 
@@ -594,6 +557,10 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Session-based data persistence during onboarding
 - Auto-redirect to Create Dog Profile after completion
 
+<p align="center">
+  <img src="docs/images/Create_Owner_Profile.png" alt="Create owner profile page" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+
 **Create Dog Profile**
 - Final onboarding step before accessing main app
 - Fields: Name, Age, Breed, Size, Gender, Energy Level, About Me, Photo
@@ -603,12 +570,20 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Auto-redirect to Browse Dogs after creation
 - User login happens automatically after dog creation
 
+<p align="center">
+  <img src="docs/images/Create_Dog_Profile.png" alt="Create dog profile page" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+
 **Edit Owner Profile**
 - Access from Profile page
 - Pre-populated form with existing data
 - Update photo with new upload or keep existing
 - Same fields as creation form
 - Redirect back to profile view
+
+<p align="center">
+  <img src="docs/images/Edit_Owner_Profile.png" alt="Edit owner profile page" style="width: 60%; max-width: 900px; height: auto;">
+</p>
 
 **Edit Dog Profile**
 - Access from Profile page
@@ -617,35 +592,45 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Same validation as creation
 - Redirect back to profile view
 
+<p align="center">
+  <img src="docs/images/Edit_Dog_Profile.png" alt="Edit dog profile page" style="width: 60%; max-width: 900px; height: auto;">
+</p>
+
 #### **View Profile**
-- **Profile Toggle**: Switch between viewing your dog profile and owner profile
-- **Dog View**:
+
+- **Dog Profile View**:
   - Dog photo, name, age, breed
   - About me section
   - Energy level and size badges
   - Edit button linking to edit form
+
+<p align="center">
+  <img src="docs/images/Dog_Profile_View.png" alt="Dog profile view" style="width: 30%; max-width: 380px; height: auto;">
+</p>
   
-- **Owner View**:
+- **Owner Profile View**:
   - Owner photo, name, age, city, occupation
   - Interests displayed as pills/tags
   - About me section
   - Edit button linking to edit form
-  
-- **Delete Account Modal**:
-  - Confirmation modal with warning message
-  - Explains data deletion: user profile, dog profile, all matches, and all conversations
-  - "Cancel" and "Delete Account" buttons
-  - JavaScript confirmation prompt
-  - Cascade delete handled by Django (removes all user data)
+
+<p align="center">
+  <img src="docs/images/View_Owner_Profile.png" alt="Owner profile view" style="width: 30%; max-width: 380px; height: auto;">
+</p>
 
 #### **Discover / Browse Dogs**
 - **Profile Cards**:
   - Large photo display with overlay (name, age, breed, city, gender)
-  - Toggle between Dog and Owner views with active state indicator
+  - Toggle between Dog and Owner views with active state indicator for mobile and side by side for desktop
   - Smooth transitions between views
   - About me section
   - Dog metadata: Energy level and size tags
   - Owner metadata: Age, occupation, interests pills
+
+<p align="center">
+  <img src="docs/images/Discover_Dog.png" alt="Discover dog profile view" style="width: 30%; max-width: 450px; height: 550px; margin: 8px;">
+  <img src="docs/images/Discover_Owner.png" alt="Discover owner profile view" style="width: 30%; max-width: 450px; height: 550px; margin: 8px;">
+</p>
   
 - **Action Buttons**:
   - Dislike (X icon): Skip dog and remove from future results
@@ -661,6 +646,10 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
   - Message: "No more dogs to discover"
   - "Reset Matches" button to clear all connections, dislikes, messages
   - Returns discovery pool to full state
+
+<p align="center">
+  <img src="docs/images/No_More_Match.png" alt="No more matches empty state" style="width: 30%; max-width: 550px; height: auto;">
+</p>
   
 - **Filtering**:
   - Excludes own dog
@@ -678,7 +667,11 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Empty state message when no matches
 - Delete match removes both bidirectional connection entries
 
-#### **Messages / Inbox**
+<p align="center">
+  <img src="docs/images/Matches.png" alt="Matches list" style="width: 30%; max-width: 550px; height: auto;">
+</p>
+
+#### **Messages / Inbox on mobile**
 - List of all active conversations
 - Each conversation shows:
   - Matched dog photo
@@ -688,7 +681,11 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Click conversation to open thread
 - Delete conversation button (trash icon) with confirmation modal
 
-**Message Thread**
+<p align="center">
+  <img src="docs/images/Inbox_Mobile.png" alt="Messages inbox mobile view" style="width: 40%; max-width: 550px; height: auto;">
+</p>
+
+#### **Message Thread on Mobile**
 - Full conversation history with matched dog
 - Messages displayed chronologically (oldest to newest)
 - Timestamps on each message
@@ -696,6 +693,19 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
   - Text area input
   - Send button
 - Header shows matched dog name, breed and photo
+
+<p align="center">
+  <img src="docs/images/Mobile_Chat.png" alt="Message thread mobile view" style="width: 30%; max-width: 550px; height: auto;">
+</p>
+
+#### **Desktop Messages**
+- On desktop (`>= 992px`), the messages page uses a split layout inside one conversation console:
+  - Left panel: inbox conversations
+  - Right panel: active message thread
+
+<p align="center">
+  <img src="docs/images/Desktop_Chat.png" alt="Desktop messages split view with inbox and active thread" style="width: 70%; max-width: 1100px; height: auto;">
+</p>
 
 #### **Modals**
 
@@ -708,6 +718,10 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - "×" close button (gray) to dismiss modal and continue browsing
 - Overlay backdrop with click-outside-to-close
 
+<p align="center">
+  <img src="docs/images/Match_Modal.png" alt="It's a Match modal" style="width: 30%; max-width: 550px; height: auto;">
+</p>
+
 **Delete Account Modal**
 - Confirmation dialog for account deletion
 - Warning text explaining permanent action with warning icon
@@ -716,11 +730,19 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - "Yes, Delete" button (red/danger styling, executes deletion)
 - Triggered from Profile page
 
+<p align="center">
+  <img src="docs/images/Delete_Account_Modal.png" alt="Delete account modal" style="width: 35%; max-width: 380px; height: auto;">
+</p>
+
 **Delete Match Confirmation**
 - Appears when user clicks on red X button (×) on the top right of the match card
 - Modal with confirmation message: "Are you sure you want to delete this match?"
 - "Cancel" button (closes modal, no action)
 - "Delete" button (red/danger styling, removes both connection entries)
+
+<p align="center">
+  <img src="docs/images/Delete_Match.png" alt="Delete match confirmation modal" style="width: 35%; max-width: 380px; height: auto;">
+</p>
 
 **Delete Conversation Confirmation**
 - Triggered from trash icon button in inbox conversation list
@@ -729,16 +751,70 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - "Cancel" button (closes modal, no action)
 - "Delete" button (removes all messages from conversation)
 
-#### **Admin Panel**
-- Django admin interface at `/admin`
-- Full CRUD on OwnerProfile, Dog, Connection, and Message models
-- **MessageAdmin Customization**:
-  - Displays: sender dog name, receiver dog name, creation date
-  - Search by dog name (searches both sender and receiver dog names)
-  - Filter messages by creation date
-  - Read-only timestamp field to prevent accidental modification
-- Delete records for moderation (default Django delete functionality)
-- Default Django User management (permissions, groups, password management) available through admin
+<p align="center">
+  <img src="docs/images/Delete_Convo_Modal.png" alt="Delete conversation confirmation modal" style="width: 35%; max-width: 380px; height: auto;">
+</p>
+
+#### **Footer**
+- Social media links (Twitter, Instagram, Facebook) opening in new tabs
+- Copyright information (2026 Pawfect Match)
+- Use of Font Awesome icons for social platforms
+- Consistent placement on all pages
+- ARIA labels are present on social links for screen-reader support
+
+<p align="center">
+  <img src="docs/images/Footer.png" alt="Website footer" style="width: 70%; max-width: 1200px; height: auto;">
+</p>
+
+### Error Pages
+All custom error pages (404, 403, 405, 500) share the same branded layout and recovery flow:
+
+- Same visual template with site branding and sad dog illustration
+- Same recovery actions: **Back to Home** + **Browse Dogs**
+- Same unauthenticated behavior on **Browse Dogs**: redirect to Sign In first, then continue to Browse Dogs
+- No sensitive internal error details are exposed to users
+
+#### Error Page Details
+
+| Error Code | Title Shown | Message Shown |
+|---|---|---|
+| **404** | Page Not Found | "Sorry, this page isn't a match... Maybe try to navigate to another one?" |
+| **403** | Access Forbidden | "Sorry, you don't have permission to access this page." |
+| **405** | Method Not Allowed | "Sorry, this request method is not allowed for this page." |
+| **500** | Server Error | "Oops! Something went wrong on our end. We're working on fixing it!" |
+
+#### Error Page Screenshots
+
+<p align="center">
+  <img src="docs/images/Error_404.png" alt="404 error page" style="width: 30%; max-width: 380px; height: 350px; margin: 8px;">
+  <img src="docs/images/Error_403.png" alt="403 error page" style="width: 30%; max-width: 380px; height: 350px; margin: 8px;">
+</p>
+<p align="center">
+  <img src="docs/images/Error_405.png" alt="405 error page" style="width: 30%; max-width: 380px; height: 350px; margin: 8px;">
+  <img src="docs/images/Error_500.png" alt="500 error page" style="width: 30%; max-width: 380px; height: 350px; margin: 8px;">
+</p>
+
+#### **Responsiveness**
+- Fully responsive layout from mobile to desktop across public, auth, and app pages
+- Mobile-first styling with Bootstrap utilities plus custom media queries (including 768px, 992px, 1200px, 1400px, and 1800px breakpoints)
+- Collapsible navigation on smaller screens with hamburger toggles in both public and authenticated navbars
+- JavaScript auto-collapse behavior on mobile nav (closes on nav-link click and outside click)
+- Flexible image/card sizing using fluid widths and max-width rules
+
+#### **Accessibility**
+- ARIA attributes are implemented on key interactive UI elements (navigation toggles, action buttons, back buttons, and modal dialogs)
+- Descriptive `alt` text is provided throughout templates for profile photos, placeholders, and illustrations
+- Messaging UI includes an `aria-live="polite"` region so conversation updates are announced to assistive technologies
+- Custom focus styling is applied on several components (for example nav links and form controls)
+
+#### **Base Templates**
+- **base.html**: Core layout with header, main, footer structure
+- **base_auth.html**: Layout used by public authentication pages (Home/Sign In/Sign Up navbar)
+- **base_app.html**: Layout used by authenticated app pages (Discover/Matches/Messages/Profile navbar)
+- Meta tags for SEO (description, viewport)
+- Favicon integration
+- Centralized loading of Bootstrap 5, Font Awesome, and custom assets
+- Django template blocks for flexible page-specific content
 
 ### Future Features
 
@@ -827,7 +903,7 @@ __Frameworks, Libraries & Programs Used__
 * [Visual Studio Git Source Control](https://learn.microsoft.com/en-us/visualstudio/version-control/git-with-visual-studio?view=vs-2022): was used to commit and push or pull changes to GitHub 
 * [Figma](https://www.figma.com/): was used to create the wireframes during the design process.
 * [ChatGPT](https://openai.com/chatgpt): was used to assist with grammar correction, code structure improvements, and README documentation organization
-* [Copilot in VS Code](https://code.visualstudio.com/docs/copilot/overview): was used to help with code completion, debugging, and suggesting best practices for JavaScript and python implementation
+* [Copilot in VS Code](https://code.visualstudio.com/docs/copilot/overview): was used to help with code completion, debugging, and suggesting best practices for JavaScript and Python implementation
 * [WAVE](https://wave.webaim.org/) & [Lighthouse](https://developer.chrome.com/docs/lighthouse): Used for accessibility testing to ensure that all content is readable and accessible to every user.
 * [HTML Validator](https://validator.w3.org/#validate_by_input): Confirmed the HTML code is valid, with no errors detected.
 * [CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input): Verified the CSS code, with no errors detected.
