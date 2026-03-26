@@ -38,17 +38,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = [".herokuapp.com", "127.0.0.1", "localhost"]
 
-ALLOW_IFRAME_EMBED = (
-    os.environ.get("ALLOW_IFRAME_EMBED", "false").lower() == "true"
-)
-if ALLOW_IFRAME_EMBED:
-    # Allow external preview tools to render the site in an iframe.
-    X_FRAME_OPTIONS = "ALLOWALL"
-    # In iframe previews, cookies are third-party and need SameSite=None.
-    CSRF_COOKIE_SAMESITE = "None"
-    SESSION_COOKIE_SAMESITE = "None"
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [

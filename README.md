@@ -143,11 +143,19 @@ The Django admin interface provides full management capabilities for all models:
 - Assign users to groups
 - Delete user accounts
 
+<p align="center">
+  <img src="docs/images/Django/Django_Users.png" alt="Django admin user management" style="width: 70%; max-width: 700px; height: auto;">
+</p>
+
 **Owner Profiles:**
 - View all owner profiles with their details
 - Edit profile information (name, age, city, occupation, interests, about_me)
 - Update profile photos
 - Delete owner profiles
+
+<p align="center">
+  <img src="docs/images/Django/Django_Owner_Profile.png" alt="Django admin owner profile management" style="width: 70%; max-width: 700px; height: auto;">
+</p>
 
 **Dog Profiles:**
 - View all dog profiles
@@ -155,17 +163,33 @@ The Django admin interface provides full management capabilities for all models:
 - Update dog photos
 - Delete dog profiles
 
+<p align="center">
+  <img src="docs/images/Django/Django_Dogs.png" alt="Django admin dog profile management" style="width: 70%; max-width: 700px; height: auto;">
+</p>
+
 **Connections (Matches):**
-- View all connections between all dogs in the database
+- View all like and dislike connections between dogs in the database
 - See from_dog and to_dog relationships for every match
 - Delete connections to unmatch dogs
+
+<p align="center">
+  <img src="docs/images/Django/Django_Dislikes.png" alt="Django admin dislike connections" style="width: 70%; max-width: 700px; height: auto;">
+</p>
+
+<p align="center">
+  <img src="docs/images/Django/Django_Likes.png" alt="Django admin like connections" style="width: 70%; max-width: 700px; height: auto;">
+</p>
 
 **Messages:**
 - View all messages sent between matched dogs
 - See sender, receiver, message content, and timestamp
 - Search messages by dog name
 - Filter messages by date
-- Delete message records
+- Delete messages
+
+<p align="center">
+  <img src="docs/images/Django/Django_Messages.png" alt="Django admin messages management" style="width: 70%; max-width: 700px; height: auto;">
+</p>
 
 ### CRUD Operations
 
@@ -189,7 +213,7 @@ The Django admin interface provides full management capabilities for all models:
 - **Delete**: Dog profile is deleted as part of account deletion
 
 #### **Connections (Matches)**
-- **Create**: Users can like dogs to create automatic bidirectional matches (no swipe-right/left waiting—instant connection)
+- **Create**: Users can like dogs to create automatic bidirectional matches (instant connection)
 - **Create**: Users can dislike dogs to remove them from their discovery feed
 - **Read**: Users can view all their matches in a dedicated matches list showing matched dogs and owner information
 - **Delete**: Users can unmatch individual connections from their matches list
@@ -200,44 +224,95 @@ The Django admin interface provides full management capabilities for all models:
 - **Read**: Users can view their inbox showing all conversations and read full message threads with each match
 - **Delete**: Users can delete entire conversation threads from their inbox
 
-#### **User Feedback**
-- "It's a match!" modal popup with photos when matches occur
-- Form validation error messages displayed on forms
+### **User Feedback**
+User feedback mechanisms guide users through actions, confirm their choices, and communicate validation errors or success states. The application implements multiple feedback types across the platform:
+
+**Confirmation Modals** (triggered before destructive actions):
+- **Reset Matches Modal**: "Are you sure you want to reset?" confirmation before clearing all matches, dislikes, and messages
+- **Delete Match Modal**: Warning with "Are you sure you want to delete this match?" when removing individual connections from matches list
+- **Delete Conversation Modal**: Confirmation popup before permanently deleting entire message threads with matched dogs
+- **Delete Account Modal**: Warning modal explaining permanent deletion of user profile, dog profile, all matches, and all conversations
+
+**Empty States**:
+- **No Dogs Available**: "No more dogs to discover" message on browse page with "Reset Matches" button to restart discovery
+- **No Matches**: "No matches yet" message on matches page when user has not created any connections
+- **No Messages**: "No messages yet" message on inbox and "No conversations" message when user has not sent messages to any match
+- **Empty Conversation Thread**: "Start your conversation with [dog name]! 🐾" message when opening a new message thread with a match
+
+**Success Pages**:
+- **Password Reset Success**: Dedicated page displaying "Password Reset Successful!" with happy dog illustration and navigation button to sign in
+
+**Custom Error Pages** (branded with dog theme and recovery navigation):
+- **404 - Page Not Found**: "Sorry, this page isn't a match... Maybe try to navigate to another one?" with sad dog illustration and recovery buttons ("Back to Home", "Browse Dogs")
+- **403 - Access Forbidden**: "Sorry, you don't have permission to access this page." with recovery buttons ("Back to Home", "Browse Dogs")
+- **405 - Method Not Allowed**: "Sorry, this request method is not allowed for this page." with recovery buttons ("Back to Home", "Browse Dogs")
+- **500 - Server Error**: "Oops! Something went wrong on our end. We're working on fixing it!" with recovery buttons ("Back to Home", "Browse Dogs")
+- **Browse Dogs redirect behavior**: If the user is not authenticated and clicks "Browse Dogs" on an error page, they are redirected to Sign In first, then returned to Browse Dogs after successful login.
+
+**Real-Time Feedback** (live UX enhancements during form interaction):
+- **Character Counter**: Live display of character count (e.g., "45/150") on "About me" textareas as users type, with visual indicator when approaching max length
+- **Image Upload Preview**: Photo preview displayed immediately after selecting file before form submission
+- **Drag-and-Drop Feedback**: Visual feedback when dragging files over upload area (highlight/border changes)
+- **Interest Selection Limit**: Visual feedback when user attempts to select more than 3 interests (max limit enforcement with disabled state)
+
+**Form Validation Errors** (displayed after form submission attempt):
+- **Email Format Validation**: "Enter a valid email address" when invalid email format is entered
+- **Duplicate Account**: "An account with this email already exists" preventing duplicate registrations
+- **Password Confirmation Mismatch**: "Passwords do not match" when password and confirmation field differ
+- **Password Strength Requirements**: Individual error messages for each unmet requirement:
+  - "Must contain at least one uppercase letter (A–Z)"
+  - "Must contain at least one digit (0–9)"
+  - "Must contain at least one special character (!@#$%^&*)"
+  - "Must be at least 8 characters long"
+- **Invalid Login**: "No account found with this email address" when user enters non-existent email during sign in
+- **Required Field Validation**: "This field is required" for missing mandatory fields (name, age, photo, etc.)
+- **File Size Validation**: "File too large (X.X MB) — maximum allowed size is 9.5 MB" when uploaded photo exceeds size limit
+- **Non-Field Errors**: Global form errors displayed at top of form (e.g., invalid login credentials, form submission errors)
+
+**Match Modal** (triggered on bidirectional like):
+- **"It's a Match!" Modal**: Displays side-by-side photos of both matched dogs with congratulations message, "Send Message" button to start conversation, "View Matches" button to view all matches, and gray "×" close button to dismiss and continue browsing
+
+**Visual Error Indicators** (on form fields):
+- Invalid fields display with red border highlighting the problematic input
+- Error messages appear directly below relevant form fields in red text
+- Required field indicators show asterisk (*) in labels and "required" attribute on HTML inputs
+- Password visibility toggle with eye icon allows users to verify password entry before submission
 
 ### Database Schema
 
-The system uses the Django ORM with a PostgreSQL database in production (via `DATABASE_URL`). The core data model is focused on owners, dogs, matches, and messaging, with emphasis on relational integrity and data consistency.
+The app uses Django ORM models, with PostgreSQL in production via `DATABASE_URL`.
 
 #### Core Models & Relationships
 
-**1. User (Django Built-in Auth Model)**
-   - **Purpose:** Core authentication and account management
-   - **Fields:**
-     - `username` (CharField, unique) — Email address used for login
-     - `email` (EmailField) — Primary contact email
-     - `password` (CharField) — Hashed password via Django's password hashing
-     - `first_name`, `last_name` (CharField) — Optional displayable name
-     - `is_active` (BooleanField) — Soft delete flag (inactive = hidden from system)
-     - `is_staff`, `is_superuser` (BooleanField) — Permission levels
-     - `date_joined` (DateTimeField) — Account creation timestamp
-   - **Primary Key:** id (auto-increment integer)
-   - **Constraints:** Username and email must be unique
-   - **Cascade Behavior:** Deleting User cascades to OwnerProfile → Dog → all connections/messages
+**1. User (Django built-in auth model)**
+- **Purpose:** Authentication and session identity
+- **Project behavior:** Registration stores the same email in both `username` and `email`
+- **Key fields:**
+  - `id` (AutoField, primary key)
+  - `username` (CharField, unique)
+  - `email` (EmailField)
+  - `password` (CharField, hashed)
+  - `is_active` (BooleanField)
+  - `is_staff` (BooleanField)
+  - `is_superuser` (BooleanField)
+  - `date_joined` (DateTimeField)
+- **Primary Key:** `id`
+- **Constraint:** `username` is unique (Django default)
+- **Note:** `email` is not model-level unique by default
 
 **2. OwnerProfile (OneToOne with User)**
    - **Purpose:** Store human owner information (not the dog's data)
    - **Fields:**
-     - `user` (OneToOneField → User) — Link to authentication user
-     - `profile_photo` (CloudinaryField) — Owner's avatar (10MB max)
-     - `name` (CharField) — Human owner's name
-     - `age` (IntegerField) — Owner's age (for human-to-human compatibility)
-     - `city` (CharField) — Location for proximity awareness
-     - `occupation` (CharField) — Job title
-     - `interests` (TextField) — Comma-separated list (e.g., "hiking, beaches, sports")
-     - `about_me` (TextField, 500 char limit) — Owner's bio
+     - `user` (OneToOneField -> User, `on_delete=CASCADE`)
+     - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) - Owner's avatar (10MB max)
+      - `name` (CharField, `max_length=100`) — Human owner's name
+     - `age` (PositiveIntegerField, nullable) — Owner's age (for human-to-human compatibility)
+     - `city` (CharField, `max_length=100`) — Location for proximity awareness
+     - `occupation` (CharField, `max_length=100`, blank) — Job title
+     - `interests` (CharField, `max_length=255`, blank) — Comma-separated list (e.g., "hiking, beaches, sports")
+     - `about_me` (TextField, `max_length=150`, blank) — Owner's bio
      - `completed` (BooleanField) — Onboarding completion flag
      - `created_at` (DateTimeField) — Profile creation timestamp
-     - `updated_at` (DateTimeField) — Last modification timestamp
    - **Primary Key:** id (auto-increment integer)
    - **Relationship:** 1 OwnerProfile per User (OneToOne)
    - **Constraints:** user field is unique (enforces one profile per user)
@@ -246,174 +321,158 @@ The system uses the Django ORM with a PostgreSQL database in production (via `DA
 **3. Dog (OneToOne with OwnerProfile)**
    - **Purpose:** Store dog profile data for matching
    - **Fields:**
-     - `owner` (OneToOneField → OwnerProfile) — Link to owning human
-     - `profile_photo` (CloudinaryField) — Dog's photo (10MB max)
-     - `name` (CharField) — Dog's name
-     - `age` (IntegerField) — Dog's age in years
-     - `breed` (CharField) — Dog breed (e.g., "Golden Retriever", "Labrador")
-     - `size` (CharField, choices) — Dog size: Small, Medium, Large
+     - `owner` (OneToOneField -> OwnerProfile, `on_delete=CASCADE`) — Link to owning human
+     - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) — Dog's photo (10MB max)
+     - `name` (CharField, `max_length=100`) — Dog's name
+     - `age` (PositiveIntegerField, nullable) — Dog's age in years
+     - `breed` (CharField, `max_length=100`) — Dog breed (e.g., "Golden Retriever", "Labrador")
+     - `size` (CharField, choices) — Small, Medium, Large
      - `gender` (CharField, choices) — Male or Female
-     - `energy_level` (CharField, choices) — Low, Medium, High (for activity compatibility)
-     - `about_me` (TextField, 500 char limit) — Dog's personality description
+     - `energy_level` (CharField, choices) — Couch potato, Chill vibes, Playful, Energetic, Full zoomies
+      - `about_me` (TextField, `max_length=150`) — Dog's personality description
      - `completed` (BooleanField) — Onboarding completion flag
      - `created_at` (DateTimeField) — Profile creation timestamp
-     - `updated_at` (DateTimeField) — Last modification timestamp
    - **Primary Key:** id (auto-increment integer)
    - **Relationship:** 1 Dog per OwnerProfile (OneToOne)
    - **Constraints:** owner field is unique, enum validation on size/gender/energy_level
-   - **Cascade Behavior:** Deleting Dog cascades to Connection/Dislike/Message entries
+   - **Cascade Behavior:** Deleting Dog cascades to Like/Dislike/Message entries.
 
-**4. Connection (Bidirectional Match)**
-   - **Purpose:** Track bidirectional likes between dogs (mutual interest = instant match)
+**4. Like (matching relationship)**
+   - **Purpose:** Track like relationships between dogs (the app creates the reciprocal like immediately, resulting in an instant match)
    - **Fields:**
      - `from_dog` (ForeignKey → Dog) — The dog who initiated the like
      - `to_dog` (ForeignKey → Dog) — The dog being liked
      - `created_at` (DateTimeField) — When the like occurred
    - **Primary Key:** id (auto-increment integer)
-   - **Indexes:** Composite index on (from_dog, to_dog) for fast lookup
-   - **Unique Constraint:** One entry per from_dog → to_dog pair (prevents duplicate likes)
-   - **Match Logic:** 
-     - When `dog1.like(dog2)` → Connection(from_dog=dog1, to_dog=dog2) created
-     - When `dog2.like(dog1)` → Connection(from_dog=dog2, to_dog=dog1) created (MATCH!)
-     - Both entries exist = Bidirectional match = users can message
-   - **Cascade Behavior:** Deleting either dog cascades to delete the connection
+   - **Constraint:** Unique pair (`from_dog`, `to_dog`) via `unique_connection`
+   - **Match Logic:**
+     - When a user likes a dog, the app creates both Like records immediately:
+       - `Like(from_dog=dog1, to_dog=dog2)`
+       - `Like(from_dog=dog2, to_dog=dog1)`
+     - This creates an instant bidirectional match.
+     - Messaging is allowed once this reciprocal pair exists.
+   - **Cascade Behavior:** Deleting either dog cascades to related Like entries.
 
 **5. Dislike (Skip Tracking)**
-   - **Purpose:** Track dogs user has skipped to exclude from future browsing
+   - **Purpose:** Track dogs a user has skipped to exclude from future browsing
    - **Fields:**
      - `from_dog` (ForeignKey → Dog) — The dog doing the skipping
      - `to_dog` (ForeignKey → Dog) — The dog being skipped
      - `created_at` (DateTimeField) — When the skip occurred
    - **Primary Key:** id (auto-increment integer)
-   - **Unique Constraint:** One entry per from_dog → to_dog pair
-   - **Cascade Behavior:** Deleting either dog cascades to delete the dislike
+   - **Constraint:** Unique pair (`from_dog`, `to_dog`) via `unique_dislike`
+   - **Cascade Behavior:** Deleting either dog cascades to related Dislike entries.
 
-**6. Message (Conversation Thread)**
-   - **Purpose:** Store messages between matched dogs
+*6. Message (Conversation Thread)**
+   - **Purpose:** Store messages between dogs that are allowed to message each other
    - **Fields:**
      - `sender_dog` (ForeignKey → Dog) — Dog sending the message
      - `receiver_dog` (ForeignKey → Dog) — Dog receiving the message
-     - `content` (TextField) — Message body (no char limit, but UI enforces reasonableness)
+     - `content` (TextField) — Message body
      - `created_at` (DateTimeField) — When message was sent (auto-set on creation)
-   - **Primary Key:** id (auto-increment integer)
-   - **Indexes:** Index on (sender_dog, receiver_dog, created_at) for efficient thread retrieval
-   - **Constraint:** Messages can only be sent between dogs with an active Connection
-   - **Cascade Behavior:** Deleting either dog cascades to delete all messages
+   - **Primary Key:** id (BigAutoField, auto-increment)
+   - **Default ordering:** newest first (`-created_at`)
+   - **Access Rule (view-level):** Messaging routes only allow access when both dogs are matched (reciprocal likes).
+   - **Cascade Behavior:** Deleting either dog cascades to delete related Message entries.
 
 #### Data Flow Examples
 
-**Example 1: User Registration → Browsing**
-```
-1. User registers with email "owner1@example.com", password
-2. User object created (username = email, hashed password stored)
-3. OwnerProfile created automatically with user.OneToOne
-4. Dog profile created automatically linked to OwnerProfile
-5. User can now browse other dogs on /discover
-```
+**Example 1: Registration flow**
+1. User registers with email/password.
+2. User is created with `username=email` and `email=email`.
+3. OwnerProfile is created (or reused when resuming incomplete registration).
+4. Dog is created (or reused) and linked to OwnerProfile.
 
-**Example 2: Matching & Messaging**
-```
-1. Owner1's dog "Buddy" (id=1) browses Owner2's dog "Max" (id=2)
-2. Clicks "Like" → Connection(from_dog=1, to_dog=2) created
-3. Owner2's dog "Max" browses "Buddy" and clicks "Like"
-4. → Connection(from_dog=2, to_dog=1) created
-5. BOTH connections exist = MATCH!
-6. Users can now Message via:
-   - Message(sender_dog=1, receiver_dog=2)
-   - Message(sender_dog=2, receiver_dog=1)
-```
+**Example 2: Like -> match -> message**
+1. User likes a dog on browse page.
+2. The app creates both like directions immediately.
+3. The pair appears as a match.
+4. Messaging routes validate match status before allowing thread access.
 
-**Example 3: Account Deletion (Cascade)**
-```
-1. User deletes account
-2. User.delete() triggers cascade:
-   → OwnerProfile.delete()
-     → Dog.delete()
-       → All Connection entries (from_dog or to_dog = this dog).delete()
-       → All Dislike entries.delete()
-       → All Message entries (sender or receiver = this dog).delete()
-3. Result: User data completely purged from system
-```
+**Example 3: Cascade behavior**
+1. If a `User` is deleted, related OwnerProfile is deleted.
+2. OwnerProfile deletion cascades to Dog.
+3. Dog deletion cascades to Like/Dislike/Message rows referencing that dog.
 
-#### Schema Characteristics & Constraints
+#### Schema Characteristics
 
 | Characteristic | Implementation | Benefit |
 |---|---|---|
 | **One-to-One Relationships** | User ↔ OwnerProfile ↔ Dog | Enforces one profile per user, one dog per owner |
-| **Foreign Keys** | Dog → Connection/Dislike/Message | Referential integrity, prevents orphaned data |
-| **Cascade Delete** | All relationships configured | Data consistency when user deletes account |
-| **Unique Constraints** | (from_dog, to_dog) on Connection/Dislike | Prevents duplicate likes/skips |
+| **Foreign Keys** | Dog → Like/Dislike/Message | Referential integrity, prevents orphaned data |
+| **Cascade Delete** | All model relationships use on_delete=CASCADE | Data consistency when related records are removed |
+| **Unique Constraints** | (from_dog, to_dog) on Like and Dislike | Prevents duplicate likes/skips |
 | **Choice Fields** | size, gender, energy_level enums | Data validation, enables filtering |
-| **Timestamps** | created_at, updated_at on all models | Audit trail, sorting by recency |
-| **Nullable Fields** | profile_photo (but required for UX) | Flexibility for future changes |
-| **Indexing** | Composite indexes on frequently queried fields | Optimized database performance |
+| **Timestamps** | created_at on OwnerProfile, Dog, Like, Dislike, Message | Supports chronological sorting and audit trail |
+| **Nullable Fields** | profile_photo and age are nullable in OwnerProfile/Dog | Flexible onboarding and profile completion |
 
 ### Skeleton
 
 ### Wireframes
-   Made in figma
+  I created my wireframes for mobile, tablet, and desktop in Figma.
 
- - Wireframes created during planning for the main flows:
-    - Home and onboarding: hero CTA, "How it works" steps, and value props.
-    - Authentication: sign up, sign in, and password reset entry.
-    - Create owner profile: photo, name, age, city, occupation, interests, and bio.
-    - Create dog profile: photo, name, age, breed, size, gender, energy, and bio.
-    - Discover: dog/owner toggle card with like/dislike actions and match modal.
-    - Matches: grid of matched profiles, delete match action, and empty state.
-    - Messaging: inbox list, message thread view, and empty thread state.
-    - Profile: view owner and dog cards, edit profile flows, and delete profile modal.
+  You can check them using the link below:
+  [Wireframes - Pawfect Match](https://www.figma.com/design/7Dnk6QozSPTGbcHryCtArd/Wireframes---Pawfect-Match?node-id=308-751&t=LqSZ8Gs9Ul4dpW20-1)
 
 ### Surface
 
 #### Visual Style
 
 **Design:**
-Warm, friendly, and playful UI with rounded elements and soft shadows.
+A warm, friendly, and playful interface built around soft cards, rounded corners, and subtle shadows. The UI uses a pet-dating visual language with clear CTAs, image-focused profile cards, and a consistent component style across forms, browsing, matches, messaging, and modals.
 
 **Typography:**
-Roboto Flex with bold, readable headings for clarity.
+Roboto Flex is used as the primary typeface for strong readability and clean hierarchy, with heavier weights for headings and action labels. Typography stays simple and legible to support quick scanning on mobile and desktop.
 
 #### Colors 
-Orange brand palette for energy and warmth, balanced with light backgrounds.
+The UI uses a token-based warm palette paired. Lighter orange tones are used for page and section backgrounds, while stronger orange is used for emphasis and actions, with white surfaces to keep contrast and readability clear.
+
+<p align="center">
+  <img src="docs/images/Color.png" alt="Pawfect Match color palette" style="width: 32%; max-width: 300px; height: auto;">
+</p>
+
 
 ## Features
 
 ### Universal Features Across the Site
 
 #### **Responsiveness**
-- Fully responsive design adapting seamlessly from mobile to desktop
-- Mobile-first approach using Bootstrap 5 grid system and custom media queries
-- Collapsible navigation menu on smaller screens with hamburger toggle
-- Flexible layouts that reflow content based on viewport size
-- Optimized images with responsive sizing for faster load times
+- Fully responsive layout from mobile to desktop across public, auth, and app pages
+- Mobile-first styling with Bootstrap utilities plus custom media queries (including 768px, 992px, 1200px, 1400px, and 1800px breakpoints)
+- Collapsible navigation on smaller screens with hamburger toggles in both public and authenticated navbars
+- JavaScript auto-collapse behavior on mobile nav (closes on nav-link click and outside click)
+- Flexible image/card sizing using fluid widths and max-width rules
 
 #### **Accessibility**
-- ARIA labels on all interactive elements (buttons, links, modals, form inputs)
-- Descriptive alt text on all images describing visual content
-- Focus states visible on all interactive components for keyboard navigation
+- ARIA attributes are implemented on key interactive UI elements (navigation toggles, action buttons, back buttons, and modal dialogs)
+- Descriptive `alt` text is provided throughout templates for profile photos, placeholders, and illustrations
+- Messaging UI includes an `aria-live="polite"` region so conversation updates are announced to assistive technologies
+- Custom focus styling is applied on several components (for example nav links and form controls)
 
 #### **Navigation**
-- **Public Users**: Simplified navbar with:
-  - Home: Hero section and value propositions
-  - How it works: Step-by-step guide
-  - Why Pawfect Match: Benefits overview
-
-- **Authenticated Users**: Persistent navigation bar with links to:
-  - Discover: Browse dog profiles
-  - Matches: View matched connections
-  - Messages: Access inbox and conversations
-  - Profile: View and edit personal profiles
-  - Log out: End session
-
-- Auto-collapse on mobile when navigation link is clicked
-- Consistent navbar styling across all authenticated pages
+- **Public Homepage Navigation**:
+  - Home
+  - How it works 
+  - Why Pawfect Match 
+- **Public Auth Navigation (register/sign in pages)**:
+  - Home
+  - Sign In
+  - Sign Up
+- **Authenticated Navigation**:
+  - Discover
+  - Matches
+  - Messages
+  - Profile
+  - Log out
+- Auto-collapse behavior is enabled for mobile nav menus via JavaScript
+- Shared navbar styling remains consistent across app pages
 
 #### **Footer**
 - Social media links (Twitter, Instagram, Facebook) opening in new tabs
 - Copyright information (2026 Pawfect Match)
 - Use of Font Awesome icons for social platforms
 - Consistent placement on all pages
-- Accessible with proper ARIA labels on social links (screen reader announces "Twitter", "Instagram", "Facebook")
+- ARIA labels are present on social links for screen-reader support
 
 #### **Input Fields & Forms**
 - Custom form styling with CSS for consistent appearance across all forms
@@ -423,10 +482,12 @@ Orange brand palette for energy and warmth, balanced with light backgrounds.
 - Image upload preview before form submission
 - Drag-and-drop support for photo uploads
 - Placeholder text for guidance
+- Live character counters for textareas using
 
 #### **Base Templates**
 - **base.html**: Core layout with header, main, footer structure
-- **base_auth.html**: Extended layout for authenticated user pages
+- **base_auth.html**: Layout used by public authentication pages (Home/Sign In/Sign Up navbar)
+- **base_app.html**: Layout used by authenticated app pages (Discover/Matches/Messages/Profile navbar)
 - Meta tags for SEO (description, viewport)
 - Favicon integration
 - Centralized loading of Bootstrap 5, Font Awesome, and custom assets
@@ -440,43 +501,38 @@ Orange brand palette for energy and warmth, balanced with light backgrounds.
 - Sad dog illustration for emotional connection
 - Clear navigation options:
   - "Back to Home" button for all users
-  - "Browse Dogs" button for authenticated users, "Get Started" button for guests
+  - "Browse Dogs" button for all users
+  - If user is not authenticated, clicking "Browse Dogs" redirects to Sign In first, then returns to Browse Dogs after login
 - Maintains site header/footer for consistent user experience
 - Prevents user frustration with friendly, helpful design
 
 #### **403 - Forbidden (Access Denied)**
 - Custom-designed error page matching site branding
-- Clear message: "Looks like this profile is private" or similar dating-themed wording
-- Explains that the user doesn't have permission to access the requested resource
+- Error title: "Access Forbidden"
+- Message shown: "Sorry, you don't have permission to access this page."
 - Navigation options:
-  - "Back to Home" button for all users
-  - "Browse Dogs" or "Back" button to return to previous page or dashboard
-  - Log in prompt for unauthenticated users (if attempting to access authenticated-only pages)
-- Maintains site branding consistency with header/footer
-- Friendly tone prevents user frustration
+  - "Back to Home" button
+  - "Browse Dogs" button (unauthenticated users are redirected to Sign)
+- Shares the same branded error layout and illustration as other custom error pages
 
 #### **405 - Method Not Allowed**
 - Custom-designed error page matching site branding
-- Clear message: "That's not allowed here" with dog/dating theme explanation
-- Indicates that the HTTP method (GET, POST, PUT, DELETE, etc.) is not allowed for the requested resource
+- Error title: "Method Not Allowed"
+- Message shown: "Sorry, this request method is not allowed for this page."
+- Indicates that the HTTP method used is not allowed for the requested route
 - Navigation options:
   - "Back to Home" button
-  - "Back to Previous Page" button
-  - Search or Browse Dogs links
-- Maintains site header/footer for consistency
-- Help text explaining that the action attempted is not supported for this resource
+  - "Browse Dogs" button (with Sign In redirect for unauthenticated users)
+- Maintains the same shared error layout for consistency
 
 #### **500 - Internal Server Error**
 - Custom-designed error page matching site branding
 - Concerned/apologetic dog illustration
-- Clear message: "Oh no! Something went wrong on our end" or similar messaging
-- Reassuring text explaining that the team is working on fixing the issue
+- Error title: "Server Error"
+- Message shown: "Oops! Something went wrong on our end. We're working on fixing it!"
 - Navigation options:
-  - "Back to Home" button (primary action)
-  - "Try Again" button to refresh the current page
-  - "Contact Support" link (if applicable)
-- Maintains site header/footer for consistency
-- Logging of error for debugging purposes (backend)
+  - "Back to Home" and "Browse Dogs" actions (same behavior as other custom error pages)
+- Maintains the shared branded error layout for consistency
 - Prevents sensitive error details from being displayed to users
 
 ### Features Specific to Pages
@@ -778,6 +834,42 @@ __Frameworks, Libraries & Programs Used__
 * [JS-Beautify](https://beautifier.io/): Checked the formatting and structure of the HTML and CSS for consistency and readability.
 
 ## Testing 
+
+### Validation
+
+#### Backend Validation
+- All form submissions are validated server-side with Django forms (`form.is_valid()`) before any database write.
+- **RegisterForm** validates:
+  - email format (`EmailField`)
+  - duplicate account prevention for fully completed accounts
+  - password confirmation match
+  - Django built-in password validators (`validate_password`)
+  - custom password strength rules (at least one uppercase letter, one digit, and one special character)
+- **ForgotPasswordForm** validates:
+  - email exists in the database
+  - password confirmation match
+  - Django built-in password validators + custom password strength rules
+- **OwnerProfileForm** and **DogForm** validate:
+  - required fields server-side
+  - profile photo presence
+  - profile photo max size (9.5 MB)
+  - safe handling of existing photo during edit
+- Model-level constraints validate profile data structure:
+  - `PositiveIntegerField` for `age`
+  - `choices` for dog `size`, `gender`, and `energy_level`
+- Validation errors are rendered back to users directly on form pages through field and non-field form errors.
+
+#### Frontend Validation
+- Required fields are marked in the UI and required attributes are set on owner/dog form fields.
+- Input constraints are applied through form widgets, including:
+  - `maxlength="150"` on About Me textareas
+  - `type="number"` on age fields
+  - `accept="image/*"` on profile photo inputs
+- JavaScript adds client-side UX validation helpers:
+  - live character counters for textareas with max length
+  - interest selection limit (max 3)
+  - image upload preview + drag-and-drop handling
+- Owner/Dog profile forms use `novalidate`, so they rely on custom UI behavior plus backend validation as the final source of truth.
 
 ### Validator Testing
 
