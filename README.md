@@ -835,7 +835,7 @@ All custom error pages (404, 403, 405, 500) share the same branded layout and re
 The following features are planned for future releases to enhance user experience and expand platform capabilities:
 
 #### **Real-Time Communication**
-- **Live Chat**: WebSocket-based instant messaging replacing current page-reload messaging
+- **Live Chat**: Instant messaging replacing current page-reload messaging
 - **Push Notifications**: Browser notifications for new matches, messages, and likes
 - **Online Status Indicators**: Show when matched users are currently active
 - **Typing Indicators**: Real-time "..." display when other user is typing
@@ -853,7 +853,7 @@ The following features are planned for future releases to enhance user experienc
   - Dog size and breed compatibility
   - Owner interests overlap
   - Geographic proximity
-  - Energy level compatibility
+  - Dog energy level compatibility
   - User preferences and behavior
 
 #### **Enhanced Profiles**
@@ -869,13 +869,12 @@ The following features are planned for future releases to enhance user experienc
 #### **Safety & Moderation**
 - **Block/Report User**: Report inappropriate behavior or block users
 - **Safety Center**: In-app dating safety tips and resources
-- **Emergency Contact Sharing**: Optional feature to share location during first meetings
 
 #### **Social Features**
 - **Events & Meetups**: Create and join local dog park meetups or playdates
 - **Social Media Integration**:
   - Share profile to Instagram/Facebook
-  - Login with Facebook/Google
+  - Login with Facebook/Google/Apple
 
 #### **Communication Enhancements**
 - **Voice Messages**: Send audio clips in conversations
@@ -885,9 +884,9 @@ The following features are planned for future releases to enhance user experienc
 
 #### **Premium/Paid Features**
 - **Subscription Plans**:
-  - **Free**: Basic matching and messaging with ads
-  - **Premium ($9.99/month)**: Unlimited likes, see who liked you first, priority profile visibility, ad-free experience
-  - **Premium Plus ($19.99/month)**: All Premium features + profile boost, advanced filters, read receipts
+  - **Free**: Basic matching with limited likes and ads
+  - **Premium**: Unlimited likes, see who liked you first, priority profile visibility, ad-free experience
+  - **Premium Plus**: All Premium features + profile boost, advanced filters
   
 - **In-App Purchases**:
   - Super likes (show extra interest)
@@ -904,7 +903,7 @@ __Languages Used__
 * [HTML5](https://en.wikipedia.org/wiki/HTML5)
 * [CSS](https://en.wikipedia.org/wiki/CSS)
 * [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
-* [Python](https://en.wikipedia.org/wiki/Python_(programming_language)
+* [Python](https://en.wikipedia.org/wiki/Python_(programming_language))
   
 __Frameworks, Libraries & Programs Used__
 
@@ -912,16 +911,18 @@ __Frameworks, Libraries & Programs Used__
 * [Google Fonts](https://fonts.google.com/): was used to import the 'Baloo 2', 'Quicksand', and 'Poppins' fonts into the style.css 
 * [Font Awesome](https://fontawesome.com/): was used to add icons for aesthetic and UX purposes.
 * [GitHub](https://github.com/): is used as the repository for the project's code after being pushed from Git.
-* [Heroku](https://www.heroku.com/):
-* [Photoshop](https://www.adobe.com/uk/products/photoshop.html): was used for early design to help get a better idea of which colors and images would suit the website. It was also used to resize and edit pictures, as well as create the menus and color palette
+* [Heroku](https://www.heroku.com/): was used to deploy and host the live web application with PostgreSQL database integration and automatic builds from Git pushes.
+* [Photoshop](https://www.adobe.com/uk/products/photoshop.html): was used to create the color palette and perform image editing tasks such as background removal and image adjustments on key project images
 * [Visual Studio Git Source Control](https://learn.microsoft.com/en-us/visualstudio/version-control/git-with-visual-studio?view=vs-2022): was used to commit and push or pull changes to GitHub 
 * [Figma](https://www.figma.com/): was used to create the wireframes during the design process.
 * [ChatGPT](https://openai.com/chatgpt): was used to assist with grammar correction, code structure improvements, and README documentation organization
 * [Copilot in VS Code](https://code.visualstudio.com/docs/copilot/overview): was used to help with code completion, debugging, and suggesting best practices for JavaScript and Python implementation
+* [CI Python Linter](https://pep8ci.herokuapp.com/): was used to validate Python code for PEP8 compliance across all app files.
 * [WAVE](https://wave.webaim.org/) & [Lighthouse](https://developer.chrome.com/docs/lighthouse): Used for accessibility testing to ensure that all content is readable and accessible to every user.
 * [HTML Validator](https://validator.w3.org/#validate_by_input): Confirmed the HTML code is valid, with no errors detected.
 * [CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input): Verified the CSS code, with no errors detected.
 * [JS-Beautify](https://beautifier.io/): Checked the formatting and structure of the HTML and CSS for consistency and readability.
+* [Cloudinary]()
 
 ## Testing 
 
@@ -963,87 +964,13 @@ __Frameworks, Libraries & Programs Used__
 
 ### Validator Testing
 
-#### HTML Validation
-- **Tool**: [W3C HTML Validator](https://validator.w3.org/)
+Since Django uses a templating language, the template code is not valid HTML. To validate the rendered output, I extracted the HTML from the browser's DevTools (via page source and inspect element) and pasted it into the [W3C HTML Validator](https://validator.w3.org/). All 24+ pages validated with no errors.
 
-- **Method**: Due to Django's templating language, all rendered HTML was extracted via:
-  - Browser DevTools page source view
-  - Browser DevTools inspect element (view as HTML)
+The CSS file was validated with [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) with no errors detected.
 
-- **Pages Validated**: All 24+ HTML templates across the application
+All Python files were validated for PEP8 compliance using [CI Python Linter](https://pep8ci.herokuapp.com/) with no linting errors. Standards followed: [PEP 8](https://www.python.org/dev/peps/pep-0008/) and [PEP 257](https://www.python.org/dev/peps/pep-0257/) for docstrings.
 
-- **Coverage**:
-  - Authentication pages (register, sign_in, forgot_password, password_reset_success)
-  - Profile pages (create_owner_profile, view_profile, edit_owner_profile, edit_dog_profile)
-  - Matching pages (browse_dogs, matches_list)
-  - Messaging pages (inbox, thread)
-  - Error pages (404, 403, 405, 500)
-  - Public pages (home, base templates)
-
-- **Result**: All pages validate without errors
-- **Standards**: HTML5 semantic markup compliant
-
-#### CSS Validation
-- **Tool**: [W3C CSS Validator](https://jigsaw.w3.org/css-validator/)
-
-- **File**: `static/css/style.css` (1,911 lines)
-
-- **Coverage**:
-  - CSS variables and custom properties
-  - Responsive design (5 media query breakpoints)
-  - Flexbox and CSS Grid layouts
-  - CSS animations and transitions
-  - Bootstrap 5 integration
-
-- **Result**: Valid CSS3 with no errors
-
-#### Python Code - PEP8 Compliance
-- **Tool**: CI Python Linter for PEP8 standards
-
-- **Files Validated**: All Python files across 5 Django apps
-
-  - `accounts/` (forms.py, views.py, urls.py, models.py)
-  - `profiles/` (forms.py, views.py, models.py)
-  - `dogs/` (forms.py, views.py, models.py)
-  - `connections/` (views.py, models.py)
-  - `messaging/` (forms.py, views.py, models.py)
-  - `pawfect_match/` (settings.py, urls.py)
-
-- **Coverage**:
-  - Import organization (stdlib → third-party → local)
-  - Naming conventions (snake_case functions, PascalCase classes)
-  - Docstring formatting (Google-style with Args, Returns, Raises)
-  - Line length and whitespace
-  - Indentation (4 spaces, no tabs)
-
-- **Result**: All files PEP8 compliant, no linting errors
-
-- **Standards**: [PEP 8](https://www.python.org/dev/peps/pep-0008/) and [PEP 257](https://www.python.org/dev/peps/pep-0257/) for docstrings
-
-#### JavaScript Validation
-- **Tool**: [JSHint](https://jshint.com/)
-
-- **File**: `static/js/main.js` (1,113 lines)
-
-- **Coverage**:
-  - Navbar collapse functionality
-  - Password visibility toggle
-  - Image upload and preview
-  - Form validation
-  - Character counter
-  - Modal management
-  - AJAX messaging
-  - Drag-and-drop file upload
-  - DOM event listeners
-
-- **Features Validated**:
-  - Proper variable declarations (const/let)
-  - Function structure and scoping
-  - Event listener setup and cleanup
-  - Error handling (null checks, try-catch)
-  - JSDoc comments for major functions
-
-- **Result**: Valid JavaScript with no critical errors
+The JavaScript file was validated with [JSHint](https://jshint.com/) with no critical errors.
 
 ## Functionality Testing
 
@@ -1172,7 +1099,17 @@ __Frameworks, Libraries & Programs Used__
 
 #### Desktop Performance
 
+[Lighthouse](https://developer.chrome.com/docs/lighthouse) was used to audit the application's performance, accessibility, best practices, and SEO on desktop view. The desktop version scores consistently high across all metrics:
+
+**View Desktop Lighthouse Results:** [docs/images/LightHouse_Desktop](docs/images/LightHouse_Desktop)
+
 #### Mobile Performance
+
+Mobile performance was tested with Lighthouse to ensure the app delivers fast, accessible experiences on phones and tablets:
+
+**View Mobile Lighthouse Results:** [docs/images/LightHouse_Mobile](docs/images/LightHouse_Mobile)
+
+All performance metrics meet or exceed industry standards for web applications.
 
 ### Testing User Stories
 
