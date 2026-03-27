@@ -922,7 +922,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedDogId = btn.dataset.dogId;
         document.getElementById("deleteDogName").textContent = btn
           .closest(".conversation-item")
-          .querySelector(".dog-details h3").textContent;
+          .querySelector(".dog-details h2").textContent;
 
         openModal(deleteModal);
       });
@@ -973,38 +973,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteButtons = document.querySelectorAll(".btn-delete-match");
     const modal = document.getElementById("deleteMatchModal");
 
-    // If no delete buttons or modal on this page, stop here
     if (!deleteButtons.length || !modal) return;
 
     const cancelBtn = document.getElementById("cancelDeleteMatchBtn");
     const confirmBtn = document.getElementById("confirmDeleteMatchBtn");
 
-    // Track which match is selected for deletion
     let selectedDogId = null;
 
-    // Open modal and store selected dog when delete button is clicked
     deleteButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => {
-        // Prevent match card click from triggering
         e.stopPropagation();
         selectedDogId = btn.dataset.dogId;
         openModal(modal);
       });
     });
 
-    // Close modal and reset selection via cancel button
     if (cancelBtn)
       cancelBtn.addEventListener("click", () => {
         closeModal(modal);
         selectedDogId = null;
       });
 
-    // Submit delete request on confirmation
     if (confirmBtn) {
       confirmBtn.addEventListener("click", () => {
         if (!selectedDogId) return;
 
-        // Get CSRF token for Django security check
         const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]");
 
         fetch("/connections/delete_match/", {
@@ -1018,19 +1011,25 @@ document.addEventListener("DOMContentLoaded", () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.success) {
-              // Remove match card from UI without reload
               const card = document.querySelector(
                 `.matches-card[data-dog-id="${selectedDogId}"]`,
               );
               if (card) card.remove();
 
-              // If no matches left, reload to show empty state
-              if (document.querySelectorAll(".matches-card").length === 0) {
+              // Only once, used for both checks
+              const remaining =
+                document.querySelectorAll(".matches-card").length;
+
+              if (remaining === 0) {
                 window.location.reload();
+              } else {
+                const countEl = document.querySelector(".matches-count");
+                if (countEl) {
+                  countEl.textContent = `You have ${remaining} match${remaining !== 1 ? "es" : ""}`;
+                }
               }
             }
 
-            // Close modal and reset selection for next use
             closeModal(modal);
             selectedDogId = null;
           })

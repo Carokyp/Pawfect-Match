@@ -1016,17 +1016,16 @@ document.addEventListener("DOMContentLoaded", () => {
               );
               if (card) card.remove();
 
-              // Only once, used for both checks
-              const remaining =
-                document.querySelectorAll(".matches-card").length;
+              // Update the counter dynamically
+              const countEl = document.querySelector(".matches-count");
+              if (countEl) {
+                const remaining =
+                  document.querySelectorAll(".matches-card").length;
+                countEl.textContent = `You have ${remaining} match${remaining !== 1 ? "es" : ""}`;
+              }
 
-              if (remaining === 0) {
+              if (document.querySelectorAll(".matches-card").length === 0) {
                 window.location.reload();
-              } else {
-                const countEl = document.querySelector(".matches-count");
-                if (countEl) {
-                  countEl.textContent = `You have ${remaining} match${remaining !== 1 ? "es" : ""}`;
-                }
               }
             }
 

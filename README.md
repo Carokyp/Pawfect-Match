@@ -642,14 +642,28 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
   - "It's a Match!" modal popup with both dog photos
   - "Send Message" and "View Matches" buttons in modal linking to chat thread and matches
   
-- **Empty State**:
-  - Message: "No more dogs to discover"
-  - "Reset Matches" button to clear all connections, dislikes, messages
-  - Returns discovery pool to full state
-
-<p align="center">
-  <img src="docs/images/No_More_Match.png" alt="No more matches empty state" style="width: 30%; max-width: 550px; height: auto;">
-</p>
+- **Empty States**:
+  - **Discover (No more dogs)**:
+    - Message: "You've discovered all available pups!, New matches may appear soon"
+    - Action: "Reset Matches"
+    - Result: clears all connections, dislikes, and messages, then restores discovery pool
+    <p align="center">
+      <img src="docs/images/No_More_Match.png" alt="No more matches empty state" style="width: 30%; max-width: 550px; height: auto;">
+    </p>
+  - **Matches (No matches yet)**:
+    - Message: "You don't have any matches yet."
+    - Supporting text: "Start liking dogs to find your perfect match!"
+    - Action: "Back to Discover"
+    <p align="center">
+     <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 30%; max-width: 550px; height: auto;">
+    </p>
+  - **Messages Inbox (No messages yet)**:
+    - Message: "No messages yet"
+    - Supporting text: "Send a message to a match to arrange a playdate!"
+    - Action: "Back to Discover"
+    <p align="center">
+      <img src="docs/images/No_Messages.png" alt="No more matches empty state" style="width: 30%; max-width: 550px; height: auto;">
+    </p>
   
 - **Filtering**:
   - Excludes own dog
@@ -786,12 +800,12 @@ All custom error pages (404, 403, 405, 500) share the same branded layout and re
 #### Error Page Screenshots
 
 <p align="center">
-  <img src="docs/images/Error_404.png" alt="404 error page" style="width: 30%; max-width: 380px; height: 350px; margin: 8px;">
-  <img src="docs/images/Error_403.png" alt="403 error page" style="width: 30%; max-width: 380px; height: 350px; margin: 8px;">
+  <img src="docs/images/Error_404.png" alt="404 error page" style="width: 30%; max-width: 380px; height: 350px;">
+  <img src="docs/images/Error_403.png" alt="403 error page" style="width: 30%; max-width: 380px; height: 350px;">
 </p>
 <p align="center">
-  <img src="docs/images/Error_405.png" alt="405 error page" style="width: 30%; max-width: 380px; height: 350px; margin: 8px;">
-  <img src="docs/images/Error_500.png" alt="500 error page" style="width: 30%; max-width: 380px; height: 350px; margin: 8px;">
+  <img src="docs/images/Error_405.png" alt="405 error page" style="width: 30%; max-width: 380px; height: 350px;">
+  <img src="docs/images/Error_500.png" alt="500 error page" style="width: 30%; max-width: 380px; height: 350px;">
 </p>
 
 #### **Responsiveness**

@@ -1016,7 +1016,7 @@ document.addEventListener("DOMContentLoaded", () => {
               );
               if (card) card.remove();
 
-              // Only once, used for both checks
+              // ✅ Only once, used for both checks
               const remaining =
                 document.querySelectorAll(".matches-card").length;
 
