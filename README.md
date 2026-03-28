@@ -32,11 +32,11 @@
 
 ### Strategy
 
-With **Pawfect-Match**, I wanted to give dog owners a fun and safe way to connect with other dog owners. By blending the best ideas from modern dating apps into one web experience, the platform helps dogs find playmates and gives humans a chance to find love through their pets.
+With **Pawfect-Match**, I wanted to give dog owners a fun and safe way to connect with other dog owners. By blending the best ideas from modern dating apps into one web experience, the platform helps dogs find playmates and gives owners a chance to find love through their pets.
 
 #### Business goals of the website
 - Provide a friendly platform for dog owners to discover compatible companions.
-- Encourage sign-ups and profile completion to help users match with other dogs and owners.
+- Drive sign-ups and quick onboarding so users can immediately start using the website.
 - Build engagement through likes, matches, and messaging.
 
 #### Customer goals of the website
@@ -102,12 +102,11 @@ With **Pawfect-Match**, I wanted to give dog owners a fun and safe way to connec
  - Social media sharing
  - Read receipts for messages
  - Payment or subscription plans.
- - Premium/paid features
  - Location-based matching.
 
 ### Structure
 
-The home page explains the concept first with a clear hero CTA, then guides users into sign up. It also includes a navbar that links to the "How it works" and "Why Pawfect Match" sections. After that, the site follows a simple, linear flow so users always know what to do next. Navigation stays consistent with a top navbar linking to Discover, Matches, Messages, Profile and Log out.
+The home page explains the concept first with a clear hero CTA, then guides users into sign up. It also includes a navbar that links to the "How it works" and "Why Pawfect Match" sections. After signing in, users follow a simple, linear flow. A consistent top navbar provides quick access to Discover, Matches, Messages, Profile, and Log out, ensuring users always know what to do next.
 
 Pawfect-Match uses a multi-page application (MPA) structure with server-side rendering (SSR) via Django, so each route loads a dedicated page instead of switching views inside a single SPA.
 
@@ -117,9 +116,9 @@ Key sections and navigation flow:
 - Home: hero CTA, how it works, and value propositions.
 - Auth: register, sign in, and password reset.
 - Onboarding: create owner profile first, then create dog profile.
-- Discover: browse profiles with dog/owner toggle and like/dislike actions.
+- Discover: Browse dog profiles with like and dislike actions. Toggle between dog and owner views on mobile, or view profiles side by side on desktop.
 - Matches: view matched profiles, delete a match, and message from a match.
-- Messages: inbox list and message threads.
+- Messages: Browse conversations through an inbox and message thread on mobile, or use a split layout with inbox and message thread side by side on desktop.
 - Profile: view owner/dog profiles, edit profiles, and delete account.
 
 #### Technical Implementation
@@ -197,7 +196,7 @@ The Django admin interface provides full management capabilities for all models:
 
 #### **User Accounts**
 - **Create**: Users can register a new account with email and password
-- **Read**: Users can sign in to access their account
+- **Read**: Users can view their account details and profile information
 - **Delete**: Users can permanently delete their entire account (removes user, profiles, dog, connections, and messages)
 
 #### **Owner Profiles**
@@ -234,9 +233,9 @@ User feedback mechanisms guide users through actions, confirm their choices, and
 - **Delete Account Modal**: Warning modal explaining permanent deletion of user profile, dog profile, all matches, and all conversations
 
 **Empty States**:
-- **No Dogs Available**: "No more dogs to discover" message on browse page with "Reset Matches" button to restart discovery
-- **No Matches**: "No matches yet" message on matches page when user has not created any connections
-- **No Messages**: "No messages yet" message on inbox and "No conversations" message when user has not sent messages to any match
+- **No Dogs Available**: "You've discovered all available pups!,New matches may appear soon" message on browse page with "Reset Matches" button to restart discovery
+- **No Matches**: "You don't have any matches yet, Start liking dogs to find your perfect match!" message on matches page when user has not created any connections
+- **No Messages**: "No messages yet, Send a message to a match to arrange a playdate!" message on inbox when user has not sent messages to any match
 - **Empty Conversation Thread**: "Start your conversation with [dog name]! 🐾" message when opening a new message thread with a match
 
 **Success Pages**:
@@ -251,32 +250,33 @@ User feedback mechanisms guide users through actions, confirm their choices, and
 
 **Real-Time Feedback** (live UX enhancements during form interaction):
 - **Character Counter**: Live display of character count (e.g., "45/150") on "About me" textareas as users type, with visual indicator when approaching max length
+- **Match Counter**: Live display showing the user's match count, which updates in real-time when matches are deleted or added
 - **Image Upload Preview**: Photo preview displayed immediately after selecting file before form submission
 - **Drag-and-Drop Feedback**: Visual feedback when dragging files over upload area (highlight/border changes)
 - **Interest Selection Limit**: Visual feedback when user attempts to select more than 3 interests (max limit enforcement with disabled state)
 
 **Form Validation Errors** (displayed after form submission attempt):
 - **Email Format Validation**: "Enter a valid email address" when invalid email format is entered
-- **Duplicate Account**: "An account with this email already exists" preventing duplicate registrations
+- **Duplicate Account**: "An account with this email already exists. Please sign in instead." preventing duplicate registrations
 - **Password Confirmation Mismatch**: "Passwords do not match" when password and confirmation field differ
 - **Password Strength Requirements**: Individual error messages for each unmet requirement:
   - "Must contain at least one uppercase letter (A–Z)"
   - "Must contain at least one digit (0–9)"
   - "Must contain at least one special character (!@#$%^&*)"
   - "Must be at least 8 characters long"
-- **Invalid Login**: "No account found with this email address" when user enters non-existent email during sign in
+- **Invalid Login**: "We couldn't find an account. Please check your email and password." when user enters non-existent email during sign in
 - **Required Field Validation**: "This field is required" for missing mandatory fields (name, age, photo, etc.)
-- **File Size Validation**: "File too large (X.X MB) — maximum allowed size is 9.5 MB" when uploaded photo exceeds size limit
+- **File Size Validation**: "File too large (XX.X MB). Maximum size is 9.5 MB. Please use a smaller or compressed image." when uploaded photo exceeds size limit
 - **Non-Field Errors**: Global form errors displayed at top of form (e.g., invalid login credentials, form submission errors)
+
+**Visual Error Indicators** (on form fields):
+- Error messages appear directly below relevant form fields in red text with a red left border accent
+- Required field indicators show asterisk (*) in labels on mandatory fields
+- Password visibility toggle with eye icon allows users to verify password entry before submission
+- "required" attribute on HTML inputs provides native browser validation feedback
 
 **Match Modal** (triggered on bidirectional like):
 - **"It's a Match!" Modal**: Displays side-by-side photos of both matched dogs with congratulations message, "Send Message" button to start conversation, "View Matches" button to view all matches, and gray "×" close button to dismiss and continue browsing
-
-**Visual Error Indicators** (on form fields):
-- Invalid fields display with red border highlighting the problematic input
-- Error messages appear directly below relevant form fields in red text
-- Required field indicators show asterisk (*) in labels and "required" attribute on HTML inputs
-- Password visibility toggle with eye icon allows users to verify password entry before submission
 
 ### Database Schema
 
@@ -337,7 +337,7 @@ The app uses Django ORM models, with PostgreSQL in production via `DATABASE_URL`
    - **Constraints:** owner field is unique, enum validation on size/gender/energy_level
    - **Cascade Behavior:** Deleting Dog cascades to Like/Dislike/Message entries.
 
-**4. Like (matching relationship)**
+**4. Like**
    - **Purpose:** Track like relationships between dogs (the app creates the reciprocal like immediately, resulting in an instant match)
    - **Fields:**
      - `from_dog` (ForeignKey → Dog) — The dog who initiated the like
@@ -353,7 +353,7 @@ The app uses Django ORM models, with PostgreSQL in production via `DATABASE_URL`
      - Messaging is allowed once this reciprocal pair exists.
    - **Cascade Behavior:** Deleting either dog cascades to related Like entries.
 
-**5. Dislike (Skip Tracking)**
+**5. Dislike**
    - **Purpose:** Track dogs a user has skipped to exclude from future browsing
    - **Fields:**
      - `from_dog` (ForeignKey → Dog) — The dog doing the skipping
@@ -425,7 +425,7 @@ A warm, friendly, and playful interface built around soft cards, rounded corners
 Roboto Flex is used as the primary typeface for strong readability and clean hierarchy, with heavier weights for headings and action labels. Typography stays simple and legible to support quick scanning on mobile and desktop.
 
 #### Colors 
-The UI uses a token-based warm palette paired. Lighter orange tones are used for page and section backgrounds, while stronger orange is used for emphasis and actions, with white surfaces to keep contrast and readability clear.
+The UI uses a warm color palette. Lighter orange tones are used for page and section backgrounds, while stronger orange is used for emphasis and actions, with white surfaces to keep contrast and readability clear.
 
 <p align="center">
   <img src="docs/images/Color.png" alt="Pawfect Match color palette" style="width: 32%; max-width: 300px; height: auto;">
@@ -441,7 +441,7 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
   - Why Pawfect Match 
 
 <p align="center">
-  <img src="docs/images/NavBar_Public.png" alt="Public homepage navigation" style="width: 60%; max-width: 900px; height: auto;">
+  <img src="docs/images/NavBar_Public.png" alt="Public homepage navigation" style="width: 90%; max-width: 900px; height: auto;">
 </p>
 
 - **Public Auth Navigation (register/sign in pages)**:
@@ -450,7 +450,7 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
   - Sign Up
 
 <p align="center">
-  <img src="docs/images/NavBar_Auth.png" alt="Public authentication navigation" style="width: 60%; max-width: 900px; height: auto;">
+  <img src="docs/images/NavBar_Auth.png" alt="Public authentication navigation" style="width: 90%; max-width: 900px; height: auto;">
 </p>
 
 - **Authenticated Navigation**:
@@ -461,7 +461,7 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
   - Log out
 
 <p align="center">
-  <img src="docs/images/NavBar_User.png" alt="Authenticated user navigation" style="width: 60%; max-width: 900px; height: auto;">
+  <img src="docs/images/NavBar_User.png" alt="Authenticated user navigation" style="width: 90%; max-width: 900px; height: auto;">
 </p>
   
 - Auto-collapse behavior is enabled for mobile nav menus via JavaScript
@@ -506,7 +506,7 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Password validation (minimum length, complexity)
 - Link to Sign In page for existing users
 - Auto-redirect to owner profile creation after successful registration
-- Session-based data persistence: profile details (name, age, city, etc.) stored in session during onboarding, allowing users to return and edit before completion (images only stored after final submission)
+- Resumable onboarding: profile details (name, age, city, etc.) are saved to the database immediately, allowing users to return and continue editing before marking as completed
 - Form validation with Django messages
 
 <p align="center">
@@ -529,7 +529,7 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - No email sent (demo/prototype mode)
 - Direct password reset after email validation
 - Password confirmation field
-- Success page with "Go to Sign In" button
+- Success page with "Sign In" button
 - Validation prevents password resets for non-existent accounts
 
 <p align="center">
@@ -622,14 +622,13 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - **Profile Cards**:
   - Large photo display with overlay (name, age, breed, city, gender)
   - Toggle between Dog and Owner views with active state indicator for mobile and side by side for desktop
-  - Smooth transitions between views
   - About me section
   - Dog metadata: Energy level and size tags
   - Owner metadata: Age, occupation, interests pills
 
 <p align="center">
-  <img src="docs/images/Discover_Dog.png" alt="Discover dog profile view" style="width: 30%; max-width: 450px; height: 550px; margin: 8px;">
-  <img src="docs/images/Discover_Owner.png" alt="Discover owner profile view" style="width: 30%; max-width: 450px; height: 550px; margin: 8px;">
+  <img src="docs/images/Discover_Dog.png" alt="Discover dog profile view" style="width: 30%; max-width: 450px; margin: 8px;">
+  <img src="docs/images/Discover_Owner.png" alt="Discover owner profile view" style="width: 30%; max-width: 450px; margin: 8px;">
 </p>
   
 - **Action Buttons**:
@@ -648,24 +647,24 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
     - Action: "Reset Matches"
     - Result: clears all connections, dislikes, and messages, then restores discovery pool
     <p align="center">
-      <img src="docs/images/No_More_Match.png" alt="No more matches empty state" style="width: 30%; max-width: 550px; height: auto;">
+      <img src="docs/images/No_More_Match.png" alt="No more matches empty state" style="width: 30%; max-width: 450px;">
     </p>
   - **Matches (No matches yet)**:
     - Message: "You don't have any matches yet."
     - Supporting text: "Start liking dogs to find your perfect match!"
     - Action: "Back to Discover"
     <p align="center">
-     <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 30%; max-width: 550px; height: auto;">
+     <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 30%; max-width: 450px;">
     </p>
   - **Messages Inbox (No messages yet)**:
     - Message: "No messages yet"
     - Supporting text: "Send a message to a match to arrange a playdate!"
     - Action: "Back to Discover"
     <p align="center">
-      <img src="docs/images/No_Messages.png" alt="No more matches empty state" style="width: 30%; max-width: 550px; height: auto;">
+      <img src="docs/images/No_Messages.png" alt="No more matches empty state" style="width: 30%; max-width: 450px;">
     </p>
   
-- **Filtering**:
+- **Filtering** (determines which dogs appear on the browse page):
   - Excludes own dog
   - Excludes already liked dogs
   - Excludes disliked dogs
@@ -703,9 +702,7 @@ The UI uses a token-based warm palette paired. Lighter orange tones are used for
 - Full conversation history with matched dog
 - Messages displayed chronologically (oldest to newest)
 - Timestamps on each message
-- Send message form at bottom:
-  - Text area input
-  - Send button
+- Message input form at bottom with textarea and send button
 - Header shows matched dog name, breed and photo
 
 <p align="center">
@@ -800,19 +797,16 @@ All custom error pages (404, 403, 405, 500) share the same branded layout and re
 #### Error Page Screenshots
 
 <p align="center">
-  <img src="docs/images/Error_404.png" alt="404 error page" style="width: 30%; max-width: 380px; height: 350px;">
-  <img src="docs/images/Error_403.png" alt="403 error page" style="width: 30%; max-width: 380px; height: 350px;">
-</p>
-<p align="center">
-  <img src="docs/images/Error_405.png" alt="405 error page" style="width: 30%; max-width: 380px; height: 350px;">
-  <img src="docs/images/Error_500.png" alt="500 error page" style="width: 30%; max-width: 380px; height: 350px;">
+  <img src="docs/images/Error_404.png" alt="404 error page" style="width: 20%; max-width: 300px;">
+  <img src="docs/images/Error_403.png" alt="403 error page" style="width: 20%; max-width: 300px;">
+  <img src="docs/images/Error_405.png" alt="405 error page" style="width: 20%; max-width: 300px;">
+  <img src="docs/images/Error_500.png" alt="500 error page" style="width: 20%; max-width: 300px;">
 </p>
 
 #### **Responsiveness**
 - Fully responsive layout from mobile to desktop across public, auth, and app pages
 - Mobile-first styling with Bootstrap utilities plus custom media queries (including 768px, 992px, 1200px, 1400px, and 1800px breakpoints)
 - Collapsible navigation on smaller screens with hamburger toggles in both public and authenticated navbars
-- JavaScript auto-collapse behavior on mobile nav (closes on nav-link click and outside click)
 - Flexible image/card sizing using fluid widths and max-width rules
 
 #### **Accessibility**
@@ -908,7 +902,7 @@ __Languages Used__
 __Frameworks, Libraries & Programs Used__
 
 * [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/): was used for responsive layout, button styling, and utility classes
-* [Google Fonts](https://fonts.google.com/): was used to import the 'Baloo 2', 'Quicksand', and 'Poppins' fonts into the style.css 
+* [Google Fonts](https://fonts.google.com/): was used to import 'Roboto Flex' for the primary typeface into the style.css
 * [Font Awesome](https://fontawesome.com/): was used to add icons for aesthetic and UX purposes.
 * [GitHub](https://github.com/): is used as the repository for the project's code after being pushed from Git.
 * [Heroku](https://www.heroku.com/): was used to deploy and host the live web application with PostgreSQL database integration and automatic builds from Git pushes.
@@ -922,7 +916,7 @@ __Frameworks, Libraries & Programs Used__
 * [HTML Validator](https://validator.w3.org/#validate_by_input): Confirmed the HTML code is valid, with no errors detected.
 * [CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input): Verified the CSS code, with no errors detected.
 * [JS-Beautify](https://beautifier.io/): Checked the formatting and structure of the HTML and CSS for consistency and readability.
-* [Cloudinary]()
+* [Cloudinary](https://cloudinary.com/): was used for cloud-based image storage, optimization, and delivery of profile photos
 
 ## Testing 
 
@@ -968,7 +962,7 @@ Since Django uses a templating language, the template code is not valid HTML. To
 
 The CSS file was validated with [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) with no errors detected.
 
-All Python files were validated for PEP8 compliance using [CI Python Linter](https://pep8ci.herokuapp.com/) with no linting errors. Standards followed: [PEP 8](https://www.python.org/dev/peps/pep-0008/) and [PEP 257](https://www.python.org/dev/peps/pep-0257/) for docstrings.
+All Python files were validated for PEP8 compliance using [CI Python Linter](https://pep8ci.herokuapp.com/) with no linting errors. Standards followed: [PEP 8](https://www.python.org/dev/peps/pep-0008/) for docstrings.
 
 The JavaScript file was validated with [JSHint](https://jshint.com/) with no critical errors.
 
@@ -1097,19 +1091,13 @@ The JavaScript file was validated with [JSHint](https://jshint.com/) with no cri
 
 ### Performance
 
-#### Desktop Performance
+[Lighthouse](https://developer.chrome.com/docs/lighthouse) was used to audit the application's performance, accessibility, best practices, and SEO on desktop view.
 
-[Lighthouse](https://developer.chrome.com/docs/lighthouse) was used to audit the application's performance, accessibility, best practices, and SEO on desktop view. The desktop version scores consistently high across all metrics:
+[**View Desktop Lighthouse Here**](docs/images/LightHouse_Desktop)
 
-**View Desktop Lighthouse Results:** [docs/images/LightHouse_Desktop](docs/images/LightHouse_Desktop)
+[**View Mobile Lighthouse Here**](docs/images/LightHouse_Mobile)
 
-#### Mobile Performance
-
-Mobile performance was tested with Lighthouse to ensure the app delivers fast, accessible experiences on phones and tablets:
-
-**View Mobile Lighthouse Results:** [docs/images/LightHouse_Mobile](docs/images/LightHouse_Mobile)
-
-All performance metrics meet or exceed industry standards for web applications.
+All performance metrics meet industry standards for web applications.
 
 ### Testing User Stories
 
@@ -1120,18 +1108,17 @@ All user stories outlined in the UX Strategy section have been validated and ful
 | User Story | How It's Fulfilled | Features/Pages Used |
 |------------|-------------------|---------------------|
 | **As a new user, I want to understand what the site is about, so I can decide if it's right for me.** | The homepage provides a clear hero section with the tagline "Find Love Through Your Pet" and explains the concept. The "How It Works" section breaks down the process in 4 simple steps with visual illustrations. The "Why Pawfect Match" section highlights key benefits (Pet-First Approach, Authentic Connections, Safe & Friendly, Easy Communication). | **Homepage** - Hero section, How It Works steps, Why Pawfect Match cards |
-| **As a new user, I want to see if the platform is for me without registering, so I can determine if I want to commit.** | The entire homepage is accessible without authentication, allowing users to browse the value proposition, understand the matching process, and read about features before committing to registration. Navigation on public pages includes clear sections (Home, How it Works, Why Pawfect Match). | **Homepage** - All sections accessible to unauthenticated users |
 | **As a new user, I want to register easily, so I can start quickly.** | Registration requires only email and password with confirmation. Form validation provides clear feedback. The "Get Started" button is prominently displayed on the hero section. After registration, users are automatically guided through profile creation. | **Register Page** - Email/password form, validation, redirect to owner profile creation |
-| **As a new user, I want to add my dog's details, so I can begin browsing matches.** | After creating an owner profile, users are immediately redirected to create their dog profile. The form includes photo upload with preview, name, age, breed, size (dropdown), gender (dropdown), energy level (dropdown), and about me section with character counter (0/150). One-to-one relationship ensures each owner has one dog profile. | **Create Dog Profile Page** - Photo upload, required fields with dropdowns, character counter, automatic redirect to Browse Dogs after completion |
+| **As a new user, I want to add my details and my dog's details, so I can begin browsing matches.** | After registering, users create their owner profile first (name, age, city, occupation, interests, about me, photo) then their dog profile (name, age, breed, size, gender, energy level, about me, photo). Both forms include photo upload with preview and character counters. Onboarding is sequential with automatic redirects. | **Create Owner Profile Page** - Initial onboarding form with all owner fields<br>**Create Dog Profile Page** - Second onboarding step with all dog fields, automatic redirect to Browse Dogs after completion |
 
 #### **Existing User Stories**
 
 | User Story | How It's Fulfilled | Features/Pages Used |
 |------------|-------------------|---------------------|
-| **As an existing user, I want to sign in and out easily, so I can access my account securely.** | Sign in page accessible from homepage navbar and hero section. Users enter email and password with "Forgot password?" link available. After authentication, users are redirected to Browse Dogs. Log out link is always visible in the navbar for authenticated users, signing them out and redirecting to homepage. | **Sign In Page** - Email/password form, remember me, error messages<br>**Navbar** - "Log out" link on all authenticated pages |
+| **As an existing user, I want to sign in and out easily, so I can access my account.** | Sign in page accessible from homepage navbar and hero section. Users enter email and password with "Forgot password?" link available. After authentication, users are redirected to Browse Dogs. Log out link is always visible in the navbar for authenticated users, signing them out and redirecting to homepage. | **Sign In Page** - Email/password form, error messages<br>**Navbar** - "Log out" link on all authenticated pages |
 | **As an existing user, I want to create and edit my owner profile, so I can manage my information.** | Owner profile creation is the first step after registration. Users can later edit their profile from the Profile page by clicking "Edit Owner Profile". Form includes photo upload with drag-and-drop, name, age, city, occupation, interests (select up to 3 pills), and about me with character counter. Changes are saved and user is redirected back to profile view. | **Create Owner Profile Page** - Initial onboarding form<br>**Edit Owner Profile Page** - Pre-populated form, photo update, save redirects to profile view |
 | **As an existing user, I want to create and edit my dog profile, so I can keep it updated.** | Dog profile creation is the second onboarding step after owner profile. Users can edit from the Profile page by clicking "Edit Dog Profile". Form includes photo upload with preview, name, age, breed, size/gender/energy dropdowns, and about me section. Updates are saved and user returns to profile view. | **Create Dog Profile Page** - Second onboarding step<br>**Edit Dog Profile Page** - Pre-populated form, update photo, save redirects to profile view |
-| **As an existing user, I want to like or dislike dogs after viewing both dog and owner profiles, so I can find the best matches for my dog.** | The Discover page displays dog profiles one at a time with large photos and detailed information. Users can toggle between Dog and Owner views to see complete information before making a choice. Heart icon (like) creates bidirectional matches and triggers "It's a Match!" modal. X icon (dislike) skips the profile and removes it from future browsing. | **Discover/Browse Dogs Page** - Profile cards with toggle (view both dog and owner), Like (heart icon), Dislike (X icon), "It's a Match!" modal popup |
+| **As an existing user, I want to like or dislike dogs after viewing both dog and owner profiles, so I can find the best matches for myself and my dog.** | The Discover page displays dog profiles one at a time with large photos and detailed information. Users can toggle between Dog and Owner views to see complete information before making a choice. Heart icon (like) creates bidirectional matches and triggers "It's a Match!" modal. X icon (dislike) skips the profile and removes it from future browsing. | **Discover/Browse Dogs Page** - Profile cards with toggle (view both dog and owner), Like (heart icon), Dislike (X icon), "It's a Match!" modal popup |
 | **As an existing user, I want to see my matches and remove a match if I change my mind, so I can manage my connections.** | Matches page displays a grid of all matched dogs with photos, names, ages, and owner names. Each match card has a red X button in the top-right corner. Clicking triggers a confirmation modal ("Are you sure you want to delete this match?"). Confirming removes both bidirectional connection entries and updates the page. Empty state shows "No matches yet" message. | **Matches List Page** - Grid layout, match cards with delete (X) button, delete confirmation modal, empty state |
 | **As an existing user, I want to reset my password, so I can regain access if needed.** | "Forgot password?" link on Sign In page leads to password reset form. Users enter their registered email for verification (checks if account exists without sending email - demo mode). After validation, users are taken to a reset form to enter new password with confirmation. Success page displays with "Go to Sign In" button. | **Forgot Password Page** - Email verification form<br>**Password Reset Page** - New password form with confirmation<br>**Password Reset Success Page** - Confirmation message |
 
@@ -1139,11 +1126,10 @@ All user stories outlined in the UX Strategy section have been validated and ful
 
 | User Story | How It's Fulfilled | Features/Pages Used |
 |------------|-------------------|---------------------|
-| **As a user, I want to clear feedback when I take actions on the site, so I always know if something worked.** | Form validation displays red error messages below relevant fields when validation fails (e.g., invalid email, missing required fields). Success actions redirect users to appropriate pages (registration → owner profile → dog profile → browse dogs). "It's a Match!" modal appears instantly when mutual likes occur. Confirmation modals appear for destructive actions (delete match, delete conversation, delete account) with clear warning messages. Django messages framework provides server-side feedback. | **All Forms** - Validation error messages, required field indicators<br>**All Modals** - Match modal, delete confirmations<br>**Redirects** - Automatic navigation after successful actions |
 | **As a user, I want to message other profiles after matching, so I can communicate with my matches.** | After matching, users can click "Send Message" in the "It's a Match!" modal or from match cards to open a conversation thread. Messages page shows inbox list with all active conversations displaying dog avatar, name, breed, and last message preview. Opening a thread shows full conversation history with timestamps. Users can send new messages via textarea and send button. Messages are displayed chronologically with different alignments (sent: right, received: left) and avatars. | **Messages/Inbox Page** - Conversation list with previews, empty state<br>**Message Thread Page** - Full conversation history, send message form, timestamps, differentiated sent/received styling |
-| **As a user, I want to edit or delete my own information and images, so I have control over my data.** | Profile page displays both owner and dog profiles with toggle functionality. Each profile has an "Edit" button linking to respective edit forms. Edit forms are pre-populated with existing data allowing users to modify any field including photos. Users can upload new photos (previewed before submission) or keep existing ones. The "Danger Zone" section at the bottom of the Profile page contains "Delete my profile" button which triggers a confirmation modal explaining that all data will be permanently deleted (user account, owner profile, dog profile, all matches, all conversations). Confirming deletes everything via cascade delete and logs user out. | **Profile Page** - View profiles, edit buttons, toggle between dog/owner views<br>**Edit Forms** - Pre-populated fields, photo update<br>**Delete Account Modal** - Confirmation with detailed consequences, cascade delete implementation |
+| **As a user, I want to edit or delete my profile, so I have control over my data.** | Profile page displays both owner and dog profiles with toggle functionality. Each profile has an "Edit" button linking to respective edit forms. Edit forms are pre-populated with existing data allowing users to modify any field including photos. Users can upload new photos (previewed before submission) or keep existing ones. The "Danger Zone" section at the bottom of the Profile page contains "Delete my profile" button which triggers a confirmation modal explaining that all data will be permanently deleted (user account, owner profile, dog profile, all matches, all conversations). Confirming deletes everything via cascade delete and logs user out. | **Profile Page** - View profiles, edit buttons, toggle between dog/owner views<br>**Edit Forms** - Pre-populated fields, photo update<br>**Delete Account Modal** - Confirmation with detailed consequences, cascade delete implementation |
 
-**Summary:** All 14 user stories are fully implemented with dedicated features, pages, and functionality. The application provides a complete user journey from discovery through registration, profile creation, matching, messaging, and account management.
+**Summary:** All 11 user stories are fully implemented with dedicated features, pages, and functionality. The application provides a complete user journey from discovery through registration, profile creation, matching, messaging, and account management.
 
 ## Known Security Issue: Password Reset Vulnerability
 
@@ -1382,6 +1368,29 @@ APP INSPO
 
 ### Code References
 
+This project incorporates code patterns and techniques from various sources, with modifications to fit the project's specific requirements. Below are the primary references used during development:
+
+#### **Backend - Django**
+- [Django Official Documentation](https://docs.djangoproject.com/) - Core framework, models, views, forms, authentication
+- [Django Form Validation](https://docs.djangoproject.com/en/4.2/ref/forms/validation/) - Custom form validators and password strength validation
+- [Django Password Validators](https://docs.djangoproject.com/en/4.2/topics/auth/passwords/) - Built-in password validation utilities
+- [Django ORM Relationships](https://docs.djangoproject.com/en/4.2/topics/db/models/) - OneToOne, ForeignKey relationships, cascade delete behavior
+- [Django Admin Interface](https://docs.djangoproject.com/en/4.2/ref/contrib/admin/) - Custom admin configuration for all models
+
+#### **JavaScript Features**
+- [HTML Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API) - File upload drag-and-drop functionality
+- [FormData API](https://developer.mozilla.org/en-US/docs/Web/API/FormData) - Form submission and file handling
+- [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) - Server communication
+- [Event Delegation Pattern](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_delegation) - Modal click-outside-to-close backdrop listener implementation
+
+#### **Image & Media Management**
+- [Cloudinary Documentation](https://cloudinary.com/documentation) - Image upload, transformation, and delivery
+- [Cloudinary Django SDK](https://pypi.org/project/cloudinary/) - Django integration for media storage
+
+#### **General References**
+- [Stack Overflow](https://stackoverflow.com/) - Troubleshooting specific implementation challenges
+- [Mozilla Developer Network (MDN)](https://developer.mozilla.org/) - Web standards and API documentation
+- [W3Schools](https://www.w3schools.com/) - Web development tutorials and reference
 
 
 
