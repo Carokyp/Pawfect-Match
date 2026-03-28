@@ -1288,7 +1288,7 @@ Don't want to click "Deploy Branch" every time?
 ```bash
 # After this one-time setup, just push code normally:
 git push origin main
-# Heroku redeploys automatically! ✨
+# Heroku redeploys automatically! 
 ```
 
 #### Production Checklist (Before Going Live)
@@ -1309,6 +1309,7 @@ git push origin main
 ## Credits
 
 HERO
+-[Freepik: Couple holding dog](https://www.freepik.com/)
 - [Freepik: Joyful girl tourist looks mobile phone](https://www.freepik.com/free-photo/joyful-girl-tourist-looks-mobile-phone-texts-message-smartphone-social-media-application-walks_38794425.htm#fromView=search&page=2&position=47&uuid=39f84724-60b2-45b5-ad1b-9b13e319a27c&query=woman+browsing+on+phone)
 - [Freepik: Handsome man sitting cafe checking phone](https://www.freepik.com/free-photo/lifestyle-portrait-handsome-young-man-sitting-cafe-checking-his-phone-drinking-coffee_157867299.htm#fromView=search&page=1&position=3&uuid=b68dfbe1-a3de-4d8a-9b96-073d5d5fba3b&query=man+browsing+phone)
 
