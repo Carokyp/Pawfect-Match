@@ -208,16 +208,3 @@ def handler403(request, exception):
 def handler405(request, exception):
     """Render custom 405 error page."""
     return render(request, "errors/405.html", status=405)
-
-
-def trigger_error(request, code):
-    """Trigger custom error pages for manual production testing."""
-    if code == 403:
-        raise PermissionDenied("Manual 403 test")
-    if code == 404:
-        raise Http404("Manual 404 test")
-    if code == 405:
-        return render(request, "errors/405.html", status=405)
-    if code == 500:
-        raise Exception("Manual 500 test")
-    raise Http404("Unknown error code")
