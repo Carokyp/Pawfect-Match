@@ -856,19 +856,18 @@ textarea {
 }
 
 .profile-about h3,
-.profile-interests h3 {
+.profile-interests h3,
+.profile-meta h4 {
   color: var(--text-dark);
   font-size: 0.9rem;
   font-weight: 600;
 }
 
-/* --- Energy level + Size block --- */
-
-.meta-block h4 {
+.profile-about p {
   font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-dark);
 }
+
+/* --- Energy level + Size block --- */
 
 .tag {
   background: #ffefe4;
@@ -1371,7 +1370,7 @@ textarea {
   border: 2px solid #ddd;
   padding: 0.75rem 1rem;
   font-family: inherit;
-  font-size: 0.8rem;
+  font-size: 1rem; /* 16px minimum to prevent iOS auto-zoom on focus */
   width: 100%;
   max-height: 100px;
   overflow-y: auto;
@@ -1506,7 +1505,12 @@ textarea {
   .why-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
+  /* Disable hand cursor on toggle buttons on tablet and above (touch devices don't use cursor) */
+  .toggle-btn {
+    cursor: default !important;
+  }
+
   .auth-card-form {
     flex: 1;
   }
@@ -1709,6 +1713,26 @@ textarea {
     font-size: 1.125rem;
   }
 
+  .profile-about h3,
+  .profile-interests h3,
+  .profile-meta h4 {
+    color: var(--text-dark);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .profile-about p {
+    font-size: 0.9rem;
+  }
+
+  /* --- Energy level + Size block --- */
+
+  .tag {
+    background: #ffefe4;
+    border-radius: 999px;
+    font-size: 0.7rem;
+  }
+
   /* Desktop split-view: left inbox list + right thread preview */
   .messages-split-container {
     display: grid;
@@ -1869,7 +1893,8 @@ textarea {
   .modal-content,
   .delete-modal,
   .delete-message-modal {
-    max-height: calc(100vh - 1rem); /* Ensure modal doesn't exceed viewport height on landscape mobile */
+    max-height: calc(100vh - 1rem);
+    /* Ensure modal doesn't exceed viewport height on landscape mobile */
     max-width: 300px;
   }
 
@@ -1909,4 +1934,5 @@ textarea {
     height: 500px;
   }
 }
+
 /* #endregion */

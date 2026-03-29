@@ -119,14 +119,14 @@
       <form method="POST" action="{% url 'dislike_dog' dog.id %}">
         {% csrf_token %}
         <button type="submit" class="action-btn dislike" aria-label="Dislike this profile">
-          ✕
+          <i class="fa-solid fa-lg fa-xmark"></i>
         </button>
       </form>
 
       <form method="POST" action="{% url 'like_dog' dog.id %}">
         {% csrf_token %}
         <button type="submit" class="action-btn like" aria-label="Like this profile">
-          ❤
+          <i class="fa-solid fa-heart"></i>
         </button>
       </form>
     </footer>
@@ -138,11 +138,11 @@
   <!-- Empty state when no more dogs to discover -->
   <section class="empty-dogs d-flex flex-column justify-content-center align-items-center text-center py-5 px-2">
     <h1 class="empty-dogs-title">
-      You've discovered all available pups!
+      No more dogs to discover
     </h1>
     <img class="empty-state-emoji my-5" src="{% static 'images/sad_emoji.webp' %}" alt="Sad face emoji">
     <p class="empty-dogs-subtitle mb-5">
-      New matches may appear soon
+      Reset matches to restore your full discovery pool.
     </p>
     <button type="button" class="btn primary" id="resetMatchesBtn">
       Reset Matches
@@ -194,7 +194,8 @@
     <div class="delete-modal text-center p-4">
       <h2 id="resetModalTitle">Reset matches?</h2>
       <p>
-        This will restart your discovery and reset all your likes.
+        This will clear all your connections, dislikes, and messages,
+        then restore your full discovery pool.
         <br> Are you sure?
       </p>
 

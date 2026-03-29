@@ -15,11 +15,13 @@
    * [Strategy](#strategy)
    * [Scope](#scope)
    * [Structure](#structure)
+   * [Skeleton](#skeleton)
+   * [Surface](#surface)
+
+* [Technical Architecture](#technical-architecture)
    * [Admin Page](#admin-page)
    * [CRUD Operations](#crud-operations)
    * [Database Schema](#database-schema)
-   * [Skeleton](#skeleton)
-   * [Surface](#surface)
 
 * [Features](#features)
 * [Future Features](#future-features)
@@ -129,6 +131,8 @@ Key sections and navigation flow:
  - WhiteNoise for static file serving.
  - Custom CSS and JavaScript for UI enhancements.
  - Environment-based config via `python-dotenv` and `env.py`.
+
+## Technical Architecture
 
 ### Admin Page
 
@@ -1115,19 +1119,19 @@ All user stories outlined in the UX Strategy section have been validated and ful
 
 | User Story | How It's Fulfilled | Features/Pages Used |
 |------------|-------------------|---------------------|
-| **As an existing user, I want to sign in and out easily, so I can access my account.** | Sign in page accessible from homepage navbar and hero section. Users enter email and password with "Forgot password?" link available. After authentication, users are redirected to Browse Dogs. Log out link is always visible in the navbar for authenticated users, signing them out and redirecting to homepage. | **Sign In Page** - Email/password form, error messages<br>**Navbar** - "Log out" link on all authenticated pages |
-| **As an existing user, I want to create and edit my owner profile, so I can manage my information.** | Owner profile creation is the first step after registration. Users can later edit their profile from the Profile page by clicking "Edit Owner Profile". Form includes photo upload with drag-and-drop, name, age, city, occupation, interests (select up to 3 pills), and about me with character counter. Changes are saved and user is redirected back to profile view. | **Create Owner Profile Page** - Initial onboarding form<br>**Edit Owner Profile Page** - Pre-populated form, photo update, save redirects to profile view |
+| **As an existing user, I want to sign in and out easily, so I can access my account.** | Sign in page accessible from the hero section "Sign In" button on the homepage or via "Get Started" → "Sign In" link. Users enter email and password with "Forgot password?" link available. After authentication, users are redirected based on profile completion: incomplete profiles redirect to Create Owner Profile, complete profiles redirect to Browse Dogs. Log out link is always visible in the navbar for authenticated users, signing them out and redirecting to homepage. | **Sign In Page** - Email/password form, error messages<br>**Navbar** - "Log out" link on all authenticated pages |
+| **As an existing user, I want to create and edit my owner profile, so I can manage my information.** | Owner profile creation is the first step after registration. Users can later edit their profile by clicking "Profile" in the navbar, then clicking "Edit Owner Profile". Form includes photo upload with drag-and-drop, name, age, city, occupation, interests (select up to 3 pills), and about me with character counter. Changes are saved and user is redirected back to profile view. | **Create Owner Profile Page** - Initial onboarding form<br>**Edit Owner Profile Page** - Pre-populated form, photo update, save redirects to profile view |
 | **As an existing user, I want to create and edit my dog profile, so I can keep it updated.** | Dog profile creation is the second onboarding step after owner profile. Users can edit from the Profile page by clicking "Edit Dog Profile". Form includes photo upload with preview, name, age, breed, size/gender/energy dropdowns, and about me section. Updates are saved and user returns to profile view. | **Create Dog Profile Page** - Second onboarding step<br>**Edit Dog Profile Page** - Pre-populated form, update photo, save redirects to profile view |
-| **As an existing user, I want to like or dislike dogs after viewing both dog and owner profiles, so I can find the best matches for myself and my dog.** | The Discover page displays dog profiles one at a time with large photos and detailed information. Users can toggle between Dog and Owner views to see complete information before making a choice. Heart icon (like) creates bidirectional matches and triggers "It's a Match!" modal. X icon (dislike) skips the profile and removes it from future browsing. | **Discover/Browse Dogs Page** - Profile cards with toggle (view both dog and owner), Like (heart icon), Dislike (X icon), "It's a Match!" modal popup |
+| **As an existing user, I want to like or dislike dogs after viewing both dog and owner profiles, so I can find the best matches for myself and my dog.** | The Discover page displays dog profiles one at a time with large photos and detailed information. On mobile, users toggle between Dog and Owner views with an active state indicator to see complete information before making a choice. On desktop (≥992px), both dog and owner profiles are displayed side by side. Heart icon (like) creates bidirectional matches and triggers "It's a Match!" modal. X icon (dislike) skips the profile and removes it from future browsing. | **Discover/Browse Dogs Page** - Profile cards with toggle on mobile and side-by-side on desktop, Like (heart icon), Dislike (X icon), "It's a Match!" modal popup |
 | **As an existing user, I want to see my matches and remove a match if I change my mind, so I can manage my connections.** | Matches page displays a grid of all matched dogs with photos, names, ages, and owner names. Each match card has a red X button in the top-right corner. Clicking triggers a confirmation modal ("Are you sure you want to delete this match?"). Confirming removes both bidirectional connection entries and updates the page. Empty state shows "No matches yet" message. | **Matches List Page** - Grid layout, match cards with delete (X) button, delete confirmation modal, empty state |
-| **As an existing user, I want to reset my password, so I can regain access if needed.** | "Forgot password?" link on Sign In page leads to password reset form. Users enter their registered email for verification (checks if account exists without sending email - demo mode). After validation, users are taken to a reset form to enter new password with confirmation. Success page displays with "Go to Sign In" button. | **Forgot Password Page** - Email verification form<br>**Password Reset Page** - New password form with confirmation<br>**Password Reset Success Page** - Confirmation message |
+| **As an existing user, I want to reset my password, so I can regain access if needed.** | "Forgot password?" link on Sign In page leads to password reset form. Users enter their registered email. The system validates the email belongs to an existing account, then allows them to reset their password immediately through the form with confirmation. Success page displays with link to return to Sign In. | **Forgot Password Page** - Email verification form<br>**Password Reset Page** - New password form with confirmation<br>**Password Reset Success Page** - Confirmation message |
 
 #### **All Users Stories**
 
 | User Story | How It's Fulfilled | Features/Pages Used |
 |------------|-------------------|---------------------|
-| **As a user, I want to message other profiles after matching, so I can communicate with my matches.** | After matching, users can click "Send Message" in the "It's a Match!" modal or from match cards to open a conversation thread. Messages page shows inbox list with all active conversations displaying dog avatar, name, breed, and last message preview. Opening a thread shows full conversation history with timestamps. Users can send new messages via textarea and send button. Messages are displayed chronologically with different alignments (sent: right, received: left) and avatars. | **Messages/Inbox Page** - Conversation list with previews, empty state<br>**Message Thread Page** - Full conversation history, send message form, timestamps, differentiated sent/received styling |
-| **As a user, I want to edit or delete my profile, so I have control over my data.** | Profile page displays both owner and dog profiles with toggle functionality. Each profile has an "Edit" button linking to respective edit forms. Edit forms are pre-populated with existing data allowing users to modify any field including photos. Users can upload new photos (previewed before submission) or keep existing ones. The "Danger Zone" section at the bottom of the Profile page contains "Delete my profile" button which triggers a confirmation modal explaining that all data will be permanently deleted (user account, owner profile, dog profile, all matches, all conversations). Confirming deletes everything via cascade delete and logs user out. | **Profile Page** - View profiles, edit buttons, toggle between dog/owner views<br>**Edit Forms** - Pre-populated fields, photo update<br>**Delete Account Modal** - Confirmation with detailed consequences, cascade delete implementation |
+| **As a user, I want to message other profiles after matching, so I can communicate with my matches.** | After matching, users can click "Send Message" in the "It's a Match!" modal or from match cards to open a conversation thread. On mobile, the Messages page shows an inbox list with all active conversations displaying dog avatar, name, breed, and last message preview. Clicking a conversation opens the full message thread on a separate view. On desktop (≥992px), both inbox and message thread are displayed together: inbox list on the left side, active conversation thread on the right side. Messages are displayed chronologically with different alignments (sent: right, received: left) and avatars. Users can send new messages via textarea and send button. | **Messages/Inbox Page** - Conversation list with previews, empty state<br>**Message Thread Page** - Full conversation history, send message form, timestamps, differentiated sent/received styling |
+| **As a user, I want to edit or delete my profile, so I have control over my data.** | Profile page displays both owner and dog profiles together. On mobile, profiles are stacked one below the other. On desktop (≥992px), profiles are displayed side by side. Each profile has an "Edit" button linking to respective edit forms. Edit forms are pre-populated with existing data allowing users to modify any field including photos. Users can upload new photos (previewed before submission) or keep existing ones. The "Danger Zone" section at the bottom of the Profile page contains "Delete my profile" button which triggers a confirmation modal explaining that all data will be permanently deleted (user account, owner profile, dog profile, all matches, all conversations). Confirming deletes everything via cascade delete, logs user out, and redirects to homepage. | **Profile Page** - View profiles stacked on mobile or side-by-side on desktop, edit buttons<br>**Edit Forms** - Pre-populated fields, photo update<br>**Delete Account Modal** - Confirmation with detailed consequences, cascade delete implementation |
 
 **Summary:** All 11 user stories are fully implemented with dedicated features, pages, and functionality. The application provides a complete user journey from discovery through registration, profile creation, matching, messaging, and account management.
 
@@ -1137,22 +1141,21 @@ All user stories outlined in the UX Strategy section have been validated and ful
 
 **Current behavior (VULNERABLE):**
 - User goes to `/password-reset/`
-- Enters **anyone's email** (doesn't have to be their own)
+- Enters **anyone's email that is already a user** 
 - Can immediately **change that person's password** without verification
 - **No email confirmation sent** — password changes instantly
 - Result: **Anyone can hijack any account** by knowing only the email address
+
+**Why It's This Way:**
+- Development/demo environment - email service would require setup (SendGrid, AWS SES, SMTP)
+- Form validation prevents most attack vectors (checks email exists before processing)
+- Acceptable for prototype/learning project, NOT for production
 
 **Why it's dangerous:**
 - No ownership verification (you don't prove you own the email)
 - No email confirmation link (changes happen instantly)
 - No rate limiting on attempts (attackers can spam)
 - **Critical severity** — complete account takeover
-
-**Example attack:**
-1. Attacker enters `victim@email.com` in forgot password form
-2. Sets new password to `hacker123!`
-3. Victim's account is now owned by attacker
-4. Victim is locked out permanently
 
 ### How it should work (secure):
 1. User enters email → system verifies email exists
@@ -1162,23 +1165,7 @@ All user stories outlined in the UX Strategy section have been validated and ful
 5. Only then can they set new password
 6. Token is **consumed** (can't be reused)
 
-### Status: Known Limitation (Development/Demo Mode)
-
-**Current Implementation:**
-- Email validation (prevents non-existent accounts from resetting)
-- Password changes instantly (no email confirmation)
-- Reason: Email backend not configured, time constraint
-
-**Why It's This Way:**
-- Development/demo environment - email service would require setup (SendGrid, AWS SES, SMTP)
-- Form validation prevents most attack vectors (checks email exists before processing)
-- Acceptable for prototype/learning project, NOT for production
-
-**Security Impact:**
-- Medium risk (not critical) - email validation prevents random account lockout
-- But owner of email CAN reset password without confirming they received an email
-
-**To Fix for Production:**
+**To Fix for it to be used by real users:**
 Would need:
 1. Configure Django email backend (settings.py)
 2. Create email template with reset link + token
@@ -1197,6 +1184,7 @@ This is a known limitation and would be first priority before any production dep
 
 Before deploying to Heroku, ensure you have:
 - A Heroku account (free tier available at https://www.heroku.com/)
+- A Cloudinary account (free tier available at https://cloudinary.com/) - for image storage and delivery
 - GitHub repository with all code committed and pushed
 - GitHub account (recommended) - allows easy deployment through Heroku website dashboard
 
@@ -1207,12 +1195,23 @@ Configure these `Config Vars` in your Heroku app dashboard (Settings → Config 
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `SECRET_KEY` | Django secret key for encryption | Generate via Django: `from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())` |
-| `DEBUG` | Debug mode (MUST be False in production) | `False` |
-| `DATABASE_URL` | PostgreSQL connection string | Auto-set by Heroku PostgreSQL add-on |
+| `DATABASE_URL` | PostgreSQL connection string | Your external PostgreSQL database (from Neon, etc.) |
 | `CLOUDINARY_CLOUD_NAME` | Your Cloudinary account name | From Cloudinary dashboard |
 | `CLOUDINARY_API_KEY` | Cloudinary API key | From Cloudinary Security settings |
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret | From Cloudinary Security settings |
-| `ALLOWED_HOSTS` | Allowed domain names | `pawfect-match.herokuapp.com` |
+
+**Note:** `DEBUG` is hardcoded to `False` in production settings. `ALLOWED_HOSTS` is automatically configured to accept `.herokuapp.com` domains.
+
+#### Pre-Deployment Checklist
+
+Before starting the deployment steps, verify the following:
+
+- [ ] **Procfile** exists at project root with content: `web: gunicorn pawfect_match.wsgi:application`
+- [ ] **requirements.txt** is up-to-date with all Python dependencies
+- [ ] All code changes are committed: `git status` shows clean working directory
+- [ ] Latest code is pushed to GitHub: `git push origin main`
+- [ ] **DEBUG = False** in `pawfect_match/settings.py`
+- [ ] **ALLOWED_HOSTS** includes your Heroku domain (auto-configured via settings.py)
 
 #### Step-by-Step Deployment Instructions
 
@@ -1243,37 +1242,29 @@ Configure these `Config Vars` in your Heroku app dashboard (Settings → Config 
    - Click "Reveal Config Vars"
    - Add these variables ONE BY ONE:
      - `SECRET_KEY` = (generate with Django: `from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())`)
-     - `DEBUG` = `False`
+     - `DATABASE_URL` = Your external PostgreSQL connection string (from Neon or your database provider)
      - `CLOUDINARY_CLOUD_NAME` = Your Cloudinary account
      - `CLOUDINARY_API_KEY` = From Cloudinary
      - `CLOUDINARY_API_SECRET` = From Cloudinary
 
-5. **Add PostgreSQL database**
-   - Still in Settings tab
-   - Scroll to "Add-ons"
-   - Search for "Heroku PostgreSQL"
-   - Select "Hobby Dev (free tier)"
-   - Click "Submit Order Form"
-   - `DATABASE_URL` is automatically set!
-
-6. **Deploy your application**
+5. **Deploy your application**
    - Go back to "Deploy" tab
    - Scroll to "Manual deploy"
    - Click "Deploy Branch" (main)
    - Wait for deployment to complete (2-3 minutes)
 
-7. **Run database migrations** AFTER first deployment
+6. **Run database migrations** AFTER first deployment
    - In Heroku app dashboard, click "More" → "Run console"
    - Type: `python manage.py migrate`
    - Press Enter
    - Wait for completion
 
-8. **Create superuser (admin account)**
+7. **Create superuser (admin account)**
    - Heroku app → "More" → "Run console"
    - Type: `python manage.py createsuperuser`
    - Follow prompts to create admin account
 
-9. **Open your live application**
+8. **Open your live application**
    - Click "Open app" button in top-right
    - Your app is now LIVE! 
 
@@ -1295,7 +1286,7 @@ git push origin main
 
 - `DEBUG = False` (critical!)
 - `SECRET_KEY` is set to a random, strong value
-- `DATABASE_URL` configured (Heroku PostgreSQL add-on)
+- `DATABASE_URL` configured (external PostgreSQL provider like Neon)
 -  Cloudinary credentials are correct
 -  Database migrations have run successfully
 -  Superuser account created
@@ -1309,7 +1300,7 @@ git push origin main
 ## Credits
 
 HERO
--[Freepik: Couple holding dog](https://www.freepik.com/)
+- [Freepik: Couple holding dog](https://www.freepik.com/)
 - [Freepik: Joyful girl tourist looks mobile phone](https://www.freepik.com/free-photo/joyful-girl-tourist-looks-mobile-phone-texts-message-smartphone-social-media-application-walks_38794425.htm#fromView=search&page=2&position=47&uuid=39f84724-60b2-45b5-ad1b-9b13e319a27c&query=woman+browsing+on+phone)
 - [Freepik: Handsome man sitting cafe checking phone](https://www.freepik.com/free-photo/lifestyle-portrait-handsome-young-man-sitting-cafe-checking-his-phone-drinking-coffee_157867299.htm#fromView=search&page=1&position=3&uuid=b68dfbe1-a3de-4d8a-9b96-073d5d5fba3b&query=man+browsing+phone)
 
@@ -1334,7 +1325,7 @@ DOGS
 - Artiste: [@gxldy](https://unsplash.com/@gxldy)
   - Image: [v0_MCllHY9M](https://unsplash.com/photos/black-and-white-husky-v0_MCllHY9M)
 
-PERSONE
+PEOPLE
 
 - Artiste: [@xoutcastx](https://unsplash.com/@xoutcastx)
   - Image: [8Vt2haq8NSQ](https://unsplash.com/photos/man-standing-in-front-of-window-8Vt2haq8NSQ)
