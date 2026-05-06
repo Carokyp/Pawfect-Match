@@ -286,6 +286,30 @@ User feedback mechanisms guide users through actions, confirm their choices, and
 
 The app uses Django ORM models, with PostgreSQL in production via `DATABASE_URL`.
 
+#### ERD — Entity Relationship Diagram
+
+```
+USER ||--|| OWNERPROFILE : "owns"
+OWNERPROFILE ||--|| DOG : "has"
+DOG ||--o{ LIKE : "from_dog / to_dog"
+DOG ||--o{ DISLIKE : "from_dog / to_dog"
+DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
+```
+
+**ERD Diagram**
+
+<p align="center">
+  <img src="docs/images/ERD.png" alt="ERD" style="width: 70%; max-width: 700px; height: auto;">
+</p>
+
+ **Legend:**
+- **Solid line** — OneToOne relationship (e.g. User ↔ OwnerProfile ↔ Dog)
+- **Dashed line** — ForeignKey relationship 1:N (e.g. Dog → Like / Dislike / Message)
+- **PK** — Primary Key (unique identifier for the table)
+- **FK** — Foreign Key (reference to another table)
+
+---
+
 #### Core Models & Relationships
 
 **1. User (Django built-in auth model)**
@@ -304,111 +328,144 @@ The app uses Django ORM models, with PostgreSQL in production via `DATABASE_URL`
 - **Constraint:** `username` is unique (Django default)
 - **Note:** `email` is not model-level unique by default
 
-**2. OwnerProfile (OneToOne with User)**
-   - **Purpose:** Store human owner information (not the dog's data)
-   - **Fields:**
-     - `user` (OneToOneField -> User, `on_delete=CASCADE`)
-     - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) - Owner's avatar (10MB max)
-      - `name` (CharField, `max_length=100`) — Human owner's name
-     - `age` (PositiveIntegerField, nullable) — Owner's age (for human-to-human compatibility)
-     - `city` (CharField, `max_length=100`) — Location for proximity awareness
-     - `occupation` (CharField, `max_length=100`, blank) — Job title
-     - `interests` (CharField, `max_length=255`, blank) — Comma-separated list (e.g., "hiking, beaches, sports")
-     - `about_me` (TextField, `max_length=150`, blank) — Owner's bio
-     - `completed` (BooleanField) — Onboarding completion flag
-     - `created_at` (DateTimeField) — Profile creation timestamp
-   - **Primary Key:** id (auto-increment integer)
-   - **Relationship:** 1 OwnerProfile per User (OneToOne)
-   - **Constraints:** user field is unique (enforces one profile per user)
-   - **Cascade Behavior:** Deleting OwnerProfile cascades to Dog → all connections/messages
+---
 
-**3. Dog (OneToOne with OwnerProfile)**
-   - **Purpose:** Store dog profile data for matching
-   - **Fields:**
-     - `owner` (OneToOneField -> OwnerProfile, `on_delete=CASCADE`) — Link to owning human
-     - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) — Dog's photo (10MB max)
-     - `name` (CharField, `max_length=100`) — Dog's name
-     - `age` (PositiveIntegerField, nullable) — Dog's age in years
-     - `breed` (CharField, `max_length=100`) — Dog breed (e.g., "Golden Retriever", "Labrador")
-     - `size` (CharField, choices) — Small, Medium, Large
-     - `gender` (CharField, choices) — Male or Female
-     - `energy_level` (CharField, choices) — Couch potato, Chill vibes, Playful, Energetic, Full zoomies
-      - `about_me` (TextField, `max_length=150`) — Dog's personality description
-     - `completed` (BooleanField) — Onboarding completion flag
-     - `created_at` (DateTimeField) — Profile creation timestamp
-   - **Primary Key:** id (auto-increment integer)
-   - **Relationship:** 1 Dog per OwnerProfile (OneToOne)
-   - **Constraints:** owner field is unique, enum validation on size/gender/energy_level
-   - **Cascade Behavior:** Deleting Dog cascades to Like/Dislike/Message entries.
+**2. OwnerProfile — OneToOne with User**
+- **Purpose:** Store human owner information (not the dog's data)
+- **Foreign Key:** `user` (OneToOneField → User, `on_delete=CASCADE`)
+- **Fields:**
+  - `id` (AutoField, primary key)
+  - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) — Owner's avatar (10 MB max)
+  - `name` (CharField, `max_length=100`) — Human owner's name
+  - `age` (PositiveIntegerField, nullable) — Owner's age
+  - `city` (CharField, `max_length=100`) — Location for proximity awareness
+  - `occupation` (CharField, `max_length=100`, blank)
+  - `interests` (CharField, `max_length=255`, blank) — Comma-separated (e.g. `"hiking, beaches, sports"`)
+  - `about_me` (TextField, `max_length=150`, blank) — Owner's bio
+  - `completed` (BooleanField) — Onboarding completion flag
+  - `created_at` (DateTimeField) — Profile creation timestamp
+- **Relationship:** 1 OwnerProfile per User (OneToOne)
+- **Cascade behavior:** Deleting OwnerProfile cascades to Dog → then to all related Like / Dislike / Message rows
+
+---
+
+**3. Dog — OneToOne with OwnerProfile**
+- **Purpose:** Store dog profile data for matching
+- **Foreign Key:** `owner` (OneToOneField → OwnerProfile, `on_delete=CASCADE`)
+- **Fields:**
+  - `id` (AutoField, primary key)
+  - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) — Dog's photo (10 MB max)
+  - `name` (CharField, `max_length=100`)
+  - `age` (PositiveIntegerField, nullable)
+  - `breed` (CharField, `max_length=100`) — e.g. `"Golden Retriever"`, `"Labrador"`
+  - `size` (CharField, choices) — Small / Medium / Large
+  - `gender` (CharField, choices) — Male / Female
+  - `energy_level` (CharField, choices) — Couch potato / Chill vibes / Playful / Energetic / Full zoomies
+  - `about_me` (TextField, `max_length=150`) — Dog's personality description
+  - `completed` (BooleanField) — Onboarding completion flag
+  - `created_at` (DateTimeField)
+- **Relationship:** 1 Dog per OwnerProfile (OneToOne)
+- **Constraints:** `owner` is unique; enum validation on `size`, `gender`, `energy_level`
+- **Cascade behavior:** Deleting Dog cascades to all Like / Dislike / Message rows referencing it
+
+---
 
 **4. Like**
-   - **Purpose:** Track like relationships between dogs (the app creates the reciprocal like immediately, resulting in an instant match)
-   - **Fields:**
-     - `from_dog` (ForeignKey → Dog) — The dog who initiated the like
-     - `to_dog` (ForeignKey → Dog) — The dog being liked
-     - `created_at` (DateTimeField) — When the like occurred
-   - **Primary Key:** id (auto-increment integer)
-   - **Constraint:** Unique pair (`from_dog`, `to_dog`) via `unique_connection`
-   - **Match Logic:**
-     - When a user likes a dog, the app creates both Like records immediately:
-       - `Like(from_dog=dog1, to_dog=dog2)`
-       - `Like(from_dog=dog2, to_dog=dog1)`
-     - This creates an instant bidirectional match.
-     - Messaging is allowed once this reciprocal pair exists.
-   - **Cascade Behavior:** Deleting either dog cascades to related Like entries.
+- **Purpose:** Track like relationships between dogs. The app creates both directions immediately, resulting in an instant bidirectional match.
+- **Foreign Keys:**
+  - `from_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — The dog who initiated the like
+  - `to_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — The dog being liked
+- **Fields:**
+  - `id` (AutoField, primary key)
+  - `created_at` (DateTimeField)
+- **Constraint:** Unique pair `(from_dog, to_dog)` via `unique_connection` — prevents duplicate likes
+- **Match logic:**
+  When a user likes a dog, the app creates both rows at once:
+  ```
+  Like(from_dog=dog1, to_dog=dog2)
+  Like(from_dog=dog2, to_dog=dog1)
+  ```
+  When both rows exist, the pair is considered matched and messaging is unlocked.
+
+**Implicit many-to-many:** Although there is no explicit `ManyToManyField`, the `Like` table acts as a many-to-many join table between dogs. A dog can like many others and be liked by many others. The match check queries for a reciprocal pair of `Like` rows.
+
+---
 
 **5. Dislike**
-   - **Purpose:** Track dogs a user has skipped to exclude from future browsing
-   - **Fields:**
-     - `from_dog` (ForeignKey → Dog) — The dog doing the skipping
-     - `to_dog` (ForeignKey → Dog) — The dog being skipped
-     - `created_at` (DateTimeField) — When the skip occurred
-   - **Primary Key:** id (auto-increment integer)
-   - **Constraint:** Unique pair (`from_dog`, `to_dog`) via `unique_dislike`
-   - **Cascade Behavior:** Deleting either dog cascades to related Dislike entries.
+- **Purpose:** Track dogs a user has skipped, to exclude them from future browsing
+- **Foreign Keys:**
+  - `from_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — The dog doing the skipping
+  - `to_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — The dog being skipped
+- **Fields:**
+  - `id` (AutoField, primary key)
+  - `created_at` (DateTimeField)
+- **Constraint:** Unique pair `(from_dog, to_dog)` via `unique_dislike`
+- **Cascade behavior:** Deleting either dog cascades to related Dislike rows
 
-*6. Message (Conversation Thread)**
-   - **Purpose:** Store messages between dogs that are allowed to message each other
-   - **Fields:**
-     - `sender_dog` (ForeignKey → Dog) — Dog sending the message
-     - `receiver_dog` (ForeignKey → Dog) — Dog receiving the message
-     - `content` (TextField) — Message body
-     - `created_at` (DateTimeField) — When message was sent (auto-set on creation)
-   - **Primary Key:** id (BigAutoField, auto-increment)
-   - **Default ordering:** newest first (`-created_at`)
-   - **Access Rule (view-level):** Messaging routes only allow access when both dogs are matched (reciprocal likes).
-   - **Cascade Behavior:** Deleting either dog cascades to delete related Message entries.
+---
+
+**6. Message**
+- **Purpose:** Store messages between matched dogs
+- **Foreign Keys:**
+  - `sender_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — Dog sending the message
+  - `receiver_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — Dog receiving the message
+- **Fields:**
+  - `id` (BigAutoField, primary key)
+  - `content` (TextField) — Message body
+  - `created_at` (DateTimeField, auto-set on creation)
+- **Default ordering:** Newest first (`-created_at`)
+- **Access rule (view-level):** Messaging routes only allow access when both dogs have a reciprocal Like pair.
+- **Cascade behavior:** Deleting either dog cascades to related Message rows
+
+---
+
+#### Relationships Summary
+
+| Relationship | Models involved | Type | Enforcement |
+|---|---|---|---|
+| User ↔ OwnerProfile | User, OwnerProfile | One-to-One | `OneToOneField` + `CASCADE` |
+| OwnerProfile ↔ Dog | OwnerProfile, Dog | One-to-One | `OneToOneField` + `CASCADE` |
+| Dog → Like (sender) | Dog, Like | One-to-Many | `ForeignKey` + `CASCADE` |
+| Dog → Like (receiver) | Dog, Like | One-to-Many | `ForeignKey` + `CASCADE` |
+| Dog ↔ Dog (via Like) | Dog, Like | Implicit Many-to-Many | Reciprocal Like rows |
+| Dog → Dislike | Dog, Dislike | One-to-Many | `ForeignKey` + `CASCADE` |
+| Dog → Message | Dog, Message | One-to-Many | `ForeignKey` + `CASCADE` |
+
+---
 
 #### Data Flow Examples
 
-**Example 1: Registration flow**
-1. User registers with email/password.
-2. User is created with `username=email` and `email=email`.
-3. OwnerProfile is created (or reused when resuming incomplete registration).
-4. Dog is created (or reused) and linked to OwnerProfile.
+**Example 1 — Registration flow**
+1. User registers with email and password.
+2. `User` is created with `username=email` and `email=email`.
+3. `OwnerProfile` is created (or reused if registration was interrupted).
+4. `Dog` is created and linked to `OwnerProfile`.
 
-**Example 2: Like -> match -> message**
-1. User likes a dog on browse page.
-2. The app creates both like directions immediately.
+**Example 2 — Like → match → message**
+1. User likes a dog on the browse page.
+2. The app creates both Like directions immediately.
 3. The pair appears as a match.
-4. Messaging routes validate match status before allowing thread access.
+4. Messaging routes validate the reciprocal Like pair before allowing thread access.
 
-**Example 3: Cascade behavior**
-1. If a `User` is deleted, related OwnerProfile is deleted.
-2. OwnerProfile deletion cascades to Dog.
-3. Dog deletion cascades to Like/Dislike/Message rows referencing that dog.
+**Example 3 — Cascade delete**
+1. Deleting a `User` cascades to `OwnerProfile`.
+2. Deleting `OwnerProfile` cascades to `Dog`.
+3. Deleting `Dog` cascades to all `Like`, `Dislike`, and `Message` rows referencing that dog.
+
+---
 
 #### Schema Characteristics
 
 | Characteristic | Implementation | Benefit |
 |---|---|---|
-| **One-to-One Relationships** | User ↔ OwnerProfile ↔ Dog | Enforces one profile per user, one dog per owner |
-| **Foreign Keys** | Dog → Like/Dislike/Message | Referential integrity, prevents orphaned data |
-| **Cascade Delete** | All model relationships use on_delete=CASCADE | Data consistency when related records are removed |
-| **Unique Constraints** | (from_dog, to_dog) on Like and Dislike | Prevents duplicate likes/skips |
-| **Choice Fields** | size, gender, energy_level enums | Data validation, enables filtering |
-| **Timestamps** | created_at on OwnerProfile, Dog, Like, Dislike, Message | Supports chronological sorting and audit trail |
-| **Nullable Fields** | profile_photo and age are nullable in OwnerProfile/Dog | Flexible onboarding and profile completion |
+| **One-to-One relationships** | User ↔ OwnerProfile ↔ Dog | Enforces one profile per user, one dog per owner |
+| **Foreign keys** | Dog → Like / Dislike / Message | Referential integrity, prevents orphaned data |
+| **Cascade delete** | All relationships use `on_delete=CASCADE` | Data consistency when related records are removed |
+| **Unique constraints** | `(from_dog, to_dog)` on Like and Dislike | Prevents duplicate likes / skips |
+| **Implicit many-to-many** | Like table (bidirectional rows) | Flexible match logic without a join model |
+| **Choice fields** | `size`, `gender`, `energy_level` | Data validation, enables filtering |
+| **Timestamps** | `created_at` on all models | Supports chronological sorting and audit trail |
+| **Nullable fields** | `profile_photo` and `age` | Flexible onboarding and profile completion |
 
 ### Skeleton
 
@@ -631,8 +688,8 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
   - Owner metadata: Age, occupation, interests pills
 
 <p align="center">
-  <img src="docs/images/Discover_Dog.png" alt="Discover dog profile view" style="width: 30%; max-width: 450px; margin: 8px;">
-  <img src="docs/images/Discover_Owner.png" alt="Discover owner profile view" style="width: 30%; max-width: 450px; margin: 8px;">
+  <img src="docs/images/Discover_Dog.png" alt="Discover dog profile view" style="width: 30%; max-width: 450px; margin: 8px height: auto;">
+  <img src="docs/images/Discover_Owner.png" alt="Discover owner profile view" style="width: 30%; max-width: 450px; margin: 8px; height: auto;">
 </p>
   
 - **Action Buttons**:
@@ -651,21 +708,21 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
     - Action: "Reset Matches"
     - Result: clears all connections, dislikes, and messages, then restores discovery pool
     <p align="center">
-      <img src="docs/images/No_More_Match.png" alt="No more matches empty state" style="width: 30%; max-width: 450px;">
+      <img src="docs/images/No_More_Match.png" alt="No more matches empty state" style="width: 30%; max-width: 450px; height: auto;">
     </p>
   - **Matches (No matches yet)**:
     - Message: "You don't have any matches yet."
     - Supporting text: "Start liking dogs to find your perfect match!"
     - Action: "Back to Discover"
     <p align="center">
-     <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 30%; max-width: 450px;">
+     <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 30%; max-width: 450px;  height: auto;">
     </p>
   - **Messages Inbox (No messages yet)**:
     - Message: "No messages yet"
     - Supporting text: "Send a message to a match to arrange a playdate!"
     - Action: "Back to Discover"
     <p align="center">
-      <img src="docs/images/No_Messages.png" alt="No more matches empty state" style="width: 30%; max-width: 450px;">
+      <img src="docs/images/No_Messages.png" alt="No more matches empty state" style="width: 30%; max-width: 450px; height: auto;">
     </p>
   
 - **Filtering** (determines which dogs appear on the browse page):
@@ -997,7 +1054,7 @@ Testing was organised around the main user flows and quality checks required for
 | ARIA Support | Inspect key controls and dialogs | Navigation toggles, like/dislike buttons, delete actions, and modals expose clear accessible names and states, and the messages thread announces updates with `aria-live="polite"` | PASS |
 | Alt Text Coverage | Inspect profile images, placeholders, and illustrations | Descriptive alt text is provided throughout the site | PASS |
 | Focus Styling | Tab through navigation, forms, and buttons | Focus states are visible and easy to follow | PASS |
-| Screen Reader Friendly Updates | Use the messaging interface | New conversation updates are announced to assistive technologies | PASS |
+| Screen Reader Friendly Updates | Use the messaging interface | VoiceOver announces page controls via an `aria-live` region, but chat messages typed in the message box or send are not read automatically and must be reached through normal screen reader navigation | PASS |
 
 ### Validator Testing
 
@@ -1122,6 +1179,22 @@ Would need:
 4. Add SMTP/SendGrid credentials
 
 This is a known limitation and would be first priority before any production deployment.
+
+## Security
+
+- **Environment variables:** Secrets and configuration (for example `SECRET_KEY`, `DATABASE_URL`, `CLOUDINARY_API_KEY`, etc.) are provided via environment variables rather than hard-coded in source. This separates configuration from code, avoids committing secrets to Git, and makes deployments (Heroku, Docker, CI) portable and secure.
+
+- **Protecting sensitive data:** Keep a local `.env` or `env.py` for development (listed in `.gitignore`) and load it with `python-dotenv` or similar. In production use platform config vars (Heroku), a secrets manager (AWS Secrets Manager, Vault) or CI secret storage. Limit who can read/rotate these values and rotate them if compromised.
+
+- **DEBUG must be `False` in production:** When `DEBUG=True`, Django shows detailed error pages and stack traces that may reveal secret values, file paths, and environment details. Set `DEBUG=False` in production and configure `ALLOWED_HOSTS`, `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE`, and `CSRF_COOKIE_SECURE` for safer behavior.
+
+- **Authentication & access control:** The project uses Django authentication (`User` + sessions). Protect views with `@login_required` or `LoginRequiredMixin` and check `request.user` in view logic. Use Django permissions/groups or `is_staff`/`is_superuser` to gate administrative functionality.
+
+- **Object-level restrictions:** Only owners may edit their own profiles or dogs. Views should verify ownership (for example `if ownerprofile.user != request.user: return HttpResponseForbidden()`) before permitting edits or deletions. Use object-permission libraries (e.g., `django-guardian`) for finer-grained rules if needed.
+
+- **CSRF protection:** Django's `CsrfViewMiddleware` is enabled by default. Include `{% csrf_token %}` in server-rendered forms and send the `X-CSRFToken` header (from the `csrftoken` cookie) for AJAX requests. Do not disable CSRF middleware in production.
+
+- **Operational best practices:** Do not commit `.env` or secrets to version control. Use HTTPS in production, restrict `ALLOWED_HOSTS`, limit secret access, log errors to an external service (Sentry) instead of exposing traces to users, and test the app with `DEBUG=False` in staging before production rollout.
 
 ## Deployment 
 
