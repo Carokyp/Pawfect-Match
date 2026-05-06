@@ -69,7 +69,13 @@ document.addEventListener("DOMContentLoaded", () => {
       button.addEventListener("click", () => {
         const input = button.parentElement.querySelector("input");
         if (!input) return;
-        input.type = input.type === "password" ? "text" : "password";
+        const isPasswordHidden = input.type === "password";
+        input.type = isPasswordHidden ? "text" : "password";
+        button.setAttribute("aria-pressed", String(isPasswordHidden));
+        button.setAttribute(
+          "aria-label",
+          isPasswordHidden ? "Hide password" : "Show password"
+        );
       });
     });
   };

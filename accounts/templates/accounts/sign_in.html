@@ -42,8 +42,8 @@
             </div>
             <div class="input-wrapper">
               {{ form.password }}
-              <button type="button" class="toggle-password">
-                <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon">
+              <button type="button" class="toggle-password" aria-label="Show password" aria-pressed="false">
+                <img src="{% static 'images/visibility.svg' %}" alt="" aria-hidden="true" class="eye-icon">
               </button>
             </div>
             <a href="{% url 'password_reset' %}" class="forgot-password-link">Forgot password?</a>

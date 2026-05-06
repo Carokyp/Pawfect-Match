@@ -922,43 +922,82 @@ __Frameworks, Libraries & Programs Used__
 * [JS-Beautify](https://beautifier.io/): Checked the formatting and structure of the HTML and CSS for consistency and readability.
 * [Cloudinary](https://cloudinary.com/): was used for cloud-based image storage, optimization, and delivery of profile photos
 
-## Testing 
+## Testing
 
-### Validation
+Testing was organised around the main user flows and quality checks required for the project: authentication, CRUD, permissions, forms, UX, accessibility, and bug tracking.
 
-#### Backend Validation
-- All form submissions are validated server-side with Django forms (`form.is_valid()`) before any database write.
-- **RegisterForm** validates:
-  - email format (`EmailField`)
-  - duplicate account prevention for fully completed accounts
-  - password confirmation match
-  - Django built-in password validators (`validate_password`)
-  - custom password strength rules (at least one uppercase letter, one digit, and one special character)
-- **ForgotPasswordForm** validates:
-  - email exists in the database
-  - password confirmation match
-  - Django built-in password validators + custom password strength rules
-- **OwnerProfileForm** and **DogForm** validate:
-  - required fields server-side
-  - profile photo presence
-  - profile photo max size (9.5 MB)
-  - safe handling of existing photo during edit
-- Model-level constraints validate profile data structure:
-  - `PositiveIntegerField` for `age`
-  - `choices` for dog `size`, `gender`, and `energy_level`
-- Validation errors are rendered back to users directly on form pages through field and non-field form errors.
+### Authentication
 
-#### Frontend Validation
-- Required fields are marked in the UI and required attributes are set on owner/dog form fields.
-- Input constraints are applied through form widgets, including:
-  - `maxlength="150"` on About Me textareas
-  - `type="number"` on age fields
-  - `accept="image/*"` on profile photo inputs
-- JavaScript adds client-side UX validation helpers:
-  - live character counters for textareas with max length
-  - interest selection limit (max 3)
-  - image upload preview + drag-and-drop handling
-- Owner/Dog profile forms use `novalidate`, so they rely on custom UI behavior plus backend validation as the final source of truth.
+| Test Label | Test Action | Expected Outcome | Test Outcome |
+|------------|-------------|------------------|--------------|
+| User Registration | Navigate to homepage → Click "Get Started" → Enter valid email and password → Submit form | User account created, redirected to create owner profile page | PASS |
+| Registration Validation | Try to register with invalid email format | Form shows validation error, prevents submission | PASS |
+| Password Requirements | Try to register with a password with less than 8 characters, no uppercase letter, no digit, and no special character | Form shows password requirement errors | PASS |
+| User Sign In | Click "Sign In" → Enter valid credentials → Submit | User logged in, redirected to the Discover page | PASS |
+| Invalid Sign In | Enter incorrect email/password → Submit | Error message displayed, user remains on sign in page | PASS |
+| Password Reset | Click "Forgot password?" → Enter registered email → change password → Submit | Success message displayed, user redirected to success page | PASS |
+| Invalid Password Reset | Click "Forgot password?" → Enter an unregistered email → try to change password → Submit | Form shows validation error, prevents submission | PASS |
+| Sign Out | Click "Log out" in navigation | User signed out, redirected to homepage | PASS |
+
+### CRUD
+
+| Test Label | Test Action | Expected Outcome | Test Outcome |
+|------------|-------------|------------------|--------------|
+| Create Owner Profile | Upload photo → Fill all required fields (name, age, city) → Submit | Owner profile created, redirected to create dog profile | PASS |
+| Read Profile Data | Navigate to Profile page | Owner and dog profile information is displayed correctly | PASS |
+| Update Owner Profile | Navigate to Profile → Click "Edit Owner Profile" → Modify fields → Save | Changes saved, profile updated, redirected to profile view | PASS |
+| Create Dog Profile | Upload photo → Fill all required fields (name, age, breed, gender, size, energy) → Submit | Dog profile created, redirected to Browse Dogs page | PASS |
+| Update Dog Profile | Navigate to Profile → Click "Edit Dog Profile" → Modify fields → Save | Changes saved, dog profile updated, redirected to profile view | PASS |
+| Delete Match | Open Matches page → Click delete button on a match → Confirm | Match removed, conversation deleted, page updated | PASS |
+| Delete Conversation | Open Messages page → Click delete icon → Confirm | Entire conversation deleted from both users | PASS |
+| Delete Account | Go to the Danger Zone → Confirm deletion | Account and all related data deleted, user logged out, redirected to homepage | PASS |
+
+### Permissions
+
+| Test Label | Test Action | Expected Outcome | Test Outcome |
+|------------|-------------|------------------|--------------|
+| Authenticated Access | Try to access the Browse Dogs page without logging in | Redirected to the sign in page | PASS |
+| Protected Messaging Route | Navigate directly to `/message/{dog_id}` without a match | Redirected to the matches list | PASS |
+| 403 Access Handling | Trigger a forbidden action | Custom 403 page displayed with recovery navigation | PASS |
+| Error Page Browse Link | Click "Browse Dogs" from an error page while logged out | Redirected to sign in first, then back to Browse Dogs after login | PASS |
+| Match-Based Messaging Access | Try to open a conversation without a reciprocal match | Access is denied until the match exists | PASS |
+
+### Forms
+
+| Test Label | Test Action | Expected Outcome | Test Outcome |
+|------------|-------------|------------------|--------------|
+| Owner Profile Validation | Try to submit without a photo or required field | Form shows validation errors | PASS |
+| Dog Profile Validation | Try to submit without required fields | Form shows validation errors | PASS |
+| Photo Upload | Select a JPG/PNG image and upload it | Image is previewed before submission and saved correctly | PASS |
+| Photo Size Limit | Try to upload an image bigger than 9.5 MB | Form shows image size restriction error | PASS |
+| Photo Removal | Click the remove button on an uploaded photo | Photo is removed and placeholder is shown | PASS |
+| Character Counter | Type in the About Me textarea | Character count updates in real time | PASS |
+| Password Validation | Enter a weak password on the sign up form | Password rules are displayed clearly | PASS |
+| Empty Message Submission | Try to send an empty message | Submit is blocked or no action is taken | PASS |
+
+### UX
+
+| Test Label | Test Action | Expected Outcome | Test Outcome |
+|------------|-------------|------------------|--------------|
+| Browse Dogs Layout | Navigate to Discover page | Dog profiles are displayed clearly with responsive layout changes across screen sizes | PASS |
+| Mobile Profile Toggle | On mobile, tap the Owner/Dog toggle | View switches between owner and dog information | PASS |
+| Like Action | Click the heart icon on a dog profile | Profile is liked, match modal appears when relevant, next profile is shown | PASS |
+| Dislike Action | Click the X icon on a dog profile | Profile is disliked, next profile is shown | PASS |
+| Match Modal | Like a dog that already liked you | "It's a Match!" modal appears with both dog photos | PASS |
+| Match Modal Close | Click the close button | Modal closes and browsing continues | PASS |
+| No More Dogs State | Swipe through all available dogs | Empty-state message and reset option are displayed | PASS |
+| Back Button Navigation | Click the back arrow on form pages | Returns to the previous page without saving | PASS |
+| Navigation Behaviour | Use navbar links on desktop and mobile | Links open the correct pages and the mobile menu closes after selection | PASS |
+| Empty State Messaging | Delete all matches or conversations | Friendly empty states are shown instead of blank screens | PASS |
+
+### Accessibility
+
+| Test Label | Test Action | Expected Outcome | Test Outcome |
+|------------|-------------|------------------|--------------|
+| ARIA Support | Inspect key controls and dialogs | Navigation toggles, like/dislike buttons, delete actions, and modals expose clear accessible names and states, and the messages thread announces updates with `aria-live="polite"` | PASS |
+| Alt Text Coverage | Inspect profile images, placeholders, and illustrations | Descriptive alt text is provided throughout the site | PASS |
+| Focus Styling | Tab through navigation, forms, and buttons | Focus states are visible and easy to follow | PASS |
+| Screen Reader Friendly Updates | Use the messaging interface | New conversation updates are announced to assistive technologies | PASS |
 
 ### Validator Testing
 
@@ -970,128 +1009,27 @@ All Python files were validated for PEP8 compliance using [CI Python Linter](htt
 
 The JavaScript file was validated with [JSHint](https://jshint.com/) with no critical errors.
 
-## Functionality Testing
-
-### User Authentication and Account Management
-
-| Test Label | Test Action | Expected Outcome | Test Outcome |
-|------------|-------------|------------------|--------------|
-| User Registration | Navigate to homepage → Click "Get Started" → Enter valid email and password → Submit form | User account created, redirected to create owner profile page | PASS |
-| Registration Validation | Try to register with invalid email format | Form shows validation error, prevents submission | PASS |
-| Password Requirements | Try to register with password with less then 8 characters, no uppercase letter (A–Z), no digit (0–9) and no special character (!@#$%^&*...) | Form shows password requirements errors | PASS |
-| User Sign In | Click "Sign In" → Enter valid identifiant → Submit | User logged in, redirected to browse dogs page |PASS|
-| Invalid Sign In | Enter incorrect email/password → Submit | Error message displayed, user remains on sign in page | PASS |
-| Password Reset | Click "Forgot password?" → Enter registered email → change password → Submit | Success message displayed, user redirected to success page | PASS |
-| Invalid Password Reset | Click "Forgot password?" → Enter no registered email → try to change password → Submit | Form shows validation error, prevents submission | PASS |
-| Sign Out | Click "Log out" in navigation | User signed out, redirected to homepage | PASS |
-| Authenticated Access | Try to access browse page without login | Redirected to sign in page | PASS |
-
-### Profile Creation and Management
-
-| Test Label | Test Action | Expected Outcome | Test Outcome |
-|------------|-------------|------------------|--------------|
-| Create Owner Profile | Upload photo → Fill all required fields (name, age, city) → Submit | Owner profile created, redirected to create dog profile | PASS |
-| Owner Profile Validation | Try to submit without photo or required field | Form shows validation errors | PASS |
-| Create Dog Profile | Upload photo → Fill all required fields (name, age, breed, gender, size, energy) → Submit | Dog profile created, redirected to browse dogs page | PASS |
-| Dog Profile Validation | Try to submit without required fields | Form shows validation errors | PASS |
-| Edit Owner Profile | Navigate to Profile → Click "Edit Owner Profile" → Modify fields → Save | Changes saved, profile updated, redirected to profile view | PASS |
-| Edit Dog Profile | Navigate to Profile → Click "Edit Dog Profile" → Modify fields → Save | Changes saved, dog profile updated, redirected to profile view | PASS |
-| Photo Upload | Select image file (JPG/PNG) → Upload | Image previewed before submission, saved correctly | PASS |
-| Photo Size | Try to submit an image file (JPG/PNG) bigger then 10mb| Form shows image size restriction error | PASS |
-| Photo Removal | Click remove (×) button on uploaded photo | Photo removed, placeholder shown | PASS |
-| Character Counter | Type in "About me" textarea | Character count updates in real-time (0/150) | PASS |
-| Back Button Navigation | Click back arrow on form pages | Returns to previous page without saving | PASS |
-
-### Browse and Matching System
-
-| Test Label | Test Action | Expected Outcome | Test Outcome |
-|------------|-------------|------------------|--------------|
-| Browse Dogs | Navigate to Discover page | Dog profiles displayed with toggle between dog/owner views on mobile and side by side on bigger screen| PASS|
-| Profile Toggle (mobile) | Click "Owner" button on browse card | View switches to owner information | PASS |
-| Like Action | Click heart icon on dog profile | Profile liked, modal showing the match is shown, next profile shown | PASS |
-| Dislike Action | Click X icon on dog profile | Profile disliked, next profile shown | PASS |
-| Match Modal | Like a dog that already liked you | "It's a Match!" modal appears with both dog photos | PASS |
-| Match Modal Actions | Click "Send a message" in match modal | Redirected to message thread with matched dog | PASS |
-| Match Modal Close | Click on close (×) button | Modal closes, next profile shown | PASS |
-| No More Dogs | Swipe through all available dogs | "No more matches" message with reset button displayed | PASS |
-| Reset Functionality | Click "Reset" button when no dogs available | All matches, dislikes, and messages deleted, browsing restarted | PASS |
-
-### Matches Management
-
-| Test Label | Test Action | Expected Outcome | Test Outcome |
-|------------|-------------|------------------|--------------|
-| View Matches | Navigate to Matches page | Grid of matched dogs displayed with toggle functionality | PASS |
-| Match Count | Check matches header | Correct count displayed (e.g., "You have 3 matches") | PASS |
-| Delete Match Button | Hover over match card | Delete (×) button visible in top-right corner | PASS |
-| Delete Match Modal | Click delete (×) button | Confirmation modal appears with warning message | PASS |
-| Confirm Delete Match | Click "Delete" in modal | Match removed, conversation deleted, page updated | PASS |
-| Cancel Delete Match | Click "Cancel" in delete modal | Modal closes, match remains | PASS |
-| Empty Matches State | Delete all matches | "No matches yet" message with emoji displayed | PASS |
-| Message from Matches | Click "Send a message" button on match card | Redirected to message thread with selected match | PASS |
-
-### Messaging System
-
-| Test Label | Test Action | Expected Outcome | Test Outcome |
-|------------|-------------|------------------|--------------|
-| View Inbox | Navigate to Messages page | List of conversations displayed with last message preview | PASS |
-| Conversation Preview | Check conversation item | Shows dog avatar, name, breed, and last message snippet | PASS |
-| Open Thread | Click on conversation in inbox | Message thread opens with full conversation history | PASS |
-| Send Message | Type message in textarea → Click "Send" / or the Enter key | Message sent, appears in thread, textarea cleared | PASS |
-| Empty Message | Try to send empty message | Submit button disabled or no action | PASS |
-| Message Timestamp | Check message time display | Timestamp shown in format "Jan 15" | PASS |
-| Delete Conversation Button | Hover over conversation in inbox | Delete bin icon visible | PASS |
-| Delete Conversation Modal | Click delete bin icon | Confirmation modal appears | PASS |
-| Confirm Delete Conversation | Click "Delete" in modal | Entire conversation deleted from both users | PASS |
-| Empty Messages State | Delete all conversations | "No conversations" message with emoji displayed | PASS |
-| Desktop Split View | View messages on desktop (992px+) | Inbox on left, thread preview on right | PASS |
-| Mobile Single View | View messages on mobile (<992px) | Inbox only, thread opens on separate page | PASS |
-| Message non-matched dog | Navigate directly to /message/{dog_id} without match | Redirected to matches list | PASS |
-
-### Navigation and UI
-
-| Test Label | Test Action | Expected Outcome | Test Outcome |
-|------------|-------------|------------------|--------------|
-| Navbar Brand (Guest) | Click "Pawfect Match" logo from public pages | Redirects to homepage | PASS |
-| Navbar Brand (User) | Click "Pawfect Match" logo from authenticated pages | Redirects to Discover page | PASS |
-| Public Auth Links | As guest, click "Home", "Sign In", and "Sign Up" in navbar | Each link opens the correct public/auth page | PASS |
-| Authenticated User Navbar Links | As authenticated user, click "Discover", "Matches", "Messages", "Profile", and "Log out" | Each link opens the correct page, log out ends session and returns to homepage | PASS |
-| Active Nav State | Navigate between public and authenticated main pages | Current page link is visually highlighted | PASS  |
-| Mobile Menu Behavior | On mobile, open menu then click hamburger and links | Menu expands/collapses and auto-closes after link click | PASS |
-| Footer Social Links | Click each social icon in footer | Opens correct social page in a new tab | PASS |
-| Error Pages (404/403/500/405) | Trigger each error condition | Correct branded error page is shown with recovery navigation, "Back to Home" redirects to Home, "Browse Dogs" redirects authenticated users to Discover and unauthenticated users to Sign In | PASS |
-
-### Delete Account
-
-| Test Label | Test Action | Expected Outcome | Test Outcome |
-|------------|-------------|------------------|--------------|
-| Access Danger Zone | Navigate to Profile page → Scroll to bottom | "Danger zone" section visible with delete button | PASS |
-| Delete Account Modal | Click "Delete my profile" button | Warning modal appears with consequences listed | PASS |
-| Confirm Delete Account | Type confirmation → Click "Yes, delete my account" | Account and all data deleted, user logged out, redirected to homepage | PASS |
-| Cancel Delete Account | Click "Cancel" in delete modal | Modal closes, account remains active | PASS |
-| Data Deletion Verification | Delete account → Try to sign in with same credentials | Account no longer exists, cannot sign in | PASS |
-
-
-### Browser Compatibility Testing
+### Browser Compatibility
 
 | Browser | Version | Test Result | Notes |
 |---------|---------|-------------|-------|
 | Google Chrome | 122.0+ | PASS | |
 | Mozilla Firefox | 123.0+ | PASS | Minor UI glitch: when an invalid email format is entered, Firefox "Manage Passwords" prompt can overlap the native invalid email alert. |
 | Microsoft Edge | 122.0+ | PASS | |
-| Safari (macOS) | 17.0+ | PASS | Minor UI issue: Safari Keychain/AutoFill suggestion popup can overlap the password field area on Sign in. No functional impact (login still works). |
+| Safari (macOS) | 17.0+ | PASS | Minor UI issue: Safari Keychain/AutoFill suggestion popup can overlap the password field area on Sign in. No functional impact. |
 
-### Responsive Design Testing
+### Responsive Design
 
 | Device Category | Screen Size | Test Result | Notes |
 |----------------|-------------|-------------|-------|
-| **Mobile - Small** | 320px × 568px | PASS | |
-| **Mobile - Standard** | 375px × 667px | PASS | |
-| **Mobile - Large** | 425px × 896px | PASS | |
-| **Tablet - Portrait** | 768px × 1024px | PASS | |
-| **Tablet - Landscape** | 1024px × 768px | PASS | |
-| **Laptop** | 1440px × 768px | PASS | |
-| **Desktop - Standard** | 1920px × 1080px | PASS | |
-| **Desktop - Large** | 2560px × 1440px | PASS | |
+| Mobile - Small | 320px × 568px | PASS | |
+| Mobile - Standard | 375px × 667px | PASS | |
+| Mobile - Large | 425px × 896px | PASS | |
+| Tablet - Portrait | 768px × 1024px | PASS | |
+| Tablet - Landscape | 1024px × 768px | PASS | |
+| Laptop | 1440px × 768px | PASS | |
+| Desktop - Standard | 1920px × 1080px | PASS | |
+| Desktop - Large | 2560px × 1440px | PASS | |
 
 ### Performance
 
@@ -1103,35 +1041,46 @@ The JavaScript file was validated with [JSHint](https://jshint.com/) with no cri
 
 All performance metrics meet industry standards for web applications.
 
+### Bugs Found, Fixed, and Unresolved
+
+| Bug | Status | Notes |
+|-----|--------|-------|
+| Oversized profile images were being accepted too easily | Fixed | Added a server-side file size check so uploads over 9.5 MB are rejected cleanly. |
+| Existing profile photos could be lost during edit | Fixed | Edit forms now preserve the current photo when no new image is uploaded. |
+| Messaging access without a reciprocal match | Fixed | Messaging routes now block access until the match exists. |
+| Firefox password manager popup overlapping the invalid email alert | Unresolved | Minor browser-specific UI overlap with no functional impact. |
+| Safari Keychain/AutoFill popup overlapping the sign in form | Unresolved | Minor browser-specific UI overlap with no functional impact. |
+| Password reset flow allowing instant password changes without email verification | Unresolved | Known security limitation in the current prototype; would need proper email token verification before production use. |
+
 ### Testing User Stories
 
 All user stories outlined in the UX Strategy section have been validated and fulfilled through specific features and pages. This section demonstrates how each requirement is met within the application.
 
-#### **New User Stories**
+#### New User Stories
 
 | User Story | How It's Fulfilled | Features/Pages Used |
 |------------|-------------------|---------------------|
-| **As a new user, I want to understand what the site is about, so I can decide if it's right for me.** | The homepage provides a clear hero section with the tagline "Find Love Through Your Pet" and explains the concept. The "How It Works" section breaks down the process in 4 simple steps with visual illustrations. The "Why Pawfect Match" section highlights key benefits (Pet-First Approach, Authentic Connections, Safe & Friendly, Easy Communication). | **Homepage** - Hero section, How It Works steps, Why Pawfect Match cards |
-| **As a new user, I want to register easily, so I can start quickly.** | Registration requires only email and password with confirmation. Form validation provides clear feedback. The "Get Started" button is prominently displayed on the hero section. After registration, users are automatically guided through profile creation. | **Register Page** - Email/password form, validation, redirect to owner profile creation |
-| **As a new user, I want to add my details and my dog's details, so I can begin browsing matches.** | After registering, users create their owner profile first (name, age, city, occupation, interests, about me, photo) then their dog profile (name, age, breed, size, gender, energy level, about me, photo). Both forms include photo upload with preview and character counters. Onboarding is sequential with automatic redirects. | **Create Owner Profile Page** - Initial onboarding form with all owner fields<br>**Create Dog Profile Page** - Second onboarding step with all dog fields, automatic redirect to Browse Dogs after completion |
+| As a new user, I want to understand what the site is about, so I can decide if it's right for me. | The homepage provides a clear hero section with the tagline "Find Love Through Your Pet" and explains the concept. The "How It Works" section breaks down the process in 4 simple steps with visual illustrations. The "Why Pawfect Match" section highlights key benefits. | Homepage - Hero section, How It Works steps, Why Pawfect Match cards |
+| As a new user, I want to register easily, so I can start quickly. | Registration requires only email and password with confirmation. Form validation provides clear feedback. The "Get Started" button is prominently displayed on the hero section. After registration, users are automatically guided through profile creation. | Register Page - Email/password form, validation, redirect to owner profile creation |
+| As a new user, I want to add my details and my dog's details, so I can begin browsing matches. | After registering, users create their owner profile first and then their dog profile. Both forms include photo upload with preview and character counters. Onboarding is sequential with automatic redirects. | Create Owner Profile Page - Initial onboarding form with all owner fields; Create Dog Profile Page - Second onboarding step with all dog fields |
 
-#### **Existing User Stories**
-
-| User Story | How It's Fulfilled | Features/Pages Used |
-|------------|-------------------|---------------------|
-| **As an existing user, I want to sign in and out easily, so I can access my account.** | Sign in page accessible from the hero section "Sign In" button on the homepage or via "Get Started" → "Sign In" link. Users enter email and password with "Forgot password?" link available. After authentication, users are redirected based on profile completion: incomplete profiles redirect to Create Owner Profile, complete profiles redirect to Browse Dogs. Log out link is always visible in the navbar for authenticated users, signing them out and redirecting to homepage. | **Sign In Page** - Email/password form, error messages<br>**Navbar** - "Log out" link on all authenticated pages |
-| **As an existing user, I want to create and edit my owner profile, so I can manage my information.** | Owner profile creation is the first step after registration. Users can later edit their profile by clicking "Profile" in the navbar, then clicking "Edit Owner Profile". Form includes photo upload with drag-and-drop, name, age, city, occupation, interests (select up to 3 pills), and about me with character counter. Changes are saved and user is redirected back to profile view. | **Create Owner Profile Page** - Initial onboarding form<br>**Edit Owner Profile Page** - Pre-populated form, photo update, save redirects to profile view |
-| **As an existing user, I want to create and edit my dog profile, so I can keep it updated.** | Dog profile creation is the second onboarding step after owner profile. Users can edit from the Profile page by clicking "Edit Dog Profile". Form includes photo upload with preview, name, age, breed, size/gender/energy dropdowns, and about me section. Updates are saved and user returns to profile view. | **Create Dog Profile Page** - Second onboarding step<br>**Edit Dog Profile Page** - Pre-populated form, update photo, save redirects to profile view |
-| **As an existing user, I want to like or dislike dogs after viewing both dog and owner profiles, so I can find the best matches for myself and my dog.** | The Discover page displays dog profiles one at a time with large photos and detailed information. On mobile, users toggle between Dog and Owner views with an active state indicator to see complete information before making a choice. On desktop (≥992px), both dog and owner profiles are displayed side by side. Heart icon (like) creates bidirectional matches and triggers "It's a Match!" modal. X icon (dislike) skips the profile and removes it from future browsing. | **Discover/Browse Dogs Page** - Profile cards with toggle on mobile and side-by-side on desktop, Like (heart icon), Dislike (X icon), "It's a Match!" modal popup |
-| **As an existing user, I want to see my matches and remove a match if I change my mind, so I can manage my connections.** | Matches page displays a grid of all matched dogs with photos, names, ages, and owner names. Each match card has a red X button in the top-right corner. Clicking triggers a confirmation modal ("Are you sure you want to delete this match?"). Confirming removes both bidirectional connection entries and updates the page. Empty state shows "No matches yet" message. | **Matches List Page** - Grid layout, match cards with delete (X) button, delete confirmation modal, empty state |
-| **As an existing user, I want to reset my password, so I can regain access if needed.** | "Forgot password?" link on Sign In page leads to password reset form. Users enter their registered email. The system validates the email belongs to an existing account, then allows them to reset their password immediately through the form with confirmation. Success page displays with link to return to Sign In. | **Forgot Password Page** - Email verification form<br>**Password Reset Page** - New password form with confirmation<br>**Password Reset Success Page** - Confirmation message |
-
-#### **All Users Stories**
+#### Existing User Stories
 
 | User Story | How It's Fulfilled | Features/Pages Used |
 |------------|-------------------|---------------------|
-| **As a user, I want to message other profiles after matching, so I can communicate with my matches.** | After matching, users can click "Send Message" in the "It's a Match!" modal or from match cards to open a conversation thread. On mobile, the Messages page shows an inbox list with all active conversations displaying dog avatar, name, breed, and last message preview. Clicking a conversation opens the full message thread on a separate view. On desktop (≥992px), both inbox and message thread are displayed together: inbox list on the left side, active conversation thread on the right side. Messages are displayed chronologically with different alignments (sent: right, received: left) and avatars. Users can send new messages via textarea and send button. | **Messages/Inbox Page** - Conversation list with previews, empty state<br>**Message Thread Page** - Full conversation history, send message form, timestamps, differentiated sent/received styling |
-| **As a user, I want to edit or delete my profile, so I have control over my data.** | Profile page displays both owner and dog profiles together. On mobile, profiles are stacked one below the other. On desktop (≥992px), profiles are displayed side by side. Each profile has an "Edit" button linking to respective edit forms. Edit forms are pre-populated with existing data allowing users to modify any field including photos. Users can upload new photos (previewed before submission) or keep existing ones. The "Danger Zone" section at the bottom of the Profile page contains "Delete my profile" button which triggers a confirmation modal explaining that all data will be permanently deleted (user account, owner profile, dog profile, all matches, all conversations). Confirming deletes everything via cascade delete, logs user out, and redirects to homepage. | **Profile Page** - View profiles stacked on mobile or side-by-side on desktop, edit buttons<br>**Edit Forms** - Pre-populated fields, photo update<br>**Delete Account Modal** - Confirmation with detailed consequences, cascade delete implementation |
+| As an existing user, I want to sign in and out easily, so I can access my account. | Sign in page is accessible from the homepage. Users enter email and password with a forgot password link available. After authentication, users are redirected based on profile completion. Log out is always visible in the navbar for authenticated users. | Sign In Page - Email/password form, error messages; Navbar - Log out link |
+| As an existing user, I want to create and edit my owner profile, so I can manage my information. | Owner profile creation is the first step after registration. Users can later edit their profile from the Profile page. The form includes photo upload, name, age, city, occupation, interests, and about me with character counter. | Create Owner Profile Page; Edit Owner Profile Page |
+| As an existing user, I want to create and edit my dog profile, so I can keep it updated. | Dog profile creation is the second onboarding step after owner profile. Users can edit from the Profile page. The form includes photo upload, name, age, breed, size, gender, energy level, and about me section. | Create Dog Profile Page; Edit Dog Profile Page |
+| As an existing user, I want to like or dislike dogs after viewing both dog and owner profiles, so I can find the best matches for myself and my dog. | The Discover page displays dog profiles one at a time with detailed information. On mobile, users toggle between Dog and Owner views. On desktop, both profiles are displayed side by side. | Discover/Browse Dogs Page - Profile cards, toggle on mobile, side-by-side on desktop, Like and Dislike actions |
+| As an existing user, I want to see my matches and remove a match if I change my mind, so I can manage my connections. | Matches page displays a grid of all matched dogs with a delete button on each card. Confirming removal deletes both connection entries and updates the page. | Matches List Page - Grid layout, delete modal, empty state |
+| As an existing user, I want to reset my password, so I can regain access if needed. | Forgot password link leads to the password reset form. Users enter their registered email and can reset the password immediately through the form with confirmation. | Forgot Password Page; Password Reset Page; Password Reset Success Page |
+
+#### All Users Stories
+
+| User Story | How It's Fulfilled | Features/Pages Used |
+|------------|-------------------|---------------------|
+| As a user, I want to message other profiles after matching, so I can communicate with my matches. | After matching, users can open a conversation thread from the match modal or from match cards. On mobile, the Messages page shows an inbox list. On desktop, the inbox and thread are displayed together. | Messages/Inbox Page; Message Thread Page |
+| As a user, I want to edit or delete my profile, so I have control over my data. | Profile page displays both owner and dog profiles together. Each profile has an edit button. The Danger Zone section contains a delete profile button that removes the account and all related data. | Profile Page; Edit Forms; Delete Account Modal |
 
 **Summary:** All 11 user stories are fully implemented with dedicated features, pages, and functionality. The application provides a complete user journey from discovery through registration, profile creation, matching, messaging, and account management.
 

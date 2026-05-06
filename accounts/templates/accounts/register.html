@@ -47,8 +47,8 @@
           <div class="input-wrapper">
             {{ form.password }}
 
-            <button type="button" class="toggle-password">
-              <img src="{% static 'images/visibility.svg' %}" alt="Toggle" class="eye-icon">
+            <button type="button" class="toggle-password" aria-label="Show password" aria-pressed="false">
+              <img src="{% static 'images/visibility.svg' %}" alt="" aria-hidden="true" class="eye-icon">
             </button>
           </div>
           <ul class="text-start" style="font-size: 0.75rem; color: var(--text-dark); margin: 0; opacity: 0.7;">
