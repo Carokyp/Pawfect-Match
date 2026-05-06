@@ -72,6 +72,60 @@ a:visited {
 
 /* #endregion */
 
+/* #region Global keyboard focus styles for custom interactive controls */
+:root {
+  --focus-outline-color: #6aa1f8;
+
+}
+
+a.btn:focus,
+a.btn:focus-visible,
+button:focus,
+button:focus-visible,
+.btn-modal:focus,
+.btn-modal:focus-visible,
+.action-btn:focus,
+.action-btn:focus-visible,
+.toggle-btn:focus,
+.toggle-btn:focus-visible,
+.toggle-password:focus,
+.toggle-password:focus-visible,
+.upload-remove:focus,
+.upload-remove:focus-visible,
+.btn-delete-conversation:focus,
+.btn-delete-conversation:focus-visible,
+.btn-delete-match:focus,
+.btn-delete-match:focus-visible,
+.back-button:focus,
+.back-button:focus-visible,
+.back-button-messages:focus,
+.back-button-messages:focus-visible,
+.match-modal .close:focus,
+.match-modal .close:focus-visible,
+.delete-modal .close:focus,
+.delete-modal .close:focus-visible,
+.navbar .navbar-toggler:focus,
+.navbar .navbar-toggler:focus-visible {
+  outline: 3px solid var(--focus-outline-color) !important;
+}
+
+.form-field input:focus,
+.form-field input:focus-visible,
+.form-field textarea:focus,
+.form-field textarea:focus-visible,
+.form-field select:focus,
+.form-field select:focus-visible {
+  outline: 3px solid var(--focus-outline-color) !important;
+  border-color: var(--focus-outline-color);
+}
+
+.pill-option input:focus + span,
+.pill-option input:focus-visible + span {
+  outline: 3px solid var(--focus-outline-color) !important;
+}
+
+/* #endregion */
+
 /* #region NAVBAR */
 .navbar {
   position: absolute;
