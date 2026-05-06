@@ -14,21 +14,6 @@
   /* dark / text on light */
   --text-dark: #441c06;
   --text-light: #807e7e;
-  /* Design tokens */
-  --border-radius: 12px;
-  --control-radius: 10px;
-  --container-max-width: 1000px;
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 16px;
-  --space-4: 24px;
-  --space-5: 32px;
-  --font-size-base: 16px;
-  --font-size-lg: 18px;
-  --font-size-sm: 14px;
-  --line-height-base: 1.45;
-  --transition: all 0.28s ease;
-  --shadow: 0 6px 20px rgba(63, 28, 3, 0.10);
 }
 
 /* #endregion */
@@ -54,11 +39,6 @@ body {
   flex-direction: column;
   /* Stack children vertically */
   font-family: 'Roboto Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  color: var(--text-dark);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   background-color: var(--orange-100);
 }
 
@@ -92,7 +72,6 @@ a:visited {
 /* #region Global keyboard focus styles for custom interactive controls */
 :root {
   --focus-outline-color: #91bbff;
-
 }
 
 a.btn:focus,
@@ -165,15 +144,6 @@ button:focus-visible,
   gap: 1rem;
 }
 
-/* Standard centered container used across pages for consistent layout */
-.container {
-  width: 100%;
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
 .navbar .navbar-brand {
   font-weight: 800;
   font-size: 1.1rem;
@@ -183,8 +153,7 @@ button:focus-visible,
 .navbar .navbar-brand-icon {
   color: currentColor;
   margin-right: 0.35rem;
-  font-size: 0.95em;
-  vertical-align: -0.04em;
+  font-size: 1.1rem;
 }
 
 .navbar .nav-link {
@@ -555,9 +524,7 @@ button:focus-visible,
 }
 
 .form-field label {
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: var(--text-dark);
+  font-size: 0.8rem;;
 }
 
 /* --- Sign up link --- */
@@ -1896,6 +1863,10 @@ textarea {
 
   .navbar .nav-link {
     font-size: 1.2rem;
+  }
+
+  .navbar .navbar-brand-icon {
+    font-size: 1.3rem;
   }
 
   .hero-section {
