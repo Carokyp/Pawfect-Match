@@ -15,11 +15,10 @@
     <h1 class="page-title">MESSAGES</h1>
   </header>
 
+  {% if conversations or first_receiver_dog %}
   <a href="{% url 'browse_dogs' %}" class="back-button-messages" aria-label="Back to discover">
     <i class="fa-solid fa-arrow-left"></i>
   </a>
-
-  {% if conversations or first_receiver_dog %}
   
   <!-- Inbox -->
 

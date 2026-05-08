@@ -13,7 +13,12 @@
   --orange-700: #B84312;
   /* dark / text on light */
   --text-dark: #441c06;
-  --text-light: #807e7e;
+  --text-light: #4C4C4C;
+
+  --transition: all 0.2s ease;
+
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --border-radius: 16px;
 }
 
 /* #endregion */
@@ -31,10 +36,8 @@
 body {
   min-height: 100vh;
   /* Minimum height of viewport, can grow with content */
-  max-width: 1800px;
-  /* Limit maximum width for readability on large screens */
-  margin: 0 auto;
-  /* Center content horizontally */
+  width: 100%;
+  margin: 0;
   display: flex;
   flex-direction: column;
   /* Stack children vertically */
@@ -71,51 +74,33 @@ a:visited {
 
 /* #region Global keyboard focus styles for custom interactive controls */
 :root {
-  --focus-outline-color: #91bbff;
+  --focus-outline-color: #3976d7;
 }
 
-a.btn:focus,
 a.btn:focus-visible,
-button:focus,
 button:focus-visible,
-.btn-modal:focus,
 .btn-modal:focus-visible,
-.action-btn:focus,
 .action-btn:focus-visible,
-.toggle-btn:focus,
 .toggle-btn:focus-visible,
-.toggle-password:focus,
 .toggle-password:focus-visible,
-.upload-remove:focus,
 .upload-remove:focus-visible,
-.btn-delete-conversation:focus,
 .btn-delete-conversation:focus-visible,
-.btn-delete-match:focus,
 .btn-delete-match:focus-visible,
-.back-button:focus,
 .back-button:focus-visible,
-.back-button-messages:focus,
 .back-button-messages:focus-visible,
-.match-modal .close:focus,
 .match-modal .close:focus-visible,
-.delete-modal .close:focus,
 .delete-modal .close:focus-visible,
-.navbar .navbar-toggler:focus,
 .navbar .navbar-toggler:focus-visible {
   outline: 3px solid var(--focus-outline-color) !important;
 }
 
-.form-field input:focus,
 .form-field input:focus-visible,
-.form-field textarea:focus,
 .form-field textarea:focus-visible,
-.form-field select:focus,
 .form-field select:focus-visible {
   outline: 3px solid var(--focus-outline-color) !important;
-  border-color: var(--focus-outline-color);
+  border-color: var(--focus-outline-color) !important;
 }
 
-.pill-option input:focus + span,
 .pill-option input:focus-visible + span {
   outline: 3px solid var(--focus-outline-color) !important;
 }
@@ -168,12 +153,12 @@ button:focus-visible,
 
 .navbar .nav-link:hover,
 .navbar .nav-link:focus {
-  color: var(--orange-700);
-  background: rgba(184,67,18,0.06);
+  color: var(--text-dark);
+  background: rgba(184,67,18,0.12);
 }
 
 .navbar .nav-link.active {
-  color: var(--orange-700);
+  color: var(--text-dark);
   background: rgba(184,67,18,0.12);
   box-shadow: inset 0 -3px 0 var(--orange-700);
 }
@@ -308,6 +293,14 @@ button:focus-visible,
 .auth-content.form-page {
   min-height: 100vh;
   padding: 3rem 1rem;
+}
+
+.auth-card-form {
+  width: 100%;
+}
+
+.auth-form {
+  width: 100%;
 }
 
 .auth-content.create-owner {
@@ -887,7 +880,7 @@ textarea {
 /* --- Image Profil--- */
 .profile-image {
   position: relative;
-  border-radius: 16px;
+  border-radius: var(--border-radius);
   overflow: hidden;
 }
 
@@ -959,7 +952,7 @@ textarea {
 
 .action-btn:hover {
   transform: scale(1.06);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow);
 }
 
 .dislike {
@@ -1069,7 +1062,7 @@ textarea {
 
 .text-background {
   background-color: rgba(248, 117, 117, 0.1);
-  border-radius: 10px;
+  border-radius: var(--border-radius);
   max-width: 280px;
 }
 
@@ -1308,7 +1301,7 @@ textarea {
   position: relative;
   height: calc(100vh - 50px);
   background: #fff;
-  border-radius: 16px;
+  border-radius: var(--border-radius);
   margin: 0 auto;
   width: min(100%, 950px);
   overflow: hidden;
@@ -1429,7 +1422,7 @@ textarea {
 }
 
 .empty-state-text {
-  color: var(--text-light);
+  color: #1c1c1c;
   font-size: 0.8rem;
   opacity: 0.7;
 }
@@ -1448,7 +1441,7 @@ textarea {
 }
 
 .message-input::placeholder {
-  color: #999;
+  color: #3f3f3f;
 }
 
 /* #endregion */
@@ -1497,8 +1490,8 @@ textarea {
 .site-footer {
   background: var(--text-dark);
   color: #fff;
-  padding: var(--space-4) 0;
-  font-size: var(--font-size-sm);
+  padding: 1rem 0;
+  font-size: 0.9rem;
 }
 
 .footer-title {
@@ -1588,7 +1581,11 @@ textarea {
   }
 
   .auth-card-split {
-    gap: 2.5rem;
+    gap: 2rem;
+  }
+
+  .auth-card-form {
+    max-width: 320px;
   }
 
   .auth-card-split.success-split {
@@ -1809,7 +1806,7 @@ textarea {
   .messages-split-container {
     display: grid;
     grid-template-columns: 380px 1fr;
-    height: calc(100vh - 190px);
+    height: calc(100dvh - 190px);
     overflow: hidden;
   }
 

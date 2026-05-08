@@ -21,14 +21,42 @@
 * [Technical Architecture](#technical-architecture)
    * [Admin Page](#admin-page)
    * [CRUD Operations](#crud-operations)
+   * [User Feedback](#user-feedback)
    * [Database Schema](#database-schema)
 
 * [Features](#features)
+   * [Error Pages](#error-pages)
+
 * [Future Features](#future-features)
+
 * [Technologies Used](#technologies-used)
+
 * [Testing](#testing)
+   * [Authentication](#authentication)
+   * [CRUD](#crud)
+   * [Permissions](#permissions)
+   * [Forms](#forms)
+   * [UX](#ux)
+   * [Accessibility](#accessibility)
+   * [Validator Testing](#validator-testing)
+   * [Browser Compatibility](#browser-compatibility)
+   * [Responsive Design](#responsive-design)
+   * [Performance](#performance)
+   * [Bugs Found, Fixed, and Unresolved](#bugs-found-fixed-and-unresolved)
+   * [Testing User Stories](#testing-user-stories)
+
+* [Known Security Issue: Password Reset Vulnerability](#known-security-issue-password-reset-vulnerability)
+   * [Problem: Account Takeover via Password Reset](#problem-account-takeover-via-password-reset)
+   * [How it should work (secure)](#how-it-should-work-secure)
+
+* [Security](#security)
+
 * [Deployment](#deployment)
+   * [Heroku Deployment Guide](#heroku-deployment-guide)
+
 * [Credits](#credits)
+   * [Visual Design References](#visual-design-references)
+   * [Code References](#code-references)
 
 ## User Experience (UX)
 
@@ -299,8 +327,10 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
 **ERD Diagram**
 
 <p align="center">
-  <img src="docs/images/ERD.png" alt="ERD" style="width: 70%; max-width: 700px; height: auto;">
+  <img src="docs/images/ERD.png" alt="ERD" style="width: 100%; max-width: 1000px; height: auto;">
 </p>
+
+**ERD note:** the dog-to-dog matching logic is modeled through the `Like` table, which acts as the join table for an implicit many-to-many relationship. The `Message` table is separate and uses two foreign keys to `Dog` for sender and receiver.
 
  **Legend:**
 - **Solid line** — OneToOne relationship (e.g. User ↔ OwnerProfile ↔ Dog)
@@ -322,7 +352,6 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
   - `password` (CharField, hashed)
   - `is_active` (BooleanField)
   - `is_staff` (BooleanField)
-  - `is_superuser` (BooleanField)
   - `date_joined` (DateTimeField)
 - **Primary Key:** `id`
 - **Constraint:** `username` is unique (Django default)
@@ -335,13 +364,13 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
 - **Foreign Key:** `user` (OneToOneField → User, `on_delete=CASCADE`)
 - **Fields:**
   - `id` (AutoField, primary key)
-  - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) — Owner's avatar (10 MB max)
-  - `name` (CharField, `max_length=100`) — Human owner's name
-  - `age` (PositiveIntegerField, nullable) — Owner's age
-  - `city` (CharField, `max_length=100`) — Location for proximity awareness
+  - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) Owner's avatar (10 MB max)
+  - `name` (CharField, `max_length=100`) Human owner's name
+  - `age` (PositiveIntegerField, nullable) Owner's age
+  - `city` (CharField, `max_length=100`) Location for proximity awareness
   - `occupation` (CharField, `max_length=100`, blank)
-  - `interests` (CharField, `max_length=255`, blank) — Comma-separated (e.g. `"hiking, beaches, sports"`)
-  - `about_me` (TextField, `max_length=150`, blank) — Owner's bio
+  - `interests` (CharField, `max_length=255`, blank) Comma-separated (e.g. `"hiking, beaches, sports"`)
+  - `about_me` (TextField, `max_length=150`, blank) Owner's bio
   - `completed` (BooleanField) — Onboarding completion flag
   - `created_at` (DateTimeField) — Profile creation timestamp
 - **Relationship:** 1 OwnerProfile per User (OneToOne)
@@ -354,15 +383,15 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
 - **Foreign Key:** `owner` (OneToOneField → OwnerProfile, `on_delete=CASCADE`)
 - **Fields:**
   - `id` (AutoField, primary key)
-  - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) — Dog's photo (10 MB max)
+  - `profile_photo` (CloudinaryField, `blank=True`, `null=True`) Dog's photo (10 MB max)
   - `name` (CharField, `max_length=100`)
   - `age` (PositiveIntegerField, nullable)
-  - `breed` (CharField, `max_length=100`) — e.g. `"Golden Retriever"`, `"Labrador"`
-  - `size` (CharField, choices) — Small / Medium / Large
-  - `gender` (CharField, choices) — Male / Female
-  - `energy_level` (CharField, choices) — Couch potato / Chill vibes / Playful / Energetic / Full zoomies
-  - `about_me` (TextField, `max_length=150`) — Dog's personality description
-  - `completed` (BooleanField) — Onboarding completion flag
+  - `breed` (CharField, `max_length=100`) e.g. `"Golden Retriever"`, `"Labrador"`
+  - `size` (CharField, choices) Small / Medium / Large
+  - `gender` (CharField, choices)  Male / Female
+  - `energy_level` (CharField, choices) Couch potato / Chill vibes / Playful / Energetic / Full zoomies
+  - `about_me` (TextField, `max_length=150`)  Dog's personality description
+  - `completed` (BooleanField) Onboarding completion flag
   - `created_at` (DateTimeField)
 - **Relationship:** 1 Dog per OwnerProfile (OneToOne)
 - **Constraints:** `owner` is unique; enum validation on `size`, `gender`, `energy_level`
@@ -373,12 +402,12 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
 **4. Like**
 - **Purpose:** Track like relationships between dogs. The app creates both directions immediately, resulting in an instant bidirectional match.
 - **Foreign Keys:**
-  - `from_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — The dog who initiated the like
-  - `to_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — The dog being liked
+  - `from_dog` (ForeignKey → Dog, `on_delete=CASCADE`) The dog who initiated the like
+  - `to_dog` (ForeignKey → Dog, `on_delete=CASCADE`) The dog being liked
 - **Fields:**
   - `id` (AutoField, primary key)
   - `created_at` (DateTimeField)
-- **Constraint:** Unique pair `(from_dog, to_dog)` via `unique_connection` — prevents duplicate likes
+- **Constraint:** Unique pair `(from_dog, to_dog)` via `unique_connection` prevents duplicate likes
 - **Match logic:**
   When a user likes a dog, the app creates both rows at once:
   ```
@@ -394,8 +423,8 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
 **5. Dislike**
 - **Purpose:** Track dogs a user has skipped, to exclude them from future browsing
 - **Foreign Keys:**
-  - `from_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — The dog doing the skipping
-  - `to_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — The dog being skipped
+  - `from_dog` (ForeignKey → Dog, `on_delete=CASCADE`) The dog doing the skipping
+  - `to_dog` (ForeignKey → Dog, `on_delete=CASCADE`) The dog being skipped
 - **Fields:**
   - `id` (AutoField, primary key)
   - `created_at` (DateTimeField)
@@ -407,8 +436,8 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
 **6. Message**
 - **Purpose:** Store messages between matched dogs
 - **Foreign Keys:**
-  - `sender_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — Dog sending the message
-  - `receiver_dog` (ForeignKey → Dog, `on_delete=CASCADE`) — Dog receiving the message
+  - `sender_dog` (ForeignKey → Dog, `on_delete=CASCADE`) Dog sending the message
+  - `receiver_dog` (ForeignKey → Dog, `on_delete=CASCADE`) Dog receiving the message
 - **Fields:**
   - `id` (BigAutoField, primary key)
   - `content` (TextField) — Message body
@@ -416,6 +445,8 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
 - **Default ordering:** Newest first (`-created_at`)
 - **Access rule (view-level):** Messaging routes only allow access when both dogs have a reciprocal Like pair.
 - **Cascade behavior:** Deleting either dog cascades to related Message rows
+
+**Relationship note:** `Message` is not a many-to-many table. It stores one sender dog and one receiver dog, so it behaves as two foreign keys to `Dog` rather than a join table.
 
 ---
 
@@ -430,6 +461,7 @@ DOG ||--o{ MESSAGE : "sender_dog / receiver_dog"
 | Dog ↔ Dog (via Like) | Dog, Like | Implicit Many-to-Many | Reciprocal Like rows |
 | Dog → Dislike | Dog, Dislike | One-to-Many | `ForeignKey` + `CASCADE` |
 | Dog → Message | Dog, Message | One-to-Many | `ForeignKey` + `CASCADE` |
+
 
 ---
 
@@ -502,7 +534,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
   - Why Pawfect Match 
 
 <p align="center">
-  <img src="docs/images/NavBar_Public.png" alt="Public homepage navigation" style="width: 90%; max-width: 900px; height: auto;">
+  <img src="docs/images/Home_page_Navbar.png" alt="Public homepage navigation" style="width: 90%; max-width: 900px; height: auto;">
 </p>
 
 - **Public Auth Navigation (register/sign in pages)**:
@@ -511,7 +543,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
   - Sign Up
 
 <p align="center">
-  <img src="docs/images/NavBar_Auth.png" alt="Public authentication navigation" style="width: 90%; max-width: 900px; height: auto;">
+  <img src="docs/images/Sign_in_Navbar.png" alt="Public authentication navigation" style="width: 90%; max-width: 900px; height: auto;">
 </p>
 
 - **Authenticated Navigation**:
@@ -522,7 +554,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
   - Log out
 
 <p align="center">
-  <img src="docs/images/NavBar_User.png" alt="Authenticated user navigation" style="width: 90%; max-width: 900px; height: auto;">
+  <img src="docs/images/Sign_in_Navbar.png" alt="Authenticated user navigation" style="width: 90%; max-width: 900px; height: auto;">
 </p>
   
 - Auto-collapse behavior is enabled for mobile nav menus via JavaScript
@@ -571,7 +603,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - Form validation with Django messages
 
 <p align="center">
-  <img src="docs/images/Create_Account.png" alt="Registration page" style="width: 60%; max-width: 900px; height: auto;">
+  <img src="docs/images/Create_Account_Form.png" alt="Registration page" style="width: 60%; max-width: 900px; height: auto;">
 </p>
 
 **Sign In**
@@ -582,7 +614,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - Error messages for invalid credentials
 
 <p align="center">
-  <img src="docs/images/Sign_in.png" alt="Sign in page" style="width: 60%; max-width: 900px; height: auto;">
+  <img src="docs/images/Sign_In_Form.png" alt="Sign in page" style="width: 60%; max-width: 900px; height: auto;">
 </p>
 
 **Forgot Password**
@@ -594,7 +626,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - Validation prevents password resets for non-existent accounts
 
 <p align="center">
-  <img src="docs/images/Forgot_Password.png" alt="Forgot password page" style="width: 60%; max-width: 900px; height: auto;">
+  <img src="docs/images/Reset_Password_Form.png" alt="Forgot password page" style="width: 60%; max-width: 900px; height: auto;">
 </p>
 
 #### **Input Fields & Forms**
@@ -688,8 +720,8 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
   - Owner metadata: Age, occupation, interests pills
 
 <p align="center">
-  <img src="docs/images/Discover_Dog.png" alt="Discover dog profile view" style="width: 30%; max-width: 450px; margin: 8px height: auto;">
-  <img src="docs/images/Discover_Owner.png" alt="Discover owner profile view" style="width: 30%; max-width: 450px; margin: 8px; height: auto;">
+  <img src="docs/images/Dog_Discover.png" alt="Discover dog profile view" style="width: 30%; max-width: 450px; margin: 8px; height: auto;">
+  <img src="docs/images/Owner_Discover.png" alt="Discover owner profile view" style="width: 30%; max-width: 450px; margin: 8px; height: auto;">
 </p>
   
 - **Action Buttons**:
@@ -708,14 +740,14 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
     - Action: "Reset Matches"
     - Result: clears all connections, dislikes, and messages, then restores discovery pool
     <p align="center">
-      <img src="docs/images/No_More_Match.png" alt="No more matches empty state" style="width: 30%; max-width: 450px; height: auto;">
+      <img src="docs/images/No_More_Dogs.png" alt="No more matches empty state" style="width: 30%; max-width: 450px; height: auto;">
     </p>
   - **Matches (No matches yet)**:
     - Message: "You don't have any matches yet."
     - Supporting text: "Start liking dogs to find your perfect match!"
     - Action: "Back to Discover"
     <p align="center">
-     <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 30%; max-width: 450px;  height: auto;">
+    <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 30%; max-width: 450px; height: auto;">
     </p>
   - **Messages Inbox (No messages yet)**:
     - Message: "No messages yet"
@@ -756,7 +788,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - Delete conversation button (trash icon) with confirmation modal
 
 <p align="center">
-  <img src="docs/images/Inbox_Mobile.png" alt="Messages inbox mobile view" style="width: 40%; max-width: 550px; height: auto;">
+  <img src="docs/images/Message_Inbox.png" alt="Messages inbox mobile view" style="width: 40%; max-width: 550px; height: auto;">
 </p>
 
 #### **Message Thread on Mobile**
@@ -824,7 +856,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - "Delete" button (removes all messages from conversation)
 
 <p align="center">
-  <img src="docs/images/Delete_Convo_Modal.png" alt="Delete conversation confirmation modal" style="width: 35%; max-width: 380px; height: auto;">
+  <img src="docs/images/Delete_Conv_Modal.png" alt="Delete conversation confirmation modal" style="width: 35%; max-width: 380px; height: auto;">
 </p>
 
 #### **Footer**
@@ -1056,6 +1088,17 @@ Testing was organised around the main user flows and quality checks required for
 | Focus Styling | Tab through navigation, forms, and buttons | Focus states are visible and easy to follow | PASS |
 | Screen Reader Friendly Updates | Use the messaging interface | VoiceOver announces page controls via an `aria-live` region, but chat messages typed in the message box or send are not read automatically and must be reached through normal screen reader navigation | PASS |
 
+### Bugs Found, Fixed, and Unresolved
+
+| Bug | Status | Notes |
+|-----|--------|-------|
+| Oversized profile images were being accepted too easily | Fixed | Added a server-side file size check so uploads over 9.5 MB are rejected cleanly. |
+| Existing profile photos could be lost during edit | Fixed | Edit forms now preserve the current photo when no new image is uploaded. |
+| Messaging access without a reciprocal match | Fixed | Messaging routes now block access until the match exists. |
+| Firefox password manager popup overlapping the invalid email alert | Unresolved | Minor browser-specific UI overlap with no functional impact. |
+| Safari Keychain/AutoFill popup overlapping the sign in form | Unresolved | Minor browser-specific UI overlap with no functional impact. |
+| Password reset flow allowing instant password changes without email verification | Unresolved | Known security limitation in the current prototype; would need proper email token verification before production use. |
+
 ### Validator Testing
 
 Since Django uses a templating language, the template code is not valid HTML. To validate the rendered output, I extracted the HTML from the browser's DevTools (via page source and inspect element) and pasted it into the [W3C HTML Validator](https://validator.w3.org/). All 24+ pages validated with no errors.
@@ -1097,17 +1140,6 @@ The JavaScript file was validated with [JSHint](https://jshint.com/) with no cri
 [**View Mobile Lighthouse Here**](docs/images/LightHouse_Mobile)
 
 All performance metrics meet industry standards for web applications.
-
-### Bugs Found, Fixed, and Unresolved
-
-| Bug | Status | Notes |
-|-----|--------|-------|
-| Oversized profile images were being accepted too easily | Fixed | Added a server-side file size check so uploads over 9.5 MB are rejected cleanly. |
-| Existing profile photos could be lost during edit | Fixed | Edit forms now preserve the current photo when no new image is uploaded. |
-| Messaging access without a reciprocal match | Fixed | Messaging routes now block access until the match exists. |
-| Firefox password manager popup overlapping the invalid email alert | Unresolved | Minor browser-specific UI overlap with no functional impact. |
-| Safari Keychain/AutoFill popup overlapping the sign in form | Unresolved | Minor browser-specific UI overlap with no functional impact. |
-| Password reset flow allowing instant password changes without email verification | Unresolved | Known security limitation in the current prototype; would need proper email token verification before production use. |
 
 ### Testing User Stories
 
@@ -1176,7 +1208,7 @@ Would need:
 1. Configure Django email backend (settings.py)
 2. Create email template with reset link + token
 3. Implement token expiration (1 hour)
-4. Add SMTP/SendGrid credentials
+4. Add SMTP/SendGrid credentials\
 
 This is a known limitation and would be first priority before any production deployment.
 
