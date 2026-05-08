@@ -1859,8 +1859,12 @@ textarea {
     font-size: 1.2rem;
   }
 
+  .navbar .navbar-brand {
+    font-size: 1.6rem;
+  }
+
   .navbar .navbar-brand-icon {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
   }
 
   .hero-section {

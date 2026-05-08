@@ -1097,6 +1097,7 @@ Testing was organised around the main user flows and quality checks required for
 | Messaging access without a reciprocal match | Fixed | Messaging routes now block access until the match exists. |
 | Firefox password manager popup overlapping the invalid email alert | Unresolved | Minor browser-specific UI overlap with no functional impact. |
 | Safari Keychain/AutoFill popup overlapping the sign in form | Unresolved | Minor browser-specific UI overlap with no functional impact. |
+| Gender native dropdown appears offset from the `Gender` field in DevTools emulation on multi-screen setups | Unresolved | Reproduced when the browser/DevTools window is used across different monitors and the `Gender` native select is opened in device emulation mode. This is a browser rendering issue in emulation and may differ from real-device behavior. Screenshot evidence [here](docs/images/Bug_1.png). |
 | Password reset flow allowing instant password changes without email verification | Unresolved | Known security limitation in the current prototype; would need proper email token verification before production use. |
 
 ### Validator Testing
