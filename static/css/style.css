@@ -28,19 +28,17 @@
 /* Reset default browser styles for all elements */
 * {
   margin: 0;
-  box-sizing: border-box;
-  /* Include padding and border in element's width/height */
+  box-sizing: border-box; /* Include padding and border in element's width/height */
 }
 
 /* Main body layout */
 body {
-  min-height: 100vh;
-  /* Minimum height of viewport, can grow with content */
+  min-height: 100vh; /* Minimum height of viewport, can grow with content */
+  max-width: 1800px;
   width: 100%;
-  margin: 0;
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
-  /* Stack children vertically */
+  flex-direction: column; /* Stack children vertically */
   font-family: 'Roboto Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--orange-100);
 }
@@ -53,8 +51,7 @@ body.modal-open {
 
 /* Main content area - grows to fill available space (sticky footer technique) */
 main {
-  flex: 1 0 auto;
-  /* Grow to fill space, don't shrink, auto basis */
+  flex: 1 0 auto; /* Grow to fill space, don't shrink, auto basis */
 }
 
 /* Remove default link styling */

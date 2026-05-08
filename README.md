@@ -698,7 +698,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
   - Edit button linking to edit form
 
 <p align="center">
-  <img src="docs/images/Dog_Profile_View.png" alt="Dog profile view" style="width: 30%; max-width: 380px; height: auto;">
+  <img src="docs/images/Dog_Profile_View.png" alt="Dog profile view" style="width: 50%; max-width: 380px; height: auto;">
 </p>
   
 - **Owner Profile View**:
@@ -708,7 +708,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
   - Edit button linking to edit form
 
 <p align="center">
-  <img src="docs/images/View_Owner_Profile.png" alt="Owner profile view" style="width: 30%; max-width: 380px; height: auto;">
+  <img src="docs/images/View_Owner_Profile.png" alt="Owner profile view" style="width: 50%; max-width: 380px; height: auto;">
 </p>
 
 #### **Discover / Browse Dogs**
@@ -720,8 +720,8 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
   - Owner metadata: Age, occupation, interests pills
 
 <p align="center">
-  <img src="docs/images/Dog_Discover.png" alt="Discover dog profile view" style="width: 30%; max-width: 450px; margin: 8px; height: auto;">
-  <img src="docs/images/Owner_Discover.png" alt="Discover owner profile view" style="width: 30%; max-width: 450px; margin: 8px; height: auto;">
+  <img src="docs/images/Dog_Discover.png" alt="Discover dog profile view" style="width: 50%; max-width: 450px; margin: 8px; height: auto;">
+  <img src="docs/images/Owner_Discover.png" alt="Discover owner profile view" style="width: 50%; max-width: 450px; margin: 8px; height: auto;">
 </p>
   
 - **Action Buttons**:
@@ -740,21 +740,21 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
     - Action: "Reset Matches"
     - Result: clears all connections, dislikes, and messages, then restores discovery pool
     <p align="center">
-      <img src="docs/images/No_More_Dogs.png" alt="No more matches empty state" style="width: 30%; max-width: 450px; height: auto;">
+      <img src="docs/images/No_More_Dogs.png" alt="No more matches empty state" style="width: 50%; max-width: 450px; height: auto;">
     </p>
   - **Matches (No matches yet)**:
     - Message: "You don't have any matches yet."
     - Supporting text: "Start liking dogs to find your perfect match!"
     - Action: "Back to Discover"
     <p align="center">
-    <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 30%; max-width: 450px; height: auto;">
+    <img src="docs/images/No_Matches.png" alt="No more matches empty state" style="width: 50%; max-width: 450px; height: auto;">
     </p>
   - **Messages Inbox (No messages yet)**:
     - Message: "No messages yet"
     - Supporting text: "Send a message to a match to arrange a playdate!"
     - Action: "Back to Discover"
     <p align="center">
-      <img src="docs/images/No_Messages.png" alt="No more matches empty state" style="width: 30%; max-width: 450px; height: auto;">
+      <img src="docs/images/No_Messages.png" alt="No more matches empty state" style="width: 50%; max-width: 450px; height: auto;">
     </p>
   
 - **Filtering** (determines which dogs appear on the browse page):
@@ -774,7 +774,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - Delete match removes both bidirectional connection entries
 
 <p align="center">
-  <img src="docs/images/Matches.png" alt="Matches list" style="width: 30%; max-width: 550px; height: auto;">
+  <img src="docs/images/Matches.png" alt="Matches list" style="width: 50%; max-width: 550px; height: auto;">
 </p>
 
 #### **Messages / Inbox on mobile**
@@ -788,7 +788,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - Delete conversation button (trash icon) with confirmation modal
 
 <p align="center">
-  <img src="docs/images/Message_Inbox.png" alt="Messages inbox mobile view" style="width: 40%; max-width: 550px; height: auto;">
+  <img src="docs/images/Message_Inbox.png" alt="Messages inbox mobile view" style="width: 50%; max-width: 550px; height: auto;">
 </p>
 
 #### **Message Thread on Mobile**
@@ -799,7 +799,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - Header shows matched dog name, breed and photo
 
 <p align="center">
-  <img src="docs/images/Mobile_Chat.png" alt="Message thread mobile view" style="width: 30%; max-width: 550px; height: auto;">
+  <img src="docs/images/Mobile_Chat.png" alt="Message thread mobile view" style="width: 50%; max-width: 550px; height: auto;">
 </p>
 
 #### **Desktop Messages**
@@ -823,7 +823,7 @@ The UI uses a warm color palette. Lighter orange tones are used for page and sec
 - Overlay backdrop with click-outside-to-close
 
 <p align="center">
-  <img src="docs/images/Match_Modal.png" alt="It's a Match modal" style="width: 30%; max-width: 550px; height: auto;">
+  <img src="docs/images/Match_Modal.png" alt="It's a Match modal" style="width: 50%; max-width: 550px; height: auto;">
 </p>
 
 **Delete Account Modal**

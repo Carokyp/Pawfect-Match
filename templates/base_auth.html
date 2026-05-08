@@ -12,7 +12,7 @@
         <div class="navbar-nav ms-auto">
           <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
           <a class="nav-link {% if request.resolver_match.url_name == 'sign_in' %}active{% endif %}" href="{% url 'sign_in' %}">Sign In</a>
-          <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}" href="{% url 'register' %}">Sign Up</a>
+          <a class="nav-link {% if request.resolver_match.url_name == 'register' or request.resolver_match.url_name == 'create_owner_profile' or request.resolver_match.url_name == 'create_dog' %}active{% endif %}" href="{% url 'register' %}">Sign Up</a>
         </div>
       </div>
     </div>
