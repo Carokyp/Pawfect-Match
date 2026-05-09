@@ -852,14 +852,14 @@ textarea {
   border: none;
   border-radius: 999px;
   padding: 0.4rem 1rem;
-  background: #ffefe4;
+  background: #ffaf7a64;
   color: var(--text-dark);
   font-weight: 600;
 }
 
 /* Active state for toggle buttons */
 .toggle-btn.active {
-  background: var(--orange-200);
+  background: var(--orange-300);
   box-shadow: var(--shadow);
 }
 
@@ -953,7 +953,7 @@ textarea {
 }
 
 .dislike {
-  background: #ffefe4;
+  background: #ffaf7a64;
 }
 
 .like {
