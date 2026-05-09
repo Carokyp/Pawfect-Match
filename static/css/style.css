@@ -1367,7 +1367,7 @@ textarea {
 
 .message-row.sent .message-bubble {
   border-bottom-right-radius: 4px;
-  background: var(--orange-100);
+  background: var(--orange-200);
 }
 
 .message-row.sent .message-time {
